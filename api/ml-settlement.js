@@ -1,6 +1,6 @@
 /** Mercado Livre Envios = senders[].cost from /shipments/{id}/costs. Never a fixed freight. */
 
-export const ML_SETTLEMENT_VERSION = 11;
+export const ML_SETTLEMENT_VERSION = 12;
 
 /** @deprecated kept only so old tests/imports do not break — never use as a default freight. */
 export const ML_ENVIOS_NET = 12.35;
@@ -9,6 +9,50 @@ export function mlMoney(n) {
   const v = Number(n);
   if (!Number.isFinite(v) || v < 0) return 0;
   return Math.round(v * 100) / 100;
+}
+
+/**
+ * ML order_items.sale_fee is per unit (docs: "tarifa por unidad").
+ * Total selling fee for the line = sale_fee × quantity.
+ */
+export function mlOrderItemsSaleFees(items) {
+  let sum = 0;
+  for (const it of items || []) {
+    const qtyRaw = Number(it.quantity ?? it.qty ?? 0);
+    const qty = qtyRaw > 0 ? qtyRaw : 1;
+    const fee = Number(it.saleFee ?? it.sale_fee ?? 0);
+    if (Number.isFinite(fee) && fee > 0) sum += fee * qty;
+  }
+  return mlMoney(sum);
+}
+
+/**
+ * Fee source of truth for the ML receipt:
+ * 1) payment marketplace_fee (tarifa de venda total)
+ * 2) sum of sale_fee × quantity from order items
+ * 3) stored sale.fees (legacy)
+ */
+export function resolveMlSaleFees({ marketplaceFee, items, saleFees } = {}) {
+  const fromPay = mlMoney(marketplaceFee);
+  if (fromPay > 0) return fromPay;
+  const fromItems = mlOrderItemsSaleFees(items);
+  if (fromItems > 0) return fromItems;
+  return mlMoney(saleFees);
+}
+
+/** True when stored fees are below sale_fee×qty or payment marketplace_fee (classic 2-unit half-fee bug). */
+export function mlFeesLookShort(sale) {
+  const stored = mlMoney(sale?.fees);
+  const fromItems = mlOrderItemsSaleFees(sale?.items);
+  if (fromItems > 0.05 && stored + 0.05 < fromItems) return true;
+  let fromPay = 0;
+  for (const p of sale?.payments || []) {
+    const st = String(p.status || '').toLowerCase();
+    if (st && !/approved|accredited/.test(st)) continue;
+    fromPay += mlMoney(p.marketplaceFee ?? p.marketplace_fee);
+  }
+  if (fromPay > 0.05 && stored + 0.05 < fromPay) return true;
+  return false;
 }
 
 /**

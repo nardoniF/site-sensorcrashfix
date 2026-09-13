@@ -40,7 +40,10 @@ import {
   liquidMatchesReceipt,
   repairEnviosAlreadyNet,
   resolveEnviosShipping,
-  mlShippingResolved
+  mlShippingResolved,
+  mlOrderItemsSaleFees,
+  resolveMlSaleFees,
+  mlFeesLookShort
 } from './ml-settlement.js';
 import {
   shopeeOrderIncome,
@@ -4848,6 +4851,32 @@ function healMlStoredShipping(sale, flexCfg) {
       settlementVersion: ML_SETTLEMENT_VERSION
     };
   }
+  // Tarifa pela metade (sale_fee sem × qty) → não mostrar frete/líquido errados; força re-settle
+  if (mlFeesLookShort(sale)) {
+    let payFee = 0;
+    for (const p of sale.payments || []) {
+      const st = String(p.status || '').toLowerCase();
+      if (st && !/approved|accredited/.test(st)) continue;
+      payFee += mlMoney(p.marketplaceFee ?? p.marketplace_fee);
+    }
+    const fees = resolveMlSaleFees({
+      marketplaceFee: payFee,
+      items: sale.items,
+      saleFees: sale.fees
+    });
+    const payout = receiptPayout(sale.gross, fees, 0);
+    return {
+      ...sale,
+      fees,
+      mlFlex: false,
+      shippingCost: null,
+      shippingSource: 'unresolved',
+      settlementOk: false,
+      shippingCostsOk: false,
+      net: payout,
+      payoutNet: payout
+    };
+  }
   // Residual miúdo só em Envios (não-Flex) — ex.: DANPROS 0,05
   if (ship != null && ship > 0 && ship < 1) {
     const payout = receiptPayout(sale.gross, sale.fees, 0);
@@ -5044,7 +5073,8 @@ function normalizeMlOrder(order) {
       currency: row.currency_id || order.currency_id || 'BRL'
     };
   });
-  const fees = Math.round(items.reduce((sum, it) => sum + Number(it.saleFee || 0), 0) * 100) / 100;
+  // sale_fee is per unit — must multiply by quantity (2 un → 2 × fee).
+  const fees = mlOrderItemsSaleFees(items);
   const itemsGross = Math.round(items.reduce((sum, it) => {
     const qty = Number(it.quantity || 0) > 0 ? Number(it.quantity) : 1;
     return sum + Number(it.unitPrice || 0) * qty;
@@ -5209,9 +5239,13 @@ function applyMlPaymentSettlement(sale, paymentDocs, costs, sellerId, extras = {
     if (st && !/approved|accredited/.test(st)) continue;
     marketplaceFee += mlMoney(p.marketplace_fee);
   }
-  const fees = mlMoney(sale.fees) > 0
-    ? mlMoney(sale.fees)
-    : (marketplaceFee > 0 ? marketplaceFee : 0);
+  // Prefer payment marketplace_fee (receipt "Tarifa de venda total").
+  // Old sale.fees often ignored qty (sale_fee × 1 instead of × quantity).
+  const fees = resolveMlSaleFees({
+    marketplaceFee,
+    items: sale.items,
+    saleFees: sale.fees
+  });
 
   const flexCost = mlMoney(extras.flexCost) > 0
     ? mlMoney(extras.flexCost)
@@ -5511,6 +5545,8 @@ function mlNeedsPaymentEnrich(sale, flexCost) {
     return true;
   }
   if (sale.settlementVersion !== ML_SETTLEMENT_VERSION) return true;
+  // Half-fee bug (sale_fee not × qty) → frete/líquido wrong until re-settled
+  if (mlFeesLookShort(sale)) return true;
   return false;
 }
 
