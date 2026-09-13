@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>Admin — Sensor Tattoo Fix</title>
-    <link rel="stylesheet" href="style.css?v=3.28">
+    <link rel="stylesheet" href="style.css?v=3.29">
     <style>
       .clicks-device-badge{display:inline-block;padding:2px 7px;border-radius:999px;font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
       .clicks-device--mobile{background:rgba(76,175,80,.14);color:#81c784}
@@ -972,13 +972,18 @@
                         <p id="admin-status-vendas" class="admin-status form-status" hidden></p>
 
                         <div id="admin-vendas-loja" class="admin-vendas-subpanel" role="tabpanel" hidden>
-                            <div id="vendas-loja-stats" class="admin-clicks-stats admin-meta"></div>
-                            <div class="admin-clicks-toolbar admin-toolbar-split">
+<div class="admin-clicks-toolbar admin-toolbar-split">
                                 <div class="admin-toolbar-main">
                                     <button type="button" id="btn-vendas-loja-refresh" class="btn-secondary"><i class="fas fa-sync-alt"></i> Recarregar</button>
                                     <button type="button" class="btn-secondary" id="btn-vendas-goto-pedidos"><i class="fas fa-list"></i> Ir para Pedidos</button>
+                                                                    <button type="button" id="btn-vendas-loja-expand" class="btn-secondary" title="Abrir todos os níveis da árvore"><i class="fas fa-expand-alt"></i> Expandir tudo</button>
+                                    <button type="button" id="btn-vendas-loja-collapse" class="btn-secondary" title="Fechar todos os níveis da árvore"><i class="fas fa-compress-alt"></i> Colapsar tudo</button>
                                 </div>
                             </div>
+<div id="vendas-loja-stats" class="admin-clicks-stats admin-meta"></div>
+
+                            
+                            
                             <p id="vendas-loja-checked-at" class="admin-meta" hidden></p>
                             <div id="vendas-loja-tree-root" class="clicks-tree-root">
                                 <p class="admin-meta">Abra esta subaba para carregar as vendas da loja oficial.</p>
@@ -987,14 +992,19 @@
                         </div>
 
                         <div id="admin-vendas-mercadolivre" class="admin-vendas-subpanel" role="tabpanel">
-                            <div id="vendas-ml-stats" class="admin-clicks-stats admin-meta"></div>
-                            <div class="admin-clicks-toolbar admin-toolbar-split">
+<div class="admin-clicks-toolbar admin-toolbar-split">
                                 <div class="admin-toolbar-main">
                                     <button type="button" id="btn-vendas-ml-refresh" class="btn-secondary"><i class="fas fa-sync-alt"></i> Recarregar</button>
                                     <button type="button" id="btn-vendas-ml-auth" class="btn-secondary"><i class="fas fa-link"></i> Reconectar ML (só se quebrar)</button>
                                     <button type="button" id="btn-vendas-ml-sync" class="btn-primary"><i class="fas fa-cloud-download-alt"></i> Atualizar ML</button>
+                                                                    <button type="button" id="btn-vendas-ml-expand" class="btn-secondary" title="Abrir todos os níveis da árvore"><i class="fas fa-expand-alt"></i> Expandir tudo</button>
+                                    <button type="button" id="btn-vendas-ml-collapse" class="btn-secondary" title="Fechar todos os níveis da árvore"><i class="fas fa-compress-alt"></i> Colapsar tudo</button>
                                 </div>
                             </div>
+<div id="vendas-ml-stats" class="admin-clicks-stats admin-meta"></div>
+
+                            
+                            
                             <p id="vendas-ml-checked-at" class="admin-meta" hidden></p>
                             <div id="vendas-ml-tree-root" class="clicks-tree-root">
                                 <p class="admin-meta">Abra esta subaba para carregar as vendas do Mercado Livre.</p>
@@ -1002,14 +1012,19 @@
                         </div>
 
                         <div id="admin-vendas-shopee" class="admin-vendas-subpanel" role="tabpanel" hidden>
-                            <div id="vendas-shopee-stats" class="admin-clicks-stats admin-meta"></div>
-                            <div class="admin-clicks-toolbar admin-toolbar-split">
+<div class="admin-clicks-toolbar admin-toolbar-split">
                                 <div class="admin-toolbar-main">
                                     <button type="button" id="btn-vendas-shopee-refresh" class="btn-secondary"><i class="fas fa-sync-alt"></i> Recarregar</button>
                                     <button type="button" id="btn-vendas-shopee-auth" class="btn-secondary"><i class="fas fa-link"></i> Autorizar loja</button>
                                     <button type="button" id="btn-vendas-shopee-sync" class="btn-primary"><i class="fas fa-cloud-download-alt"></i> Atualizar Shopee</button>
+                                                                    <button type="button" id="btn-vendas-shopee-expand" class="btn-secondary" title="Abrir todos os níveis da árvore"><i class="fas fa-expand-alt"></i> Expandir tudo</button>
+                                    <button type="button" id="btn-vendas-shopee-collapse" class="btn-secondary" title="Fechar todos os níveis da árvore"><i class="fas fa-compress-alt"></i> Colapsar tudo</button>
                                 </div>
                             </div>
+<div id="vendas-shopee-stats" class="admin-clicks-stats admin-meta"></div>
+
+                            
+                            
                             <p id="vendas-shopee-checked-at" class="admin-meta" hidden></p>
                             <div id="vendas-shopee-tree-root" class="clicks-tree-root">
                                 <p class="admin-meta">Abra esta subaba para carregar as vendas da Shopee.</p>
@@ -1017,13 +1032,18 @@
                             <p class="admin-meta">Redirect URL do app Open Platform: <code>https://api.sensortattoofix.com.br/admin/shopee/oauth/callback</code></p>
                         </div>
                         <div id="admin-vendas-amazon" class="admin-vendas-subpanel" role="tabpanel" hidden>
-                            <div id="vendas-amz-stats" class="admin-clicks-stats admin-meta"></div>
-                            <div class="admin-clicks-toolbar admin-toolbar-split">
+<div class="admin-clicks-toolbar admin-toolbar-split">
                                 <div class="admin-toolbar-main">
                                     <button type="button" id="btn-vendas-amz-refresh" class="btn-secondary"><i class="fas fa-sync-alt"></i> Recarregar</button>
                                     <button type="button" id="btn-vendas-amz-sync" class="btn-primary"><i class="fas fa-cloud-download-alt"></i> Atualizar Amazon</button>
+                                                                    <button type="button" id="btn-vendas-amz-expand" class="btn-secondary" title="Abrir todos os níveis da árvore"><i class="fas fa-expand-alt"></i> Expandir tudo</button>
+                                    <button type="button" id="btn-vendas-amz-collapse" class="btn-secondary" title="Fechar todos os níveis da árvore"><i class="fas fa-compress-alt"></i> Colapsar tudo</button>
                                 </div>
                             </div>
+<div id="vendas-amz-stats" class="admin-clicks-stats admin-meta"></div>
+
+                            
+                            
                             <p id="vendas-amz-checked-at" class="admin-meta" hidden></p>
                             <div id="vendas-amz-tree-root" class="clicks-tree-root">
                                 <p class="admin-meta">Abra esta subaba para carregar as vendas da Amazon.</p>
@@ -1031,14 +1051,20 @@
                             <p class="admin-meta">Conta fechada: <strong>Bruto − Comissão − Frete − Estornos − Outras = marketplace − custo do kit = líquido real</strong>.</p>
                         </div>
                         <div id="admin-vendas-consolidado" class="admin-vendas-subpanel" role="tabpanel" hidden>
-                            <div id="vendas-consol-periods" class="vendas-consol-periods"></div>
-                            <div id="vendas-consol-stats" class="admin-clicks-stats admin-meta"></div>
-                            <div class="admin-clicks-toolbar admin-toolbar-split">
+<div class="admin-clicks-toolbar admin-toolbar-split">
                                 <div class="admin-toolbar-main">
                                     <button type="button" id="btn-vendas-consol-refresh" class="btn-secondary"><i class="fas fa-sync-alt"></i> Recarregar</button>
                                     <button type="button" id="btn-vendas-consol-export" class="btn-secondary"><i class="fas fa-file-excel"></i> Exportar Excel</button>
+                                                                    <button type="button" id="btn-vendas-consol-expand" class="btn-secondary" title="Abrir todos os níveis da árvore"><i class="fas fa-expand-alt"></i> Expandir tudo</button>
+                                    <button type="button" id="btn-vendas-consol-collapse" class="btn-secondary" title="Fechar todos os níveis da árvore"><i class="fas fa-compress-alt"></i> Colapsar tudo</button>
                                 </div>
                             </div>
+<div id="vendas-consol-periods" class="vendas-consol-periods"></div>
+<div id="vendas-consol-stats" class="admin-clicks-stats admin-meta"></div>
+
+                            
+                            
+                            
                             <details class="admin-fold vendas-when" id="vendas-when-fold" data-fold-key="vendas-when">
                                 <summary class="admin-fold-summary">
                                     <i class="fas fa-chevron-right admin-fold-chevron" aria-hidden="true"></i>
@@ -1090,7 +1116,7 @@
                             <p>Histórico por dia e horário: ano → mês → dia → visitante → caminho da visita (passos 1, 2, 3… na ordem do tempo). <strong>Não busca na API ao abrir</strong> — mostra o último cache local; clique <strong>Atualizar</strong> para trazer dados novos.</p>
                             <p>Use busca e filtro por destino (Mercado Livre, TikTok, FAQ…). Marque <strong>Com navegação</strong> para ver o caminho completo da visita (home → páginas → clique), não só o registro do destino. <strong>Somente navegação</strong> esconde visita única ou repetida no mesmo destino — só home, 3 homes, só loja, etc. (não apaga do log). Os gráficos <strong>Quando acessam</strong> são o número oficial (sem únicos/bots). <strong>Únicos / repetidos</strong> foca em bots: <strong>hora</strong>, ranking de <strong>estado</strong> e <strong>cidade</strong>, <strong>local no site</strong>, <strong>site</strong> (.com / .com.br) e se a visita é única ou repetida. <strong>Exportar Excel</strong> gera abas oficiais + Unicos (hora, estado, cidade, local, site).</p>
                         </div>
-                        <div id="clicks-stats" class="admin-clicks-stats admin-meta"></div>
+                        
                         <div class="admin-clicks-filters">
                             <label class="admin-clicks-search">
                                 <input type="search" id="clicks-search" placeholder="Buscar: Mercado Livre, TikTok, visitante…" autocomplete="off" aria-label="Buscar no log">
@@ -1133,7 +1159,24 @@
                             </div>
                         </div>
 
-                        <details class="admin-fold" id="clicks-fold-when" data-fold-key="clicks-when">
+<details class="admin-fold" id="clicks-fold-log" data-fold-key="clicks-log" open>
+                            <summary class="admin-fold-summary">
+                                <i class="fas fa-chevron-right admin-fold-chevron" aria-hidden="true"></i>
+                                <span class="admin-fold-title">Log de visitas</span>
+                                <span class="admin-fold-hint">ano → mês → dia</span>
+                            </summary>
+                            <div class="admin-fold-body">
+                                <p id="admin-status-cliques" class="admin-status form-status" hidden></p>
+                                <p id="clicks-checked-at" class="admin-meta" hidden></p>
+                                <div id="clicks-tree-root" class="clicks-tree-root">
+                                    <p class="admin-meta">Abra esta aba para carregar o histórico.</p>
+                                </div>
+                            </div>
+                        </details>
+
+<div id="clicks-stats" class="admin-clicks-stats admin-meta"></div>
+
+<details class="admin-fold" id="clicks-fold-when" data-fold-key="clicks-when">
                             <summary class="admin-fold-summary">
                                 <i class="fas fa-chevron-right admin-fold-chevron" aria-hidden="true"></i>
                                 <span class="admin-fold-title">Quando acessam</span>
@@ -1160,7 +1203,7 @@
                             </div>
                         </details>
 
-                        <details class="admin-fold" id="clicks-fold-noise" data-fold-key="clicks-noise">
+<details class="admin-fold" id="clicks-fold-noise" data-fold-key="clicks-noise">
                             <summary class="admin-fold-summary">
                                 <i class="fas fa-chevron-right admin-fold-chevron" aria-hidden="true"></i>
                                 <span class="admin-fold-title">Únicos / repetidos</span>
@@ -1194,20 +1237,12 @@
                             </div>
                         </details>
 
-                        <details class="admin-fold" id="clicks-fold-log" data-fold-key="clicks-log" open>
-                            <summary class="admin-fold-summary">
-                                <i class="fas fa-chevron-right admin-fold-chevron" aria-hidden="true"></i>
-                                <span class="admin-fold-title">Log de visitas</span>
-                                <span class="admin-fold-hint">ano → mês → dia</span>
-                            </summary>
-                            <div class="admin-fold-body">
-                                <p id="admin-status-cliques" class="admin-status form-status" hidden></p>
-                                <p id="clicks-checked-at" class="admin-meta" hidden></p>
-                                <div id="clicks-tree-root" class="clicks-tree-root">
-                                    <p class="admin-meta">Abra esta aba para carregar o histórico.</p>
-                                </div>
-                            </div>
-                        </details>
+
+                        
+
+                        
+
+                        
                     </fieldset>
                     </div>
 
@@ -1384,6 +1419,6 @@
     })();
     </script>
     <script type="module" src="js/sales-money.mjs?v=10"></script>
-    <script defer src="js/admin.js?v=237"></script>
+    <script defer src="js/admin.js?v=238"></script>
 </body>
 </html>

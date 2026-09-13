@@ -7418,3 +7418,15 @@ a.conta-forgot-link { display: inline-block; }
   font-size: 0.78rem;
   opacity: 0.7;
 }
+
+.clicks-stats-markets {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.clicks-stats-markets li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 2px 0;
+}

@@ -2794,10 +2794,44 @@ ${worksheets}
     document.getElementById('btn-vendas-goto-pedidos')?.addEventListener('click', () => {
       document.querySelector('.admin-tab[data-admin-tab="pedidos"]')?.click();
     });
+    wireVendasTreeExpandCollapse();
     let saved = 'mercadolivre';
     try { saved = localStorage.getItem('stf_admin_vendas_subtab') || 'mercadolivre'; } catch (e) { /* ignore */ }
     if (!container.querySelector('#admin-vendas-' + saved)) saved = 'mercadolivre';
     showVendasSubtab(saved);
+  }
+
+
+  function setVendasTreeExpanded(rootId, open, alsoFolds) {
+    const root = document.getElementById(rootId);
+    if (root) {
+      root.querySelectorAll('details').forEach((el) => {
+        el.open = !!open;
+      });
+    }
+    if (alsoFolds) {
+      const panel = document.getElementById('admin-vendas-consolidado');
+      panel?.querySelectorAll('details.admin-fold').forEach((el) => {
+        el.open = !!open;
+        const key = el.getAttribute('data-fold-key');
+        if (!key) return;
+        try { localStorage.setItem(`stf_admin_fold_${key}`, open ? '1' : '0'); } catch (e) { /* ignore */ }
+      });
+    }
+  }
+
+  function wireVendasTreeExpandCollapse() {
+    const map = [
+      { expand: 'btn-vendas-loja-expand', collapse: 'btn-vendas-loja-collapse', root: 'vendas-loja-tree-root' },
+      { expand: 'btn-vendas-ml-expand', collapse: 'btn-vendas-ml-collapse', root: 'vendas-ml-tree-root' },
+      { expand: 'btn-vendas-shopee-expand', collapse: 'btn-vendas-shopee-collapse', root: 'vendas-shopee-tree-root' },
+      { expand: 'btn-vendas-amz-expand', collapse: 'btn-vendas-amz-collapse', root: 'vendas-amz-tree-root' },
+      { expand: 'btn-vendas-consol-expand', collapse: 'btn-vendas-consol-collapse', root: 'vendas-consol-tree-root', folds: true }
+    ];
+    map.forEach(({ expand, collapse, root, folds }) => {
+      document.getElementById(expand)?.addEventListener('click', () => setVendasTreeExpanded(root, true, folds));
+      document.getElementById(collapse)?.addEventListener('click', () => setVendasTreeExpanded(root, false, folds));
+    });
   }
 
   async function runShippingQuote(mode) {
@@ -3808,7 +3842,13 @@ ${worksheets}
   function renderClicksStats(data) {
     const el = document.getElementById('clicks-stats');
     if (!el) return;
-    const topEntries = Object.entries(data?.byDestino || {})
+    const byDest = data?.byDestino || {};
+    const marketplaceKeys = ['loja_oficial', 'mercado_livre', 'shopee', 'amazon', 'tiktok_shop'];
+    const marketplaceList = `<ul class="clicks-stats-top clicks-stats-markets">${marketplaceKeys.map((k) =>
+      `<li><span>${escapeHtml(clickDestinoLabel(k))}</span><strong>${Number(byDest[k] || 0)}</strong></li>`
+    ).join('')}</ul>`;
+    const topEntries = Object.entries(byDest)
+      .filter(([k]) => !marketplaceKeys.includes(k))
       .sort((a, b) => b[1] - a[1])
       .slice(0, 6);
     const ultimo = data?.lastClickAt ? formatClickDate(data.lastClickAt) : '—';
@@ -3901,7 +3941,8 @@ ${worksheets}
         <div class="clicks-stats-row"><dt>Último gravado</dt><dd>${escapeHtml(ultimo)}</dd></div>
         <div class="clicks-stats-row"><dt>Mais antigo no log</dt><dd>${escapeHtml(maisAntigo)}</dd></div>
         <div class="clicks-stats-row"><dt>Renova cota</dt><dd>${escapeHtml(String(resetBr))}</dd></div>
-        <div class="clicks-stats-row clicks-stats-row-top"><dt>Mais frequentes</dt><dd>${topList}</dd></div>
+        <div class="clicks-stats-row clicks-stats-row-top"><dt>Loja e marketplaces</dt><dd>${marketplaceList}</dd></div>
+        <div class="clicks-stats-row clicks-stats-row-top"><dt>Outros mais frequentes</dt><dd>${topList}</dd></div>
       </dl>
       <p class="clicks-kv-note">${note}</p>
     </details>`;
