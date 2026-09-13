@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>Admin — Sensor Tattoo Fix</title>
-    <link rel="stylesheet" href="style.css?v=3.29">
+    <link rel="stylesheet" href="style.css?v=3.30">
     <style>
       .clicks-device-badge{display:inline-block;padding:2px 7px;border-radius:999px;font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
       .clicks-device--mobile{background:rgba(76,175,80,.14);color:#81c784}
@@ -976,8 +976,6 @@
                                 <div class="admin-toolbar-main">
                                     <button type="button" id="btn-vendas-loja-refresh" class="btn-secondary"><i class="fas fa-sync-alt"></i> Recarregar</button>
                                     <button type="button" class="btn-secondary" id="btn-vendas-goto-pedidos"><i class="fas fa-list"></i> Ir para Pedidos</button>
-                                                                    <button type="button" id="btn-vendas-loja-expand" class="btn-secondary" title="Abrir todos os níveis da árvore"><i class="fas fa-expand-alt"></i> Expandir tudo</button>
-                                    <button type="button" id="btn-vendas-loja-collapse" class="btn-secondary" title="Fechar todos os níveis da árvore"><i class="fas fa-compress-alt"></i> Colapsar tudo</button>
                                 </div>
                             </div>
 <div id="vendas-loja-stats" class="admin-clicks-stats admin-meta"></div>
@@ -985,7 +983,14 @@
                             
                             
                             <p id="vendas-loja-checked-at" class="admin-meta" hidden></p>
-                            <div id="vendas-loja-tree-root" class="clicks-tree-root">
+                            
+                            <div class="admin-clicks-toolbar admin-vendas-tree-toolbar">
+                                <div class="admin-toolbar-main">
+                                    <button type="button" id="btn-vendas-loja-expand" class="btn-secondary" title="Abrir todos os níveis da árvore"><i class="fas fa-expand-alt"></i> Expandir tudo</button>
+                                    <button type="button" id="btn-vendas-loja-collapse" class="btn-secondary" title="Fechar todos os níveis da árvore"><i class="fas fa-compress-alt"></i> Colapsar tudo</button>
+                                </div>
+                            </div>
+<div id="vendas-loja-tree-root" class="clicks-tree-root">
                                 <p class="admin-meta">Abra esta subaba para carregar as vendas da loja oficial.</p>
                             </div>
                             <p class="admin-meta">Somente pedidos <strong>pagos</strong> (não cancelados). Líquido real = marketplace − custo do kit.</p>
@@ -997,8 +1002,6 @@
                                     <button type="button" id="btn-vendas-ml-refresh" class="btn-secondary"><i class="fas fa-sync-alt"></i> Recarregar</button>
                                     <button type="button" id="btn-vendas-ml-auth" class="btn-secondary"><i class="fas fa-link"></i> Reconectar ML (só se quebrar)</button>
                                     <button type="button" id="btn-vendas-ml-sync" class="btn-primary"><i class="fas fa-cloud-download-alt"></i> Atualizar ML</button>
-                                                                    <button type="button" id="btn-vendas-ml-expand" class="btn-secondary" title="Abrir todos os níveis da árvore"><i class="fas fa-expand-alt"></i> Expandir tudo</button>
-                                    <button type="button" id="btn-vendas-ml-collapse" class="btn-secondary" title="Fechar todos os níveis da árvore"><i class="fas fa-compress-alt"></i> Colapsar tudo</button>
                                 </div>
                             </div>
 <div id="vendas-ml-stats" class="admin-clicks-stats admin-meta"></div>
@@ -1006,7 +1009,14 @@
                             
                             
                             <p id="vendas-ml-checked-at" class="admin-meta" hidden></p>
-                            <div id="vendas-ml-tree-root" class="clicks-tree-root">
+                            
+                            <div class="admin-clicks-toolbar admin-vendas-tree-toolbar">
+                                <div class="admin-toolbar-main">
+                                    <button type="button" id="btn-vendas-ml-expand" class="btn-secondary" title="Abrir todos os níveis da árvore"><i class="fas fa-expand-alt"></i> Expandir tudo</button>
+                                    <button type="button" id="btn-vendas-ml-collapse" class="btn-secondary" title="Fechar todos os níveis da árvore"><i class="fas fa-compress-alt"></i> Colapsar tudo</button>
+                                </div>
+                            </div>
+<div id="vendas-ml-tree-root" class="clicks-tree-root">
                                 <p class="admin-meta">Abra esta subaba para carregar as vendas do Mercado Livre.</p>
                             </div>
                         </div>
@@ -1017,8 +1027,6 @@
                                     <button type="button" id="btn-vendas-shopee-refresh" class="btn-secondary"><i class="fas fa-sync-alt"></i> Recarregar</button>
                                     <button type="button" id="btn-vendas-shopee-auth" class="btn-secondary"><i class="fas fa-link"></i> Autorizar loja</button>
                                     <button type="button" id="btn-vendas-shopee-sync" class="btn-primary"><i class="fas fa-cloud-download-alt"></i> Atualizar Shopee</button>
-                                                                    <button type="button" id="btn-vendas-shopee-expand" class="btn-secondary" title="Abrir todos os níveis da árvore"><i class="fas fa-expand-alt"></i> Expandir tudo</button>
-                                    <button type="button" id="btn-vendas-shopee-collapse" class="btn-secondary" title="Fechar todos os níveis da árvore"><i class="fas fa-compress-alt"></i> Colapsar tudo</button>
                                 </div>
                             </div>
 <div id="vendas-shopee-stats" class="admin-clicks-stats admin-meta"></div>
@@ -1026,7 +1034,14 @@
                             
                             
                             <p id="vendas-shopee-checked-at" class="admin-meta" hidden></p>
-                            <div id="vendas-shopee-tree-root" class="clicks-tree-root">
+                            
+                            <div class="admin-clicks-toolbar admin-vendas-tree-toolbar">
+                                <div class="admin-toolbar-main">
+                                    <button type="button" id="btn-vendas-shopee-expand" class="btn-secondary" title="Abrir todos os níveis da árvore"><i class="fas fa-expand-alt"></i> Expandir tudo</button>
+                                    <button type="button" id="btn-vendas-shopee-collapse" class="btn-secondary" title="Fechar todos os níveis da árvore"><i class="fas fa-compress-alt"></i> Colapsar tudo</button>
+                                </div>
+                            </div>
+<div id="vendas-shopee-tree-root" class="clicks-tree-root">
                                 <p class="admin-meta">Abra esta subaba para carregar as vendas da Shopee.</p>
                             </div>
                             <p class="admin-meta">Redirect URL do app Open Platform: <code>https://api.sensortattoofix.com.br/admin/shopee/oauth/callback</code></p>
@@ -1036,8 +1051,6 @@
                                 <div class="admin-toolbar-main">
                                     <button type="button" id="btn-vendas-amz-refresh" class="btn-secondary"><i class="fas fa-sync-alt"></i> Recarregar</button>
                                     <button type="button" id="btn-vendas-amz-sync" class="btn-primary"><i class="fas fa-cloud-download-alt"></i> Atualizar Amazon</button>
-                                                                    <button type="button" id="btn-vendas-amz-expand" class="btn-secondary" title="Abrir todos os níveis da árvore"><i class="fas fa-expand-alt"></i> Expandir tudo</button>
-                                    <button type="button" id="btn-vendas-amz-collapse" class="btn-secondary" title="Fechar todos os níveis da árvore"><i class="fas fa-compress-alt"></i> Colapsar tudo</button>
                                 </div>
                             </div>
 <div id="vendas-amz-stats" class="admin-clicks-stats admin-meta"></div>
@@ -1045,7 +1058,14 @@
                             
                             
                             <p id="vendas-amz-checked-at" class="admin-meta" hidden></p>
-                            <div id="vendas-amz-tree-root" class="clicks-tree-root">
+                            
+                            <div class="admin-clicks-toolbar admin-vendas-tree-toolbar">
+                                <div class="admin-toolbar-main">
+                                    <button type="button" id="btn-vendas-amz-expand" class="btn-secondary" title="Abrir todos os níveis da árvore"><i class="fas fa-expand-alt"></i> Expandir tudo</button>
+                                    <button type="button" id="btn-vendas-amz-collapse" class="btn-secondary" title="Fechar todos os níveis da árvore"><i class="fas fa-compress-alt"></i> Colapsar tudo</button>
+                                </div>
+                            </div>
+<div id="vendas-amz-tree-root" class="clicks-tree-root">
                                 <p class="admin-meta">Abra esta subaba para carregar as vendas da Amazon.</p>
                             </div>
                             <p class="admin-meta">Conta fechada: <strong>Bruto − Comissão − Frete − Estornos − Outras = marketplace − custo do kit = líquido real</strong>.</p>
@@ -1054,9 +1074,6 @@
 <div class="admin-clicks-toolbar admin-toolbar-split">
                                 <div class="admin-toolbar-main">
                                     <button type="button" id="btn-vendas-consol-refresh" class="btn-secondary"><i class="fas fa-sync-alt"></i> Recarregar</button>
-                                    <button type="button" id="btn-vendas-consol-export" class="btn-secondary"><i class="fas fa-file-excel"></i> Exportar Excel</button>
-                                                                    <button type="button" id="btn-vendas-consol-expand" class="btn-secondary" title="Abrir todos os níveis da árvore"><i class="fas fa-expand-alt"></i> Expandir tudo</button>
-                                    <button type="button" id="btn-vendas-consol-collapse" class="btn-secondary" title="Fechar todos os níveis da árvore"><i class="fas fa-compress-alt"></i> Colapsar tudo</button>
                                 </div>
                             </div>
 <div id="vendas-consol-periods" class="vendas-consol-periods"></div>
@@ -1102,7 +1119,15 @@
                                 </div>
                             </details>
                             <p id="vendas-consol-checked-at" class="admin-meta" hidden></p>
-                            <div id="vendas-consol-tree-root" class="clicks-tree-root">
+                            
+                            <div class="admin-clicks-toolbar admin-vendas-tree-toolbar">
+                                <div class="admin-toolbar-main">
+                                    <button type="button" id="btn-vendas-consol-expand" class="btn-secondary" title="Abrir todos os níveis da árvore"><i class="fas fa-expand-alt"></i> Expandir tudo</button>
+                                    <button type="button" id="btn-vendas-consol-collapse" class="btn-secondary" title="Fechar todos os níveis da árvore"><i class="fas fa-compress-alt"></i> Colapsar tudo</button>
+<button type="button" id="btn-vendas-consol-export" class="btn-secondary"><i class="fas fa-file-excel"></i> Exportar Excel</button>
+                                </div>
+                            </div>
+<div id="vendas-consol-tree-root" class="clicks-tree-root">
                                 <p class="admin-meta">Abra esta subaba para carregar o consolidado.</p>
                             </div>
                         </div>
@@ -1419,6 +1444,6 @@
     })();
     </script>
     <script type="module" src="js/sales-money.mjs?v=10"></script>
-    <script defer src="js/admin.js?v=238"></script>
+    <script defer src="js/admin.js?v=239"></script>
 </body>
 </html>

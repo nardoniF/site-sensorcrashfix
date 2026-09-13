@@ -7430,3 +7430,7 @@ a.conta-forgot-link { display: inline-block; }
   gap: 12px;
   padding: 2px 0;
 }
+
+.admin-vendas-tree-toolbar {
+  margin: 10px 0 8px;
+}
