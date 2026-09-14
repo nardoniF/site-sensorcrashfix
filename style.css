@@ -3094,6 +3094,11 @@ a.stf-tiktok-card:hover {
     align-items: center;
     gap: 8px;
 }
+/* display:inline-flex acima anula o atributo HTML hidden — forçar sumir */
+.btn-secondary[hidden],
+.admin-tab[hidden] {
+    display: none !important;
+}
 .pix-panel { text-align: center; padding: 10px 0; }
 .pix-panel.mode-card .checkout-pix-ui,
 .pix-panel.mode-paypal .checkout-pix-ui { display: none !important; }
