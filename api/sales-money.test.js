@@ -166,6 +166,19 @@ test('manual product acerto stores productAdjust and net total after PayPal fee'
   assert.equal(storeOrderListedGross(order), 439.76);
 });
 
+test('intl foreign charge: listed gross is chargeAmount/fx not livro total', () => {
+  const order = {
+    valorProduto: 72.9,
+    frete: 27.55,
+    total: 100.45,
+    chargeCurrency: 'EUR',
+    chargeAmount: 26.76,
+    chargeFxRate: 0.16879
+  };
+  assert.equal(storeOrderListedGross(order), 158.54);
+  assert.equal(inferCustomerPaidTotal(order), 158.54);
+});
+
 
 test('DANPROS residual 0,05 with false mlFlex shows 0 frete (not list-estorno)', () => {
   const sale = {
