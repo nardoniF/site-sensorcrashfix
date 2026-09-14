@@ -3206,12 +3206,14 @@ ${worksheets}
   const CLICKS_SNAPSHOT_KEY = 'stf_admin_clicks_snapshot_v1';
   const BALANCES_SNAPSHOT_KEY = 'stf_admin_balances_snapshot_v2';
   const ADMIN_TAB_IDS = new Set(['vendas', 'pedidos', 'cliques', 'saldos', 'api', 'clientes', 'pesquisa', 'comunidade', 'documentacao']);
+  /** Aba Saldos oculta no menu (código/API intactos — fácil reativar). */
+  const ADMIN_HIDDEN_TABS = new Set(['saldos']);
   let lastBalancesSnapshot = null;
 
   function resolveDefaultAdminTab() {
     try {
       const saved = localStorage.getItem('stf_admin_tab');
-      if (saved && ADMIN_TAB_IDS.has(saved)) return saved;
+      if (saved && ADMIN_TAB_IDS.has(saved) && !ADMIN_HIDDEN_TABS.has(saved)) return saved;
     } catch (_) { /* ignore */ }
     return 'pedidos';
   }
