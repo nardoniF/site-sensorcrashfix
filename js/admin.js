@@ -6112,7 +6112,7 @@ ${worksheets}
           <label class="full">Modelos compatíveis <small class="admin-field-hint">um por linha — mesmos nomes do select do checkout</small>
             <textarea data-field="compatibleWatchModels" rows="4" placeholder="Apple Watch Series 9 (45mm)">${escTextarea((p.compatibleWatchModels || []).join('\n'))}</textarea>
           </label>
-          <label>Tipo da película (PT) <small class="admin-field-hint">ex.: cerâmica, membrana flexível — traduções ficam no cadastro, sem editar aqui</small>
+          <label>Tipo da película (PT) <small class="admin-field-hint">ex.: cerâmica, membrana flexível — só PT aqui; outros idiomas já gravados são preservados</small>
             <input type="text" data-field="filmType" value="${escAttr(p.filmType || '')}" placeholder="cerâmica">
           </label>
           <p class="admin-meta admin-aggregated-compat-hint"><i class="fas fa-link"></i> <strong>Regra do upsell:</strong> o produto só aparece se o modelo escolhido pelo cliente estiver nesta lista (1 agregado → vários modelos).</p>` : '';
