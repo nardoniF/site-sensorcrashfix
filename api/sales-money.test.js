@@ -7,6 +7,7 @@ import {
   isMlFlexSale,
   flexCompanyOwed,
   aggregateFlexOwedByMonth,
+  flexOwedRecentMonths,
   kitComponentUnitCost,
   kitUnitCostFromComponents,
   applyOrderFreteAccounting,
@@ -99,6 +100,29 @@ test('aggregateFlexOwedByMonth sorts months ascending Jul → Ago → Set', () =
   assert.deepEqual(rows.map((r) => r.count), [4, 9, 2]);
   assert.equal(rows[0].owed, 47.6);
   assert.equal(rows[1].owed, 107.1);
+});
+
+test('flexOwedRecentMonths keeps last 3 calendar months ascending and fills zeros', () => {
+  const rows = flexOwedRecentMonths([
+    {
+      channel: 'ml',
+      mlFlex: true,
+      mlFlexListCost: 11.9,
+      mlEstorno: 0,
+      _ts: Date.parse('2026-08-12T12:00:00-03:00')
+    },
+    {
+      channel: 'ml',
+      mlFlex: true,
+      mlFlexListCost: 11.9,
+      mlEstorno: 0,
+      _ts: Date.parse('2026-09-05T12:00:00-03:00')
+    }
+  ], config, { now: Date.parse('2026-09-15T12:00:00-03:00'), months: 3 });
+  assert.deepEqual(rows.map((r) => r.monthNum), ['07', '08', '09']);
+  assert.equal(rows[0].count, 0);
+  assert.equal(rows[1].count, 1);
+  assert.equal(rows[2].count, 1);
 });
 
 test('Flex with residual 0,05 and source flex still counts as Flex frete', () => {
