@@ -6109,69 +6109,15 @@ ${worksheets}
             <input type="number" data-field="sensorMm" step="0.5" min="0" value="${p.sensorMm != null ? p.sensorMm : ''}" placeholder="ex.: 25">
           </label>` : '';
     const aggregatedFields = isAggregated ? `
-          <label class="full">Nome EN <small class="admin-field-hint">título na loja intl / upsell</small>
-            <input type="text" data-field="nameEn" value="${escAttr(p.nameEn || '')}" placeholder="Screen protector — Amazfit Bip 2">
-          </label>
-          <label class="full">Nome DE
-            <input type="text" data-field="nameDe" value="${escAttr(p.nameDe || '')}" placeholder="Schutzfolie — Amazfit Bip 2">
-          </label>
-          <label class="full">Nome ES
-            <input type="text" data-field="nameEs" value="${escAttr(p.nameEs || '')}" placeholder="Protector de pantalla — Amazfit Bip 2">
-          </label>
-          <label class="full">Nome PL
-            <input type="text" data-field="namePl" value="${escAttr(p.namePl || '')}" placeholder="Folia ochronna — Amazfit Bip 2">
-          </label>
-          <label class="full">Descrição EN<textarea data-field="descriptionEn" rows="2">${escTextarea(p.descriptionEn || '')}</textarea></label>
-          <label class="full">Descrição DE<textarea data-field="descriptionDe" rows="2">${escTextarea(p.descriptionDe || '')}</textarea></label>
-          <label class="full">Descrição ES<textarea data-field="descriptionEs" rows="2">${escTextarea(p.descriptionEs || '')}</textarea></label>
-          <label class="full">Descrição PL<textarea data-field="descriptionPl" rows="2">${escTextarea(p.descriptionPl || '')}</textarea></label>
           <label class="full">Modelos compatíveis <small class="admin-field-hint">um por linha — mesmos nomes do select do checkout</small>
             <textarea data-field="compatibleWatchModels" rows="4" placeholder="Apple Watch Series 9 (45mm)">${escTextarea((p.compatibleWatchModels || []).join('\n'))}</textarea>
           </label>
-          <label>Tipo da película (PT) <small class="admin-field-hint">ex.: cerâmica, membrana flexível</small>
+          <label>Tipo da película (PT) <small class="admin-field-hint">ex.: cerâmica, membrana flexível — traduções ficam no cadastro, sem editar aqui</small>
             <input type="text" data-field="filmType" value="${escAttr(p.filmType || '')}" placeholder="cerâmica">
-          </label>
-          <label>Tipo da película (EN) <small class="admin-field-hint">ex.: ceramic, flexible membrane</small>
-            <input type="text" data-field="filmTypeEn" value="${escAttr(p.filmTypeEn || '')}" placeholder="ceramic">
-          </label>
-          <label>Tipo da película (DE)
-            <input type="text" data-field="filmTypeDe" value="${escAttr(p.filmTypeDe || '')}" placeholder="flexible Membran">
-          </label>
-          <label>Tipo da película (ES)
-            <input type="text" data-field="filmTypeEs" value="${escAttr(p.filmTypeEs || '')}" placeholder="membrana flexible">
-          </label>
-          <label>Tipo da película (PL)
-            <input type="text" data-field="filmTypePl" value="${escAttr(p.filmTypePl || '')}" placeholder="elastyczna membrana">
-          </label>
-          <label>Tipo da película (SL)
-            <input type="text" data-field="filmTypeSl" value="${escAttr(p.filmTypeSl || '')}" placeholder="prožna membrana">
           </label>
           <p class="admin-meta admin-aggregated-compat-hint"><i class="fas fa-link"></i> <strong>Regra do upsell:</strong> o produto só aparece se o modelo escolhido pelo cliente estiver nesta lista (1 agregado → vários modelos).</p>` : '';
     const i18nFields = !isAggregated ? `
-          <label class="full">Nome EN <small class="admin-field-hint">título na loja .com / EN</small>
-            <input type="text" data-field="nameEn" value="${escAttr(p.nameEn || '')}" placeholder="SensorTattooFix Optical Lens">
-          </label>
-          <label class="full">Nome IT
-            <input type="text" data-field="nameIt" value="${escAttr(p.nameIt || '')}" placeholder="Lente ottica SensorTattooFix">
-          </label>
-          <label class="full">Nome DE
-            <input type="text" data-field="nameDe" value="${escAttr(p.nameDe || '')}" placeholder="SensorTattooFix Optische Linse">
-          </label>
-          <label class="full">Nome ES
-            <input type="text" data-field="nameEs" value="${escAttr(p.nameEs || '')}" placeholder="Lente óptica SensorTattooFix">
-          </label>
-          <label class="full">Nome PL
-            <input type="text" data-field="namePl" value="${escAttr(p.namePl || '')}" placeholder="Soczewka optyczna SensorTattooFix">
-          </label>
-          <label class="full">Nome SL
-            <input type="text" data-field="nameSl" value="${escAttr(p.nameSl || '')}" placeholder="Optična leča SensorTattooFix">
-          </label>
-          <label class="full">Descrição EN<textarea data-field="descriptionEn" rows="2">${escTextarea(p.descriptionEn || '')}</textarea></label>
-          <label class="full">Descrição IT<textarea data-field="descriptionIt" rows="2">${escTextarea(p.descriptionIt || '')}</textarea></label>
-          <label class="full">Descrição DE<textarea data-field="descriptionDe" rows="2">${escTextarea(p.descriptionDe || '')}</textarea></label>
-          <label class="full">Descrição ES<textarea data-field="descriptionEs" rows="2">${escTextarea(p.descriptionEs || '')}</textarea></label>
-          <label class="full">Descrição PL<textarea data-field="descriptionPl" rows="2">${escTextarea(p.descriptionPl || '')}</textarea></label>
-          <label class="full">Descrição SL<textarea data-field="descriptionSl" rows="2">${escTextarea(p.descriptionSl || '')}</textarea></label>
+          <p class="admin-meta admin-product-i18n-hint"><i class="fas fa-language"></i> Nome e descrição em outras línguas são gerados automaticamente a partir do PT ao salvar.</p>
           <label class="full">Álbum de fotos <small class="admin-field-hint">uma URL por linha — ordem do carrossel na loja</small>
             <textarea data-field="images" rows="5" placeholder="/images/lens-gallery/01-….png">${escTextarea((Array.isArray(p.images) ? p.images : []).join('\n'))}</textarea>
           </label>` : '';
@@ -6179,7 +6125,7 @@ ${worksheets}
       <div class="admin-product-row${isAggregated ? ' admin-product-row--aggregated' : ' admin-product-row--main'}" data-product-index="${i}" data-aggregated="${isAggregated ? '1' : '0'}" data-market="${escAttr(market)}">
         <h4>${title}</h4>
         <div class="form-grid">
-          <label class="full">Nome (PT / cadastro)<input type="text" data-field="name" value="${escAttr(p.name)}" required></label>
+          <label class="full">Nome (PT)<input type="text" data-field="name" value="${escAttr(p.name)}" required></label>
           <label class="full">Descrição (PT)<textarea data-field="description" rows="2">${escTextarea(p.description)}</textarea></label>
           ${i18nFields}
           ${aggregatedFields}
@@ -6341,30 +6287,7 @@ ${worksheets}
         product.deviceType = /smartband/i.test(hay) ? 'smartband' : 'smartwatch';
       }
       if (!isAggregated) {
-        const nameEn = val('nameEn');
-        const nameIt = val('nameIt');
-        const nameDe = val('nameDe');
-        const nameEs = val('nameEs');
-        const namePl = val('namePl');
-        const nameSl = val('nameSl');
-        const descriptionEn = val('descriptionEn');
-        const descriptionIt = val('descriptionIt');
-        const descriptionDe = val('descriptionDe');
-        const descriptionEs = val('descriptionEs');
-        const descriptionPl = val('descriptionPl');
-        const descriptionSl = val('descriptionSl');
-        if (nameEn) product.nameEn = nameEn; else delete product.nameEn;
-        if (nameIt) product.nameIt = nameIt; else delete product.nameIt;
-        if (nameDe) product.nameDe = nameDe; else delete product.nameDe;
-        if (nameEs) product.nameEs = nameEs; else delete product.nameEs;
-        if (namePl) product.namePl = namePl; else delete product.namePl;
-        if (nameSl) product.nameSl = nameSl; else delete product.nameSl;
-        if (descriptionEn) product.descriptionEn = descriptionEn; else delete product.descriptionEn;
-        if (descriptionIt) product.descriptionIt = descriptionIt; else delete product.descriptionIt;
-        if (descriptionDe) product.descriptionDe = descriptionDe; else delete product.descriptionDe;
-        if (descriptionEs) product.descriptionEs = descriptionEs; else delete product.descriptionEs;
-        if (descriptionPl) product.descriptionPl = descriptionPl; else delete product.descriptionPl;
-        if (descriptionSl) product.descriptionSl = descriptionSl; else delete product.descriptionSl;
+        // Nome/descrição i18n: não editar no Admin — preserva o que já existe; Worker auto-traduz a partir do PT.
         if (market === 'INT') {
           const currencies = collectIntlCurrencies();
           const knownFields = new Set(currencies.map((c) => intlPriceFieldName(c.code)).filter(Boolean));
@@ -6417,40 +6340,10 @@ ${worksheets}
           if (lines.length) product.compatibleWatchModels = lines;
           else delete product.compatibleWatchModels;
         }
-        const nameEn = val('nameEn');
-        const nameDe = val('nameDe');
-        const nameEs = val('nameEs');
-        const namePl = val('namePl');
-        const descriptionEn = val('descriptionEn');
-        const descriptionDe = val('descriptionDe');
-        const descriptionEs = val('descriptionEs');
-        const descriptionPl = val('descriptionPl');
-        if (nameEn) product.nameEn = nameEn; else delete product.nameEn;
-        if (nameDe) product.nameDe = nameDe; else delete product.nameDe;
-        if (nameEs) product.nameEs = nameEs; else delete product.nameEs;
-        if (namePl) product.namePl = namePl; else delete product.namePl;
-        if (descriptionEn) product.descriptionEn = descriptionEn; else delete product.descriptionEn;
-        if (descriptionDe) product.descriptionDe = descriptionDe; else delete product.descriptionDe;
-        if (descriptionEs) product.descriptionEs = descriptionEs; else delete product.descriptionEs;
-        if (descriptionPl) product.descriptionPl = descriptionPl; else delete product.descriptionPl;
+        // filmType* i18n: só PT no Admin — preserva EN/DE/ES/PL/SL já gravados (…prev).
         const filmType = val('filmType');
-        const filmTypeEn = val('filmTypeEn');
-        const filmTypeDe = val('filmTypeDe');
-        const filmTypeEs = val('filmTypeEs');
-        const filmTypePl = val('filmTypePl');
-        const filmTypeSl = val('filmTypeSl');
         if (filmType) product.filmType = filmType;
         else delete product.filmType;
-        if (filmTypeEn) product.filmTypeEn = filmTypeEn;
-        else delete product.filmTypeEn;
-        if (filmTypeDe) product.filmTypeDe = filmTypeDe;
-        else delete product.filmTypeDe;
-        if (filmTypeEs) product.filmTypeEs = filmTypeEs;
-        else delete product.filmTypeEs;
-        if (filmTypePl) product.filmTypePl = filmTypePl;
-        else delete product.filmTypePl;
-        if (filmTypeSl) product.filmTypeSl = filmTypeSl;
-        else delete product.filmTypeSl;
       }
       return product;
     });
