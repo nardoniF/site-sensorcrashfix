@@ -3096,6 +3096,9 @@ a.stf-tiktok-card:hover {
 }
 /* display:inline-flex acima anula o atributo HTML hidden — forçar sumir */
 .btn-secondary[hidden],
+.btn-warning-outline[hidden],
+.btn-danger-outline[hidden],
+.admin-toolbar-risk[hidden],
 .admin-tab[hidden] {
     display: none !important;
 }
