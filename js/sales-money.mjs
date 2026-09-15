@@ -365,6 +365,40 @@ export function aggregateFlexOwedByMonth(sales, config = null) {
     .sort((a, b) => String(a.key).localeCompare(String(b.key)));
 }
 
+/** Últimos N meses do calendário BR (preenche zerado se não houver Flex). Ordem crescente. */
+export function flexOwedRecentMonths(sales, config = null, opts = {}) {
+  const count = Math.max(1, Math.min(12, Number(opts.months) || 3));
+  const nowParts = brDateParts(opts.now || Date.now());
+  let y = Number(nowParts.year);
+  let m = Number(nowParts.monthNum);
+  const keys = [];
+  for (let i = 0; i < count; i++) {
+    keys.push(`${y}-${String(m).padStart(2, '0')}`);
+    m -= 1;
+    if (m < 1) {
+      m = 12;
+      y -= 1;
+    }
+  }
+  keys.reverse();
+  const byKey = new Map(aggregateFlexOwedByMonth(sales, config).map((row) => [row.key, row]));
+  return keys.map((key) => {
+    if (byKey.has(key)) return byKey.get(key);
+    const [year, monthNum] = key.split('-');
+    return {
+      key,
+      year,
+      monthNum,
+      name: MONTH_LABELS[monthNum] || monthNum,
+      count: 0,
+      owed: 0,
+      bonus: 0,
+      net: 0,
+      days: []
+    };
+  });
+}
+
 const exportsForBrowser = {
   roundMoney,
   brDateParts,
@@ -385,6 +419,7 @@ const exportsForBrowser = {
   isMlFlexSale,
   flexCompanyOwed,
   aggregateFlexOwedByMonth,
+  flexOwedRecentMonths,
   orderPaypalFee,
   inferCustomerPaidTotal,
   orderNeedsFreteProductRepair,

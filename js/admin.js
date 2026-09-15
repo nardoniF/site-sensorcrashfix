@@ -1806,13 +1806,16 @@
   }
 
   function renderConsolidadoFlexOwed(sales) {
-    const months = aggregateFlexOwedByMonth(sales);
+    const recentFn = sm().flexOwedRecentMonths;
+    const months = typeof recentFn === 'function'
+      ? recentFn(sales, currentConfig, { months: 3 })
+      : aggregateFlexOwedByMonth(sales).slice(-3);
     const now = brDateParts(Date.now());
     const currentKey = `${now.year}-${now.monthNum}`;
     const thisMonth = months.find((m) => m.key === currentKey);
     const hint = thisMonth
       ? `${thisMonth.name} · ${thisMonth.count} · ${formatSalesBRL(thisMonth.owed)}`
-      : (months.length ? `${months[0].name} · ${months[0].count} · ${formatSalesBRL(months[0].owed)}` : '—');
+      : (months.length ? `${months[months.length - 1].name} · ${months[months.length - 1].count} · ${formatSalesBRL(months[months.length - 1].owed)}` : '—');
     const body = months.length
       ? `<div class="vendas-consol-mtd-grid">${months.map((m) => {
         const isCurrent = m.key === currentKey ? ' is-current' : '';
@@ -1841,8 +1844,12 @@
   }
 
   function buildFlexOwedExportRows(sales) {
+    const recentFn = sm().flexOwedRecentMonths;
+    const months = typeof recentFn === 'function'
+      ? recentFn(sales, currentConfig, { months: 3 })
+      : aggregateFlexOwedByMonth(sales).slice(-3);
     const rows = [['Mês', 'Envios Flex', 'A pagar (empresa)', 'Bônus ML', 'Custo líquido', 'Dias dos pedidos']];
-    aggregateFlexOwedByMonth(sales).forEach((m) => {
+    months.forEach((m) => {
       rows.push([
         `${m.name} ${m.year}`,
         m.count,
