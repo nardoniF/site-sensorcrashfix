@@ -36,11 +36,11 @@ function loadSiteWithPageLang(location) {
 }
 
 test('STF_PAGE_LANG: detecta es/de/pl/sl no path .com.br', () => {
-  const es = loadPageLang({ hostname: 'www.sensortattoofix.com.br', pathname: '/es/loja.html' });
-  const de = loadPageLang({ hostname: 'www.sensortattoofix.com.br', pathname: '/de/comprar.html' });
-  const pl = loadPageLang({ hostname: 'www.sensortattoofix.com.br', pathname: '/pl/' });
-  const sl = loadPageLang({ hostname: 'www.sensortattoofix.com.br', pathname: '/sl/loja.html' });
-  const pt = loadPageLang({ hostname: 'www.sensortattoofix.com.br', pathname: '/loja.html' });
+  const es = loadPageLang({ hostname: 'www.sensorcrashfix.com.br', pathname: '/es/loja.html' });
+  const de = loadPageLang({ hostname: 'www.sensorcrashfix.com.br', pathname: '/de/comprar.html' });
+  const pl = loadPageLang({ hostname: 'www.sensorcrashfix.com.br', pathname: '/pl/' });
+  const sl = loadPageLang({ hostname: 'www.sensorcrashfix.com.br', pathname: '/sl/loja.html' });
+  const pt = loadPageLang({ hostname: 'www.sensorcrashfix.com.br', pathname: '/loja.html' });
   assert.equal(es.get(), 'es');
   assert.equal(de.get(), 'de');
   assert.equal(pl.get(), 'pl');
@@ -49,18 +49,18 @@ test('STF_PAGE_LANG: detecta es/de/pl/sl no path .com.br', () => {
 });
 
 test('STF_PAGE_LANG: catalogMarket INT para /es|/de|/pl|/sl no .com.br', () => {
-  assert.equal(loadPageLang({ hostname: 'www.sensortattoofix.com.br', pathname: '/es/loja.html' }).catalogMarket(), 'INT');
-  assert.equal(loadPageLang({ hostname: 'www.sensortattoofix.com.br', pathname: '/de/loja.html' }).catalogMarket(), 'INT');
-  assert.equal(loadPageLang({ hostname: 'www.sensortattoofix.com.br', pathname: '/pl/loja.html' }).catalogMarket(), 'INT');
-  assert.equal(loadPageLang({ hostname: 'www.sensortattoofix.com.br', pathname: '/sl/loja.html' }).catalogMarket(), 'INT');
-  assert.equal(loadPageLang({ hostname: 'www.sensortattoofix.com.br', pathname: '/loja.html' }).catalogMarket(), 'BR');
+  assert.equal(loadPageLang({ hostname: 'www.sensorcrashfix.com.br', pathname: '/es/loja.html' }).catalogMarket(), 'INT');
+  assert.equal(loadPageLang({ hostname: 'www.sensorcrashfix.com.br', pathname: '/de/loja.html' }).catalogMarket(), 'INT');
+  assert.equal(loadPageLang({ hostname: 'www.sensorcrashfix.com.br', pathname: '/pl/loja.html' }).catalogMarket(), 'INT');
+  assert.equal(loadPageLang({ hostname: 'www.sensorcrashfix.com.br', pathname: '/sl/loja.html' }).catalogMarket(), 'INT');
+  assert.equal(loadPageLang({ hostname: 'www.sensorcrashfix.com.br', pathname: '/loja.html' }).catalogMarket(), 'BR');
 });
 
 test('STF_SITE.catalogMarket alinhado com STF_PAGE_LANG', () => {
   const cases = [
-    { hostname: 'www.sensortattoofix.com', pathname: '/es/loja.html', want: 'INT' },
-    { hostname: 'www.sensortattoofix.com.br', pathname: '/en/loja.html', want: 'INT' },
-    { hostname: 'www.sensortattoofix.com.br', pathname: '/comprar.html', want: 'BR' }
+    { hostname: 'www.sensorcrashfix.com', pathname: '/es/loja.html', want: 'INT' },
+    { hostname: 'www.sensorcrashfix.com.br', pathname: '/en/loja.html', want: 'INT' },
+    { hostname: 'www.sensorcrashfix.com.br', pathname: '/comprar.html', want: 'BR' }
   ];
   for (const c of cases) {
     const site = loadSiteWithPageLang(c);
@@ -180,17 +180,17 @@ function loadPelicula(location) {
 
 test('STF_PELICULA: /es/ usa nameEn em vez de name PT', () => {
   const p = loadPelicula({
-    hostname: 'www.sensortattoofix.com.br',
+    hostname: 'www.sensorcrashfix.com.br',
     pathname: '/es/loja.html',
     i18n: { isEs: () => true, isIt: () => false, isEn: () => false, isDe: () => false, isPl: () => false, isLocalized: () => true }
   });
   const product = {
-    name: 'Kit Sensor Tattoo Fix',
-    nameEn: 'Sensor Tattoo Fix Lens',
+    name: 'Kit Sensor Crash Fix',
+    nameEn: 'Sensor Crash Fix Lens',
     description: 'Descrição em português',
     descriptionEn: 'English product description'
   };
-  assert.equal(p.productLabel(product), 'Sensor Tattoo Fix Lens');
+  assert.equal(p.productLabel(product), 'Sensor Crash Fix Lens');
   assert.equal(p.productDescription(product), 'English product description');
 });
 
@@ -209,13 +209,13 @@ test('FAQ intl faq-13 aponta para carta, não manual BR', () => {
   for (const lang of ['de', 'es', 'pl']) {
     const ans = l10n[lang]?.faq?.['faq-13']?.answer || '';
     assert.match(ans, /carta-agradecimento-intl\.html\?lang=/, `${lang} faq-13`);
-    assert.doesNotMatch(ans, /manual-instalacao-sensor-tattoo-fix/, `${lang} faq-13 sem manual BR`);
+    assert.doesNotMatch(ans, /manual-instalacao-sensor-cracks-fix/, `${lang} faq-13 sem manual BR`);
   }
 });
 
 test('STF_PELICULA: /de/ e /pl/ usam nameDe/namePl com fallback nameEn', () => {
   const de = loadPelicula({
-    hostname: 'www.sensortattoofix.com.br',
+    hostname: 'www.sensorcrashfix.com.br',
     pathname: '/de/loja.html',
     i18n: {
       isDe: () => true,
@@ -236,7 +236,7 @@ test('STF_PELICULA: /de/ e /pl/ usam nameDe/namePl com fallback nameEn', () => {
   );
 
   const pl = loadPelicula({
-    hostname: 'www.sensortattoofix.com.br',
+    hostname: 'www.sensorcrashfix.com.br',
     pathname: '/pl/loja.html',
     i18n: {
       isPl: () => true,
@@ -272,7 +272,7 @@ test('store-config: agregados têm nameDe (película exemplo)', () => {
 });
 
 test('shell DE/ES/PL/SL sem snippets EN estáticos (loja/comprar/conta)', () => {
-  const EN_SNIPPETS = ['Official Store', 'Peace between ink and silicon', 'Your cart', 'Loading products', 'Community (beta)'];
+  const EN_SNIPPETS = ['Official Store', 'Protection again after a cracked sensor', 'Your cart', 'Loading products', 'Community (beta)'];
   const pages = ['loja.html', 'comprar.html', 'minha-conta.html', 'comunidade.html', 'onde-comprar.html'];
   for (const lang of LANGS) {
     for (const page of pages) {
@@ -312,16 +312,16 @@ test('hreflang: homes intl canônicas no .com; PT no .com.br', () => {
     const html = fs.readFileSync(path.join(root, file), 'utf8');
     assert.match(html, /hreflang="sl"/, file);
     assert.match(html, /hreflang="de"/, file);
-    assert.match(html, /hreflang="de" href="https:\/\/www\.sensortattoofix\.com\/de\/"/, file);
-    assert.doesNotMatch(html, /hreflang="de" href="https:\/\/www\.sensortattoofix\.com\.br\/de\/"/, file);
+    assert.match(html, /hreflang="de" href="https:\/\/www\.sensorcrashfix\.com\/de\/"/, file);
+    assert.doesNotMatch(html, /hreflang="de" href="https:\/\/www\.sensorcrashfix\.com\.br\/de\/"/, file);
     for (const re of broken) {
       assert.doesNotMatch(html, re, `${file} URL quebrada ${re}`);
     }
   }
   const de = fs.readFileSync(path.join(root, 'de/index.html'), 'utf8');
-  assert.match(de, /rel="canonical" href="https:\/\/www\.sensortattoofix\.com\/de\/"/);
+  assert.match(de, /rel="canonical" href="https:\/\/www\.sensorcrashfix\.com\/de\/"/);
   const pt = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-  assert.match(pt, /rel="canonical" href="https:\/\/www\.sensortattoofix\.com\.br\/"/);
+  assert.match(pt, /rel="canonical" href="https:\/\/www\.sensorcrashfix\.com\.br\/"/);
 });
 
 test('sitemap.xml: só PT no .com.br; sitemap-com.xml intl no .com', () => {
@@ -332,16 +332,16 @@ test('sitemap.xml: só PT no .com.br; sitemap-com.xml intl no .com', () => {
   assert.equal(brLocs.length, 4);
   assert.equal(comLocs.length, 24);
   for (const loc of brLocs) {
-    assert.match(loc, /^https:\/\/www\.sensortattoofix\.com\.br\//, `loc .com.br: ${loc}`);
+    assert.match(loc, /^https:\/\/www\.sensorcrashfix\.com\.br\//, `loc .com.br: ${loc}`);
     assert.doesNotMatch(loc, /\/(de|es|pl|sl|it)\//, `PT sitemap sem intl: ${loc}`);
   }
   for (const loc of comLocs) {
-    assert.match(loc, /^https:\/\/www\.sensortattoofix\.com\//, `loc .com: ${loc}`);
-    assert.doesNotMatch(loc, /sensortattoofix\.com\.br/, `loc cruzado em sitemap-com.xml: ${loc}`);
+    assert.match(loc, /^https:\/\/www\.sensorcrashfix\.com\//, `loc .com: ${loc}`);
+    assert.doesNotMatch(loc, /sensorcrashfix\.com\.br/, `loc cruzado em sitemap-com.xml: ${loc}`);
   }
-  assert.match(brXml, /hreflang="sl" href="https:\/\/www\.sensortattoofix\.com\/sl\//);
-  assert.match(comXml, /hreflang="de" href="https:\/\/www\.sensortattoofix\.com\/de\//);
-  assert.match(comXml, /<loc>https:\/\/www\.sensortattoofix\.com\/es\/<\/loc>/);
+  assert.match(brXml, /hreflang="sl" href="https:\/\/www\.sensorcrashfix\.com\/sl\//);
+  assert.match(comXml, /hreflang="de" href="https:\/\/www\.sensorcrashfix\.com\/de\//);
+  assert.match(comXml, /<loc>https:\/\/www\.sensorcrashfix\.com\/es\/<\/loc>/);
 });
 
 test('worker: funções de e-mail intl para de/es/pl/sl', () => {
@@ -359,11 +359,11 @@ test('worker: funções de e-mail intl para de/es/pl/sl', () => {
 });
 
 test('proxy .com: <base href> por idioma (DE/ES/PL/SL não herdam a home EN)', () => {
-  const src = fs.readFileSync(path.join(root, 'cloudflare/stf-com-proxy.js'), 'utf8');
+  const src = fs.readFileSync(path.join(root, 'cloudflare/scf-com-proxy.js'), 'utf8');
   assert.match(src, /function comBaseHref/);
   const fn = src.match(/function comBaseHref\(originPath\) \{([\s\S]*?)\n\}/);
   assert.ok(fn, 'comBaseHref body');
-  const COM_ORIGIN = 'https://www.sensortattoofix.com';
+  const COM_ORIGIN = 'https://www.sensorcrashfix.com';
   const INTL_LANGS = ['it', 'de', 'es', 'pl', 'sl'];
   function comBaseHref(originPath) {
     for (const lang of INTL_LANGS) {
@@ -373,12 +373,12 @@ test('proxy .com: <base href> por idioma (DE/ES/PL/SL não herdam a home EN)', (
     }
     return `${COM_ORIGIN}/`;
   }
-  assert.equal(comBaseHref('/de/index.html'), 'https://www.sensortattoofix.com/de/');
-  assert.equal(comBaseHref('/es/comprar.html'), 'https://www.sensortattoofix.com/es/');
-  assert.equal(comBaseHref('/pl/'), 'https://www.sensortattoofix.com/pl/');
-  assert.equal(comBaseHref('/sl/comunidade.html'), 'https://www.sensortattoofix.com/sl/');
-  assert.equal(comBaseHref('/it/index.html'), 'https://www.sensortattoofix.com/it/');
-  assert.equal(comBaseHref('/en/index.html'), 'https://www.sensortattoofix.com/');
+  assert.equal(comBaseHref('/de/index.html'), 'https://www.sensorcrashfix.com/de/');
+  assert.equal(comBaseHref('/es/comprar.html'), 'https://www.sensorcrashfix.com/es/');
+  assert.equal(comBaseHref('/pl/'), 'https://www.sensorcrashfix.com/pl/');
+  assert.equal(comBaseHref('/sl/comunidade.html'), 'https://www.sensorcrashfix.com/sl/');
+  assert.equal(comBaseHref('/it/index.html'), 'https://www.sensorcrashfix.com/it/');
+  assert.equal(comBaseHref('/en/index.html'), 'https://www.sensorcrashfix.com/');
   assert.doesNotMatch(src, /originPath\.startsWith\('\/it\/'\) \? `\$\{COM_ORIGIN\}\/it\/`/);
 });
 

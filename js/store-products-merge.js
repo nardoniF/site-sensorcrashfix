@@ -55,7 +55,7 @@ window.STF_PRODUCT_MERGE = (function () {
     const u = String(url || '').trim();
     if (!u) return true;
     if (/\/(?:images|site|produtos|img)\//i.test(u)) return false;
-    return /sensortattoofix/i.test(u);
+    return /sensorcrashfix/i.test(u);
   }
 
   /** Old KV/bookmarks: /site/*, /produtos/*, /img/* → /images/... */
@@ -64,7 +64,7 @@ window.STF_PRODUCT_MERGE = (function () {
     if (!s) return s;
     const mapExact = {
       '/site/logo.jpg': '/images/brand/logo.jpg',
-      '/site/sensortattoofix.jpg': '/images/brand/sensortattoofix.jpg',
+      '/site/sensorcrashfix.jpg': '/images/brand/sensorcrashfix.jpg',
       '/site/relogio_home.jpg': '/images/home/relogio_home.jpg',
       '/site/relogio_home2.jpg': '/images/home/relogio_home2.jpg',
       '/site/relogio_sensor.jpg': '/images/home/relogio_sensor.jpg',
@@ -86,7 +86,7 @@ window.STF_PRODUCT_MERGE = (function () {
   }
 
   function resolveKitImage(image, fallback) {
-    const fb = String(fallback || '/images/brand/sensortattoofix.jpg').trim();
+    const fb = String(fallback || '/images/brand/sensorcrashfix.jpg').trim();
     let raw = normalizeLegacyImagePath(String(image || '').trim());
     if (isLegacyBrokenKitImage(raw)) raw = fb;
     if (!raw) raw = fb;
@@ -96,7 +96,7 @@ window.STF_PRODUCT_MERGE = (function () {
 
   function isKitOrMissingImage(url) {
     const u = normalizeLegacyImagePath(String(url || '').trim());
-    return !u || /sensortattoofix/i.test(u) || !/\/(?:images\/)?produtos\//.test(u);
+    return !u || /sensorcrashfix/i.test(u) || !/\/(?:images\/)?produtos\//.test(u);
   }
 
   function inferAggregatedImage(product) {

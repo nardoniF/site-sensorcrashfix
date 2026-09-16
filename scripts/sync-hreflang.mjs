@@ -48,17 +48,17 @@ function rewriteNextUrls(html, lang) {
   if (lang === 'pt-BR') return html;
   if (lang === 'en') {
     return html
-      .replace(/https:\/\/www\.sensortattoofix\.com\.br\/en(\/[^"'\s]*)?/g, (_, rest) => {
-        return `https://www.sensortattoofix.com${rest || '/'}`;
+      .replace(/https:\/\/www\.sensorcrashfix\.com\.br\/en(\/[^"'\s]*)?/g, (_, rest) => {
+        return `https://www.sensorcrashfix.com${rest || '/'}`;
       })
       .replace(
-        /value="https:\/\/www\.sensortattoofix\.com\.br\/"/g,
-        'value="https://www.sensortattoofix.com/"'
+        /value="https:\/\/www\.sensorcrashfix\.com\.br\/"/g,
+        'value="https://www.sensorcrashfix.com/"'
       );
   }
   return html.replace(
-    new RegExp(`https://www\\.sensortattoofix\\.com\\.br/${lang}(/[^"'\\s]*)?`, 'g'),
-    (_, rest) => `https://www.sensortattoofix.com/${lang}${rest || ''}`
+    new RegExp(`https://www\\.sensorcrashfix\\.com\\.br/${lang}(/[^"'\\s]*)?`, 'g'),
+    (_, rest) => `https://www.sensorcrashfix.com/${lang}${rest || ''}`
   );
 }
 

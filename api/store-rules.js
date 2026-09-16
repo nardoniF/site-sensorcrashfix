@@ -104,7 +104,7 @@ export function isIntlDocumentShipment(order) {
 export function correiosTrackingUrl(trackingCode, storeBase) {
   const code = String(trackingCode || '').trim();
   if (!code) return '';
-  const base = String(storeBase || 'https://www.sensortattoofix.com.br').replace(/\/$/, '');
+  const base = String(storeBase || 'https://www.sensorcrashfix.com.br').replace(/\/$/, '');
   return `${base}/rastreio.html?codigo=${encodeURIComponent(code)}`;
 }
 

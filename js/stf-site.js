@@ -3,11 +3,11 @@
  * Loaded early on all pages; no side effects until STF_SITE.apply() runs.
  */
 (function () {
-  const BR_HOSTS = new Set(['sensortattoofix.com.br', 'www.sensortattoofix.com.br']);
-  const COM_HOSTS = new Set(['sensortattoofix.com', 'www.sensortattoofix.com']);
+  const BR_HOSTS = new Set(['sensorcrashfix.com.br', 'www.sensorcrashfix.com.br']);
+  const COM_HOSTS = new Set(['sensorcrashfix.com', 'www.sensorcrashfix.com']);
 
-  const BR_ORIGIN = 'https://www.sensortattoofix.com.br';
-  const COM_ORIGIN = 'https://www.sensortattoofix.com';
+  const BR_ORIGIN = 'https://www.sensorcrashfix.com.br';
+  const COM_ORIGIN = 'https://www.sensorcrashfix.com';
 
   function hostname() {
     return String(location.hostname || '').toLowerCase().replace(/\.$/, '');
@@ -28,7 +28,7 @@
   }
 
   function supportEmail() {
-    return isIntlHost() ? 'support@sensortattoofix.com' : 'contato@sensortattoofix.com.br';
+    return isIntlHost() ? 'support@sensorcrashfix.com' : 'contato@sensorcrashfix.com.br';
   }
 
   /** Map current path to equivalent on the other host (for lang / market switches). */
@@ -98,8 +98,8 @@
     }
     const id = String(product?.id || product?.slug || '');
     if (product?.aggregated === true) return ['BR'];
-    if (id === 'kit-sensor-tattoofix' || id === 'kit') return ['BR'];
-    if (/optical.?lens|lens-intl|sensortattoofix-optical/i.test(id)) return ['INT'];
+    if (id === 'kit-sensor-crashfix' || id === 'kit') return ['BR'];
+    if (/optical.?lens|lens-intl|sensorcrashfix-optical/i.test(id)) return ['INT'];
     return ['BR', 'INT'];
   }
 

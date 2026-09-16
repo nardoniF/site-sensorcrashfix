@@ -19,7 +19,7 @@ export function normalizeLegacyImagePath(url) {
   if (!s) return s;
   const mapExact = {
     '/site/logo.jpg': '/images/brand/logo.jpg',
-    '/site/sensortattoofix.jpg': '/images/brand/sensortattoofix.jpg',
+    '/site/sensorcrashfix.jpg': '/images/brand/sensorcrashfix.jpg',
     '/site/relogio_home.jpg': '/images/home/relogio_home.jpg',
     '/site/relogio_home2.jpg': '/images/home/relogio_home2.jpg',
     '/site/relogio_sensor.jpg': '/images/home/relogio_sensor.jpg',
@@ -44,7 +44,7 @@ export function isLegacyBrokenKitImage(url) {
   const u = String(url || '').trim();
   if (!u) return true;
   if (/\/(?:images|site|produtos|img)\//i.test(u)) return false;
-  return /sensortattoofix/i.test(u);
+  return /sensorcrashfix/i.test(u);
 }
 
 export function mergeSmartwatchLists(primary, supplement) {

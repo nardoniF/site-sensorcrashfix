@@ -1,5 +1,5 @@
 # Deploy estático — OPCIONAL.
-# O site .com / .com.br é servido pelo Worker cloudflare/stf-com-proxy.js (pin COMMIT).
+# O site .com / .com.br é servido pelo Worker cloudflare/scf-com-proxy.js (pin COMMIT).
 # GitHub Pages está com billing locked e gerava e-mail de falha a cada push.
 # Dispare manualmente só se o Pages for reativado.
 

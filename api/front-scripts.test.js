@@ -9,7 +9,7 @@ const jsDir = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'js'
 
 function loadScript(name, extras = {}) {
   const code = fs.readFileSync(path.join(jsDir, name), 'utf8');
-  const location = extras.location || { hostname: 'www.sensortattoofix.com.br', pathname: '/' };
+  const location = extras.location || { hostname: 'www.sensorcrashfix.com.br', pathname: '/' };
   const window = { location, ...extras.window };
   const sandbox = {
     window,
@@ -30,7 +30,7 @@ test('PIX payload is EMV with BR and CRC', () => {
   const payload = PixGenerator.generatePixPayload({
     key: '29321223000132',
     keyType: 'cnpj',
-    merchantName: 'Sensor Tattoo Fix',
+    merchantName: 'Sensor Crash Fix',
     merchantCity: 'Sao Paulo',
     amount: 79.9,
     txid: 'STFTEST1'

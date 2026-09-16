@@ -61,7 +61,7 @@ window.STF_MONEY = window.STF_MONEY || (function () {
   }
   function resetCache() { cache = { currency: null, rate: null, at: 0 }; }
   function isIntlHost() {
-    return !!(window.STF_SITE?.isIntlHost?.() || /\.sensortattoofix\.com$/i.test(location.hostname));
+    return !!(window.STF_SITE?.isIntlHost?.() || /\.sensorcrashfix\.com$/i.test(location.hostname));
   }
   async function formatForVisitor(amountBrl, config) {
     if (isIntlHost()) {
@@ -98,7 +98,7 @@ window.STF_MONEY = window.STF_MONEY || (function () {
     const lang = (document.documentElement.lang || '').toLowerCase();
     if (lang.startsWith('en') || lang.startsWith('it')) return 'intl';
     if (/\/(en|it)\//.test(location.pathname)) return 'intl';
-    if (window.STF_SITE?.isIntlHost?.() || /\.sensortattoofix\.com$/i.test(location.hostname)) return 'intl';
+    if (window.STF_SITE?.isIntlHost?.() || /\.sensorcrashfix\.com$/i.test(location.hostname)) return 'intl';
     return 'br';
   }
 
@@ -121,7 +121,7 @@ window.STF_MONEY = window.STF_MONEY || (function () {
   /** EN/IT checkout on .com.br path: PayPal only. On .com: Stripe (if live) + PayPal. */
   function isIntlEmbeddedCheckout() {
     if (!isIntlCheckoutShell()) return false;
-    return !!(window.STF_SITE?.isIntlHost?.() || /\.sensortattoofix\.com$/i.test(location.hostname));
+    return !!(window.STF_SITE?.isIntlHost?.() || /\.sensorcrashfix\.com$/i.test(location.hostname));
   }
 
   function isPaypalOnlyIntlCheckout() {
@@ -201,7 +201,7 @@ window.STF_MONEY = window.STF_MONEY || (function () {
     if (window.STF_PRODUCT_MERGE?.resolveProductImage) {
       return window.STF_PRODUCT_MERGE.resolveProductImage(image, product);
     }
-    const raw = String(image || '').trim() || 'images/brand/sensortattoofix.jpg';
+    const raw = String(image || '').trim() || 'images/brand/sensorcrashfix.jpg';
     if (/^https?:\/\//i.test(raw)) return raw;
     return raw.startsWith('/') ? raw : '/' + raw.replace(/^\.\//, '');
   }
@@ -1133,7 +1133,7 @@ window.STF_MONEY = window.STF_MONEY || (function () {
         const lineName = cartLineName(item);
         const thumb = item.aggregated
           ? renderZoomableThumb(imgFull, imgFull, lineName, imgFull, 'cart-line-img-btn')
-          : `<img src="${escapeHtml(imgFull)}" alt="" class="cart-line-img" loading="lazy" onerror="this.onerror=null;this.src='/images/brand/sensortattoofix.jpg'">`;
+          : `<img src="${escapeHtml(imgFull)}" alt="" class="cart-line-img" loading="lazy" onerror="this.onerror=null;this.src='/images/brand/sensorcrashfix.jpg'">`;
         const qtyLabel = item.qty > 1 ? `${item.qty} × ${formatCheckoutMoney(item.price)}` : formatCheckoutMoney(item.price);
         return `
         <div class="cart-line cart-line-locked">
@@ -1388,7 +1388,7 @@ window.STF_MONEY = window.STF_MONEY || (function () {
       const lineName = cartLineName(item);
       const thumb = item.aggregated
         ? renderZoomableThumb(imgFull, imgFull, lineName, imgFull, 'cart-line-img-btn')
-        : `<img src="${escapeHtml(imgFull)}" alt="" class="cart-line-img" loading="lazy" onerror="this.onerror=null;this.src='/images/brand/sensortattoofix.jpg'">`;
+        : `<img src="${escapeHtml(imgFull)}" alt="" class="cart-line-img" loading="lazy" onerror="this.onerror=null;this.src='/images/brand/sensorcrashfix.jpg'">`;
       return `
       <div class="cart-line" data-product-id="${escapeHtml(item.productId)}">
         ${thumb}
@@ -1791,7 +1791,7 @@ window.STF_MONEY = window.STF_MONEY || (function () {
     // Do not call bare isIntlHost() — that helper lives in the STF_MONEY IIFE only.
     return isIntlCheckoutShell()
       || !!(window.STF_MONEY?.isIntlHost?.() || window.STF_SITE?.isIntlHost?.()
-        || /\.sensortattoofix\.com$/i.test(location.hostname));
+        || /\.sensorcrashfix\.com$/i.test(location.hostname));
   }
 
   function buildIntlProductNote(shipmentType) {

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Documentação — Sensor Tattoo Fix</title>
+    <title>Documentação — Sensor Crash Fix</title>
     <link rel="stylesheet" href="style.css?v=2.66">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -35,7 +35,7 @@
 
             <article id="doc-content" class="admin-card admin-doc" hidden>
                 <h1><i class="fas fa-book"></i> Manual de operação</h1>
-                <p class="admin-meta">Sensor Tattoo Fix · 3N20 Soluções Tecnológicas LTDA · CNPJ 29.321.223/0001-32</p>
+                <p class="admin-meta">Sensor Crash Fix · 3N20 Soluções Tecnológicas LTDA · CNPJ 29.321.223/0001-32</p>
                 <p class="admin-doc-updated">Última atualização: setembro/2026</p>
 
                 <nav class="admin-doc-toc" aria-label="Índice">
@@ -65,13 +65,13 @@
                     <table class="admin-doc-table">
                         <thead><tr><th>O quê</th><th>URL</th></tr></thead>
                         <tbody>
-                            <tr><td>Site (home)</td><td><a href="https://www.sensortattoofix.com.br" target="_blank" rel="noopener">https://www.sensortattoofix.com.br</a></td></tr>
-                            <tr><td>Loja / checkout</td><td><a href="https://www.sensortattoofix.com.br/comprar.html">/comprar.html</a></td></tr>
-                            <tr><td>Admin (configuração)</td><td><a href="https://www.sensortattoofix.com.br/admin.html">/admin.html</a></td></tr>
-                            <tr><td>Pedidos</td><td><a href="https://www.sensortattoofix.com.br/pedidos.html">/pedidos.html</a></td></tr>
-                            <tr><td>Minha conta (cliente)</td><td><a href="https://www.sensortattoofix.com.br/minha-conta.html">/minha-conta.html</a></td></tr>
+                            <tr><td>Site (home)</td><td><a href="https://www.sensorcrashfix.com.br" target="_blank" rel="noopener">https://www.sensorcrashfix.com.br</a></td></tr>
+                            <tr><td>Loja / checkout</td><td><a href="https://www.sensorcrashfix.com.br/comprar.html">/comprar.html</a></td></tr>
+                            <tr><td>Admin (configuração)</td><td><a href="https://www.sensorcrashfix.com.br/admin.html">/admin.html</a></td></tr>
+                            <tr><td>Pedidos</td><td><a href="https://www.sensorcrashfix.com.br/pedidos.html">/pedidos.html</a></td></tr>
+                            <tr><td>Minha conta (cliente)</td><td><a href="https://www.sensorcrashfix.com.br/minha-conta.html">/minha-conta.html</a></td></tr>
                             <tr><td>Esta documentação</td><td><a href="documentacao.html">/documentacao.html</a></td></tr>
-                            <tr><td>Repositório GitHub</td><td><a href="https://github.com/nardoniF/site-sensortattoofix" target="_blank" rel="noopener">github.com/nardoniF/site-sensortattoofix</a></td></tr>
+                            <tr><td>Repositório GitHub</td><td><a href="https://github.com/nardoniF/site-sensorcrashfix" target="_blank" rel="noopener">github.com/nardoniF/site-sensorcrashfix</a></td></tr>
                         </tbody>
                     </table>
                     <p class="admin-meta">Login admin/pedidos: usuário <code>admin</code> + senha definida no secret <code>ADMIN_PASSWORD</code> do Worker.</p>
@@ -108,11 +108,11 @@
                     <table class="admin-doc-table">
                         <thead><tr><th>Endpoint / painel</th><th>URL</th></tr></thead>
                         <tbody>
-                            <tr><td>API base (produção)</td><td><a href="https://sensortattoofix-payments.sensortattoofix.workers.dev" target="_blank" rel="noopener">https://sensortattoofix-payments.sensortattoofix.workers.dev</a></td></tr>
+                            <tr><td>API base (produção)</td><td><a href="https://sensorcrashfix-payments.sensorcrashfix.workers.dev" target="_blank" rel="noopener">https://sensorcrashfix-payments.sensorcrashfix.workers.dev</a></td></tr>
                             <tr><td>Config pública</td><td><code>GET /config</code></td></tr>
                             <tr><td>Status integrações (admin)</td><td><code>GET /admin/integrations-status</code></td></tr>
                             <tr><td>Cotação frete</td><td><code>GET /shipping/quote</code></td></tr>
-                            <tr><td>Cloudflare Dashboard</td><td><a href="https://dash.cloudflare.com" target="_blank" rel="noopener">dash.cloudflare.com</a> → Workers → sensortattoofix-payments → Settings → Secrets</td></tr>
+                            <tr><td>Cloudflare Dashboard</td><td><a href="https://dash.cloudflare.com" target="_blank" rel="noopener">dash.cloudflare.com</a> → Workers → sensorcrashfix-payments → Settings → Secrets</td></tr>
                         </tbody>
                     </table>
                 </section>
@@ -193,7 +193,7 @@
 
                 <section id="webhooks" class="admin-doc-section">
                     <h2>Webhooks (apontar para o Worker)</h2>
-                    <p>Base: <code>https://sensortattoofix-payments.sensortattoofix.workers.dev</code></p>
+                    <p>Base: <code>https://sensorcrashfix-payments.sensorcrashfix.workers.dev</code></p>
                     <table class="admin-doc-table">
                         <thead><tr><th>Provedor</th><th>URL</th><th>Eventos</th></tr></thead>
                         <tbody>
@@ -485,14 +485,14 @@ node --test *.test.js</code></pre>
                             <tr><td><strong>Google orgânico</strong></td><td>Verde claro</td><td>Veio de busca Google (referrer)</td></tr>
                             <tr><td><strong>Instagram / Facebook / TikTok</strong></td><td>Rosa / azul / branco</td><td>Referrer ou UTMs da rede</td></tr>
                             <tr><td><strong>Link de outro site</strong></td><td>Amarelo</td><td>Referrer com domínio externo (ex.: blog, parceiro)</td></tr>
-                            <tr><td><strong>Site</strong></td><td>Laranja (primary)</td><td>UTM interna (<code>utm_source=sensortattoofix</code>)</td></tr>
+                            <tr><td><strong>Site</strong></td><td>Laranja (primary)</td><td>UTM interna (<code>utm_source=sensorcrashfix</code>)</td></tr>
                         </tbody>
                     </table>
 
                     <h3>O que é “Acesso direto”?</h3>
                     <p>O site <strong>não conseguiu identificar</strong> de onde a pessoa veio. Na prática, costuma ser:</p>
                     <ul class="admin-doc-list">
-                        <li>Digitou <code>sensortattoofix.com.br</code> na barra do navegador</li>
+                        <li>Digitou <code>sensorcrashfix.com.br</code> na barra do navegador</li>
                         <li>Favorito / bookmark</li>
                         <li>Link em <strong>WhatsApp</strong>, Telegram ou e-mail (muitos apps não enviam origem)</li>
                         <li>QR code ou cartão de visita</li>

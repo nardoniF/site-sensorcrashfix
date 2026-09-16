@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const SNIPPETS = ['Official Store', 'Peace between ink and silicon', 'Your cart', 'Loading products...'];
+const SNIPPETS = ['Official Store', 'Protection again after a cracked sensor', 'Your cart', 'Loading products...'];
 
 for (const lang of ['de', 'es', 'pl', 'sl']) {
   test(`${lang}/loja.html: título nativo e sem flash EN no shell`, async ({ page }) => {
@@ -8,7 +8,7 @@ for (const lang of ['de', 'es', 'pl', 'sl']) {
     await expect(page.locator('h1.section-title')).not.toHaveText(/Official Store/i);
     await page.waitForFunction(() => {
       const h3 = document.querySelector('.loja-card h3');
-      return h3 && h3.textContent && !/Kit Sensor Tattoo Fix/.test(h3.textContent);
+      return h3 && h3.textContent && !/Kit Sensor Crash Fix/.test(h3.textContent);
     }, { timeout: 45_000 });
     const titles = await page.locator('.loja-card h3').allTextContents();
     const joined = titles.join(' | ');
@@ -41,7 +41,7 @@ for (const lang of ['de', 'es', 'pl', 'sl']) {
     expect(html.includes('Your cart')).toBe(false);
     expect(html.includes('Your details')).toBe(false);
     expect(html.includes('Discount code')).toBe(false);
-    expect(html.includes('Peace between ink and silicon')).toBe(false);
+    expect(html.includes('Protection again after a cracked sensor')).toBe(false);
     if (lang === 'de') expect(html).toMatch(/Ihre Daten|Zahlungsmethode/);
     if (lang === 'es') expect(html).toMatch(/Tus datos|Método de pago/);
     if (lang === 'pl') expect(html).toMatch(/Twoje dane|Metoda płatności/);

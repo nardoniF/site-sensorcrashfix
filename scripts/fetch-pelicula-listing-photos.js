@@ -41,7 +41,7 @@ const MAP = {
 
 function download(url) {
   return new Promise((resolve, reject) => {
-    https.get(url, { headers: { 'User-Agent': 'SensorTattooFix/1.0' } }, (res) => {
+    https.get(url, { headers: { 'User-Agent': 'SensorCrashFix/1.0' } }, (res) => {
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
         return download(res.headers.location).then(resolve, reject);
       }

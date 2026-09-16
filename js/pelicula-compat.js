@@ -119,12 +119,12 @@ window.STF_PELICULA = (function () {
 
   const KIT_COPY = {
     en: {
-      name: 'SensorTattooFix Optical Lens',
-      description: 'Designed for smartwatch optical sensors on tattooed skin.'
+      name: 'SensorCrashFix Optical Lens',
+      description: 'Designed for smartwatch optical sensors on cracked sensor.'
     },
     it: {
-      name: 'Lente ottica SensorTattooFix',
-      description: 'Progettata per i sensori ottici degli smartwatch su pelle tatuata.'
+      name: 'Lente ottica SensorCrashFix',
+      description: 'Progettata per i sensori ottici degli smartwatch su sensore incrinato.'
     }
   };
 
@@ -153,7 +153,7 @@ window.STF_PELICULA = (function () {
     return !!(
       window.STF_I18N?.isEn?.() ||
       window.STF_SITE?.isIntlHost?.() ||
-      /\.sensortattoofix\.com$/i.test(location.hostname) ||
+      /\.sensorcrashfix\.com$/i.test(location.hostname) ||
       /\/en\//i.test(location.pathname)
     );
   }
@@ -190,10 +190,10 @@ window.STF_PELICULA = (function () {
 
   function isKitProduct(product) {
     const id = String(product?.id || product?.slug || '');
-    if (id === 'kit-sensor-tattoofix') return true;
+    if (id === 'kit-sensor-crashfix') return true;
     if (product?.aggregated === true) return false;
     if (product?.productType || id.startsWith('pelicula-') || id.startsWith('pulseira-')) return false;
-    return !id || id.includes('sensor') || id.includes('tattoo');
+    return !id || id.includes('sensor') || id.includes('cracks');
   }
 
   function productLabel(product) {

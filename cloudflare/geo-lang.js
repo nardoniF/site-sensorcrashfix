@@ -132,8 +132,8 @@ export function isBrHomePath(pathname) {
  */
 export function localeRedirectTarget({ hostOrigin, pathname, search, br, preferred }) {
   const lang = normalizeSiteLang(preferred) || 'en';
-  const COM = 'https://www.sensortattoofix.com';
-  const BR = 'https://www.sensortattoofix.com.br';
+  const COM = 'https://www.sensorcrashfix.com';
+  const BR = 'https://www.sensorcrashfix.com.br';
   const path = pathname || '/';
   const q = search || '';
 

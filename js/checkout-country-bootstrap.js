@@ -19,7 +19,7 @@
   async function fillCountries() {
     const sel = document.getElementById('pais-code');
     if (!sel || sel.options.length > 1) return;
-    const base = String(window.CONFIG_BOOTSTRAP?.configApiUrl || 'https://api.sensortattoofix.com.br').replace(/\/$/, '');
+    const base = String(window.CONFIG_BOOTSTRAP?.configApiUrl || 'https://api.sensorcrashfix.com.br').replace(/\/$/, '');
     const res = await fetch(base + '/config', { cache: 'no-store' });
     if (!res.ok) return;
     const cfg = await res.json();

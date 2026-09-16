@@ -77,8 +77,8 @@ test('shipping classifiers', () => {
 test('Correios tracking URLs', () => {
   assert.equal(correiosTrackingUrl(''), '');
   assert.equal(
-    correiosTrackingUrl('AA123BR', 'https://www.sensortattoofix.com.br/'),
-    'https://www.sensortattoofix.com.br/rastreio.html?codigo=AA123BR'
+    correiosTrackingUrl('AA123BR', 'https://www.sensorcrashfix.com.br/'),
+    'https://www.sensorcrashfix.com.br/rastreio.html?codigo=AA123BR'
   );
   assert.match(correiosOfficialTrackingUrl('AA123BR'), /objeto=AA123BR/);
 });

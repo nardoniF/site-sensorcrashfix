@@ -1,5 +1,5 @@
 /**
- * API Sensor Tattoo Fix — Cloudflare Worker
+ * API Sensor Crash Fix — Cloudflare Worker
  * PIX (Mercado Pago) + Cartão (Asaas) + PayPal (intl) · WhatsApp · Correios · Uber Direct · Pedidos
  */
 
@@ -95,21 +95,21 @@ import {
 } from './sales-money.js';
 
 const ALLOWED_ORIGINS = [
-  'https://sensortattoofix.com.br',
-  'https://www.sensortattoofix.com.br',
-  'https://sensortattoofix.com',
-  'https://www.sensortattoofix.com',
-  'https://api.sensortattoofix.com.br',
+  'https://sensorcrashfix.com.br',
+  'https://www.sensorcrashfix.com.br',
+  'https://sensorcrashfix.com',
+  'https://www.sensorcrashfix.com',
+  'https://api.sensorcrashfix.com.br',
   'http://localhost:8080',
   'http://127.0.0.1:5500'
 ];
 const CONFIG_KEY = 'store-config';
-/** Pin igual ao cloudflare/stf-com-proxy.js — catálogo GitHub servido direto ao Worker (evita cache do proxy). */
+/** Pin igual ao cloudflare/scf-com-proxy.js — catálogo GitHub servido direto ao Worker (evita cache do proxy). */
 const SITE_CATALOG_COMMIT = '3299494b66c054c868ae927cc36d63658d342a46';
 const SITE_CATALOG_URLS = [
-  'https://cdn.jsdelivr.net/gh/nardoniF/site-sensortattoofix@' + SITE_CATALOG_COMMIT + '/data/store-config.json',
-  'https://raw.githubusercontent.com/nardoniF/site-sensortattoofix/' + SITE_CATALOG_COMMIT + '/data/store-config.json',
-  'https://www.sensortattoofix.com.br/data/store-config.json'
+  'https://cdn.jsdelivr.net/gh/nardoniF/site-sensorcrashfix@' + SITE_CATALOG_COMMIT + '/data/store-config.json',
+  'https://raw.githubusercontent.com/nardoniF/site-sensorcrashfix/' + SITE_CATALOG_COMMIT + '/data/store-config.json',
+  'https://www.sensorcrashfix.com.br/data/store-config.json'
 ];
 const ORDERS_INDEX = 'orders:index';
 const CLICKS_INDEX = 'clicks:index';
@@ -123,33 +123,33 @@ const FEEDBACK_BLOB = 'feedback:blob';
 const FEEDBACK_MAX = 500;
 const CLICK_TTL_SEC = 120 * 86400;
 const CLICK_LOG_KEY_FALLBACK = 'stf_ck_7f3a9e2b1c';
-const LEGACY_API_BASE = 'https://sensortattoofix-payments.sensortattoofix.workers.dev';
-const CANONICAL_API_BASE = 'https://api.sensortattoofix.com.br';
+const LEGACY_API_BASE = 'https://sensorcrashfix-payments.sensorcrashfix.workers.dev';
+const CANONICAL_API_BASE = 'https://api.sensorcrashfix.com.br';
 const CUSTOMER_SESSION_TTL = 2592000; // 30 dias
 
 const DEFAULT_CONFIG = {
   product: {
-    name: 'Kit Sensor Tattoo Fix',
-    nameEn: 'Sensor Tattoo Fix Lens',
-    nameIt: 'Lente Sensor Tattoo Fix',
-    description: 'Lente ótica para smartwatch em pele tatuada — kit completo',
-    descriptionEn: 'Optical lens for smartwatches on tattooed skin',
-    descriptionIt: 'Lente ottica per smartwatch su pelle tatuata',
+    name: 'Kit Sensor Crash Fix',
+    nameEn: 'Sensor Crash Fix Lens',
+    nameIt: 'Lente Sensor Crash Fix',
+    description: 'Lente ótica para smartwatch em pele danificado — kit completo',
+    descriptionEn: 'Optical lens for smartwatches on cracked sensor',
+    descriptionIt: 'Lente ottica per smartwatch su sensore incrinato',
     price: 62.9,
-    image: 'https://www.sensortattoofix.com.br/images/brand/sensortattoofix.jpg'
+    image: 'https://www.sensorcrashfix.com.br/images/brand/sensorcrashfix.jpg'
   },
   products: [
     {
-      id: 'kit-sensor-tattoofix',
-      slug: 'kit-sensor-tattoofix',
-      name: 'Kit Sensor Tattoo Fix',
-      nameEn: 'SensorTattooFix Optical Lens',
-      nameIt: 'Lente ottica SensorTattooFix',
-      description: 'Lente ótica para smartwatch em pele tatuada — kit completo',
-      descriptionEn: 'Designed for smartwatch optical sensors on tattooed skin.',
-      descriptionIt: 'Progettata per i sensori ottici degli smartwatch su pelle tatuata.',
+      id: 'kit-sensor-crashfix',
+      slug: 'kit-sensor-crashfix',
+      name: 'Kit Sensor Crash Fix',
+      nameEn: 'SensorCrashFix Optical Lens',
+      nameIt: 'Lente ottica SensorCrashFix',
+      description: 'Lente ótica para smartwatch em pele danificado — kit completo',
+      descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
+      descriptionIt: 'Progettata per i sensori ottici degli smartwatch su sensore incrinato.',
       price: 62.9,
-      image: 'https://www.sensortattoofix.com.br/images/brand/sensortattoofix.jpg',
+      image: 'https://www.sensorcrashfix.com.br/images/brand/sensorcrashfix.jpg',
       active: true,
       requiresSmartwatch: true,
       deviceType: 'smartwatch',
@@ -157,15 +157,15 @@ const DEFAULT_CONFIG = {
       markets: ['BR']
     },
     {
-      id: 'kit-smartband-tattoofix',
-      slug: 'kit-smartband-tattoofix',
-      name: 'Kit Smartband Tattoo Friendly',
-      nameEn: 'Kit Smartband Tattoo Friendly',
-      nameIt: 'Kit Smartband Tattoo Friendly',
+      id: 'kit-smartband-crashfix',
+      slug: 'kit-smartband-crashfix',
+      name: 'Kit Smartband Crash Fix',
+      nameEn: 'Kit Smartband Crash Fix',
+      nameIt: 'Kit Smartband Crash Fix',
       deviceType: 'smartband',
-      description: 'Lente ótica para smartband em pele tatuada — kit completo',
-      descriptionEn: 'Optical lens for smartbands on tattooed skin — full kit',
-      descriptionIt: 'Lente ottica per smartband su pelle tatuata — kit completo',
+      description: 'Lente ótica para smartband em pele danificado — kit completo',
+      descriptionEn: 'Optical lens for smartbands on cracked sensor — full kit',
+      descriptionIt: 'Lente ottica per smartband su sensore incrinato — kit completo',
       price: 62.9,
       image: '/images/smartband/kit-br/01-embalagem.jpg',
       images: [
@@ -184,13 +184,13 @@ const DEFAULT_CONFIG = {
     {
       id: 'optical-lens-smartband-intl',
       slug: 'optical-lens-smartband-intl',
-      name: 'SensorTattooFix Smartband Lens',
-      nameEn: 'SensorTattooFix Smartband Lens',
-      nameIt: 'Lente Smartband SensorTattooFix',
+      name: 'SensorCrashFix Smartband Lens',
+      nameEn: 'SensorCrashFix Smartband Lens',
+      nameIt: 'Lente Smartband SensorCrashFix',
       deviceType: 'smartband',
-      description: 'Lente de correção óptica para smartband em pele tatuada.',
-      descriptionEn: 'Designed for smartband optical sensors on tattooed skin.',
-      descriptionIt: 'Progettata per i sensori ottici degli smartband su pelle tatuata.',
+      description: 'Lente de correção óptica para smartband em pele danificado.',
+      descriptionEn: 'Designed for smartband optical sensors on cracked sensor.',
+      descriptionIt: 'Progettata per i sensori ottici degli smartband su sensore incrinato.',
       price: 62.9,
       priceUsd: 12.99,
       priceEur: 11.99,
@@ -211,12 +211,12 @@ const DEFAULT_CONFIG = {
     {
       id: 'optical-lens-intl',
       slug: 'optical-lens-intl',
-      name: 'SensorTattooFix Optical Lens',
-      nameEn: 'SensorTattooFix Optical Lens',
-      nameIt: 'Lente ottica SensorTattooFix',
-      description: 'Lente de correção óptica para smartwatch em pele tatuada.',
-      descriptionEn: 'Designed for smartwatch optical sensors on tattooed skin.',
-      descriptionIt: 'Progettata per i sensori ottici degli smartwatch su pelle tatuata.',
+      name: 'SensorCrashFix Optical Lens',
+      nameEn: 'SensorCrashFix Optical Lens',
+      nameIt: 'Lente ottica SensorCrashFix',
+      description: 'Lente de correção óptica para smartwatch em pele danificado.',
+      descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
+      descriptionIt: 'Progettata per i sensori ottici degli smartwatch su sensore incrinato.',
       price: 62.9,
       image: '/images/lens-gallery/01-optical-correction-lens.png',
       images: [
@@ -245,7 +245,7 @@ const DEFAULT_CONFIG = {
     intlServiceCode: '45128',
     serviceName: 'Mini Envios',
     sender: {
-      brand: 'Sensor Tattoo Fix',
+      brand: 'Sensor Crash Fix',
       company: '3N20 Soluções Tecnológicas LTDA',
       cnpj: '29.321.223/0001-32',
       rua: 'Rua Engenheiro Roberto Dabus Buazar',
@@ -374,20 +374,20 @@ const DEFAULT_CONFIG = {
     'Polar Pacer / Ignite',
     'Outro modelo (informar nas observações)'
   ],
-  formsubmit: { email: 'contato@sensortattoofix.com.br', subject: 'Novo pedido — Loja Oficial Sensor Tattoo Fix' },
+  formsubmit: { email: 'contato@sensorcrashfix.com.br', subject: 'Novo pedido — Loja Oficial Sensor Crash Fix' },
   emails: {
-    from: 'Sensor Tattoo Fix <pedidos@sensortattoofix.com.br>',
+    from: 'Sensor Crash Fix <pedidos@sensorcrashfix.com.br>',
     shopPaidSubject: 'PAGO — {orderId}',
-    customerOrderSubject: 'Pedido {orderId} registrado — Sensor Tattoo Fix',
-    customerPixSubject: 'PIX do pedido {orderId} — Sensor Tattoo Fix',
+    customerOrderSubject: 'Pedido {orderId} registrado — Sensor Crash Fix',
+    customerPixSubject: 'PIX do pedido {orderId} — Sensor Crash Fix',
     customerPaidSubject: 'Pagamento confirmado — {orderId}',
     motoboySubject: 'Entrega motoboy — {orderId}',
-    couponSubject: 'Você vendeu com seu cupom — comissão {amount} — Sensor Tattoo Fix',
-    commissionerWelcomeSubject: 'Seu cupom {code} está ativo — divulgue Sensor Tattoo Fix',
-    testSubject: 'Teste — Sensor Tattoo Fix',
+    couponSubject: 'Você vendeu com seu cupom — comissão {amount} — Sensor Crash Fix',
+    commissionerWelcomeSubject: 'Seu cupom {code} está ativo — divulgue Sensor Crash Fix',
+    testSubject: 'Teste — Sensor Crash Fix',
     testTo: '',
-    monthlyReportSubject: 'Relatório de cliques — {month}/{year} — Sensor Tattoo Fix',
-    monthlySalesReportSubject: 'Relatório de vendas — {month}/{year} — Sensor Tattoo Fix',
+    monthlyReportSubject: 'Relatório de cliques — {month}/{year} — Sensor Crash Fix',
+    monthlySalesReportSubject: 'Relatório de vendas — {month}/{year} — Sensor Crash Fix',
     monthlyReportTo: '',
     pendingPaypal: 'Finalize o pagamento no PayPal. Você receberá outro e-mail quando o pagamento for confirmado.',
     pendingCard: 'Finalize o pagamento no link enviado. Você receberá outro e-mail quando o pagamento for confirmado.',
@@ -403,28 +403,28 @@ const DEFAULT_CONFIG = {
     abandonedSubject: 'Seu pedido {orderId} ainda está reservado — finalize quando quiser',
     abandonedWeeklySubject: 'Lembrete semanal — pedido {orderId} aguardando pagamento',
     abandonedIntro: 'Notamos que seu pedido ficou pendente. Seus itens ainda estão reservados — finalize o pagamento pelo link abaixo.',
-    abandonedWeeklyIntro: 'Passou uma semana e seu pedido ainda aguarda pagamento. Se ainda quiser o Sensor Tattoo Fix, é só concluir pelo link.',
+    abandonedWeeklyIntro: 'Passou uma semana e seu pedido ainda aguarda pagamento. Se ainda quiser o Sensor Crash Fix, é só concluir pelo link.',
     abandonedCta: 'Finalizar meu pedido',
     pixGreeting: 'Olá, {nome}!',
     pixIntro: 'Seu pedido {orderId} foi registrado. Para concluir a compra, pague o PIX abaixo:',
     pixFooter: 'Guarde este e-mail — se fechar a página, use o link acima para voltar ao QR Code.'
   },
   whatsapp: '5511913394665',
-  siteUrl: 'https://www.sensortattoofix.com.br',
-  api: { baseUrl: 'https://api.sensortattoofix.com.br' },
+  siteUrl: 'https://www.sensorcrashfix.com.br',
+  api: { baseUrl: 'https://api.sensorcrashfix.com.br' },
   /** Visibilidade de redes e marketplaces no site (admin liga/desliga). */
   channels: {
     socials: {
-      instagram: { enabled: true, url: 'https://www.instagram.com/sensortattoofix' },
-      tiktok: { enabled: true, url: 'https://www.tiktok.com/@sensortattoofixofc' },
-      youtube: { enabled: true, url: 'https://www.youtube.com/@Sensortattoofix-ofc' },
+      instagram: { enabled: true, url: 'https://www.instagram.com/sensorcrashfix' },
+      tiktok: { enabled: true, url: 'https://www.tiktok.com/@sensorcrashfix' },
+      youtube: { enabled: true, url: 'https://www.youtube.com/@Sensorcrashfix' },
       facebook: { enabled: true, url: 'https://www.facebook.com/profile.php?id=61588858629597' }
     },
     stores: {
       oficial: { enabled: true },
       mercadolivre: {
         enabled: true,
-        url: 'https://produto.mercadolivre.com.br/MLB-6831525504-smartwatch-x-tatuagem-sensor-nao-funciona-lentes-reparadoras-_JM'
+        url: 'https://produto.mercadolivre.com.br/MLB-6831525504-smartwatch-x-rachadura-sensor-nao-funciona-lentes-reparadoras-_JM'
       },
       shopee: { enabled: true, url: 'https://shopee.com.br/product/479290797/58259628035/' },
       tiktok_shop: { enabled: true, url: 'https://vt.tiktok.com/ZS9juMxSmKGjN-mns6O/' },
@@ -602,7 +602,7 @@ async function geocodeAddressNominatim(query) {
         limit: '1',
         countrycodes: 'br'
       })}`,
-      { headers: { 'User-Agent': 'SensorTattooFix/1.0 (contato@sensortattoofix.com.br)' } }
+      { headers: { 'User-Agent': 'SensorCrashFix/1.0 (contato@sensorcrashfix.com.br)' } }
     );
     if (!res.ok) return null;
     const data = await res.json();
@@ -971,7 +971,7 @@ function commissionerWelcomeHtml(config, coupon, name, attachmentCount) {
     : '<p>A arte deve estar em anexo neste e-mail.</p>';
   return `<div style="font-family:Arial,sans-serif;max-width:600px;color:#111;line-height:1.5">
     <p>Olá, <strong>${esc(name)}</strong>!</p>
-    <p>Seu cupom de comissionado está ativo. Divulgue o Sensor Tattoo Fix e ganhe comissão a cada venda.</p>
+    <p>Seu cupom de comissionado está ativo. Divulgue o Sensor Crash Fix e ganhe comissão a cada venda.</p>
     <p style="font-size:22px;font-weight:800;letter-spacing:1px;color:#c9a227">Seu cupom: ${esc(code)}</p>
     <ul>
       <li><strong>10% de desconto</strong> para quem comprar com seu cupom</li>
@@ -981,7 +981,7 @@ function commissionerWelcomeHtml(config, coupon, name, attachmentCount) {
     </ul>
     <p><strong>Link para seus clientes:</strong><br><a href="${esc(buyUrl)}">${esc(buyUrl)}</a></p>
     ${storiesNote}
-    <p style="color:#666;font-size:13px">Dúvidas: contato@sensortattoofix.com.br · Sensor Tattoo Fix — sensortattoofix.com.br</p>
+    <p style="color:#666;font-size:13px">Dúvidas: contato@sensorcrashfix.com.br · Sensor Crash Fix — sensorcrashfix.com.br</p>
   </div>`;
 }
 
@@ -1274,12 +1274,12 @@ function isLegacyBrokenKitImage(url) {
   const u = String(url || '').trim();
   if (!u) return true;
   if (/\/(?:images|site|produtos|img)\//i.test(u)) return false;
-  return /sensortattoofix/i.test(u);
+  return /sensorcrashfix/i.test(u);
 }
 
 function isKitOrMissingImage(url) {
   const u = String(url || '').trim();
-  return !u || /sensortattoofix/i.test(u) || !/\/(?:images\/)?produtos\//.test(u);
+  return !u || /sensorcrashfix/i.test(u) || !/\/(?:images\/)?produtos\//.test(u);
 }
 
 function isGenericSharedImage(url, productId) {
@@ -1649,8 +1649,8 @@ function normalizeKitCost(raw) {
 
 function fixKitImageUrl(url) {
   const u = String(url || '').trim();
-  if (!u || (/sensortattoofix/i.test(u) && !/\/site\//i.test(u))) {
-    return 'https://www.sensortattoofix.com.br/images/brand/sensortattoofix.jpg';
+  if (!u || (/sensorcrashfix/i.test(u) && !/\/site\//i.test(u))) {
+    return 'https://www.sensorcrashfix.com.br/images/brand/sensorcrashfix.jpg';
   }
   return u;
 }
@@ -1662,8 +1662,8 @@ function normalizeProducts(stored, base) {
     const legacy = stored?.product || base.product;
     if (!legacy) return base.products || [];
     products = [{
-      id: 'kit-sensor-tattoofix',
-      slug: 'kit-sensor-tattoofix',
+      id: 'kit-sensor-crashfix',
+      slug: 'kit-sensor-crashfix',
       name: legacy.name,
       description: legacy.description,
       price: legacy.price,
@@ -2255,16 +2255,16 @@ function isAllowedSiteRequest(request) {
   const referer = request.headers.get('Referer') || '';
   if (ALLOWED_ORIGINS.some((o) => referer.startsWith(o))) return true;
   const fwdHost = (request.headers.get('X-Forwarded-Host') || request.headers.get('Host') || '').toLowerCase();
-  return fwdHost === 'sensortattoofix.com.br' || fwdHost === 'www.sensortattoofix.com.br'
-    || fwdHost === 'sensortattoofix.com' || fwdHost === 'www.sensortattoofix.com';
+  return fwdHost === 'sensorcrashfix.com.br' || fwdHost === 'www.sensorcrashfix.com.br'
+    || fwdHost === 'sensorcrashfix.com' || fwdHost === 'www.sensorcrashfix.com';
 }
 
 function isComSiteRequest(request) {
   const origin = request.headers.get('Origin') || '';
   const referer = request.headers.get('Referer') || '';
   const hay = origin + ' ' + referer;
-  if (/sensortattoofix\.com\.br/i.test(hay)) return false;
-  return /sensortattoofix\.com/i.test(hay);
+  if (/sensorcrashfix\.com\.br/i.test(hay)) return false;
+  return /sensorcrashfix\.com/i.test(hay);
 }
 
 function isIntlCheckoutLocale(locale) {
@@ -3186,14 +3186,14 @@ function watchBrandForCopy(order) {
 
 function customerSupportEmail(order, config) {
   const loc = orderCheckoutLocale(order);
-  if (isIntlCheckoutLocale(loc)) return 'support@sensortattoofix.com';
-  return String(config?.formsubmit?.email || 'contato@sensortattoofix.com.br').trim();
+  if (isIntlCheckoutLocale(loc)) return 'support@sensorcrashfix.com';
+  return String(config?.formsubmit?.email || 'contato@sensorcrashfix.com.br').trim();
 }
 
 function customerSiteBase(order, config) {
   const loc = orderCheckoutLocale(order);
-  if (isIntlCheckoutLocale(loc)) return 'https://www.sensortattoofix.com';
-  return String(config?.siteUrl || 'https://www.sensortattoofix.com.br').replace(/\/$/, '');
+  if (isIntlCheckoutLocale(loc)) return 'https://www.sensorcrashfix.com';
+  return String(config?.siteUrl || 'https://www.sensorcrashfix.com.br').replace(/\/$/, '');
 }
 
 function shopWhatsAppUrl(config, env, text) {
@@ -3237,17 +3237,17 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
   if (loc === 'en') {
     const subject = watch
       ? `Everything OK with your ${watch}${first ? `, ${first}` : ''}?`
-      : `Need any help with your Sensor Tattoo Fix order${first ? `, ${first}` : ''}?`;
+      : `Need any help with your Sensor Crash Fix order${first ? `, ${first}` : ''}?`;
     const paymentLine = paymentKind === 'pix'
-      ? 'We noticed you started checkout for the Sensor Tattoo Fix® optical lens, but payment was not completed.'
+      ? 'We noticed you started checkout for the Sensor Crash Fix® optical lens, but payment was not completed.'
       : paymentKind === 'paypal'
-        ? 'We noticed you started checkout for the Sensor Tattoo Fix® optical lens, but PayPal payment was not completed.'
-        : 'We noticed you started checkout for the Sensor Tattoo Fix® optical lens, but card payment was not completed.';
+        ? 'We noticed you started checkout for the Sensor Crash Fix® optical lens, but PayPal payment was not completed.'
+        : 'We noticed you started checkout for the Sensor Crash Fix® optical lens, but card payment was not completed.';
     return {
       subject,
       greeting: first ? `Hi, ${first}!` : 'Hi!',
       intro: watch
-        ? `I saw in our system that you were securing the Sensor Tattoo Fix® optical lens for your ${watch}, but payment was not completed.`
+        ? `I saw in our system that you were securing the Sensor Crash Fix® optical lens for your ${watch}, but payment was not completed.`
         : paymentLine,
       help: 'Every watch model has a specific sensor size — if you have any doubt about the ideal lens size or how to apply it, I am happy to help.',
       offer: paymentKind === 'pix'
@@ -3258,7 +3258,7 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
       emailLabel: 'Email',
       whatsappLabel: 'WhatsApp',
       signOff: 'Warm regards,',
-      signer: 'Fabio | Sensor Tattoo Fix®',
+      signer: 'Fabio | Sensor Crash Fix®',
       watchLine: fullWatch && fullWatch !== 'N/A' ? `Watch model: ${fullWatch}` : '',
       supportEmail,
       waUrl,
@@ -3271,13 +3271,13 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
   if (loc === 'it') {
     const subject = watch
       ? `Tutto ok con il tuo ${watch}${first ? `, ${first}` : ''}?`
-      : `Serve un aiuto con il tuo ordine Sensor Tattoo Fix${first ? `, ${first}` : ''}?`;
+      : `Serve un aiuto con il tuo ordine Sensor Crash Fix${first ? `, ${first}` : ''}?`;
     return {
       subject,
       greeting: first ? `Ciao, ${first}!` : 'Ciao!',
       intro: watch
-        ? `Ho visto nel sistema che stavi assicurando la lente ottica Sensor Tattoo Fix® per il tuo ${watch}, ma il pagamento non è stato completato.`
-        : 'Ho visto che hai iniziato il checkout per la lente ottica Sensor Tattoo Fix®, ma il pagamento non è stato completato.',
+        ? `Ho visto nel sistema che stavi assicurando la lente ottica Sensor Crash Fix® per il tuo ${watch}, ma il pagamento non è stato completato.`
+        : 'Ho visto che hai iniziato il checkout per la lente ottica Sensor Crash Fix®, ma il pagamento non è stato completato.',
       help: 'Ogni modello di orologio ha un diametro del sensore specifico — se hai dubbi sulla misura ideale della lente o sull’applicazione, sono a disposizione.',
       offer: paymentKind === 'pix'
         ? 'Se ti serve un nuovo codice PIX, un altro metodo di pagamento o conferma della misura esatta, rispondi a questa email o scrivici su WhatsApp.'
@@ -3287,7 +3287,7 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
       emailLabel: 'Email',
       whatsappLabel: 'WhatsApp',
       signOff: 'Un saluto,',
-      signer: 'Fabio | Sensor Tattoo Fix®',
+      signer: 'Fabio | Sensor Crash Fix®',
       watchLine: fullWatch && fullWatch !== 'N/A' ? `Modello orologio: ${fullWatch}` : '',
       supportEmail,
       waUrl,
@@ -3300,17 +3300,17 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
   if (loc === 'de') {
     const subject = watch
       ? `Alles in Ordnung mit Ihrer ${watch}${first ? `, ${first}` : ''}?`
-      : `Brauchen Sie Hilfe bei Ihrer Sensor Tattoo Fix Bestellung${first ? `, ${first}` : ''}?`;
+      : `Brauchen Sie Hilfe bei Ihrer Sensor Crash Fix Bestellung${first ? `, ${first}` : ''}?`;
     const paymentLine = paymentKind === 'paypal'
-      ? 'Wir haben gesehen, dass Sie den Checkout für die Sensor Tattoo Fix® Linse gestartet haben, aber die PayPal-Zahlung nicht abgeschlossen wurde.'
+      ? 'Wir haben gesehen, dass Sie den Checkout für die Sensor Crash Fix® Linse gestartet haben, aber die PayPal-Zahlung nicht abgeschlossen wurde.'
       : paymentKind === 'pix'
-        ? 'Wir haben gesehen, dass Sie den Checkout für die Sensor Tattoo Fix® Linse gestartet haben, aber die Zahlung nicht abgeschlossen wurde.'
-        : 'Wir haben gesehen, dass Sie den Checkout für die Sensor Tattoo Fix® Linse gestartet haben, aber die Kartenzahlung nicht abgeschlossen wurde.';
+        ? 'Wir haben gesehen, dass Sie den Checkout für die Sensor Crash Fix® Linse gestartet haben, aber die Zahlung nicht abgeschlossen wurde.'
+        : 'Wir haben gesehen, dass Sie den Checkout für die Sensor Crash Fix® Linse gestartet haben, aber die Kartenzahlung nicht abgeschlossen wurde.';
     return {
       subject,
       greeting: first ? `Hallo, ${first}!` : 'Hallo!',
       intro: watch
-        ? `Ich habe gesehen, dass Sie die Sensor Tattoo Fix® Linse für Ihre ${watch} sichern wollten, aber die Zahlung nicht abgeschlossen wurde.`
+        ? `Ich habe gesehen, dass Sie die Sensor Crash Fix® Linse für Ihre ${watch} sichern wollten, aber die Zahlung nicht abgeschlossen wurde.`
         : paymentLine,
       help: 'Jedes Uhrmodell hat eine bestimmte Sensorgröße — bei Fragen zur idealen Linsengröße oder zur Anwendung helfe ich gerne.',
       offer: 'Wenn Sie einen neuen Zahlungslink, eine andere Zahlungsmethode oder Hilfe bei der genauen Messung brauchen, antworten Sie hier oder schreiben Sie uns auf WhatsApp.',
@@ -3319,7 +3319,7 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
       emailLabel: 'E-Mail',
       whatsappLabel: 'WhatsApp',
       signOff: 'Herzliche Grüße,',
-      signer: 'Fabio | Sensor Tattoo Fix®',
+      signer: 'Fabio | Sensor Crash Fix®',
       watchLine: fullWatch && fullWatch !== 'N/A' ? `Uhrmodell: ${fullWatch}` : '',
       supportEmail,
       waUrl,
@@ -3332,15 +3332,15 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
   if (loc === 'es') {
     const subject = watch
       ? `¿Todo bien con tu ${watch}${first ? `, ${first}` : ''}?`
-      : `¿Necesitas ayuda con tu pedido Sensor Tattoo Fix${first ? `, ${first}` : ''}?`;
+      : `¿Necesitas ayuda con tu pedido Sensor Crash Fix${first ? `, ${first}` : ''}?`;
     const paymentLine = paymentKind === 'paypal'
-      ? 'Vimos que iniciaste el checkout de la lente Sensor Tattoo Fix®, pero el pago con PayPal no se completó.'
-      : 'Vimos que iniciaste el checkout de la lente Sensor Tattoo Fix®, pero el pago no se completó.';
+      ? 'Vimos que iniciaste el checkout de la lente Sensor Crash Fix®, pero el pago con PayPal no se completó.'
+      : 'Vimos que iniciaste el checkout de la lente Sensor Crash Fix®, pero el pago no se completó.';
     return {
       subject,
       greeting: first ? `Hola, ${first}!` : '¡Hola!',
       intro: watch
-        ? `Vi que estabas asegurando la lente Sensor Tattoo Fix® para tu ${watch}, pero el pago no se completó.`
+        ? `Vi que estabas asegurando la lente Sensor Crash Fix® para tu ${watch}, pero el pago no se completó.`
         : paymentLine,
       help: 'Cada modelo de reloj tiene un tamaño de sensor específico — si tienes dudas sobre la medida ideal o la aplicación, encantado de ayudar.',
       offer: 'Si necesitas un nuevo enlace de pago, otro método o ayuda para confirmar la medida exacta, responde aquí o escríbenos por WhatsApp.',
@@ -3349,7 +3349,7 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
       emailLabel: 'Email',
       whatsappLabel: 'WhatsApp',
       signOff: 'Un saludo,',
-      signer: 'Fabio | Sensor Tattoo Fix®',
+      signer: 'Fabio | Sensor Crash Fix®',
       watchLine: fullWatch && fullWatch !== 'N/A' ? `Modelo de reloj: ${fullWatch}` : '',
       supportEmail,
       waUrl,
@@ -3362,15 +3362,15 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
   if (loc === 'pl') {
     const subject = watch
       ? `Wszystko w porządku z Twoim ${watch}${first ? `, ${first}` : ''}?`
-      : `Potrzebujesz pomocy z zamówieniem Sensor Tattoo Fix${first ? `, ${first}` : ''}?`;
+      : `Potrzebujesz pomocy z zamówieniem Sensor Crash Fix${first ? `, ${first}` : ''}?`;
     const paymentLine = paymentKind === 'paypal'
-      ? 'Widzimy, że rozpocząłeś/aś checkout soczewki Sensor Tattoo Fix®, ale płatność PayPal nie została zakończona.'
-      : 'Widzimy, że rozpocząłeś/aś checkout soczewki Sensor Tattoo Fix®, ale płatność nie została zakończona.';
+      ? 'Widzimy, że rozpocząłeś/aś checkout soczewki Sensor Crash Fix®, ale płatność PayPal nie została zakończona.'
+      : 'Widzimy, że rozpocząłeś/aś checkout soczewki Sensor Crash Fix®, ale płatność nie została zakończona.';
     return {
       subject,
       greeting: first ? `Cześć, ${first}!` : 'Cześć!',
       intro: watch
-        ? `Widzę, że chciałeś/aś zamówić soczewkę Sensor Tattoo Fix® dla ${watch}, ale płatność nie została zakończona.`
+        ? `Widzę, że chciałeś/aś zamówić soczewkę Sensor Crash Fix® dla ${watch}, ale płatność nie została zakończona.`
         : paymentLine,
       help: 'Każdy model zegarka ma określony rozmiar czujnika — chętnie pomogę przy doborze rozmiaru lub aplikacji.',
       offer: 'Jeśli potrzebujesz nowego linku płatności, innej metody lub pomocy przy pomiarze, odpowiedz tutaj lub napisz na WhatsApp.',
@@ -3379,7 +3379,7 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
       emailLabel: 'E-mail',
       whatsappLabel: 'WhatsApp',
       signOff: 'Pozdrawiam,',
-      signer: 'Fabio | Sensor Tattoo Fix®',
+      signer: 'Fabio | Sensor Crash Fix®',
       watchLine: fullWatch && fullWatch !== 'N/A' ? `Model zegarka: ${fullWatch}` : '',
       supportEmail,
       waUrl,
@@ -3392,15 +3392,15 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
   if (loc === 'sl') {
     const subject = watch
       ? `Je vse v redu z vašo ${watch}${first ? `, ${first}` : ''}?`
-      : `Potrebujete pomoč pri naročilu Sensor Tattoo Fix${first ? `, ${first}` : ''}?`;
+      : `Potrebujete pomoč pri naročilu Sensor Crash Fix${first ? `, ${first}` : ''}?`;
     const paymentLine = paymentKind === 'paypal'
-      ? 'Opazili smo, da ste začeli blagajno za lečo Sensor Tattoo Fix®, vendar plačilo PayPal ni bilo zaključeno.'
-      : 'Opazili smo, da ste začeli blagajno za lečo Sensor Tattoo Fix®, vendar plačilo ni bilo zaključeno.';
+      ? 'Opazili smo, da ste začeli blagajno za lečo Sensor Crash Fix®, vendar plačilo PayPal ni bilo zaključeno.'
+      : 'Opazili smo, da ste začeli blagajno za lečo Sensor Crash Fix®, vendar plačilo ni bilo zaključeno.';
     return {
       subject,
       greeting: first ? `Pozdravljeni, ${first}!` : 'Pozdravljeni!',
       intro: watch
-        ? `V sistemu vidim, da ste želeli naročiti lečo Sensor Tattoo Fix® za vašo ${watch}, vendar plačilo ni bilo zaključeno.`
+        ? `V sistemu vidim, da ste želeli naročiti lečo Sensor Crash Fix® za vašo ${watch}, vendar plačilo ni bilo zaključeno.`
         : paymentLine,
       help: 'Vsak model ure ima specifično velikost senzorja — z veseljem pomagam pri izbiri velikosti leče ali namestitvi.',
       offer: 'Če potrebujete novo povezavo za plačilo, drug način plačila ali pomoč pri merjenju, odgovorite tukaj ali pišite na WhatsApp.',
@@ -3409,7 +3409,7 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
       emailLabel: 'E-pošta',
       whatsappLabel: 'WhatsApp',
       signOff: 'Lep pozdrav,',
-      signer: 'Fabio | Sensor Tattoo Fix®',
+      signer: 'Fabio | Sensor Crash Fix®',
       watchLine: fullWatch && fullWatch !== 'N/A' ? `Model ure: ${fullWatch}` : '',
       supportEmail,
       waUrl,
@@ -3421,13 +3421,13 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
 
   const subject = watch
     ? `Tudo certo com o seu ${watch}${first ? `, ${first}` : ''}?`
-    : `Dúvida sobre a lente Sensor Tattoo Fix${first ? ` — ${first}` : ''}`;
+    : `Dúvida sobre a lente Sensor Crash Fix${first ? ` — ${first}` : ''}`;
   return {
     subject,
     greeting: first ? `Olá, ${first}! Tudo bem?` : 'Olá! Tudo bem?',
     intro: watch
-      ? `Vi aqui no nosso sistema que você tentou garantir a sua Lente Óptica Sensor Tattoo Fix® para o seu ${watch}, mas o pagamento acabou não sendo concluído.`
-      : 'Vi aqui no nosso sistema que você iniciou a compra da Lente Óptica Sensor Tattoo Fix®, mas o pagamento acabou não sendo concluído.',
+      ? `Vi aqui no nosso sistema que você tentou garantir a sua Lente Óptica Sensor Crash Fix® para o seu ${watch}, mas o pagamento acabou não sendo concluído.`
+      : 'Vi aqui no nosso sistema que você iniciou a compra da Lente Óptica Sensor Crash Fix®, mas o pagamento acabou não sendo concluído.',
     help: 'Como cada modelo tem um diâmetro de sensor específico, queria saber se você ficou com alguma dúvida sobre o tamanho ideal da lente ou sobre a aplicação no seu relógio.',
     offer: paymentKind === 'pix'
       ? 'Se precisar de ajuda para confirmar a medida exata do seu modelo, quiser um novo código PIX ou preferir outro meio de pagamento, estou à disposição por aqui ou direto pelo WhatsApp.'
@@ -3437,7 +3437,7 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
     emailLabel: 'E-mail',
     whatsappLabel: 'WhatsApp',
     signOff: 'Um abraço,',
-    signer: 'Fabio | Sensor Tattoo Fix®',
+    signer: 'Fabio | Sensor Crash Fix®',
     watchLine: fullWatch && fullWatch !== 'N/A' ? `Modelo do relógio: ${fullWatch}` : '',
     supportEmail,
     waUrl,
@@ -3516,7 +3516,7 @@ function buildPendingConsultativeEmail(order, config, env, {
 }
 
 function labelPrintUrl(config, orderId) {
-  const base = (config.siteUrl || 'https://www.sensortattoofix.com.br').replace(/\/$/, '');
+  const base = (config.siteUrl || 'https://www.sensorcrashfix.com.br').replace(/\/$/, '');
   return `${base}/imprimir-etiqueta.html?order=${encodeURIComponent(orderId)}`;
 }
 
@@ -3559,7 +3559,7 @@ function paidReceiptCopy(order, config, message) {
           'Sendung verfolgen': correiosTrackingUrl(order.correiosTrackingCode, customerSiteBase(order, config))
         } : {})
       },
-      footerSite: 'sensortattoofix.com'
+      footerSite: 'sensorcrashfix.com'
     };
   }
   if (loc === 'es') {
@@ -3576,7 +3576,7 @@ function paidReceiptCopy(order, config, message) {
           'Rastrear envío': correiosTrackingUrl(order.correiosTrackingCode, customerSiteBase(order, config))
         } : {})
       },
-      footerSite: 'sensortattoofix.com'
+      footerSite: 'sensorcrashfix.com'
     };
   }
   if (loc === 'pl') {
@@ -3593,7 +3593,7 @@ function paidReceiptCopy(order, config, message) {
           'Śledź przesyłkę': correiosTrackingUrl(order.correiosTrackingCode, customerSiteBase(order, config))
         } : {})
       },
-      footerSite: 'sensortattoofix.com'
+      footerSite: 'sensorcrashfix.com'
     };
   }
   if (loc === 'sl') {
@@ -3610,7 +3610,7 @@ function paidReceiptCopy(order, config, message) {
           'Sledi pošiljki': correiosTrackingUrl(order.correiosTrackingCode, customerSiteBase(order, config))
         } : {})
       },
-      footerSite: 'sensortattoofix.com'
+      footerSite: 'sensorcrashfix.com'
     };
   }
   if (loc === 'en') {
@@ -3628,7 +3628,7 @@ function paidReceiptCopy(order, config, message) {
           'Track shipment': correiosTrackingUrl(order.correiosTrackingCode, customerSiteBase(order, config))
         } : {})
       },
-      footerSite: 'sensortattoofix.com'
+      footerSite: 'sensorcrashfix.com'
     };
   }
   if (loc === 'it') {
@@ -3646,7 +3646,7 @@ function paidReceiptCopy(order, config, message) {
           'Segui spedizione': correiosTrackingUrl(order.correiosTrackingCode, customerSiteBase(order, config))
         } : {})
       },
-      footerSite: 'sensortattoofix.com'
+      footerSite: 'sensorcrashfix.com'
     };
   }
   return {
@@ -3663,7 +3663,7 @@ function paidReceiptCopy(order, config, message) {
         'Acompanhar envio': correiosTrackingUrl(order.correiosTrackingCode, config.siteUrl)
       } : {})
     },
-    footerSite: 'sensortattoofix.com.br'
+    footerSite: 'sensorcrashfix.com.br'
   };
 }
 
@@ -3791,7 +3791,7 @@ async function maybeNotifyTrackingAvailable(env, config, order) {
   const result = await notifyCustomer(env, config, order, subject, fields, {
     html: fieldsToHtmlLocalized(
       { [customerFieldLabel(loc)]: order.nome, ...fields },
-      loc === 'pt' ? 'sensortattoofix.com.br' : 'sensortattoofix.com'
+      loc === 'pt' ? 'sensorcrashfix.com.br' : 'sensorcrashfix.com'
     ),
     text: fieldsToText({ [customerFieldLabel(loc)]: order.nome, ...fields }),
     // Cópia oculta pra loja (não vai pra "Enviados" do Gmail — chega na caixa da loja via BCC).
@@ -3817,8 +3817,8 @@ function fieldsToHtmlLocalized(fields, footerSite) {
   const rows = Object.entries(fields)
     .map(([k, v]) => `<tr><td style="padding:8px;border:1px solid #ddd;font-weight:600">${k}</td><td style="padding:8px;border:1px solid #ddd">${String(v ?? '').replace(/</g, '&lt;')}</td></tr>`)
     .join('');
-  const site = footerSite || 'sensortattoofix.com.br';
-  return `<div style="font-family:Arial,sans-serif;max-width:560px"><table style="border-collapse:collapse;width:100%">${rows}</table><p style="color:#666;font-size:12px;margin-top:16px">Sensor Tattoo Fix — ${site}</p></div>`;
+  const site = footerSite || 'sensorcrashfix.com.br';
+  return `<div style="font-family:Arial,sans-serif;max-width:560px"><table style="border-collapse:collapse;width:100%">${rows}</table><p style="color:#666;font-size:12px;margin-top:16px">Sensor Crash Fix — ${site}</p></div>`;
 }
 
 const ABANDONED_CHECKOUT_DELAY_MS = 15 * 60 * 1000;
@@ -3838,7 +3838,7 @@ function orderPendingBillingType(order) {
 function buildAbandonedCartEmail(order, config, env, { weekly = false } = {}) {
   const loc = orderCheckoutLocale(order);
   const resumeUrl = resumeOrderUrl(config, order);
-  const product = order.produto || 'Sensor Tattoo Fix';
+  const product = order.produto || 'Sensor Crash Fix';
   const total = formatOrderCharge(order, order.total);
   const nome = String(order.nome || '').trim().split(/\s+/)[0] || (isWesternIntlEmailLocale(loc) ? 'there' : loc === 'it' ? '' : '');
   let subject;
@@ -3852,60 +3852,60 @@ function buildAbandonedCartEmail(order, config, env, { weekly = false } = {}) {
       : `Your order ${order.orderId} is still reserved — finish when you're ready`;
     greeting = nome ? `Hi ${nome},` : 'Hi,';
     intro = weekly
-      ? 'A week has passed and your order is still unpaid. If you still want Sensor Tattoo Fix, finish checkout with the link below.'
+      ? 'A week has passed and your order is still unpaid. If you still want Sensor Crash Fix, finish checkout with the link below.'
       : 'We noticed your order is still pending. Your items are reserved — complete payment with the link below.';
     cta = 'Complete my order';
-    footer = 'Sensor Tattoo Fix — sensortattoofix.com';
+    footer = 'Sensor Crash Fix — sensorcrashfix.com';
   } else if (loc === 'it') {
     subject = weekly
       ? `Promemoria settimanale — ordine ${order.orderId} in attesa di pagamento`
       : `Il tuo ordine ${order.orderId} è ancora riservato — completa quando vuoi`;
     greeting = nome ? `Ciao ${nome},` : 'Ciao,';
     intro = weekly
-      ? 'È passata una settimana e il tuo ordine è ancora in attesa di pagamento. Se vuoi ancora Sensor Tattoo Fix, completa dal link qui sotto.'
+      ? 'È passata una settimana e il tuo ordine è ancora in attesa di pagamento. Se vuoi ancora Sensor Crash Fix, completa dal link qui sotto.'
       : 'Abbiamo notato che il tuo ordine è ancora in sospeso. Gli articoli sono riservati — completa il pagamento dal link qui sotto.';
     cta = 'Completa il mio ordine';
-    footer = 'Sensor Tattoo Fix — sensortattoofix.com';
+    footer = 'Sensor Crash Fix — sensorcrashfix.com';
   } else if (loc === 'de') {
     subject = weekly
       ? `Wöchentliche Erinnerung — Bestellung ${order.orderId} wartet auf Zahlung`
       : `Ihre Bestellung ${order.orderId} ist noch reserviert — schließen Sie ab, wenn Sie bereit sind`;
     greeting = nome && nome !== 'there' ? `Hallo ${nome},` : 'Hallo,';
     intro = weekly
-      ? 'Eine Woche ist vergangen und Ihre Bestellung ist noch unbezahlt. Wenn Sie Sensor Tattoo Fix noch möchten, schließen Sie den Checkout über den Link unten ab.'
+      ? 'Eine Woche ist vergangen und Ihre Bestellung ist noch unbezahlt. Wenn Sie Sensor Crash Fix noch möchten, schließen Sie den Checkout über den Link unten ab.'
       : 'Ihre Bestellung ist noch ausstehend. Die Artikel sind reserviert — schließen Sie die Zahlung über den Link unten ab.';
     cta = 'Meine Bestellung abschließen';
-    footer = 'Sensor Tattoo Fix — sensortattoofix.com';
+    footer = 'Sensor Crash Fix — sensorcrashfix.com';
   } else if (loc === 'es') {
     subject = weekly
       ? `Recordatorio semanal — pedido ${order.orderId} pendiente de pago`
       : `Tu pedido ${order.orderId} sigue reservado — finaliza cuando quieras`;
     greeting = nome && nome !== 'there' ? `Hola ${nome},` : 'Hola,';
     intro = weekly
-      ? 'Ha pasado una semana y tu pedido sigue sin pagar. Si aún quieres Sensor Tattoo Fix, completa el checkout con el enlace de abajo.'
+      ? 'Ha pasado una semana y tu pedido sigue sin pagar. Si aún quieres Sensor Crash Fix, completa el checkout con el enlace de abajo.'
       : 'Tu pedido sigue pendiente. Los artículos están reservados — completa el pago con el enlace de abajo.';
     cta = 'Completar mi pedido';
-    footer = 'Sensor Tattoo Fix — sensortattoofix.com';
+    footer = 'Sensor Crash Fix — sensorcrashfix.com';
   } else if (loc === 'pl') {
     subject = weekly
       ? `Cotygodniowe przypomnienie — zamówienie ${order.orderId} oczekuje na płatność`
       : `Twoje zamówienie ${order.orderId} jest nadal zarezerwowane — dokończ, gdy będziesz gotowy/a`;
     greeting = nome && nome !== 'there' ? `Cześć ${nome},` : 'Cześć,';
     intro = weekly
-      ? 'Minął tydzień, a zamówienie nadal nie jest opłacone. Jeśli nadal chcesz Sensor Tattoo Fix, dokończ checkout linkiem poniżej.'
+      ? 'Minął tydzień, a zamówienie nadal nie jest opłacone. Jeśli nadal chcesz Sensor Crash Fix, dokończ checkout linkiem poniżej.'
       : 'Twoje zamówienie jest nadal oczekujące. Produkty są zarezerwowane — dokończ płatność linkiem poniżej.';
     cta = 'Dokończ moje zamówienie';
-    footer = 'Sensor Tattoo Fix — sensortattoofix.com';
+    footer = 'Sensor Crash Fix — sensorcrashfix.com';
   } else if (loc === 'sl') {
     subject = weekly
       ? `Tedenski opomnik — naročilo ${order.orderId} čaka na plačilo`
       : `Vaše naročilo ${order.orderId} je še vedno rezervirano — dokončajte, ko ste pripravljeni`;
     greeting = nome && nome !== 'there' ? `Pozdravljeni ${nome},` : 'Pozdravljeni,';
     intro = weekly
-      ? 'Minil je teden in naročilo še ni plačano. Če še vedno želite Sensor Tattoo Fix, dokončajte blagajno s spodnjo povezavo.'
+      ? 'Minil je teden in naročilo še ni plačano. Če še vedno želite Sensor Crash Fix, dokončajte blagajno s spodnjo povezavo.'
       : 'Vaše naročilo je še vedno odprto. Izdelki so rezervirani — dokončajte plačilo s spodnjo povezavo.';
     cta = 'Dokončaj moje naročilo';
-    footer = 'Sensor Tattoo Fix — sensortattoofix.com';
+    footer = 'Sensor Crash Fix — sensorcrashfix.com';
   } else {
     subject = emailSubject(config, weekly ? 'abandonedWeeklySubject' : 'abandonedSubject', {
       orderId: order.orderId
@@ -3915,7 +3915,7 @@ function buildAbandonedCartEmail(order, config, env, { weekly = false } = {}) {
       ? emailMessage(config, 'abandonedWeeklyIntro')
       : emailMessage(config, 'abandonedIntro');
     cta = emailMessage(config, 'abandonedCta') || 'Finalizar meu pedido';
-    footer = 'Sensor Tattoo Fix — sensortattoofix.com.br';
+    footer = 'Sensor Crash Fix — sensorcrashfix.com.br';
   }
 
   const support = customerSupportEmail(order, config);
@@ -3957,7 +3957,7 @@ function buildAbandonedCartEmail(order, config, env, { weekly = false } = {}) {
             : 'Precisa de ajuda?';
 
   const html = `<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#1a1a1a;line-height:1.55;background:#faf8f5;padding:28px 24px;border-radius:4px">
-    <p style="font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#8a6a3a;margin:0 0 8px">Sensor Tattoo Fix</p>
+    <p style="font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#8a6a3a;margin:0 0 8px">Sensor Crash Fix</p>
     <h1 style="font-size:22px;font-weight:600;margin:0 0 16px;line-height:1.3">${escapeHtml(weekly ? h1Weekly : h1Pending)}</h1>
     <p style="margin:0 0 12px">${escapeHtml(greeting)}</p>
     <p style="margin:0 0 16px">${escapeHtml(intro)}</p>
@@ -4292,7 +4292,7 @@ function isMpSandbox(env) {
 const ML_API_BASE = 'https://api.mercadolibre.com';
 const ML_OAUTH_KV_KEY = 'ml:oauth';
 const ML_TOKEN_KV_KEY = 'ml:token';
-const ML_REDIRECT_URI = 'https://api.sensortattoofix.com.br/admin/ml/oauth/callback';
+const ML_REDIRECT_URI = 'https://api.sensorcrashfix.com.br/admin/ml/oauth/callback';
 
 function mlClientId(env) {
   return String(env.ML_CLIENT_ID || '').trim();
@@ -4511,7 +4511,7 @@ function mlOAuthHtmlPage({ title, ok, detail, code }) {
   <h1 style="font-size:1.25rem;margin:0 0 8px;color:${color}">${title}</h1>
   <p style="margin:0;color:#3f3f46">${detail}</p>
   ${codeBlock}
-  <p style="margin:1.5rem 0 0;font-size:13px;color:#71717a">Sensor Tattoo Fix · Mercado Livre (pedidos)</p>
+  <p style="margin:1.5rem 0 0;font-size:13px;color:#71717a">Sensor Crash Fix · Mercado Livre (pedidos)</p>
 </body></html>`;
 }
 
@@ -5638,7 +5638,7 @@ const AMZ_SYNC_CRON_MIN_INTERVAL_MS = 60 * 60 * 1000;
 const AMZ_SALES_INDEX_MAX = 5000;
 const AMZ_SYNC_MAX_PAGES = 40;
 const AMZ_BR_MARKETPLACE = 'A2Q3Y263D00KWC';
-const AMZ_USER_AGENT = 'SensorTattooFix/1.0 (Language=JavaScript; Platform=CloudflareWorkers)';
+const AMZ_USER_AGENT = 'SensorCrashFix/1.0 (Language=JavaScript; Platform=CloudflareWorkers)';
 
 function amzClientId(env) {
   return String(env.AMZ_LWA_CLIENT_ID || '').trim();
@@ -6118,7 +6118,7 @@ const SHOPEE_TOKEN_KV_KEY = 'shopee:token';
 const SHOPEE_SALE_PREFIX = 'sale:shopee:';
 const SHOPEE_SALES_INDEX_KEY = 'sales:shopee:index';
 const SHOPEE_SALES_META_KEY = 'sales:shopee:meta';
-const SHOPEE_REDIRECT_URI = 'https://api.sensortattoofix.com.br/admin/shopee/oauth/callback';
+const SHOPEE_REDIRECT_URI = 'https://api.sensorcrashfix.com.br/admin/shopee/oauth/callback';
 const SHOPEE_SYNC_LOOKBACK_DAYS = 90;
 const SHOPEE_SYNC_CRON_MIN_INTERVAL_MS = 60 * 60 * 1000;
 const SHOPEE_SALES_INDEX_MAX = 5000;
@@ -6310,7 +6310,7 @@ function shopeeOAuthHtmlPage({ title, ok, detail }) {
 <body style="font-family:system-ui,-apple-system,sans-serif;max-width:520px;margin:48px auto;padding:0 20px;color:#18181b;line-height:1.5">
   <h1 style="font-size:1.25rem;margin:0 0 8px;color:${color}">${title}</h1>
   <p style="margin:0;color:#3f3f46">${detail}</p>
-  <p style="margin:1.5rem 0 0;font-size:13px;color:#71717a">Sensor Tattoo Fix · Shopee (pedidos)</p>
+  <p style="margin:1.5rem 0 0;font-size:13px;color:#71717a">Sensor Crash Fix · Shopee (pedidos)</p>
 </body></html>`;
 }
 
@@ -6838,7 +6838,7 @@ function asaasHeaders(apiKey) {
     access_token: apiKey,
     Accept: 'application/json',
     'Content-Type': 'application/json',
-    'User-Agent': 'SensorTattooFix/1.0'
+    'User-Agent': 'SensorCrashFix/1.0'
   };
 }
 
@@ -7129,11 +7129,11 @@ function pixCustomerHint(order, shopPhone) {
 async function notifyWhatsApp(env, config, order, type) {
   const shopPhone = config.whatsapp || env.SHOP_WHATSAPP;
   const msgs = {
-    order_customer: `✅ *Sensor Tattoo Fix*\n\nOlá ${order.nome}!\n\nPedido: *${order.orderId}*\n${watchWhatsAppBlock(order)}\nTotal: ${formatBRL(order.total)}\nPagamento: ${order.pagamento}\n\n${pixCustomerHint(order, shopPhone)}\n\nObrigado!`,
+    order_customer: `✅ *Sensor Crash Fix*\n\nOlá ${order.nome}!\n\nPedido: *${order.orderId}*\n${watchWhatsAppBlock(order)}\nTotal: ${formatBRL(order.total)}\nPagamento: ${order.pagamento}\n\n${pixCustomerHint(order, shopPhone)}\n\nObrigado!`,
     order_shop: `🛒 *NOVO PEDIDO*\n\n${order.orderId}\n${order.nome}\n📱 ${order.telefone}\n${watchWhatsAppBlock(order)}\n🌍 ${order.pais}\n💰 ${formatBRL(order.total)}\n📦 ${order.shippingService}\n📍 ${order.endereco}`,
     paid_customer: shouldDispatchUberDelivery(order)
-      ? `✅ *Pagamento confirmado!*\n\nPedido *${order.orderId}* pago.\n\n🚗 Entrega Uber solicitada. Você receberá o link de rastreio por e-mail em instantes.\n\nSensor Tattoo Fix`
-      : `✅ *Pagamento confirmado!*\n\nPedido *${order.orderId}* pago com sucesso.\n\nSeu kit será postado em até 2 dias úteis. Você receberá o rastreio por e-mail.\n\nSensor Tattoo Fix`,
+      ? `✅ *Pagamento confirmado!*\n\nPedido *${order.orderId}* pago.\n\n🚗 Entrega Uber solicitada. Você receberá o link de rastreio por e-mail em instantes.\n\nSensor Crash Fix`
+      : `✅ *Pagamento confirmado!*\n\nPedido *${order.orderId}* pago com sucesso.\n\nSeu kit será postado em até 2 dias úteis. Você receberá o rastreio por e-mail.\n\nSensor Crash Fix`,
     paid_shop: shouldDispatchUberDelivery(order)
       ? `💰 *PAGAMENTO CONFIRMADO*\n\n${order.orderId}\nCliente: ${order.nome}\nValor: ${formatBRL(order.total)}\n${watchWhatsAppBlock(order)}\n\n🚗 Uber Direct — ${order.shippingService}\n📍 ${order.endereco}${order.uberTrackingUrl ? `\n🔗 ${order.uberTrackingUrl}` : ''}`
       : `💰 *PAGAMENTO CONFIRMADO*\n\n${order.orderId}\nCliente: ${order.nome}\nValor: ${formatBRL(order.total)}\n${watchWhatsAppBlock(order)}\n\n📮 Postar via ${order.shippingService}\n📍 ${order.endereco}`
@@ -7432,7 +7432,7 @@ async function quoteUberShippingOptions(env, config, addressParams, opts = {}) {
 function buildUberManifest(order, config) {
   const items = order.items?.length
     ? order.items
-    : [{ name: config.product?.name || 'Kit Sensor Tattoo Fix', qty: 1, price: order.valorProduto || config.product?.price || 62.9 }];
+    : [{ name: config.product?.name || 'Kit Sensor Crash Fix', qty: 1, price: order.valorProduto || config.product?.price || 62.9 }];
   return items.map((item) => ({
     name: String(item.name || 'Produto').slice(0, 100),
     quantity: Math.max(1, Number(item.qty) || 1),
@@ -7465,7 +7465,7 @@ async function createUberDeliveryForOrder(env, config, order) {
 
   const deliveryBody = {
     quote_id: quoteId,
-    pickup_name: sender.brand || sender.company || 'Sensor Tattoo Fix',
+    pickup_name: sender.brand || sender.company || 'Sensor Crash Fix',
     pickup_address: pickupAddress,
     pickup_phone_number: pickupPhone,
     dropoff_name: order.nome,
@@ -7763,7 +7763,7 @@ function isSelfTestCustomerEmail(email) {
   const e = String(email || '').trim().toLowerCase();
   // Partner (AU): real inbox — alex.teste.au@… has no mailbox.
   if (e === 'duairon@gmail.com') return true;
-  if (!e.endsWith('@sensortattoofix.com')) return false;
+  if (!e.endsWith('@sensorcrashfix.com')) return false;
   return e.includes('.teste') || e.startsWith('fabio.teste') || e.startsWith('alex.teste');
 }
 
@@ -8395,7 +8395,7 @@ function buildPrePostagemPayload(order, config, env) {
       })
     },
     itensDeclaracaoConteudo: [{
-      conteudo: String(order.produto || 'Produto Sensor Tattoo Fix').slice(0, 80),
+      conteudo: String(order.produto || 'Produto Sensor Crash Fix').slice(0, 80),
       quantidade: '1',
       valor: declaredValue.toFixed(2)
     }]
@@ -9305,7 +9305,7 @@ function superfreteBaseUrl(env) {
 }
 
 function superfreteUserAgent(env) {
-  return (env.SUPERFRETE_USER_AGENT || 'SensorTattooFix (contato@sensortattoofix.com.br)').trim();
+  return (env.SUPERFRETE_USER_AGENT || 'SensorCrashFix (contato@sensorcrashfix.com.br)').trim();
 }
 
 const SUPERFRETE_SERVICE_IDS = new Set([1, 2, 3, 17, 31, 33]);
@@ -9478,7 +9478,7 @@ function superfretePackageFromConfig(config, weightGrams) {
   };
 }
 
-function personNameForSuperfrete(name, fallback = 'Loja SensorTattooFix') {
+function personNameForSuperfrete(name, fallback = 'Loja SensorCrashFix') {
   const n = String(name || '').trim().replace(/\s+/g, ' ');
   if (!n) return fallback;
   if (!/\s/.test(n)) return `Loja ${n}`.slice(0, 50);
@@ -9860,14 +9860,14 @@ async function createSuperfreteCartForOrder(env, config, order, opts = {}) {
   }));
   if (!products.length) {
     products.push({
-      name: String(order.produto || 'SensorTattooFix').slice(0, 80),
+      name: String(order.produto || 'SensorCrashFix').slice(0, 80),
       quantity: '1',
       unitary_value: String(Number(order.valorProdutoOriginal || order.valorProduto) || 1)
     });
   }
 
   const phoneDigits = onlyDigits(order.telefone).slice(-11);
-  const storeBase = String(config.storeUrlBr || config.storeUrl || 'https://www.sensortattoofix.com.br').replace(/\/$/, '');
+  const storeBase = String(config.storeUrlBr || config.storeUrl || 'https://www.sensorcrashfix.com.br').replace(/\/$/, '');
   const payload = {
     from: {
       name: personNameForSuperfrete(sender.company || sender.brand),
@@ -9881,7 +9881,7 @@ async function createSuperfreteCartForOrder(env, config, order, opts = {}) {
       document: onlyDigits(sender.cnpj || '')
     },
     to: {
-      name: personNameForSuperfrete(order.nome, 'Cliente SensorTattooFix'),
+      name: personNameForSuperfrete(order.nome, 'Cliente SensorCrashFix'),
       address: String(order.rua || '').slice(0, 50),
       complement: String(order.complemento || '').slice(0, 20),
       number: String(order.numero || ''),
@@ -9908,7 +9908,7 @@ async function createSuperfreteCartForOrder(env, config, order, opts = {}) {
       use_insurance_value: false,
       tags: [{ tag: order.orderId, url: `${storeBase}/pedidos.html` }]
     },
-    platform: 'SensorTattooFix',
+    platform: 'SensorCrashFix',
     tag: order.orderId
   };
 
@@ -10034,7 +10034,7 @@ async function fetchExportSimulation(config, countryCode, opts = {}) {
 
   try {
     const pageRes = await fetch('https://minhasexportacoes.correios.com.br/simulacao', {
-      headers: { 'User-Agent': 'SensorTattooFix/1.0', Accept: 'text/html' }
+      headers: { 'User-Agent': 'SensorCrashFix/1.0', Accept: 'text/html' }
     });
     if (!pageRes.ok) return null;
 
@@ -10059,7 +10059,7 @@ async function fetchExportSimulation(config, countryCode, opts = {}) {
         Accept: 'application/json',
         'X-CSRF-TOKEN': csrf,
         'X-Requested-With': 'XMLHttpRequest',
-        'User-Agent': 'SensorTattooFix/1.0',
+        'User-Agent': 'SensorCrashFix/1.0',
         ...(cookies ? { Cookie: cookies } : {})
       },
       body
@@ -10521,7 +10521,7 @@ async function fetchAsaasPixQr(base, apiKey, paymentId) {
   let lastError = 'Não foi possível gerar QR Code PIX no Asaas.';
   for (let attempt = 0; attempt < 3; attempt++) {
     const qrRes = await fetch(`${base}/payments/${paymentId}/pixQrCode`, {
-      headers: { access_token: apiKey, Accept: 'application/json', 'User-Agent': 'SensorTattooFix/1.0' }
+      headers: { access_token: apiKey, Accept: 'application/json', 'User-Agent': 'SensorCrashFix/1.0' }
     });
     const text = await qrRes.text();
     let qr = null;
@@ -11993,12 +11993,12 @@ function appendBalanceDetailLines(check, detailLines) {
 function storeBaseUrl(config, env, request) {
   if (request) {
     return isComSiteRequest(request)
-      ? 'https://www.sensortattoofix.com'
-      : 'https://www.sensortattoofix.com.br';
+      ? 'https://www.sensorcrashfix.com'
+      : 'https://www.sensorcrashfix.com.br';
   }
   const storeUrl = String(env.STORE_URL || config.store?.url || '').replace(/\/$/, '');
   if (storeUrl) return storeUrl;
-  return 'https://www.sensortattoofix.com.br';
+  return 'https://www.sensorcrashfix.com.br';
 }
 
 function paypalReturnUrls(config, order, env, request) {
@@ -12832,7 +12832,7 @@ async function createPayPalCheckout(env, order, config, request, opts) {
   if (!(Number(amountValue) > 0)) {
     throw new Error('PayPal amount must be greater than zero.');
   }
-  const description = `Sensor Tattoo Fix — ${order.orderId}`.slice(0, 127);
+  const description = `Sensor Crash Fix — ${order.orderId}`.slice(0, 127);
   const payload = {
     intent: 'CAPTURE',
     purchase_units: [{
@@ -12848,7 +12848,7 @@ async function createPayPalCheckout(env, order, config, request, opts) {
   if (!options.embedded) {
     const { return_url, cancel_url } = paypalReturnUrls(config, order, env, request);
     payload.application_context = {
-      brand_name: 'Sensor Tattoo Fix',
+      brand_name: 'Sensor Crash Fix',
       locale,
       landing_page: 'NO_PREFERENCE',
       user_action: 'PAY_NOW',
@@ -12857,7 +12857,7 @@ async function createPayPalCheckout(env, order, config, request, opts) {
     };
   } else {
     payload.application_context = {
-      brand_name: 'Sensor Tattoo Fix',
+      brand_name: 'Sensor Crash Fix',
       locale,
       landing_page: 'NO_PREFERENCE',
       user_action: 'PAY_NOW'
@@ -12956,7 +12956,7 @@ async function createMercadoPagoPixPayment(env, order, config) {
   const notificationUrl = (env.MP_WEBHOOK_URL || '').trim() || undefined;
   const body = {
     transaction_amount: Number(order.total.toFixed(2)),
-    description: `${config.product?.name || 'Kit Sensor Tattoo Fix'} — ${order.orderId}`.slice(0, 200),
+    description: `${config.product?.name || 'Kit Sensor Crash Fix'} — ${order.orderId}`.slice(0, 200),
     payment_method_id: 'pix',
     external_reference: order.orderId,
     payer
@@ -13007,7 +13007,7 @@ async function createMercadoPagoCheckoutPro(env, order, config, request) {
 
   const body = {
     items: [{
-      title: String(order.produto || config.product?.name || 'Sensor Tattoo Fix').slice(0, 256),
+      title: String(order.produto || config.product?.name || 'Sensor Crash Fix').slice(0, 256),
       quantity: 1,
       unit_price: Number(order.total.toFixed(2)),
       currency_id: 'BRL'
@@ -13023,7 +13023,7 @@ async function createMercadoPagoCheckoutPro(env, order, config, request) {
       pending: `${base}/comprar.html?${pendingParams}`
     },
     auto_return: 'approved',
-    statement_descriptor: 'SENSOR TATTOO FIX',
+    statement_descriptor: 'SENSOR CRASH FIX',
     payment_methods: {
       excluded_payment_types: [{ id: 'ticket' }, { id: 'atm' }]
     }
@@ -13122,7 +13122,7 @@ function fieldsToHtml(fields) {
   const rows = Object.entries(fields)
     .map(([k, v]) => `<tr><td style="padding:8px;border:1px solid #ddd;font-weight:600">${k}</td><td style="padding:8px;border:1px solid #ddd">${String(v ?? '').replace(/</g, '&lt;')}</td></tr>`)
     .join('');
-  return `<div style="font-family:Arial,sans-serif;max-width:560px"><table style="border-collapse:collapse;width:100%">${rows}</table><p style="color:#666;font-size:12px;margin-top:16px">Sensor Tattoo Fix — sensortattoofix.com.br</p></div>`;
+  return `<div style="font-family:Arial,sans-serif;max-width:560px"><table style="border-collapse:collapse;width:100%">${rows}</table><p style="color:#666;font-size:12px;margin-top:16px">Sensor Crash Fix — sensorcrashfix.com.br</p></div>`;
 }
 
 function fieldsToText(fields) {
@@ -13453,15 +13453,15 @@ function passwordResetLocaleFromRequest(request, bodyLocale) {
   if (hay.includes('/es/') || hay.includes('lang=es')) return 'es';
   if (hay.includes('/pl/') || hay.includes('lang=pl')) return 'pl';
   if (hay.includes('/sl/') || hay.includes('lang=sl')) return 'sl';
-  if (hay.includes('sensortattoofix.com') && !hay.includes('.com.br')) return 'en';
+  if (hay.includes('sensorcrashfix.com') && !hay.includes('.com.br')) return 'en';
   return 'pt';
 }
 
 function passwordResetSiteBase(locale, config) {
   if (locale === 'en' || locale === 'it' || locale === 'de' || locale === 'es' || locale === 'pl' || locale === 'sl') {
-    return 'https://www.sensortattoofix.com';
+    return 'https://www.sensorcrashfix.com';
   }
-  return String(config?.siteUrl || 'https://www.sensortattoofix.com.br').replace(/\/$/, '');
+  return String(config?.siteUrl || 'https://www.sensorcrashfix.com.br').replace(/\/$/, '');
 }
 
 function passwordResetUrl(locale, config, token) {
@@ -13480,53 +13480,53 @@ function passwordResetUrl(locale, config, token) {
 function passwordResetEmailCopy(locale, resetUrl) {
   if (locale === 'en') {
     return {
-      subject: 'Reset your Sensor Tattoo Fix password',
+      subject: 'Reset your Sensor Crash Fix password',
       html: `<div style="font-family:Arial,sans-serif;max-width:560px;line-height:1.5;color:#222">
         <h2 style="margin:0 0 12px">Password reset</h2>
-        <p>We received a request to reset your Sensor Tattoo Fix account password.</p>
+        <p>We received a request to reset your Sensor Crash Fix account password.</p>
         <p><a href="${resetUrl}" style="display:inline-block;background:#ffc107;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Choose a new password</a></p>
         <p style="font-size:13px;color:#666">This link expires in 1 hour. If you didn’t ask for this, you can ignore this email.</p>
         <p style="font-size:12px;color:#888;word-break:break-all">${resetUrl}</p>
       </div>`,
-      text: `Reset your Sensor Tattoo Fix password:\n${resetUrl}\n\nThis link expires in 1 hour.`
+      text: `Reset your Sensor Crash Fix password:\n${resetUrl}\n\nThis link expires in 1 hour.`
     };
   }
   if (locale === 'it') {
     return {
-      subject: 'Reimposta la password di Sensor Tattoo Fix',
+      subject: 'Reimposta la password di Sensor Crash Fix',
       html: `<div style="font-family:Arial,sans-serif;max-width:560px;line-height:1.5;color:#222">
         <h2 style="margin:0 0 12px">Reimposta password</h2>
-        <p>Abbiamo ricevuto una richiesta per reimpostare la password del tuo account Sensor Tattoo Fix.</p>
+        <p>Abbiamo ricevuto una richiesta per reimpostare la password del tuo account Sensor Crash Fix.</p>
         <p><a href="${resetUrl}" style="display:inline-block;background:#ffc107;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Scegli una nuova password</a></p>
         <p style="font-size:13px;color:#666">Il link scade tra 1 ora. Se non hai richiesto tu, ignora questa email.</p>
         <p style="font-size:12px;color:#888;word-break:break-all">${resetUrl}</p>
       </div>`,
-      text: `Reimposta la password di Sensor Tattoo Fix:\n${resetUrl}\n\nIl link scade tra 1 ora.`
+      text: `Reimposta la password di Sensor Crash Fix:\n${resetUrl}\n\nIl link scade tra 1 ora.`
     };
   }
   if (locale === 'sl') {
     return {
-      subject: 'Ponastavitev gesla Sensor Tattoo Fix',
+      subject: 'Ponastavitev gesla Sensor Crash Fix',
       html: `<div style="font-family:Arial,sans-serif;max-width:560px;line-height:1.5;color:#222">
         <h2 style="margin:0 0 12px">Ponastavitev gesla</h2>
-        <p>Prejeli smo zahtevo za ponastavitev gesla vašega računa Sensor Tattoo Fix.</p>
+        <p>Prejeli smo zahtevo za ponastavitev gesla vašega računa Sensor Crash Fix.</p>
         <p><a href="${resetUrl}" style="display:inline-block;background:#ffc107;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Izberite novo geslo</a></p>
         <p style="font-size:13px;color:#666">Povezava poteče v 1 uri. Če tega niste zahtevali, prezrite to sporočilo.</p>
         <p style="font-size:12px;color:#888;word-break:break-all">${resetUrl}</p>
       </div>`,
-      text: `Ponastavitev gesla Sensor Tattoo Fix:\n${resetUrl}\n\nPovezava poteče v 1 uri.`
+      text: `Ponastavitev gesla Sensor Crash Fix:\n${resetUrl}\n\nPovezava poteče v 1 uri.`
     };
   }
   return {
-    subject: 'Redefinir senha — Sensor Tattoo Fix',
+    subject: 'Redefinir senha — Sensor Crash Fix',
     html: `<div style="font-family:Arial,sans-serif;max-width:560px;line-height:1.5;color:#222">
       <h2 style="margin:0 0 12px">Redefinir senha</h2>
-      <p>Recebemos um pedido para redefinir a senha da sua conta Sensor Tattoo Fix.</p>
+      <p>Recebemos um pedido para redefinir a senha da sua conta Sensor Crash Fix.</p>
       <p><a href="${resetUrl}" style="display:inline-block;background:#ffc107;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Escolher nova senha</a></p>
       <p style="font-size:13px;color:#666">Este link expira em 1 hora. Se você não pediu isso, ignore este e-mail.</p>
       <p style="font-size:12px;color:#888;word-break:break-all">${resetUrl}</p>
     </div>`,
-    text: `Redefina sua senha Sensor Tattoo Fix:\n${resetUrl}\n\nEste link expira em 1 hora.`
+    text: `Redefina sua senha Sensor Crash Fix:\n${resetUrl}\n\nEste link expira em 1 hora.`
   };
 }
 
@@ -14601,7 +14601,7 @@ async function trackGa4Purchase(env, order, payment) {
   const measurementId = (env.GA4_MEASUREMENT_ID || 'G-TFLZHJG9RN').trim();
   const value = Number(payment?.value ?? order.total) || 0;
   const paymentType = order.pagamento || payment?.billingType || 'unknown';
-  const itemName = order.produto || 'Kit Sensor Tattoo Fix';
+  const itemName = order.produto || 'Kit Sensor Crash Fix';
 
   const p = String(paymentType).toLowerCase();
   const forma = p.includes('paypal') ? 'paypal'
@@ -15427,7 +15427,7 @@ async function handleStripePaymentIntent(request, env, origin, orderId) {
       customer: customerId,
       'automatic_payment_methods[enabled]': 'true',
       'metadata[orderId]': order.orderId,
-      description: `Sensor Tattoo Fix — ${order.orderId}`.slice(0, 500),
+      description: `Sensor Crash Fix — ${order.orderId}`.slice(0, 500),
       receipt_email: String(order.email || '').slice(0, 500)
     });
     order.stripePaymentIntentId = pi.id;
@@ -15476,7 +15476,7 @@ async function handleStripeCheckoutSession(request, env, origin, orderId) {
   const productLabel = (
     (Array.isArray(order.items) && (order.items[0]?.name || order.items[0]?.nome))
     || order.produtoNome
-    || 'Sensor Tattoo Fix'
+    || 'Sensor Crash Fix'
   ).toString().slice(0, 120);
   const localeRaw = String(body.locale || order.checkoutLocale || 'en').trim().toLowerCase();
   // .com never uses pt-BR for Stripe UI/receipts — account default is Brazilian.
@@ -15497,7 +15497,7 @@ async function handleStripeCheckoutSession(request, env, origin, orderId) {
       'line_items[0][price_data][product_data][name]': productLabel,
       'metadata[orderId]': order.orderId,
       'payment_intent_data[metadata][orderId]': order.orderId,
-      'payment_intent_data[description]': `Sensor Tattoo Fix — ${order.orderId}`.slice(0, 500)
+      'payment_intent_data[description]': `Sensor Crash Fix — ${order.orderId}`.slice(0, 500)
     });
     order.stripeCheckoutSessionId = session.id;
     order.paymentProvider = 'stripe';
@@ -17370,7 +17370,7 @@ function buildTestOrder(config, to, overrides = {}) {
     email: to,
     telefone: overrides.telefone || (isIntl ? '+61 400 000 000' : '(11) 99999-9999'),
     smartwatch: overrides.smartwatch || 'Garmin Fenix',
-    produto: config.product?.name || 'Kit Sensor Tattoo Fix',
+    produto: config.product?.name || 'Kit Sensor Crash Fix',
     total: price + (isIntl ? 40 : 11.9),
     valorProduto: price,
     frete: isIntl ? 40 : 11.9,
@@ -18202,14 +18202,14 @@ function buildMonthlyReportHtml(report) {
       ${paymentRows}
     </table>
 
-    <p style="color:#666;font-size:12px;margin:0">Sensor Tattoo Fix — sensortattoofix.com.br · gerado automaticamente</p>
+    <p style="color:#666;font-size:12px;margin:0">Sensor Crash Fix — sensorcrashfix.com.br · gerado automaticamente</p>
   </div>`;
 }
 
 function monthlyClicksReportSubject(config, monthName, year) {
   let subject = emailSubject(config, 'monthlyReportSubject', { month: monthName, year: String(year) });
   if (!/cliques/i.test(subject)) {
-    subject = `Relatório de cliques — ${monthName}/${year} — Sensor Tattoo Fix`;
+    subject = `Relatório de cliques — ${monthName}/${year} — Sensor Crash Fix`;
   }
   return subject;
 }
@@ -18475,7 +18475,7 @@ function buildMonthlySalesReportHtml(report) {
     <h3 style="margin:24px 0 8px;font-size:16px">Consolidado</h3>
     <p style="margin:0 0 24px"><strong>${total.count}</strong> vendas · bruto <strong>${formatBRL(total.gross)}</strong> · líquido <strong>${formatBRL(total.net)}</strong></p>
 
-    <p style="color:#666;font-size:12px;margin:0">Sensor Tattoo Fix — sensortattoofix.com.br · gerado automaticamente</p>
+    <p style="color:#666;font-size:12px;margin:0">Sensor Crash Fix — sensorcrashfix.com.br · gerado automaticamente</p>
   </div>`;
 }
 

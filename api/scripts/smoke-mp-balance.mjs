@@ -2,9 +2,9 @@
 /**
  * Smoke test: MP saldo com pendente > 0 via API (produção ou wrangler dev).
  * Uso: ADMIN_PASSWORD=... node api/scripts/smoke-mp-balance.mjs
- *      API_BASE=https://api.sensortattoofix.com.br (default)
+ *      API_BASE=https://api.sensorcrashfix.com.br (default)
  */
-const API_BASE = (process.env.API_BASE || 'https://api.sensortattoofix.com.br').replace(/\/$/, '');
+const API_BASE = (process.env.API_BASE || 'https://api.sensorcrashfix.com.br').replace(/\/$/, '');
 const ADMIN_USER = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
 

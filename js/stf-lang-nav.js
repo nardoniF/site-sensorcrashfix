@@ -3,8 +3,8 @@
  * .com = EN (/) + IT/DE/ES/PL/SL (/it/, /de/, /es/, /pl/, /sl/)  |  .com.br = PT + /en/ + /it/ + /de/ + /es/ + /pl/ + /sl/
  */
 (function () {
-  const BR = 'https://www.sensortattoofix.com.br';
-  const COM = 'https://www.sensortattoofix.com';
+  const BR = 'https://www.sensorcrashfix.com.br';
+  const COM = 'https://www.sensorcrashfix.com';
   const INTL_LANGS = ['it', 'de', 'es', 'pl', 'sl'];
   const ALL_LANGS = ['pt', 'en', 'it', 'de', 'es', 'pl', 'sl'];
 
@@ -24,14 +24,14 @@
 
   function isCom() {
     const h = host();
-    return h === 'sensortattoofix.com' || h === 'www.sensortattoofix.com';
+    return h === 'sensorcrashfix.com' || h === 'www.sensorcrashfix.com';
   }
 
   function isBr() {
-    return host().includes('sensortattoofix.com.br');
+    return host().includes('sensorcrashfix.com.br');
   }
 
-  if (host() === 'sensortattoofix.com') {
+  if (host() === 'sensorcrashfix.com') {
     location.replace(COM + location.pathname + location.search + location.hash);
     return;
   }

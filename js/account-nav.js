@@ -49,7 +49,7 @@ window.STF_ACCOUNT = (function () {
   }
 
   function isIntlHost() {
-    return !!(window.STF_SITE?.isIntlHost?.() || /\.sensortattoofix\.com$/i.test(location.hostname));
+    return !!(window.STF_SITE?.isIntlHost?.() || /\.sensorcrashfix\.com$/i.test(location.hostname));
   }
 
   function navT(key, fallbackPt, fallbackEn) {

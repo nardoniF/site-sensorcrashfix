@@ -2134,7 +2134,7 @@
     const blob = await res.blob();
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'pedidos-sensortattoofix.csv';
+    a.download = 'pedidos-sensorcrashfix.csv';
     a.click();
   });
     $('btn-export-json')?.addEventListener('click', async () => {
@@ -2147,7 +2147,7 @@
       const blob = await res.blob();
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'pedidos-sensortattoofix.json';
+      a.download = 'pedidos-sensorcrashfix.json';
       a.click();
     });
     $('btn-logout-pedidos')?.addEventListener('click', () => {

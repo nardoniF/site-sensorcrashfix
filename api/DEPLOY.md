@@ -1,4 +1,7 @@
-# Deploy completo — Sensor Tattoo Fix API
+# Deploy completo — Sensor Crash Fix API
+
+> Domínios/Worker públicos são Crash Fix. Secrets de pagamento/frete: **reutilize os mesmos do Tattoo** (Asaas, Mercado Pago, Correios, etc.). Detalhes: [docs/interno/DEPLOY-SENSOR-CRASH-FIX.md](../docs/interno/DEPLOY-SENSOR-CRASH-FIX.md).
+
 
 > **Manual completo (URLs, secrets, frete, Correios):** [documentacao.html](../documentacao.html) no site ou aba **Documentação** no admin.
 
@@ -57,26 +60,26 @@ Opcional:
 ```bash
 wrangler secret put PAYPAL_SANDBOX            # "true" para testes sandbox
 wrangler secret put PAYPAL_SELF_TEST            # "true" = PayPal Live cobra R$ 0,01 (remover após teste)
-wrangler secret put STORE_URL                 # https://www.sensortattoofix.com (retorno PayPal/Stripe no .com)
+wrangler secret put STORE_URL                 # https://www.sensorcrashfix.com (retorno PayPal/Stripe no .com)
 ```
 
 Opcional (outros):
 
 ```bash
 wrangler secret put MP_WEBHOOK_URL
-# Ex.: https://sensortattoofix-payments.xxx.workers.dev/webhook/mercadopago
+# Ex.: https://sensorcrashfix-payments.xxx.workers.dev/webhook/mercadopago
 ```
 
 ### Mercado Livre (vendas — app `pedidosml`)
 
 Separado do Mercado Pago (checkout). Redirect URI no app ML:
 
-`https://api.sensortattoofix.com.br/admin/ml/oauth/callback`
+`https://api.sensorcrashfix.com.br/admin/ml/oauth/callback`
 
 Autorizar (gera `code=` e o callback troca por tokens):
 
 ```
-https://auth.mercadolivre.com.br/authorization?response_type=code&client_id=SEU_CLIENT_ID&redirect_uri=https://api.sensortattoofix.com.br/admin/ml/oauth/callback
+https://auth.mercadolivre.com.br/authorization?response_type=code&client_id=SEU_CLIENT_ID&redirect_uri=https://api.sensorcrashfix.com.br/admin/ml/oauth/callback
 ```
 
 O refresh token rotaciona a cada renovação e fica em `STORE_KV` (`ml:oauth`). `ML_REFRESH_TOKEN` é só bootstrap / fallback.
@@ -127,7 +130,7 @@ Docs: [superfrete.readme.io](https://superfrete.readme.io/) · Token: painel →
 wrangler secret put SUPERFRETE_TOKEN          # Bearer do ambiente (prod ou sandbox)
 wrangler secret put SUPERFRETE_SANDBOX        # opcional: "true" → sandbox.superfrete.com
 # wrangler secret put SUPERFRETE_AUTO_CHECKOUT  # opcional: "false" desliga pagamento automático (padrão: ligado, só com SALDO)
-# wrangler secret put SUPERFRETE_USER_AGENT    # opcional (padrão: SensorTattooFix + e-mail)
+# wrangler secret put SUPERFRETE_USER_AGENT    # opcional (padrão: SensorCrashFix + e-mail)
 ```
 
 No admin → Frete, ative as modalidades **PAC / SEDEX / Mini Envios (Super Frete)** (ou adicione Jadlog/Loggi/J&T). Sem `SUPERFRETE_TOKEN` as opções não aparecem no checkout. Pedido pago cria etiqueta no carrinho Super Frete e, por padrão, tenta pagar com **saldo da carteira** (`SUPERFRETE_AUTO_CHECKOUT=false` desliga). Cartão cadastrado no painel Super Frete **não** é usado pelo checkout da API.
@@ -138,7 +141,7 @@ No admin → Frete, ative as modalidades **PAC / SEDEX / Mini Envios (Super Fret
 wrangler deploy
 ```
 
-Copie a URL (ex: `https://sensortattoofix-payments.xxx.workers.dev`) em:
+Copie a URL (ex: `https://sensorcrashfix-payments.xxx.workers.dev`) em:
 
 - `js/config-bootstrap.js` → `configApiUrl`
 
@@ -173,8 +176,8 @@ O cliente também confirma ao voltar do PayPal para `/comprar.html` (captura aut
 No [Stripe Dashboard](https://dashboard.stripe.com/):
 
 1. Ative **Apple Pay** e **Google Pay** em Settings → Payment methods
-2. Verifique o domínio `www.sensortattoofix.com` em Settings → Apple Pay
-3. Crie webhook → **URL:** `https://api.sensortattoofix.com.br/webhook/stripe`
+2. Verifique o domínio `www.sensorcrashfix.com` em Settings → Apple Pay
+3. Crie webhook → **URL:** `https://api.sensorcrashfix.com.br/webhook/stripe`
 4. Evento: `payment_intent.succeeded`
 
 Secrets no Worker:
@@ -183,7 +186,7 @@ Secrets no Worker:
 wrangler secret put STRIPE_SECRET_KEY
 wrangler secret put STRIPE_PUBLISHABLE_KEY
 wrangler secret put STRIPE_WEBHOOK_SECRET
-wrangler secret put STORE_URL    # https://www.sensortattoofix.com
+wrangler secret put STORE_URL    # https://www.sensorcrashfix.com
 ```
 
 Checkout `.com` cobra em **USD** (conversão via `/fx/rate`). Mercado BR (`.com.br`) permanece inalterado.
@@ -195,7 +198,7 @@ No [PayPal Developer](https://developer.paypal.com/) → app Live:
 - Ative **JavaScript SDK** (embedded buttons)
 - Opcional: Apple Pay / Google Pay via PayPal SDK
 - `PAYPAL_CLIENT_ID` já usado no Worker
-- Return URL: `STORE_URL=https://www.sensortattoofix.com`
+- Return URL: `STORE_URL=https://www.sensorcrashfix.com`
 
 ## 8e. Tabela fallback internacional
 

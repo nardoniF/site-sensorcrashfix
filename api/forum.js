@@ -117,7 +117,7 @@ async function getPublishedReplyCounts(env) {
     const replies = await getReplies(env, id);
     for (const r of replies) {
       if (r.status !== 'published') continue;
-      if (r.official || r.author?.isOfficial || r.author?.username === 'sensortattoofix') continue;
+      if (r.official || r.author?.isOfficial || r.author?.username === 'sensorcrashfix') continue;
       const author = remapSeedAuthor(r.author) || r.author;
       if (author?.userId) counts.set(author.userId, (counts.get(author.userId) || 0) + 1);
       if (author?.username) counts.set(author.username, (counts.get(author.username) || 0) + 1);
@@ -137,7 +137,7 @@ function authorReplyCount(author, replyCounts) {
 function decorateAuthorSuper(author, replyCounts) {
   if (!author) return author;
   const a = remapSeedAuthor(author);
-  if (a.isOfficial || a.username === 'sensortattoofix') return a;
+  if (a.isOfficial || a.username === 'sensorcrashfix') return a;
   const n = authorReplyCount(a, replyCounts);
   const isSuper = !!(a.isSuperCollaborator || n >= SUPER_COLLAB_MIN_REPLIES);
   return { ...a, isSuperCollaborator: isSuper, publishedReplyTotal: n };
@@ -385,8 +385,8 @@ async function requireForumWriter(env, deps, request) {
 
 const OFFICIAL_AUTHOR = {
   userId: 'seed-official-stf',
-  nome: 'Sensor Tattoo Fix',
-  username: 'sensortattoofix',
+  nome: 'Sensor Crash Fix',
+  username: 'sensorcrashfix',
   avatarId: 'shield',
   avatarEmoji: '🛡️',
   isOfficial: true
@@ -399,7 +399,7 @@ const OFFICIAL_AUTHOR = {
 const SEED_AUTHORS = {
   'seed-guga': { userId: 'seed-guga', nome: 'Guga', username: 'guga97', avatarId: 'ink', avatarEmoji: '🖋️' },
   'seed-kai': { userId: 'seed-kai', nome: 'Kai', username: 'inkedrunner', avatarId: 'bolt', avatarEmoji: '⚡' },
-  'seed-dudu': { userId: 'seed-dudu', nome: 'Dudu', username: 'dudutattoo', avatarId: 'watch', avatarEmoji: '⌚' },
+  'seed-dudu': { userId: 'seed-dudu', nome: 'Dudu', username: 'duducracked sensor', avatarId: 'watch', avatarEmoji: '⌚' },
   'seed-bruno': { userId: 'seed-bruno', nome: 'Bruno', username: 'brn_move', avatarId: 'bolt', avatarEmoji: '⚡' },
   'seed-felipe': { userId: 'seed-felipe', nome: 'Felipe', username: 'felipecardio', avatarId: 'heart', avatarEmoji: '❤️' },
   'seed-diego': { userId: 'seed-diego', nome: 'Diego', username: 'diego_runs', avatarId: 'bolt', avatarEmoji: '⚡' },
@@ -417,7 +417,7 @@ const SEED_AUTHORS = {
   'seed-ricardo': { userId: 'seed-ricardo', nome: 'Ricardo', username: 'ricao_sp', avatarId: 'watch', avatarEmoji: '⌚' },
   'seed-leandro': { userId: 'seed-leandro', nome: 'Leandro', username: 'leo_tri', avatarId: 'bolt', avatarEmoji: '⚡' },
   'seed-gustavo': { userId: 'seed-gustavo', nome: 'Gustavo', username: 'gustavo77', avatarId: 'star', avatarEmoji: '⭐' },
-  'seed-joao': { userId: 'seed-joao', nome: 'João', username: 'joaotattoo', avatarId: 'rocket', avatarEmoji: '🚀' },
+  'seed-joao': { userId: 'seed-joao', nome: 'João', username: 'joaocracked sensor', avatarId: 'rocket', avatarEmoji: '🚀' },
   'seed-thiago': { userId: 'seed-thiago', nome: 'Thiago', username: 'tgsport', avatarId: 'heart', avatarEmoji: '❤️' },
   'seed-lucas': { userId: 'seed-lucas', nome: 'Lucas', username: 'lucas_amz', avatarId: 'moon', avatarEmoji: '🌙' },
   'seed-eduardo': { userId: 'seed-eduardo', nome: 'Eduardo', username: 'dudu_clock', avatarId: 'watch', avatarEmoji: '⌚' },
@@ -458,7 +458,7 @@ function remapSeedAuthor(author) {
   if (!author) return author;
   const mapped = SEED_AUTHORS[author.userId];
   if (mapped) return { ...mapped };
-  if (author.isOfficial || author.username === 'sensortattoofix' || author.userId === OFFICIAL_AUTHOR.userId) {
+  if (author.isOfficial || author.username === 'sensorcrashfix' || author.userId === OFFICIAL_AUTHOR.userId) {
     return { ...OFFICIAL_AUTHOR };
   }
   if (author.isTester && String(author.userId || '').startsWith('seed-')) {
@@ -686,7 +686,7 @@ async function refreshSeedAuthors(env) {
         thread.author = { ...seedAuthor };
         changed = true;
       }
-    } else if (thread.author?.userId === OFFICIAL_AUTHOR.userId || thread.author?.username === 'sensortattoofix') {
+    } else if (thread.author?.userId === OFFICIAL_AUTHOR.userId || thread.author?.username === 'sensorcrashfix') {
       thread.author = { ...OFFICIAL_AUTHOR };
       changed = true;
     } else if (thread.author && thread.author.isTester) {
@@ -712,7 +712,7 @@ async function refreshSeedAuthors(env) {
           repliesChanged = true;
           repliesTouched += 1;
         }
-      } else if (r.official || r.author?.isOfficial || r.author?.username === 'sensortattoofix') {
+      } else if (r.official || r.author?.isOfficial || r.author?.username === 'sensorcrashfix') {
         const cur = r.author || {};
         if (cur.username !== OFFICIAL_AUTHOR.username || cur.isTester) {
           r.author = { ...OFFICIAL_AUTHOR };
@@ -747,7 +747,7 @@ async function refreshSeedAuthors(env) {
 }
 
 
-/** Injeta respostas @sensortattoofix em threads seed que ainda não as têm. */
+/** Injeta respostas @sensorcrashfix em threads seed que ainda não as têm. */
 async function ensureOfficialReplies(env) {
   const meta = await getForumMeta(env);
   if (meta.officialRepliesAt) return meta;
@@ -757,10 +757,10 @@ async function ensureOfficialReplies(env) {
     const thread = await getThread(env, id);
     if (!thread || !thread.seeded) continue;
     const replies = await getReplies(env, id);
-    if (replies.some((r) => r.author?.username === 'sensortattoofix' || r.official || r.author?.isOfficial)) continue;
+    if (replies.some((r) => r.author?.username === 'sensorcrashfix' || r.official || r.author?.isOfficial)) continue;
     const reply = {
       id: crypto.randomUUID(),
-      body: 'Olá! Aqui é a equipe @sensortattoofix. Obrigado por participar da comunidade — estamos acompanhando e ajudamos no que precisar. 🖤',
+      body: 'Olá! Aqui é a equipe @sensorcrashfix. Obrigado por participar da comunidade — estamos acompanhando e ajudamos no que precisar. 🖤',
       status: 'published',
       createdAt: new Date().toISOString(),
       author: { ...OFFICIAL_AUTHOR },
@@ -931,13 +931,13 @@ export async function handleForumRoute(request, env, origin, deps) {
     const index = await getThreadIndex(env);
     const urls = [];
     const hub = [
-      { loc: 'https://www.sensortattoofix.com.br/comunidade.html', lang: 'pt' },
-      { loc: 'https://www.sensortattoofix.com/comunidade.html', lang: 'en' },
-      { loc: 'https://www.sensortattoofix.com/it/comunidade.html', lang: 'it' },
-      { loc: 'https://www.sensortattoofix.com/de/comunidade.html', lang: 'de' },
-      { loc: 'https://www.sensortattoofix.com/es/comunidade.html', lang: 'es' },
-      { loc: 'https://www.sensortattoofix.com/pl/comunidade.html', lang: 'pl' },
-      { loc: 'https://www.sensortattoofix.com/sl/comunidade.html', lang: 'sl' }
+      { loc: 'https://www.sensorcrashfix.com.br/comunidade.html', lang: 'pt' },
+      { loc: 'https://www.sensorcrashfix.com/comunidade.html', lang: 'en' },
+      { loc: 'https://www.sensorcrashfix.com/it/comunidade.html', lang: 'it' },
+      { loc: 'https://www.sensorcrashfix.com/de/comunidade.html', lang: 'de' },
+      { loc: 'https://www.sensorcrashfix.com/es/comunidade.html', lang: 'es' },
+      { loc: 'https://www.sensorcrashfix.com/pl/comunidade.html', lang: 'pl' },
+      { loc: 'https://www.sensorcrashfix.com/sl/comunidade.html', lang: 'sl' }
     ];
     for (const h of hub) {
       urls.push(`  <url>\n    <loc>${h.loc}</loc>\n    <changefreq>daily</changefreq>\n    <priority>0.75</priority>\n  </url>`);
@@ -949,13 +949,13 @@ export async function handleForumRoute(request, env, origin, deps) {
       const lastmod = (t.updatedAt || t.createdAt || '').slice(0, 10);
       // Same topic in every locale — one slug, all public URLs.
       const locs = [
-        `https://www.sensortattoofix.com.br/comunidade.html?t=${slug}`,
-        `https://www.sensortattoofix.com/comunidade.html?t=${slug}`,
-        `https://www.sensortattoofix.com/it/comunidade.html?t=${slug}`,
-        `https://www.sensortattoofix.com/de/comunidade.html?t=${slug}`,
-        `https://www.sensortattoofix.com/es/comunidade.html?t=${slug}`,
-        `https://www.sensortattoofix.com/pl/comunidade.html?t=${slug}`,
-        `https://www.sensortattoofix.com/sl/comunidade.html?t=${slug}`
+        `https://www.sensorcrashfix.com.br/comunidade.html?t=${slug}`,
+        `https://www.sensorcrashfix.com/comunidade.html?t=${slug}`,
+        `https://www.sensorcrashfix.com/it/comunidade.html?t=${slug}`,
+        `https://www.sensorcrashfix.com/de/comunidade.html?t=${slug}`,
+        `https://www.sensorcrashfix.com/es/comunidade.html?t=${slug}`,
+        `https://www.sensorcrashfix.com/pl/comunidade.html?t=${slug}`,
+        `https://www.sensorcrashfix.com/sl/comunidade.html?t=${slug}`
       ];
       for (const loc of locs) {
         urls.push(`  <url>\n    <loc>${loc}</loc>${lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : ''}\n    <changefreq>weekly</changefreq>\n    <priority>0.65</priority>\n  </url>`);
@@ -988,10 +988,10 @@ export async function handleForumRoute(request, env, origin, deps) {
     const reqLang = normalizeForumLang(url.searchParams.get('lang') || 'pt');
     const loc = localizedThreadFields(thread, reqLang);
     const pageUrl = reqLang === 'en'
-      ? `https://www.sensortattoofix.com/comunidade.html?t=${encodeURIComponent(thread.slug || thread.id)}`
+      ? `https://www.sensorcrashfix.com/comunidade.html?t=${encodeURIComponent(thread.slug || thread.id)}`
       : reqLang === 'it'
-        ? `https://www.sensortattoofix.com/it/comunidade.html?t=${encodeURIComponent(thread.slug || thread.id)}`
-        : `https://www.sensortattoofix.com.br/comunidade.html?t=${encodeURIComponent(thread.slug || thread.id)}`;
+        ? `https://www.sensorcrashfix.com/it/comunidade.html?t=${encodeURIComponent(thread.slug || thread.id)}`
+        : `https://www.sensorcrashfix.com.br/comunidade.html?t=${encodeURIComponent(thread.slug || thread.id)}`;
     const esc = (s) => String(s || '')
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
@@ -1010,17 +1010,17 @@ export async function handleForumRoute(request, env, origin, deps) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index, follow">
-  <title>${esc(loc.title)} | Comunidade | Sensor Tattoo Fix</title>
+  <title>${esc(loc.title)} | Comunidade | Sensor Crash Fix</title>
   <meta name="description" content="${desc}">
   <link rel="canonical" href="${esc(pageUrl)}">
   <meta property="og:title" content="${esc(loc.title)}">
   <meta property="og:description" content="${desc}">
   <meta property="og:url" content="${esc(pageUrl)}">
-  <link rel="stylesheet" href="https://www.sensortattoofix.com.br/style.css">
+  <link rel="stylesheet" href="https://www.sensorcrashfix.com.br/style.css">
 </head>
 <body class="checkout-page forum-page">
   <main class="container forum-container">
-    <p><a href="${esc(pageUrl)}">Sensor Tattoo Fix — Comunidade</a></p>
+    <p><a href="${esc(pageUrl)}">Sensor Crash Fix — Comunidade</a></p>
     <article>
       <h1>${esc(loc.title)}</h1>
       <p class="admin-meta">@${esc(thread.author?.username || 'anon')} · <time datetime="${esc(thread.createdAt || '')}">${esc(thread.createdAt || '')}</time></p>
@@ -1373,7 +1373,7 @@ export async function handleForumRoute(request, env, origin, deps) {
         delete meta.officialRepliesAt;
         await saveForumMeta(env, meta);
         meta = await ensureOfficialReplies(env);
-        parts.push(`Respostas @sensortattoofix checadas (${meta.officialRepliesAdded || 0} tópico(s)).`);
+        parts.push(`Respostas @sensorcrashfix checadas (${meta.officialRepliesAdded || 0} tópico(s)).`);
       } catch (err) {
         parts.push(`Falha nas respostas oficiais: ${err.message}`);
       }

@@ -1,8 +1,8 @@
-# Manual de operação — Sensor Tattoo Fix
+# Manual de operação — Sensor Crash Fix
 
 Versão para o repositório (espelho de [documentacao.html](../documentacao.html)).
 
-**Acesso no navegador:** https://www.sensortattoofix.com.br/documentacao.html (exige login do admin)  
+**Acesso no navegador:** https://www.sensorcrashfix.com.br/documentacao.html (exige login do admin)  
 **No admin:** aba **Documentação** ou link na barra superior.
 
 ---
@@ -11,12 +11,12 @@ Versão para o repositório (espelho de [documentacao.html](../documentacao.html
 
 | O quê | URL |
 |-------|-----|
-| Site | https://www.sensortattoofix.com.br |
+| Site | https://www.sensorcrashfix.com.br |
 | Checkout | /comprar.html |
 | Admin | /admin.html |
 | Pedidos | /pedidos.html |
 | Documentação | /documentacao.html |
-| GitHub | https://github.com/nardoniF/site-sensortattoofix |
+| GitHub | https://github.com/nardoniF/site-sensorcrashfix |
 
 Login admin/pedidos: `admin` + secret `ADMIN_PASSWORD` (mín. 16 caracteres — ver rotação abaixo).
 
@@ -38,7 +38,7 @@ Opcional: troque também o usuário padrão `admin` em `api/wrangler.toml` (`ADM
 
 ## API (Worker)
 
-- Base: `https://sensortattoofix-payments.sensortattoofix.workers.dev`
+- Base: `https://sensorcrashfix-payments.sensorcrashfix.workers.dev`
 - Config em `js/config-bootstrap.js`
 - Cloudflare: https://dash.cloudflare.com
 
@@ -227,9 +227,9 @@ Ative em **todas** as contas abaixo. Prefira **app autenticador** (Google Authen
 2. Ícone do perfil (canto superior direito) → **My Profile** → **Authentication**.
 3. Ative **Two-Factor Authentication** com app autenticador.
 4. Salve os **backup codes** da Cloudflare.
-5. Confirme que a conta que tem o Worker `sensortattoofix-payments` e o KV está protegida.
+5. Confirme que a conta que tem o Worker `sensorcrashfix-payments` e o KV está protegida.
 
-### Registro.br (domínio sensortattoofix.com.br)
+### Registro.br (domínio sensorcrashfix.com.br)
 
 1. Login em https://registro.br
 2. Menu do domínio → **Segurança** / configurações da conta.

@@ -46,9 +46,9 @@ const NAME_PREFIX = {
     ['Trail Loop Nylon Comfort Band — ', 'Pasek Trail Loop z nylonu — '],
   ],
   sl: [
-    ['SensorTattooFix Optical Lens', 'Optična leča SensorTattooFix'],
-    ['SensorTattooFix Smartband Lens', 'Leča SensorTattooFix za pametno zapestnico'],
-    ['Sensor Tattoo Fix Lens', 'Optična leča Sensor Tattoo Fix'],
+    ['SensorCrashFix Optical Lens', 'Optična leča SensorCrashFix'],
+    ['SensorCrashFix Smartband Lens', 'Leča SensorCrashFix za pametno zapestnico'],
+    ['Sensor Crash Fix Lens', 'Optična leča Sensor Crash Fix'],
     ['Alpine Loop Braided Nylon Band — ', 'Trak Alpine Loop iz pletenega najlona — '],
     ['Luxury Stainless Steel Link Band — ', 'Luksuzna jeklena zapestnica — '],
     ['Magnetic Milanese Steel Band — ', 'Magnetna milanska jeklena zapestnica — '],
@@ -74,11 +74,11 @@ const DESC_BY_TYPE = {
     sl: 'Udobje in stil v eni pošiljki — primerno za vašo pametno uro.',
   },
   default: {
-    de: 'Offizielles Zubehör von Sensor Tattoo Fix.',
-    es: 'Accesorio oficial de Sensor Tattoo Fix.',
-    pl: 'Oficjalne akcesorium Sensor Tattoo Fix.',
-    sl: 'Uradna oprema Sensor Tattoo Fix.',
-    intlLens: 'Zasnovana za optične senzorje pametnih ur na tetovirani koži.',
+    de: 'Offizielles Zubehör von Sensor Crash Fix.',
+    es: 'Accesorio oficial de Sensor Crash Fix.',
+    pl: 'Oficjalne akcesorium Sensor Crash Fix.',
+    sl: 'Uradna oprema Sensor Crash Fix.',
+    intlLens: 'Zasnovana za optične senzorje pametnih ur na počenem tipalu.',
   },
 };
 

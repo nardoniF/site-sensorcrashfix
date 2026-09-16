@@ -16,14 +16,14 @@ const ALL_PAGES = ['index.html', ...SHELL_PAGES];
 /** Palavras/frases que NÃO devem aparecer no HTML estático daquele locale. */
 const FORBIDDEN = {
   de: {
-    en: ['Official Store', 'Peace between ink and silicon', 'Your cart', 'Your details', 'Discount code', 'Secure checkout', 'Payment method', 'Place order', 'Loading products', 'Back to sign in', 'Select country', 'Sign in', 'Create account'],
+    en: ['Official Store', 'Protection again after a cracked sensor', 'Your cart', 'Your details', 'Discount code', 'Secure checkout', 'Payment method', 'Place order', 'Loading products', 'Back to sign in', 'Select country', 'Sign in', 'Create account'],
     pt: ['Minha conta', 'Comprar agora', 'Loja oficial', 'Esqueci a senha'],
     es: ['Tienda Oficial', 'Tu carrito', 'Tus datos'],
     pl: ['Oficjalny Sklep', 'Twoje dane'],
     sl: ['Uradna trgovina', 'Vaši podatki', 'Košarica'],
   },
   es: {
-    en: ['Official Store', 'Peace between ink and silicon', 'Your cart', 'Your details', 'Discount code', 'Secure checkout', 'Payment method', 'Place order', 'Loading products', 'Back to sign in'],
+    en: ['Official Store', 'Protection again after a cracked sensor', 'Your cart', 'Your details', 'Discount code', 'Secure checkout', 'Payment method', 'Place order', 'Loading products', 'Back to sign in'],
     de: ['Offizieller Shop', 'Das Problem', 'Jetzt kaufen', 'Über uns', 'Warenkorb', 'Ihre Daten'],
     pt: ['Minha conta', 'Loja oficial'],
     pl: ['Oficjalny Sklep'],
@@ -37,7 +37,7 @@ const FORBIDDEN = {
     sl: ['Uradna trgovina'],
   },
   sl: {
-    en: ['Official Store', 'Peace between ink and silicon', 'Your cart', 'Your details', 'Discount code', 'Secure checkout', 'Payment method', 'Place order', 'Loading products', 'Back to sign in', 'Buy Now'],
+    en: ['Official Store', 'Protection again after a cracked sensor', 'Your cart', 'Your details', 'Discount code', 'Secure checkout', 'Payment method', 'Place order', 'Loading products', 'Back to sign in', 'Buy Now'],
     de: ['Das Problem', 'Notlösungen', 'Jetzt kaufen', 'Über uns', 'Gründer', 'Häufig gestellte Fragen', 'Offizieller Shop', 'Warenkorb', 'Ihre Daten', 'Zurück', 'Anmelden', 'Passcode alle', 'Smartwatch fragt', 'Harmonie zwischen', 'Menü öffnen', 'Vollständiger Name', 'Nachricht senden', 'Was sagen die Leute', 'Ein globales Problem'],
     pt: ['Minha conta', 'Comprar', 'Loja oficial'],
     es: ['Tienda Oficial', 'Comprar ahora'],
@@ -78,7 +78,7 @@ function scan(rel, lang, html) {
     }
   }
   if (rel.endsWith('loja.html') || rel.endsWith('onde-comprar.html')) {
-    const META_EN = ['Buy the Sensor Tattoo Fix lens', "Watch asks for passcode, won't read heart rate"];
+    const META_EN = ['Buy the Sensor Crash Fix lens', "Watch asks for passcode, won't read heart rate"];
     for (const w of META_EN) {
       if (html.includes(w)) found.push({ src: 'en-meta', w });
     }

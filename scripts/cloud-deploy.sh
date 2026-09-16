@@ -12,11 +12,11 @@ if [[ -z "${CLOUDFLARE_API_TOKEN:-}" ]]; then
   fi
 fi
 
-echo "→ Deploy sensortattoofix-payments (API)…"
+echo "→ Deploy sensorcrashfix-payments (API)…"
 cd "$ROOT/api"
 npx wrangler@4 deploy --config wrangler.toml
 
-echo "→ Deploy stf-com-proxy (site .com / .com.br)…"
+echo "→ Deploy scf-com-proxy (site .com / .com.br)…"
 cd "$ROOT/cloudflare"
 npx wrangler@4 deploy --config wrangler.toml
 

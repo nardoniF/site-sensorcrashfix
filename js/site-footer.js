@@ -1,7 +1,7 @@
 window.STF_FOOTER = (function () {
   const INFO = {
-    brandPlain: 'Sensor Tattoo Fix',
-    brandTitle: 'Sensor <span class="logo-accent">Tattoo Fix</span>',
+    brandPlain: 'Sensor Crash Fix',
+    brandTitle: 'Sensor <span class="logo-accent">Crash Fix</span>',
     company: '3N20 Soluções Tecnológicas',
     cnpj: '29.321.223/0001-32',
     patentNational: 'BR 20 2026 010875 3',
@@ -10,9 +10,9 @@ window.STF_FOOTER = (function () {
   };
 
   const SOCIAL = [
-    { id: 'instagram', href: 'https://www.instagram.com/sensortattoofix', icon: 'fab fa-instagram', label: 'Instagram' },
-    { id: 'tiktok', href: 'https://www.tiktok.com/@sensortattoofixofc', icon: 'fab fa-tiktok', label: 'TikTok' },
-    { id: 'youtube', href: 'https://www.youtube.com/@Sensortattoofix-ofc', icon: 'fab fa-youtube', label: 'YouTube' },
+    { id: 'instagram', href: 'https://www.instagram.com/sensorcrashfix', icon: 'fab fa-instagram', label: 'Instagram' },
+    { id: 'tiktok', href: 'https://www.tiktok.com/@sensorcrashfix', icon: 'fab fa-tiktok', label: 'TikTok' },
+    { id: 'youtube', href: 'https://www.youtube.com/@Sensorcrashfix', icon: 'fab fa-youtube', label: 'YouTube' },
     { id: 'facebook', href: 'https://www.facebook.com/profile.php?id=61588858629597', icon: 'fab fa-facebook', label: 'Facebook' }
   ];
 
@@ -94,7 +94,7 @@ window.STF_FOOTER = (function () {
   }
 
   function isIntlHost() {
-    return !!(window.STF_SITE?.isIntlHost?.() || /\.sensortattoofix\.com$/i.test(location.hostname));
+    return !!(window.STF_SITE?.isIntlHost?.() || /\.sensorcrashfix\.com$/i.test(location.hostname));
   }
 
   function detectLang() {

@@ -1,6 +1,6 @@
 /**
  * Storefront proxy — serves pinned GitHub commit via jsDelivr.
- * - .com / www.sensortattoofix.com → EN (/) + IT/DE/ES/PL/SL (/it/, /de/, …)
+ * - .com / www.sensorcrashfix.com → EN (/) + IT/DE/ES/PL/SL (/it/, /de/, …)
  * - .com.br → Portuguese (repo root); paths /de|/es|/pl|/sl|/it|/en redirecionam ao .com
  * - First-hit: cookie / CF-IPCountry / Accept-Language → redirect para idioma nativo
  * IMPORTANT: pin COMMIT after each push so domains are not stuck on stale @main cache.
@@ -13,20 +13,20 @@ import {
   isBotUserAgent
 } from './geo-lang.js';
 
-const COMMIT = '68291762f54704c561b035c64b4b76341a9d1928';
+const COMMIT = '9c08b61bc131d305900955f35b999c3e7407505b';
 const ORIGINS = [
-  'https://cdn.jsdelivr.net/gh/nardoniF/site-sensortattoofix@' + COMMIT,
-  'https://raw.githubusercontent.com/nardoniF/site-sensortattoofix/' + COMMIT,
+  'https://cdn.jsdelivr.net/gh/nardoniF/site-sensorcrashfix@' + COMMIT,
+  'https://raw.githubusercontent.com/nardoniF/site-sensorcrashfix/' + COMMIT,
 ];
-const COM_ORIGIN = 'https://www.sensortattoofix.com';
-const BR_ORIGIN = 'https://www.sensortattoofix.com.br';
-const API_ORIGIN = 'https://sensortattoofix-payments.sensortattoofix.workers.dev';
+const COM_ORIGIN = 'https://www.sensorcrashfix.com';
+const BR_ORIGIN = 'https://www.sensorcrashfix.com.br';
+const API_ORIGIN = 'https://sensorcrashfix-payments.sensorcrashfix.workers.dev';
 const STF_COM_HOST_JS =
-  "(function(){if(location.hostname==='sensortattoofix.com'){location.replace('https://www.sensortattoofix.com'+location.pathname+location.search+location.hash);}})();";
+  "(function(){if(location.hostname==='sensorcrashfix.com'){location.replace('https://www.sensorcrashfix.com'+location.pathname+location.search+location.hash);}})();";
 
 function isBrHost(hostname) {
   const h = String(hostname || '').toLowerCase();
-  return h === 'sensortattoofix.com.br' || h === 'www.sensortattoofix.com.br';
+  return h === 'sensorcrashfix.com.br' || h === 'www.sensorcrashfix.com.br';
 }
 
 /** Map legacy image URLs (/site/*, /produtos/*, /img/*) to /images/... */
@@ -38,7 +38,7 @@ function rewriteLegacyImagePath(pathname) {
 
   const brandHome = {
     '/site/logo.jpg': '/images/brand/logo.jpg',
-    '/site/sensortattoofix.jpg': '/images/brand/sensortattoofix.jpg',
+    '/site/sensorcrashfix.jpg': '/images/brand/sensorcrashfix.jpg',
     '/site/relogio_home.jpg': '/images/home/relogio_home.jpg',
     '/site/relogio_home2.jpg': '/images/home/relogio_home2.jpg',
     '/site/relogio_sensor.jpg': '/images/home/relogio_sensor.jpg',
@@ -197,7 +197,7 @@ function mimeFor(pathname) {
 
 async function fetchOrigin(originPath, search) {
   const qs = search && search.length > 1 ? search : '?v=' + COMMIT.slice(0, 7);
-  const headers = { Accept: '*/*', 'User-Agent': 'stf-com-proxy', 'Cache-Control': 'no-cache' };
+  const headers = { Accept: '*/*', 'User-Agent': 'scf-com-proxy', 'Cache-Control': 'no-cache' };
   let last = null;
   for (const origin of ORIGINS) {
     const useQs = origin.includes('jsdelivr.net') ? qs : '';
@@ -279,10 +279,10 @@ export default {
     }
 
     // Apex → www
-    if (url.hostname === 'sensortattoofix.com' || url.hostname === 'sensortattoofix.com.br') {
-      url.hostname = url.hostname === 'sensortattoofix.com.br'
-        ? 'www.sensortattoofix.com.br'
-        : 'www.sensortattoofix.com';
+    if (url.hostname === 'sensorcrashfix.com' || url.hostname === 'sensorcrashfix.com.br') {
+      url.hostname = url.hostname === 'sensorcrashfix.com.br'
+        ? 'www.sensorcrashfix.com.br'
+        : 'www.sensorcrashfix.com';
     }
 
     const br = isBrHost(url.hostname);
@@ -291,13 +291,13 @@ export default {
     if (br) {
       const m = url.pathname.match(/^\/(de|es|pl|sl|it)(\/.*)?$/i);
       if (m) {
-        const dest = new URL(`https://www.sensortattoofix.com/${m[1].toLowerCase()}${m[2] || '/'}`);
+        const dest = new URL(`https://www.sensorcrashfix.com/${m[1].toLowerCase()}${m[2] || '/'}`);
         dest.search = url.search;
         return Response.redirect(dest.toString(), 301);
       }
       if (url.pathname === '/en' || url.pathname.startsWith('/en/')) {
         const rest = url.pathname.replace(/^\/en/, '') || '/';
-        const dest = new URL(`https://www.sensortattoofix.com${rest}`);
+        const dest = new URL(`https://www.sensorcrashfix.com${rest}`);
         dest.search = url.search;
         return Response.redirect(dest.toString(), 301);
       }

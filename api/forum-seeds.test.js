@@ -8,7 +8,7 @@ function packs() {
   };
   return buildForumSeedLangPacks({
     A: new Proxy(A, { get: (t, k) => t[k] || { userId: k, username: String(k).replace('seed-', ''), nome: String(k) } }),
-    officialReply: (body, createdAt) => ({ body, createdAt, official: true, author: { username: 'sensortattoofix' } }),
+    officialReply: (body, createdAt) => ({ body, createdAt, official: true, author: { username: 'sensorcrashfix' } }),
     iso: (mins) => new Date(Date.now() - mins * 60000).toISOString()
   });
 }

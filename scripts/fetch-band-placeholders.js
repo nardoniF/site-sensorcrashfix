@@ -25,7 +25,7 @@ const PLACEHOLDERS = {
 function download(url, dest) {
   return new Promise((resolve, reject) => {
     const file = fs.createWriteStream(dest);
-    https.get(url, { headers: { 'User-Agent': 'SensorTattooFix/1.0' } }, (res) => {
+    https.get(url, { headers: { 'User-Agent': 'SensorCrashFix/1.0' } }, (res) => {
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
         file.close();
         return download(res.headers.location, dest).then(resolve, reject);
