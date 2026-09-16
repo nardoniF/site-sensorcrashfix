@@ -1,6 +1,6 @@
 # Deploy completo — Sensor Crash Fix API
 
-> Domínios/Worker públicos são Crash Fix. Secrets de pagamento/frete: **reutilize os mesmos do Tattoo** (Asaas, Mercado Pago, Correios, etc.). Detalhes: [docs/interno/DEPLOY-SENSOR-CRASH-FIX.md](../docs/interno/DEPLOY-SENSOR-CRASH-FIX.md).
+> Domínios/Worker públicos são Crash Fix. Secrets de pagamento/frete: **reutilize os mesmos do Tattoo** (Asaas, Mercado Pago, Correios, etc.). **Dados (KV/D1): nunca compartilhe com o Tattoo.** Detalhes: [docs/interno/DEPLOY-SENSOR-CRASH-FIX.md](../docs/interno/DEPLOY-SENSOR-CRASH-FIX.md).
 
 
 > **Manual completo (URLs, secrets, frete, Correios):** [documentacao.html](../documentacao.html) no site ou aba **Documentação** no admin.
@@ -12,15 +12,27 @@
 - **WhatsApp** para cliente e loja ao criar pedido e ao confirmar pagamento
 - **Base de pedidos** listável em `/pedidos.html`
 
-## 1. Cloudflare Worker
+## 1. Cloudflare Worker + dados isolados
 
 ```bash
 cd api
 npm i -g wrangler   # ou: npx wrangler
 wrangler login
-wrangler kv namespace create STORE_KV
-# Cole o id em wrangler.toml → [[kv_namespaces]] → id
+# Cria KV scf-store + D1 scf-data exclusivos, atualiza wrangler.toml e faz deploy:
+npm run isolate-store
 ```
+
+Se preferir manual:
+
+```bash
+wrangler kv namespace create scf-store
+wrangler d1 create scf-data
+# Cole os ids em wrangler.toml → STORE_KV id + CLICKS_DB database_id + CF_D1_DATABASE_ID
+wrangler d1 migrations apply scf-data --remote
+wrangler deploy
+```
+
+Se o Admin Crash listar pedidos do Tattoo, o `STORE_KV` / D1 ainda estão nos IDs do Tattoo — rode `npm run isolate-store`.
 
 ## 2. Secrets obrigatórios
 

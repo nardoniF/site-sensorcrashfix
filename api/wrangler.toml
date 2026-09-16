@@ -1,18 +1,19 @@
 name = "sensorcrashfix-payments"
 # Domínio/Worker públicos = Crash Fix.
-# Infra de ops: reutilizar a MESMA conta Cloudflare e os MESMOS secrets
-# (Mercado Pago, Asaas, Correios, PayPal/Stripe, Z-API, Resend, etc.) do Tattoo.
-# KV/D1 abaixo apontam para os namespaces da conta (pode ser os mesmos do Tattoo
-# se quiser um único Admin/pedidos; ou crie scf-* novos se preferir separar dados).
+# Secrets de pagamento/frete: mesmos PROVEDORES do Tattoo (valores copiados no Worker Crash).
+# DADOS: KV + D1 DEVEM ser exclusivos do Crash — NÃO reutilizar IDs do Tattoo.
+# Se o Admin Crash listar pedidos do Tattoo, rode: npm run isolate-store
 main = "worker.js"
 compatibility_date = "2024-01-01"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = true
 
+# ⚠️ id abaixo ainda é o STORE_KV do Tattoo até rodar isolate-store (causa pedidos misturados).
 [[kv_namespaces]]
 binding = "STORE_KV"
 id = "4184c034aab941e58ce5cc1e3abaecdc"
 
+# ⚠️ database_id abaixo pode estar compartilhado/legado — isolate-store cria scf-data novo.
 [[d1_databases]]
 binding = "CLICKS_DB"
 database_name = "scf-clicks"
@@ -29,7 +30,7 @@ binding = "AI"
 ADMIN_USERNAME = "admin"
 # Conta Cloudflare (dashboard URL) — uso real de KV no Admin via GraphQL Analytics
 CF_ACCOUNT_ID = "80ab4f6ff1553d2ee530c0880edce594"
-# D1 scf-clicks — cota de rows no banner Admin → Cliques
+# D1 scf-clicks — cota de rows no banner Admin → Cliques (atualize após isolate-store)
 CF_D1_DATABASE_ID = "94ffffbb-dd85-41f1-8301-521f19b75f75"
 # Shopee Open Platform — app SensorCrashFix Pedidos (Live Partner ID)
 SHOPEE_PARTNER_ID = "2041463"
