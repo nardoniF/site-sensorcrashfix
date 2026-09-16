@@ -42,3 +42,19 @@ Legenda: **OK** = alinhado ao Crash · **SUBSTITUÍDO** = trocado nesta entrega 
 5. Depoimentos de clientes Crash (vedação / batimento após trinco)
 
 Arquivos antigos com tattoo ficaram só locais em `images/_archive_tattoo_do_not_use/` (não versionar).
+
+
+## Fotos reais do cliente (16/09/2026)
+
+Usadas no site (pasta `images/crash-pack/` + slots públicos):
+
+| Arte | Uso |
+|------|-----|
+| Logo SENSOR CRASHFIX | `images/brand/logo.jpg` (ícone nav) + `logo-wordmark.png` |
+| Kit embalagem | hero produto / kit-gallery embalagem / brand |
+| Aplicação no sensor rachado | `relogio_home.jpg`, galeria aplicação |
+| Antes/depois rachado→reparado | `kit-06-antes-depois` etc. |
+| Benefícios (ícones) | `relogio_sensor.jpg`, benefícios galeria |
+| Kit completo fora da embalagem | `kit-profissional.png` |
+
+**Não usada:** arte do conteúdo do kit com texto "TattooFix" (leak da outra marca).
