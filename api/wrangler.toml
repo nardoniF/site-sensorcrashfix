@@ -35,8 +35,10 @@ CF_D1_DATABASE_ID = "94ffffbb-dd85-41f1-8301-521f19b75f75"
 SHOPEE_PARTNER_ID = "2041463"
 
 [triggers]
-# 59 2 * * * = 23:59 America/Sao_Paulo (UTC−3) — relatórios mensais no último dia do mês
-crons = ["0 */4 * * *", "0 3,15 * * *", "30 2 * * *", "59 2 * * *"]
+# Conta Free = máx. 5 cron triggers no TOTAL (Tattoo já consome a cota).
+# Deixe vazio no Crash até Workers Paid ou até liberar slots no Tattoo.
+# crons = ["0 */4 * * *", "0 3,15 * * *", "30 2 * * *", "59 2 * * *"]
+crons = []
 
 # Secrets (wrangler secret put NOME):
 # CF_API_TOKEN         — Account Analytics Read (banner KV real no Admin)
