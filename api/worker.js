@@ -15677,7 +15677,12 @@ async function handleMercadoPagoWebhook(request, env, origin) {
 }
 
 async function handleLogin(request, env, origin) {
-  if (!env.ADMIN_PASSWORD) return json({ error: 'ADMIN_PASSWORD não configurado.' }, 500, origin);
+  // Secret é por Worker: o do Tattoo (sensortattoofix-payments) NÃO vale aqui.
+  if (!env.ADMIN_PASSWORD) {
+    return json({
+      error: 'ADMIN_PASSWORD não configurado neste Worker (sensorcrashfix-payments). No Mac, em api/: npx wrangler secret put ADMIN_PASSWORD --config wrangler.toml'
+    }, 500, origin);
+  }
 
   const ip = clientIp(request);
   const lock = await getLoginLock(env, ip, 'admin');

@@ -35,20 +35,42 @@ No `api/wrangler.toml` desta branch:
 # 1) DNS Cloudflare: zonas sensorcrashfix.com.br e .com
 #    A/CNAME Pages → GitHub Pages; api → Worker route
 
-# 2) Secrets (iguais aos do Tattoo)
+# 2) Secrets — OBRIGATÓRIO no Worker Crash (não herda do Tattoo)
+#    Cada Worker tem o próprio conjunto. Mesmos valores do Tattoo, mas
+#    rode de novo com o wrangler.toml deste repo (name = sensorcrashfix-payments).
 cd api
-npx wrangler secret put MP_ACCESS_TOKEN
-npx wrangler secret put ASAAS_API_KEY
+npx wrangler secret put ADMIN_PASSWORD --config wrangler.toml
+npx wrangler secret put MP_ACCESS_TOKEN --config wrangler.toml
+npx wrangler secret put ASAAS_API_KEY --config wrangler.toml
 # …demais secrets já usados no Tattoo
 
+# Conferir (deve listar ADMIN_PASSWORD; não mostra o valor):
+npx wrangler secret list --config wrangler.toml
+
 # 3) Deploy API
-npx wrangler deploy
+npx wrangler deploy --config wrangler.toml
 
 # 4) Proxy .com/.com.br (pin COMMIT após cada push)
 cd ../cloudflare
 # edite COMMIT em scf-com-proxy.js para o SHA do push
 npx wrangler deploy
 ```
+
+### Se o admin diz “ADMIN_PASSWORD não configurado”
+
+Isso vem do Worker **`sensorcrashfix-payments`** (`api.sensorcrashfix.com.br`), não do Tattoo.
+Configurar a senha só no `sensortattoofix-payments` (ou em Pages → Environment variables) **não** resolve o Crash.
+
+```bash
+cd api
+npx wrangler whoami
+# Confirme que o name no wrangler.toml é sensorcrashfix-payments
+npx wrangler secret list --config wrangler.toml
+npx wrangler secret put ADMIN_PASSWORD --config wrangler.toml
+# cole a MESMA senha do Tattoo; Enter
+```
+
+No Dashboard: **Workers & Pages → sensorcrashfix-payments → Settings → Variables and Secrets → Encrypt → ADMIN_PASSWORD**.
 
 ## Produto (posicionamento)
 
