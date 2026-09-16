@@ -8,10 +8,10 @@ compatibility_date = "2024-01-01"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = true
 
-# ⚠️ id abaixo ainda é o STORE_KV do Tattoo até rodar isolate-store (causa pedidos misturados).
+# STORE_KV exclusivo Crash (scf-store). D1 ainda pode estar legado até isolate-store completar.
 [[kv_namespaces]]
 binding = "STORE_KV"
-id = "4184c034aab941e58ce5cc1e3abaecdc"
+id = "c28d9f1e89dd41348ad7080b02d63054"
 
 # ⚠️ database_id abaixo pode estar compartilhado/legado — isolate-store cria scf-data novo.
 [[d1_databases]]
