@@ -25,16 +25,16 @@ function patchHtml(html, lang) {
     /<script src="\.\.\/js\/stf-i18n-it-overrides\.js[^"]*"><\/script>\s*/g,
     `<script src="../js/${lang.override}?v=1"></script>\n    `
   );
-  const base = `https://www.sensortattoofix.com.br/${lang.code}`;
-  out = out.replace(/https:\/\/www\.sensortattoofix\.com(\/[^"']*)?/g, (m) => {
+  const base = `https://www.sensorcrashfix.com.br/${lang.code}`;
+  out = out.replace(/https:\/\/www\.sensorcrashfix\.com(\/[^"']*)?/g, (m) => {
     if (m.includes('.com.br')) return m;
-    return base + (m.replace('https://www.sensortattoofix.com', '') || '/');
+    return base + (m.replace('https://www.sensorcrashfix.com', '') || '/');
   });
   out = out.replace(/hreflang="en"/g, `hreflang="${lang.htmlLang}"`);
   out = out.replace(/<link rel="alternate" hreflang="it"/g,
-    `<link rel="alternate" hreflang="de" href="https://www.sensortattoofix.com/de/"\n    />\n    <link rel="alternate" hreflang="es" href="https://www.sensortattoofix.com/es/"\n    />\n    <link rel="alternate" hreflang="pl" href="https://www.sensortattoofix.com/pl/"\n    />\n    <link rel="alternate" hreflang="it"`);
+    `<link rel="alternate" hreflang="de" href="https://www.sensorcrashfix.com/de/"\n    />\n    <link rel="alternate" hreflang="es" href="https://www.sensorcrashfix.com/es/"\n    />\n    <link rel="alternate" hreflang="pl" href="https://www.sensorcrashfix.com/pl/"\n    />\n    <link rel="alternate" hreflang="it"`);
   // Canonical host for new locales: .com (intl), not .com.br
-  out = out.replace(/https:\/\/www\.sensortattoofix\.com\.br\/(de|es|pl|sl)\b/g, 'https://www.sensortattoofix.com/$1');
+  out = out.replace(/https:\/\/www\.sensorcrashfix\.com\.br\/(de|es|pl|sl)\b/g, 'https://www.sensorcrashfix.com/$1');
 
   if (!out.includes(`hreflang="${lang.htmlLang}"`)) {
     out = out.replace('</head>', `    <link rel="alternate" hreflang="${lang.htmlLang}" href="${base}/">\n</head>`);

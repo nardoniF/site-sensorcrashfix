@@ -9,7 +9,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 /** @type {Record<string, Array<[string, string]>>} */
 const RULES = {
   de: [
-    ['content="Official Sensor Tattoo Fix checkout — Stripe, PayPal, Apple Pay, Google Pay. Tracked shipping in USD."', 'content="Offizieller Sensor Tattoo Fix Checkout — PayPal, Karten, Sendungsverfolgung in USD."'],
+    ['content="Official Sensor Crash Fix checkout — Stripe, PayPal, Apple Pay, Google Pay. Tracked shipping in USD."', 'content="Offizieller Sensor Crash Fix Checkout — PayPal, Karten, Sendungsverfolgung in USD."'],
     ['Discount code', 'Rabattcode'],
     ['placeholder="e.g. SAVE10"', 'placeholder="z. B. MARIA10"'],
     ['>Apply</button>', '>Anwenden</button>'],
@@ -65,7 +65,7 @@ const RULES = {
     ['<strong>Credit card</strong>', '<strong>Kreditkarte</strong>'],
     ['<strong>Card / Apple Pay / Google Pay</strong><small>Secure checkout via Stripe · charged in USD</small>', '<strong>Karte / Apple Pay / Google Pay</strong><small>Sichere Zahlung über Stripe · Abrechnung in USD</small>'],
     ['<small>PayPal balance, card or debit · USD</small>', '<small>PayPal-Guthaben, Karte oder Lastschrift · USD</small>'],
-    ['Charged in USD · tracked shipping · confirmation by email. Questions? <a href="mailto:support@sensortattoofix.com">Email us</a>.', 'Abrechnung in USD · Sendungsverfolgung · Bestätigung per E-Mail. Fragen? <a href="mailto:support@sensortattoofix.com">E-Mail</a>.'],
+    ['Charged in USD · tracked shipping · confirmation by email. Questions? <a href="mailto:support@sensorcrashfix.com">Email us</a>.', 'Abrechnung in USD · Sendungsverfolgung · Bestätigung per E-Mail. Fragen? <a href="mailto:support@sensorcrashfix.com">E-Mail</a>.'],
     ['Complete payment', 'Zahlung abschließen'],
     ['Continue on Stripe.com', 'Weiter auf Stripe.com'],
     ['Continue on PayPal.com', 'Weiter auf PayPal.com'],
@@ -79,7 +79,7 @@ const RULES = {
     ['aria-label="Close"', 'aria-label="Schließen"'],
   ],
   es: [
-    ['content="Official Sensor Tattoo Fix checkout — Stripe, PayPal, Apple Pay, Google Pay. Tracked shipping in USD."', 'content="Checkout oficial Sensor Tattoo Fix — PayPal, tarjetas, envío con seguimiento en USD."'],
+    ['content="Official Sensor Crash Fix checkout — Stripe, PayPal, Apple Pay, Google Pay. Tracked shipping in USD."', 'content="Checkout oficial Sensor Crash Fix — PayPal, tarjetas, envío con seguimiento en USD."'],
     ['Discount code', 'Código de descuento'],
     ['placeholder="e.g. SAVE10"', 'placeholder="Ej: MARIA10"'],
     ['>Apply</button>', '>Aplicar</button>'],
@@ -136,7 +136,7 @@ const RULES = {
     ['<strong>Credit card</strong>', '<strong>Tarjeta de crédito</strong>'],
     ['<strong>Card / Apple Pay / Google Pay</strong><small>Secure checkout via Stripe · charged in USD</small>', '<strong>Tarjeta / Apple Pay / Google Pay</strong><small>Pago seguro vía Stripe · cargo en USD</small>'],
     ['<small>PayPal balance, card or debit · USD</small>', '<small>Saldo PayPal, tarjeta o débito · USD</small>'],
-    ['Charged in USD · tracked shipping · confirmation by email. Questions? <a href="mailto:support@sensortattoofix.com">Email us</a>.', 'Cargo en USD · envío con seguimiento · confirmación por email. ¿Preguntas? <a href="mailto:support@sensortattoofix.com">Email</a>.'],
+    ['Charged in USD · tracked shipping · confirmation by email. Questions? <a href="mailto:support@sensorcrashfix.com">Email us</a>.', 'Cargo en USD · envío con seguimiento · confirmación por email. ¿Preguntas? <a href="mailto:support@sensorcrashfix.com">Email</a>.'],
     ['Complete payment', 'Completar pago'],
     ['Continue on Stripe.com', 'Continuar en Stripe.com'],
     ['Continue on PayPal.com', 'Continuar en PayPal.com'],
@@ -149,7 +149,7 @@ const RULES = {
     ['aria-label="Close"', 'aria-label="Cerrar"'],
   ],
   pl: [
-    ['content="Official Sensor Tattoo Fix checkout — Stripe, PayPal, Apple Pay, Google Pay. Tracked shipping in USD."', 'content="Oficjalna kasa Sensor Tattoo Fix — PayPal, karty, śledzenie przesyłki w USD."'],
+    ['content="Official Sensor Crash Fix checkout — Stripe, PayPal, Apple Pay, Google Pay. Tracked shipping in USD."', 'content="Oficjalna kasa Sensor Crash Fix — PayPal, karty, śledzenie przesyłki w USD."'],
     ['Discount code', 'Kod rabatowy'],
     ['placeholder="e.g. SAVE10"', 'placeholder="Np. MARIA10"'],
     ['>Apply</button>', '>Zastosuj</button>'],
@@ -206,7 +206,7 @@ const RULES = {
     ['<strong>Credit card</strong>', '<strong>Karta kredytowa</strong>'],
     ['<strong>Card / Apple Pay / Google Pay</strong><small>Secure checkout via Stripe · charged in USD</small>', '<strong>Karta / Apple Pay / Google Pay</strong><small>Bezpieczna płatność przez Stripe · obciążenie w USD</small>'],
     ['<small>PayPal balance, card or debit · USD</small>', '<small>Saldo PayPal, karta lub debet · USD</small>'],
-    ['Charged in USD · tracked shipping · confirmation by email. Questions? <a href="mailto:support@sensortattoofix.com">Email us</a>.', 'Obciążenie w USD · śledzenie przesyłki · potwierdzenie e-mailem. Pytania? <a href="mailto:support@sensortattoofix.com">E-mail</a>.'],
+    ['Charged in USD · tracked shipping · confirmation by email. Questions? <a href="mailto:support@sensorcrashfix.com">Email us</a>.', 'Obciążenie w USD · śledzenie przesyłki · potwierdzenie e-mailem. Pytania? <a href="mailto:support@sensorcrashfix.com">E-mail</a>.'],
     ['Complete payment', 'Dokończ płatność'],
     ['Continue on Stripe.com', 'Kontynuuj na Stripe.com'],
     ['Continue on PayPal.com', 'Kontynuuj na PayPal.com'],

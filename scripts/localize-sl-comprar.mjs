@@ -8,7 +8,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 /** @type {Array<[string, string]>} */
 const RULES = [
-  ['content="Offizieller Sensor Tattoo Fix Checkout — PayPal, Karten, Sendungsverfolgung in USD."', 'content="Uradna blagajna Sensor Tattoo Fix — PayPal, kartice, sledenje pošiljki v USD."'],
+  ['content="Offizieller Sensor Crash Fix Checkout — PayPal, Karten, Sendungsverfolgung in USD."', 'content="Uradna blagajna Sensor Crash Fix — PayPal, kartice, sledenje pošiljki v USD."'],
   ['Rabattcode', 'Koda za popust'],
   ['placeholder="z. B. MARIA10"', 'placeholder="npr. MARIA10"'],
   ['>Anwenden</button>', '>Uporabi</button>'],
@@ -65,7 +65,7 @@ const RULES = [
   ['<strong>Kreditkarte</strong>', '<strong>Kreditna kartica</strong>'],
   ['<strong>Karte / Apple Pay / Google Pay</strong><small>Sichere Zahlung über Stripe · Abrechnung in USD</small>', '<strong>Kartica / Apple Pay / Google Pay</strong><small>Varno plačilo prek Stripe · bremenitev v USD</small>'],
   ['<small>PayPal-Guthaben, Karte oder Lastschrift · USD</small>', '<small>PayPal stanje, kartica ali debet · USD</small>'],
-  ['Abrechnung in USD · Sendungsverfolgung · Bestätigung per E-Mail. Fragen? <a href="mailto:support@sensortattoofix.com">E-Mail</a>.', 'Bremenitev v USD · sledenje pošiljki · potrditev po e-pošti. Vprašanja? <a href="mailto:support@sensortattoofix.com">E-pošta</a>.'],
+  ['Abrechnung in USD · Sendungsverfolgung · Bestätigung per E-Mail. Fragen? <a href="mailto:support@sensorcrashfix.com">E-Mail</a>.', 'Bremenitev v USD · sledenje pošiljki · potrditev po e-pošti. Vprašanja? <a href="mailto:support@sensorcrashfix.com">E-pošta</a>.'],
   ['Zahlung abschließen', 'Dokončaj plačilo'],
   ['Weiter auf Stripe.com', 'Nadaljuj na Stripe.com'],
   ['Weiter auf PayPal.com', 'Nadaljuj na PayPal.com'],

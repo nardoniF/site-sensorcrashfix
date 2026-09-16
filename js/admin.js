@@ -3,14 +3,14 @@
   const bootstrap = window.CONFIG_BOOTSTRAP || {};
 
   const DEFAULT_EMAILS = {
-    from: 'Sensor Tattoo Fix <pedidos@sensortattoofix.com.br>',
+    from: 'Sensor Crash Fix <pedidos@sensorcrashfix.com.br>',
     shopPaidSubject: 'PAGO — {orderId}',
-    customerOrderSubject: 'Pedido {orderId} registrado — Sensor Tattoo Fix',
-    customerPixSubject: 'PIX do pedido {orderId} — Sensor Tattoo Fix',
+    customerOrderSubject: 'Pedido {orderId} registrado — Sensor Crash Fix',
+    customerPixSubject: 'PIX do pedido {orderId} — Sensor Crash Fix',
     customerPaidSubject: 'Pagamento confirmado — {orderId}',
     motoboySubject: 'Entrega motoboy — {orderId}',
-    couponSubject: 'Você vendeu com seu cupom — comissão {amount} — Sensor Tattoo Fix',
-    testSubject: 'Teste — Sensor Tattoo Fix',
+    couponSubject: 'Você vendeu com seu cupom — comissão {amount} — Sensor Crash Fix',
+    testSubject: 'Teste — Sensor Crash Fix',
     testTo: '',
     pendingPaypal: 'Finalize o pagamento no PayPal. Você receberá outro e-mail quando o pagamento for confirmado.',
     pendingCard: 'Finalize o pagamento no link enviado. Você receberá outro e-mail quando o pagamento for confirmado.',
@@ -26,7 +26,7 @@
     abandonedSubject: 'Seu pedido {orderId} ainda está reservado — finalize quando quiser',
     abandonedWeeklySubject: 'Lembrete semanal — pedido {orderId} aguardando pagamento',
     abandonedIntro: 'Notamos que seu pedido ficou pendente. Seus itens ainda estão reservados — finalize o pagamento pelo link abaixo.',
-    abandonedWeeklyIntro: 'Passou uma semana e seu pedido ainda aguarda pagamento. Se ainda quiser o Sensor Tattoo Fix, é só concluir pelo link.',
+    abandonedWeeklyIntro: 'Passou uma semana e seu pedido ainda aguarda pagamento. Se ainda quiser o Sensor Crash Fix, é só concluir pelo link.',
     abandonedCta: 'Finalizar meu pedido',
     pixGreeting: 'Olá, {nome}!',
     pixIntro: 'Seu pedido {orderId} foi registrado. Para concluir a compra, pague o PIX abaixo:',
@@ -97,10 +97,10 @@
     { id: 'sticker-cut', name: 'Adesivo + recorte das lentes', buyQty: 10, buyPrice: 271, yieldQty: 30, useQty: 1, notes: 'Adesivo e recorte juntos; 300 lentes' }
   ];
 
-  const LEGACY_API_BASE = 'https://sensortattoofix-payments.sensortattoofix.workers.dev';
+  const LEGACY_API_BASE = 'https://sensorcrashfix-payments.sensorcrashfix.workers.dev';
 
   function resolveApiBaseUrl(raw) {
-    const canonical = (bootstrap.configApiUrl || 'https://api.sensortattoofix.com.br').replace(/\/$/, '');
+    const canonical = (bootstrap.configApiUrl || 'https://api.sensorcrashfix.com.br').replace(/\/$/, '');
     const url = String(raw || '').trim().replace(/\/$/, '');
     if (!url || url === LEGACY_API_BASE) return canonical;
     return url;
@@ -247,8 +247,8 @@
     if (config.products?.length) return config.products;
     if (config.product) {
       return [{
-        id: 'kit-sensor-tattoofix',
-        slug: 'kit-sensor-tattoofix',
+        id: 'kit-sensor-crashfix',
+        slug: 'kit-sensor-crashfix',
         name: config.product.name,
         description: config.product.description,
         price: config.product.price,
@@ -4069,8 +4069,8 @@ ${worksheets}
     const explicit = String(c?.site_host || '').toLowerCase().trim();
     if (explicit === 'com' || explicit === 'com.br') return explicit;
     const host = String(c?.host || c?.hostname || '').toLowerCase();
-    if (/sensortattoofix\.com\.br/.test(host)) return 'com.br';
-    if (/sensortattoofix\.com(?!\.br)/.test(host)) return 'com';
+    if (/sensorcrashfix\.com\.br/.test(host)) return 'com.br';
+    if (/sensorcrashfix\.com(?!\.br)/.test(host)) return 'com';
     const idioma = String(c?.idioma || '').toLowerCase();
     if (idioma.startsWith('en') || idioma.startsWith('it')) return 'com';
     if (idioma.startsWith('pt')) return 'com.br';
@@ -5764,8 +5764,8 @@ ${worksheets}
     }
     if (p?.aggregated) return ['BR'];
     const id = String(p?.id || p?.slug || '');
-    if (id === 'kit-sensor-tattoofix' || id === 'kit') return ['BR'];
-    if (/optical.?lens|lens-intl|sensortattoofix-optical/i.test(id)) return ['INT'];
+    if (id === 'kit-sensor-crashfix' || id === 'kit') return ['BR'];
+    if (/optical.?lens|lens-intl|sensorcrashfix-optical/i.test(id)) return ['INT'];
     return ['BR', 'INT'];
   }
 
@@ -5835,22 +5835,22 @@ ${worksheets}
           <p class="admin-meta admin-aggregated-compat-hint"><i class="fas fa-link"></i> <strong>Regra do upsell:</strong> o produto só aparece se o modelo escolhido pelo cliente estiver nesta lista (1 agregado → vários modelos).</p>` : '';
     const i18nFields = !isAggregated ? `
           <label class="full">Nome EN <small class="admin-field-hint">título na loja .com / EN</small>
-            <input type="text" data-field="nameEn" value="${escAttr(p.nameEn || '')}" placeholder="SensorTattooFix Optical Lens">
+            <input type="text" data-field="nameEn" value="${escAttr(p.nameEn || '')}" placeholder="SensorCrashFix Optical Lens">
           </label>
           <label class="full">Nome IT
-            <input type="text" data-field="nameIt" value="${escAttr(p.nameIt || '')}" placeholder="Lente ottica SensorTattooFix">
+            <input type="text" data-field="nameIt" value="${escAttr(p.nameIt || '')}" placeholder="Lente ottica SensorCrashFix">
           </label>
           <label class="full">Nome DE
-            <input type="text" data-field="nameDe" value="${escAttr(p.nameDe || '')}" placeholder="SensorTattooFix Optische Linse">
+            <input type="text" data-field="nameDe" value="${escAttr(p.nameDe || '')}" placeholder="SensorCrashFix Optische Linse">
           </label>
           <label class="full">Nome ES
-            <input type="text" data-field="nameEs" value="${escAttr(p.nameEs || '')}" placeholder="Lente óptica SensorTattooFix">
+            <input type="text" data-field="nameEs" value="${escAttr(p.nameEs || '')}" placeholder="Lente óptica SensorCrashFix">
           </label>
           <label class="full">Nome PL
-            <input type="text" data-field="namePl" value="${escAttr(p.namePl || '')}" placeholder="Soczewka optyczna SensorTattooFix">
+            <input type="text" data-field="namePl" value="${escAttr(p.namePl || '')}" placeholder="Soczewka optyczna SensorCrashFix">
           </label>
           <label class="full">Nome SL
-            <input type="text" data-field="nameSl" value="${escAttr(p.nameSl || '')}" placeholder="Optična leča SensorTattooFix">
+            <input type="text" data-field="nameSl" value="${escAttr(p.nameSl || '')}" placeholder="Optična leča SensorCrashFix">
           </label>
           <label class="full">Descrição EN<textarea data-field="descriptionEn" rows="2">${escTextarea(p.descriptionEn || '')}</textarea></label>
           <label class="full">Descrição IT<textarea data-field="descriptionIt" rows="2">${escTextarea(p.descriptionIt || '')}</textarea></label>
@@ -5877,7 +5877,7 @@ ${worksheets}
           <label>Estoque <small class="admin-field-hint">vazio = ilimitado · 0 = esgotado (some da loja)</small>
             <input type="number" data-field="stock" min="0" step="1" value="${p.stock != null ? p.stock : ''}" placeholder="ilimitado">
           </label>
-          <label>Slug (URL)<input type="text" data-field="slug" value="${p.slug || p.id || ''}" placeholder="${market === 'INT' ? 'optical-lens-intl' : 'kit-sensor-tattoofix'}"></label>
+          <label>Slug (URL)<input type="text" data-field="slug" value="${p.slug || p.id || ''}" placeholder="${market === 'INT' ? 'optical-lens-intl' : 'kit-sensor-crashfix'}"></label>
           <label class="full">URL da imagem principal<input type="text" data-field="image" value="${escAttr(p.image || '')}" placeholder="/images/lens-gallery/01-optical-correction-lens.png" spellcheck="false" autocomplete="off"></label>
           ${sensorField}
           <label>Peso (g)<input type="number" data-field="weightGrams" min="0.1" step="0.1" value="${p.weightGrams ?? 3}"></label>
@@ -5921,8 +5921,8 @@ ${worksheets}
           ...intlMain.map((p) => ({ ...p, markets: ['INT'], aggregated: false }))
         ];
         renderProducts(rebuilt.length ? rebuilt : [{
-          id: 'kit-sensor-tattoofix', slug: 'kit-sensor-tattoofix', name: 'Kit Sensor Tattoo Fix',
-          description: '', price: 62.9, image: '/images/brand/sensortattoofix.jpg', active: true,
+          id: 'kit-sensor-crashfix', slug: 'kit-sensor-crashfix', name: 'Kit Sensor Crash Fix',
+          description: '', price: 62.9, image: '/images/brand/sensorcrashfix.jpg', active: true,
           requiresSmartwatch: true, weightGrams: 3, sensorMm: 25, markets: ['BR']
         }]);
       });
@@ -6234,9 +6234,9 @@ ${worksheets}
   }
 
   const CHANNEL_SOCIAL_DEFAULTS = {
-    instagram: 'https://www.instagram.com/sensortattoofix',
-    tiktok: 'https://www.tiktok.com/@sensortattoofixofc',
-    youtube: 'https://www.youtube.com/@Sensortattoofix-ofc',
+    instagram: 'https://www.instagram.com/sensorcrashfix',
+    tiktok: 'https://www.tiktok.com/@sensorcrashfix',
+    youtube: 'https://www.youtube.com/@Sensorcrashfix',
     facebook: 'https://www.facebook.com/profile.php?id=61588858629597'
   };
 
@@ -6294,7 +6294,7 @@ ${worksheets}
       },
       stores: {
         oficial: store('oficial', f.channelStoreOficial?.checked),
-        mercadolivre: store('mercadolivre', f.channelStoreMercadolivre?.checked, 'https://produto.mercadolivre.com.br/MLB-6831525504-smartwatch-x-tatuagem-sensor-nao-funciona-lentes-reparadoras-_JM'),
+        mercadolivre: store('mercadolivre', f.channelStoreMercadolivre?.checked, 'https://produto.mercadolivre.com.br/MLB-6831525504-smartwatch-x-rachadura-sensor-nao-funciona-lentes-reparadoras-_JM'),
         shopee: store('shopee', f.channelStoreShopee?.checked, 'https://shopee.com.br/product/479290797/58259628035/'),
         tiktok_shop: store('tiktok_shop', f.channelStoreTiktokShop?.checked, 'https://vt.tiktok.com/ZS9juMxSmKGjN-mns6O/'),
         amazon: store('amazon', f.channelStoreAmazon?.checked, 'https://www.amazon.com.br/dp/B0GYVBRGZS')
@@ -6577,7 +6577,7 @@ ${worksheets}
       },
       whatsapp: f.whatsapp.value.replace(/\D/g, ''),
       channels: collectChannelsForm(f, currentConfig),
-      siteUrl: currentConfig?.siteUrl || 'https://www.sensortattoofix.com.br',
+      siteUrl: currentConfig?.siteUrl || 'https://www.sensorcrashfix.com.br',
       api: {
         baseUrl: f.apiBaseUrl.value.trim()
       },
@@ -7879,7 +7879,7 @@ ${worksheets}
     } catch (err) {
       const msg = err?.message || 'Erro de rede';
       if (msg === 'Failed to fetch' || msg.includes('NetworkError')) {
-        showStatus('Não conectou na API. Confira a URL do Worker e use https://www.sensortattoofix.com.br/admin.html', 'error');
+        showStatus('Não conectou na API. Confira a URL do Worker e use https://www.sensorcrashfix.com.br/admin.html', 'error');
       } else {
         showStatus(msg, 'error');
       }
@@ -8054,10 +8054,10 @@ ${worksheets}
     all.push({
       id: 'lente-br-' + Date.now(),
       slug: 'lente-br-' + Date.now(),
-      name: 'Nova lente Sensor Tattoo Fix',
+      name: 'Nova lente Sensor Crash Fix',
       description: '',
       price: 62.9,
-      image: '/images/brand/sensortattoofix.jpg',
+      image: '/images/brand/sensorcrashfix.jpg',
       active: true,
       requiresSmartwatch: true,
       weightGrams: 3,
@@ -8129,12 +8129,12 @@ ${worksheets}
     all.push({
       id: slug,
       slug,
-      name: 'SensorTattooFix Optical Lens',
-      nameEn: 'SensorTattooFix Optical Lens',
-      nameIt: 'Lente ottica SensorTattooFix',
-      description: 'Lente de correção óptica para smartwatch em pele tatuada.',
-      descriptionEn: 'Designed for smartwatch optical sensors on tattooed skin.',
-      descriptionIt: 'Progettata per i sensori ottici degli smartwatch su pelle tatuada.',
+      name: 'SensorCrashFix Optical Lens',
+      nameEn: 'SensorCrashFix Optical Lens',
+      nameIt: 'Lente ottica SensorCrashFix',
+      description: 'Lente de correção óptica para smartwatch em pele danificado.',
+      descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
+      descriptionIt: 'Progettata per i sensori ottici degli smartwatch su pelle danificado.',
       price: 62.9,
       priceUsd: 12.99,
       priceEur: 11.99,

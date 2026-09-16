@@ -137,5 +137,5 @@ test('forum aceita de/es/pl/sl e agenda i18n no POST', () => {
   assert.match(src, /normalizeSiteLang/);
   assert.match(src, /scheduleI18n\(deps, \(\) => fillThreadI18n/);
   assert.match(src, /scheduleI18n\(deps, \(\) => fillReplyI18n/);
-  assert.match(src, /sensortattoofix\.com\/sl\/comunidade\.html/);
+  assert.match(src, /sensorcrashfix\.com\/sl\/comunidade\.html/);
 });

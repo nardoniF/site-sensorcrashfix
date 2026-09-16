@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const LANGS = ['de', 'es', 'pl', 'sl'];
 const PAGES = ['index.html', 'loja.html', 'comprar.html', 'minha-conta.html', 'comunidade.html', 'onde-comprar.html'];
-const EN_SNIPPETS = ['Official Store', 'Peace between ink and silicon', 'Your cart', 'Loading products', 'Community (beta)'];
+const EN_SNIPPETS = ['Official Store', 'Protection again after a cracked sensor', 'Your cart', 'Loading products', 'Community (beta)'];
 
 let errors = 0;
 const warnings = [];
@@ -50,8 +50,8 @@ for (const lang of LANGS) {
 
 // Manuais de instalação
 const manuals = [
-  'docs/manuais/manual-instalacao-sensor-tattoo-fix.html',
-  'docs/manuais/manual-instalacao-sensor-tattoo-fix-lote.html'
+  'docs/manuais/manual-instalacao-sensor-cracks-fix.html',
+  'docs/manuais/manual-instalacao-sensor-cracks-fix-lote.html'
 ];
 for (const m of manuals) {
   const html = fs.readFileSync(path.join(ROOT, m), 'utf8');

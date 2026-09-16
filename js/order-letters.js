@@ -67,7 +67,7 @@ window.STF_ORDER_LETTERS = (function () {
     const slug = String(product?.slug || item?.slug || product?.id || '').toLowerCase();
     if (ACCESSORY_SLUG_RE.test(slug)) return false;
     if (product?.deviceType) return true;
-    if (/lens|kit|tattoofix|smartband/.test(slug)) return true;
+    if (/lens|kit|cracked sensorfix|smartband/.test(slug)) return true;
     return item?.requiresSmartwatch !== false;
   }
 

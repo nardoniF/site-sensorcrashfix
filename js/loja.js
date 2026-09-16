@@ -84,20 +84,20 @@
       return;
     }
     grid.innerHTML = products.map((p) => {
-      const slug = p.slug || p.id || 'kit-sensor-tattoofix';
+      const slug = p.slug || p.id || 'kit-sensor-crashfix';
       const label = window.STF_PELICULA?.productLabel?.(p)
         || (window.STF_I18N?.isLocalized?.() ? (p.nameEn || p.name) : p.name);
       const desc = window.STF_PELICULA?.productDescription?.(p)
         || (window.STF_I18N?.isLocalized?.() && !window.STF_I18N?.isIt?.() ? (p.descriptionEn || p.description) : p.description)
         || '';
-      const rawImg = p.image || 'images/brand/sensortattoofix.jpg';
+      const rawImg = p.image || 'images/brand/sensorcrashfix.jpg';
       const img = window.STF_PRODUCT_MERGE?.resolveProductImage
         ? window.STF_PRODUCT_MERGE.resolveProductImage(rawImg, p)
         : (/^https?:\/\//i.test(rawImg) ? rawImg : (rawImg.startsWith('/') ? rawImg : '/' + rawImg.replace(/^\.\//, '')));
       const albumImgs = window.STF_PRODUCT_GALLERY?.resolveImages?.(p) || [img];
       const media = window.STF_PRODUCT_GALLERY?.renderMarkup
         ? window.STF_PRODUCT_GALLERY.renderMarkup(albumImgs, label, 'loja-card-album')
-        : `<img src="${escapeHtml(img)}" alt="${escapeHtml(label)}" loading="lazy" onerror="this.onerror=null;this.src='/images/brand/sensortattoofix.jpg'">`;
+        : `<img src="${escapeHtml(img)}" alt="${escapeHtml(label)}" loading="lazy" onerror="this.onerror=null;this.src='/images/brand/sensorcrashfix.jpg'">`;
       const frete = L('store.frete');
       return `
         <article class="loja-card">
@@ -181,7 +181,7 @@
       const id = String(p.id || p.slug || '');
       if (markets.length) return isIntl ? markets.includes('INT') : markets.includes('BR');
       if (/optical.?lens|lens-intl/i.test(id)) return isIntl;
-      if (id === 'kit-sensor-tattoofix' || id === 'kit') return !isIntl;
+      if (id === 'kit-sensor-crashfix' || id === 'kit') return !isIntl;
       return !isIntl;
     });
   }

@@ -7,7 +7,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const ASSETS = '/Users/fabionardoni/.cursor/projects/Users-fabionardoni-Projetos-3N20-site-sensortattoofix/assets';
+const ASSETS = '/Users/fabionardoni/.cursor/projects/Users-fabionardoni-Projetos-3N20-site-sensorcrashfix/assets';
 const sourcesDir = path.join(ROOT, 'images/produtos/pulseiras/fontes');
 const outDir = path.join(ROOT, 'images/produtos/pulseiras');
 const configPath = path.join(ROOT, 'data/store-config.json');

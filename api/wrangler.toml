@@ -1,4 +1,9 @@
-name = "sensortattoofix-payments"
+name = "sensorcrashfix-payments"
+# Domínio/Worker públicos = Crash Fix.
+# Infra de ops: reutilizar a MESMA conta Cloudflare e os MESMOS secrets
+# (Mercado Pago, Asaas, Correios, PayPal/Stripe, Z-API, Resend, etc.) do Tattoo.
+# KV/D1 abaixo apontam para os namespaces da conta (pode ser os mesmos do Tattoo
+# se quiser um único Admin/pedidos; ou crie scf-* novos se preferir separar dados).
 main = "worker.js"
 compatibility_date = "2024-01-01"
 compatibility_flags = ["nodejs_compat"]
@@ -10,12 +15,12 @@ id = "4184c034aab941e58ce5cc1e3abaecdc"
 
 [[d1_databases]]
 binding = "CLICKS_DB"
-database_name = "stf-clicks"
+database_name = "scf-clicks"
 database_id = "94ffffbb-dd85-41f1-8301-521f19b75f75"
 
 [[routes]]
-pattern = "api.sensortattoofix.com.br/*"
-zone_name = "sensortattoofix.com.br"
+pattern = "api.sensorcrashfix.com.br/*"
+zone_name = "sensorcrashfix.com.br"
 
 [ai]
 binding = "AI"
@@ -24,9 +29,9 @@ binding = "AI"
 ADMIN_USERNAME = "admin"
 # Conta Cloudflare (dashboard URL) — uso real de KV no Admin via GraphQL Analytics
 CF_ACCOUNT_ID = "80ab4f6ff1553d2ee530c0880edce594"
-# D1 stf-clicks — cota de rows no banner Admin → Cliques
+# D1 scf-clicks — cota de rows no banner Admin → Cliques
 CF_D1_DATABASE_ID = "94ffffbb-dd85-41f1-8301-521f19b75f75"
-# Shopee Open Platform — app SensorTattooFix Pedidos (Live Partner ID)
+# Shopee Open Platform — app SensorCrashFix Pedidos (Live Partner ID)
 SHOPEE_PARTNER_ID = "2041463"
 
 [triggers]
@@ -44,7 +49,7 @@ crons = ["0 */4 * * *", "0 3,15 * * *", "30 2 * * *", "59 2 * * *"]
 # AMZ_LWA_CLIENT_SECRET
 # AMZ_LWA_REFRESH_TOKEN — self-authorization (Brasil)
 # AMZ_MARKETPLACE_ID   — opcional (padrão A2Q3Y263D00KWC = Amazon.com.br)
-# SHOPEE_PARTNER_ID    — Open Platform Live Partner ID (app SensorTattooFix Pedidos)
+# SHOPEE_PARTNER_ID    — Open Platform Live Partner ID (app SensorCrashFix Pedidos)
 # SHOPEE_PARTNER_KEY   — Live API Partner Key
 # SHOPEE_SHOP_ID       — opcional; após OAuth fica no KV
 # MP_WEBHOOK_URL       — opcional: https://SEU-WORKER.workers.dev/webhook/mercadopago
@@ -53,12 +58,12 @@ crons = ["0 */4 * * *", "0 3,15 * * *", "30 2 * * *", "59 2 * * *"]
 # PAYPAL_CLIENT_ID     — PayPal Developer → REST API (envio internacional)
 # PAYPAL_CLIENT_SECRET — secret do app PayPal
 # PAYPAL_SANDBOX       — opcional: "true" para sandbox
-# STORE_URL            — opcional: https://www.sensortattoofix.com.br (retorno PayPal)
+# STORE_URL            — opcional: https://www.sensorcrashfix.com.br (retorno PayPal)
 # CORREIOS_USER        — usuário API Correios (Meu Correios)
 # CORREIOS_PASSWORD    — código de acesso API Correios
 # CORREIOS_CONTRACT             — cartão de postagem (10 dígitos)
 # CORREIOS_COMMERCIAL_CONTRACT  — contrato comercial (ex.: 9912752041)
 # RESEND_API_KEY       — e-mails com remetente profissional (resend.com, grátis até 3k/mês)
-# EMAIL_FROM           — opcional: Sensor Tattoo Fix <pedidos@sensortattoofix.com.br>
+# EMAIL_FROM           — opcional: Sensor Crash Fix <pedidos@sensorcrashfix.com.br>
 # GA4_API_SECRET       — secret do Measurement Protocol (GA4 → Fluxos de dados → seu site)
 # GOOGLE_PLACES_API_KEY  — opcional: autocomplete de endereço internacional (senão usa Photon/OSM grátis)

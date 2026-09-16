@@ -41,5 +41,5 @@ jobs:
           BACKFILL_KEY: ${{ secrets.BACKFILL_KEY }}
         run: |
           # adjust channel/limit as needed
-          RESPONSE=$(curl -s -X POST "https://api.sensortattoofix.com.br/admin/backfill-normalized?channel=mercadolivre&limit=5000&key=${BACKFILL_KEY}")
+          RESPONSE=$(curl -s -X POST "https://api.sensorcrashfix.com.br/admin/backfill-normalized?channel=mercadolivre&limit=5000&key=${BACKFILL_KEY}")
           echo "$RESPONSE"

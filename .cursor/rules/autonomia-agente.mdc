@@ -23,7 +23,7 @@ Preferir **default seguro + nota no final** em vez de parar no meio.
 - Nunca commitar `.env`, secrets ou arquivos claramente temporários (`.DS_Store`, `tmp-*`, etc.).
 - Nunca `git push --force` em `main`/`master`.
 - Nunca amend de commit já pushado, salvo pedido explícito.
-- Deploy: só `sensortattoofix-payments` (`api.sensortattoofix.com.br`); site estático segue GitHub Pages após push.
+- Deploy: só `sensorcrashfix-payments` (`api.sensorcrashfix.com.br`); site estático segue GitHub Pages após push.
 
 ## Fluxo típico ao terminar
 

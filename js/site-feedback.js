@@ -20,7 +20,7 @@
       sending: 'Enviando…',
       close: 'Fechar',
       thanks: 'Obrigado! Sua resposta nos ajuda a melhorar o site.',
-      err: 'Não foi possível enviar. Tente de novo ou use contato@sensortattoofix.com.br.',
+      err: 'Não foi possível enviar. Tente de novo ou use contato@sensorcrashfix.com.br.',
       errShort: 'Descreva em pelo menos 8 caracteres o que procurava.'
     },
     en: {
@@ -38,7 +38,7 @@
       sending: 'Sending…',
       close: 'Close',
       thanks: 'Thank you! Your feedback helps us improve the site.',
-      err: 'Could not send. Try again or email support@sensortattoofix.com.',
+      err: 'Could not send. Try again or email support@sensorcrashfix.com.',
       errShort: 'Please describe what you were looking for (at least 8 characters).'
     },
     it: {
@@ -56,7 +56,7 @@
       sending: 'Invio…',
       close: 'Chiudi',
       thanks: 'Grazie! Il tuo feedback ci aiuta a migliorare il sito.',
-      err: 'Invio non riuscito. Riprova o scrivi a support@sensortattoofix.com.',
+      err: 'Invio non riuscito. Riprova o scrivi a support@sensorcrashfix.com.',
       errShort: 'Descrivi cosa cercavi (almeno 8 caratteri).'
     },
     de: {
@@ -74,7 +74,7 @@
       sending: 'Wird gesendet…',
       close: 'Schließen',
       thanks: 'Danke! Ihr Feedback hilft uns, die Website zu verbessern.',
-      err: 'Senden fehlgeschlagen. Versuchen Sie es erneut oder schreiben Sie an support@sensortattoofix.com.',
+      err: 'Senden fehlgeschlagen. Versuchen Sie es erneut oder schreiben Sie an support@sensorcrashfix.com.',
       errShort: 'Beschreiben Sie, wonach Sie gesucht haben (mindestens 8 Zeichen).'
     },
     es: {
@@ -92,7 +92,7 @@
       sending: 'Enviando…',
       close: 'Cerrar',
       thanks: '¡Gracias! Tu comentario nos ayuda a mejorar el sitio.',
-      err: 'No se pudo enviar. Inténtalo de nuevo o escribe a support@sensortattoofix.com.',
+      err: 'No se pudo enviar. Inténtalo de nuevo o escribe a support@sensorcrashfix.com.',
       errShort: 'Describe qué buscabas (al menos 8 caracteres).'
     },
     pl: {
@@ -110,7 +110,7 @@
       sending: 'Wysyłanie…',
       close: 'Zamknij',
       thanks: 'Dziękujemy! Twoja opinia pomaga nam ulepszać stronę.',
-      err: 'Nie udało się wysłać. Spróbuj ponownie lub napisz na support@sensortattoofix.com.',
+      err: 'Nie udało się wysłać. Spróbuj ponownie lub napisz na support@sensorcrashfix.com.',
       errShort: 'Opisz, czego szukałeś (co najmniej 8 znaków).'
     },
     sl: {
@@ -128,7 +128,7 @@
       sending: 'Pošiljanje…',
       close: 'Zapri',
       thanks: 'Hvala! Vaše mnenje nam pomaga izboljšati stran.',
-      err: 'Pošiljanje ni uspelo. Poskusite znova ali pišite na support@sensortattoofix.com.',
+      err: 'Pošiljanje ni uspelo. Poskusite znova ali pišite na support@sensorcrashfix.com.',
       errShort: 'Opišite, kaj ste iskali (vsaj 8 znakov).'
     }
   };
@@ -145,7 +145,7 @@
       htmlLang.startsWith('en') ||
       location.pathname.includes('/en/') ||
       window.STF_SITE?.isIntlHost?.() ||
-      /\.sensortattoofix\.com$/i.test(location.hostname)
+      /\.sensorcrashfix\.com$/i.test(location.hostname)
     ) {
       return 'en';
     }
@@ -158,7 +158,7 @@
   }
 
   function apiBase() {
-    return String(window.CONFIG_BOOTSTRAP?.configApiUrl || 'https://api.sensortattoofix.com.br').replace(/\/$/, '');
+    return String(window.CONFIG_BOOTSTRAP?.configApiUrl || 'https://api.sensorcrashfix.com.br').replace(/\/$/, '');
   }
 
   function shouldShow() {

@@ -451,7 +451,7 @@ export async function fetchCloudflareD1Usage(env, { forceRefresh = false } = {})
     critical: percent >= 85 || overFreeLimit,
     refreshedAt: new Date().toISOString(),
     lagHint: 'Cloudflare D1 Analytics (pode atrasar alguns minutos)',
-    sources: 'D1 stf-clicks — mesma fonte do dashboard D1 Metrics',
+    sources: 'D1 scf-clicks — mesma fonte do dashboard D1 Metrics',
     ...resets
   };
 

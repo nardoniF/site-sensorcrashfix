@@ -148,7 +148,7 @@
       return { origem_trafego: 'whatsapp', origem_trafego_label: 'WhatsApp' };
     }
 
-    if (src === 'sensortattoofix' || med === 'site') {
+    if (src === 'sensorcrashfix' || med === 'site') {
       return { origem_trafego: 'site', origem_trafego_label: 'Site' };
     }
 

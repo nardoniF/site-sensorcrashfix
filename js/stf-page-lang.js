@@ -8,7 +8,7 @@ window.STF_PAGE_LANG = (function () {
 
   function isComHost() {
     const h = String(location.hostname || '').toLowerCase();
-    return h === 'sensortattoofix.com' || h === 'www.sensortattoofix.com';
+    return h === 'sensorcrashfix.com' || h === 'www.sensorcrashfix.com';
   }
 
   function fromPath() {

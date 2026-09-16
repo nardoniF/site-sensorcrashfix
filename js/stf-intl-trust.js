@@ -6,12 +6,12 @@
 (function () {
   function isIntlPage() {
     if (window.STF_SITE?.isIntlHost?.()) return true;
-    if (/\.sensortattoofix\.com$/i.test(location.hostname)) return true;
+    if (/\.sensorcrashfix\.com$/i.test(location.hostname)) return true;
     return /\/(en|it)(\/|$)/i.test(location.pathname);
   }
   if (!isIntlPage()) return;
 
-  const EMAIL = window.STF_SITE?.supportEmail?.() || 'support@sensortattoofix.com';
+  const EMAIL = window.STF_SITE?.supportEmail?.() || 'support@sensorcrashfix.com';
   const isIt = /\/it(\/|$)/i.test(location.pathname)
     || (document.documentElement.lang || '').toLowerCase().startsWith('it');
   const copy = isIt

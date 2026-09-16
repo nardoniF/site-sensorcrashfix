@@ -348,8 +348,8 @@
       return map[m[1]] || 'EN';
     }
     const host = String(location.hostname || '').toLowerCase();
-    if (/sensortattoofix\.com\.br$/.test(host)) return 'BR';
-    if (/^(www\.)?sensortattoofix\.com$/.test(host)) return 'EN';
+    if (/sensorcrashfix\.com\.br$/.test(host)) return 'BR';
+    if (/^(www\.)?sensorcrashfix\.com$/.test(host)) return 'EN';
     return 'BR';
   }
 
@@ -425,7 +425,7 @@
 
   function apiBaseUrl() {
     const raw = window.CONFIG_BOOTSTRAP?.configApiUrl ||
-      'https://api.sensortattoofix.com.br';
+      'https://api.sensorcrashfix.com.br';
     return String(raw).replace(/\/$/, '');
   }
 
@@ -440,7 +440,7 @@
 
   function isStfPublicHost() {
     const host = (location.hostname || '').toLowerCase();
-    return /^(www\.)?sensortattoofix\.com(\.br)?$/.test(host);
+    return /^(www\.)?sensorcrashfix\.com(\.br)?$/.test(host);
   }
 
   function logClickEndpoints() {
@@ -583,8 +583,8 @@
 
   function siteHostTag() {
     const host = String(location.hostname || '').toLowerCase();
-    if (/^(www\.)?sensortattoofix\.com\.br$/.test(host)) return 'com.br';
-    if (/^(www\.)?sensortattoofix\.com$/.test(host)) return 'com';
+    if (/^(www\.)?sensorcrashfix\.com\.br$/.test(host)) return 'com.br';
+    if (/^(www\.)?sensorcrashfix\.com$/.test(host)) return 'com';
     return /\.com\.br$/i.test(host) ? 'com.br' : 'com';
   }
 

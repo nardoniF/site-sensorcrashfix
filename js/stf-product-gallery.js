@@ -4,8 +4,8 @@
  * .com / EN / IT (gringa): mesmo álbum de fotos na home, loja e checkout.
  */
 (function () {
-  const KIT_IDS = new Set(['kit-sensor-tattoofix', 'kit', 'optical-lens-intl', 'kit-smartband-tattoofix', 'optical-lens-smartband-intl']);
-  const SMARTBAND_IDS = new Set(['kit-smartband-tattoofix', 'optical-lens-smartband-intl']);
+  const KIT_IDS = new Set(['kit-sensor-crashfix', 'kit', 'optical-lens-intl', 'kit-smartband-crashfix', 'optical-lens-smartband-intl']);
+  const SMARTBAND_IDS = new Set(['kit-smartband-crashfix', 'optical-lens-smartband-intl']);
 
   const PT_GALLERY = [
     '/images/kit-gallery/kit-03-aplicacao.jpg',
@@ -89,7 +89,7 @@
     if (path.includes('/pl/')) return 'pl';
     if (path.includes('/en/')) return 'en';
     const host = String(location.hostname || '').toLowerCase();
-    if (host === 'sensortattoofix.com' || host === 'www.sensortattoofix.com') return 'en';
+    if (host === 'sensorcrashfix.com' || host === 'www.sensorcrashfix.com') return 'en';
     return 'pt';
   }
 
@@ -99,7 +99,7 @@
       if (window.STF_SITE?.isIntlHost?.()) return true;
     } catch (_) { /* ignore */ }
     const host = String(location.hostname || '').toLowerCase();
-    if (host === 'sensortattoofix.com' || host === 'www.sensortattoofix.com') return true;
+    if (host === 'sensorcrashfix.com' || host === 'www.sensorcrashfix.com') return true;
     const lang = detectLang();
     return lang === 'en' || lang === 'it' || lang === 'de' || lang === 'es' || lang === 'pl';
   }
@@ -110,7 +110,7 @@
     if (/^https?:\/\//i.test(s)) {
       try {
         const u = new URL(s);
-        if (/sensortattoofix\.com(\.br)?$/i.test(u.hostname)) {
+        if (/sensorcrashfix\.com(\.br)?$/i.test(u.hostname)) {
           return u.pathname + u.search;
         }
       } catch (_) { /* keep absolute */ }
@@ -121,7 +121,7 @@
 
   function isLegacyKitHero(url) {
     const n = normalizeUrl(url).toLowerCase();
-    return /\/(?:site|images\/brand)\/sensortattoofix\.jpg(\?|$)/i.test(n);
+    return /\/(?:site|images\/brand)\/sensorcrashfix\.jpg(\?|$)/i.test(n);
   }
 
   function uniqueUrls(list) {
@@ -138,7 +138,7 @@
 
   function isKitProduct(product) {
     const id = String(product?.id || product?.slug || '').trim();
-    return KIT_IDS.has(id) || /kit.?sensor|sensor.?tattoo/i.test(id + ' ' + (product?.name || ''));
+    return KIT_IDS.has(id) || /kit.?sensor|sensor.?cracks/i.test(id + ' ' + (product?.name || ''));
   }
 
   function isSmartbandProduct(product) {
@@ -384,8 +384,8 @@
       }
       const imgs = product ? resolveImages(product) : kitAlbum();
       const alt = product
-        ? (window.STF_PELICULA?.productLabel?.(product) || product.nameEn || product.name || 'Sensor Tattoo Fix')
-        : (isLensOnlyMarket() ? 'SensorTattooFix Optical Lens' : 'Sensor Tattoo Fix');
+        ? (window.STF_PELICULA?.productLabel?.(product) || product.nameEn || product.name || 'Sensor Crash Fix')
+        : (isLensOnlyMarket() ? 'SensorCrashFix Optical Lens' : 'Sensor Crash Fix');
       enhanceExisting('.product-image-wrap', imgs, alt);
       watchProductAlbumSize();
     };

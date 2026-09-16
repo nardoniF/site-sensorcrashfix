@@ -13,11 +13,11 @@ test('generateCommissionerStoryBanners fetches two PNG attachments', async () =>
     };
   };
   try {
-    const { attachments } = await generateCommissionerStoryBanners('https://www.sensortattoofix.com.br/');
+    const { attachments } = await generateCommissionerStoryBanners('https://www.sensorcrashfix.com.br/');
     assert.equal(attachments.length, 2);
     assert.equal(attachments[0].content_type, 'image/png');
     assert.ok(attachments[0].content.length > 0);
-    assert.ok(seen[0].startsWith('https://www.sensortattoofix.com.br/images/comissionado/stories/'));
+    assert.ok(seen[0].startsWith('https://www.sensorcrashfix.com.br/images/comissionado/stories/'));
   } finally {
     globalThis.fetch = orig;
   }

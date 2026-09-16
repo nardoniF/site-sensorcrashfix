@@ -18,28 +18,28 @@ Atualizado em: 2026-06-20
 
 ## 1. Parcerias e distribuição
 
-### 1.1 Parceria com tatuadores ⬜
+### 1.1 Parceria com danificadores ⬜
 
-**Por quê:** Público-alvo natural (cliente tatuado + smartwatch). Credibilidade local e indicação no momento certo (pós-tatuagem ou quando reclama do relógio).
+**Por quê:** Público-alvo natural (cliente danificado + smartwatch). Credibilidade local e indicação no momento certo (pós-rachadura ou quando reclama do relógio).
 
 **O que precisamos definir:**
 
 - [ ] Modelo de parceria (comissão por venda, desconto para cliente do estúdio, kit amostra grátis, revenda no balcão)
 - [ ] Percentual ou valor fixo por indicação/venda
-- [ ] Material para o estúdio (flyer A5, QR code → loja com UTM `utm_campaign=tatuador_{cidade}`)
-- [ ] Kit demonstração (lente + cartão explicativo “smartwatch + tatuagem”)
+- [ ] Material para o estúdio (flyer A5, QR code → loja com UTM `utm_campaign=danificador_{cidade}`)
+- [ ] Kit demonstração (lente + cartão explicativo “smartwatch + rachadura”)
 - [ ] Lista de estúdios-alvo (SP primeiro? por bairro?)
-- [x] Script de abordagem e-mail/DM → ver `sensortattoofix-privado/docs/email-parceria-tatuadores.md` (pasta local)
+- [x] Script de abordagem e-mail/DM → ver `sensorcrashfix-privado/docs/email-parceria-danificadores.md` (pasta local)
 - [ ] Script de abordagem presencial / indicação de cliente
 - [ ] Contrato ou termo simples de parceria / afiliado
-- [ ] Cupom ou link rastreável por tatuador (admin / UTM / código no checkout)
+- [ ] Cupom ou link rastreável por danificador (admin / UTM / código no checkout)
 - [ ] Política: estúdio pode aplicar a lente no cliente? (treinamento vs. só indicar)
 
-**Entregáveis de marketing para tatuadores:**
+**Entregáveis de marketing para danificadores:**
 
-- [ ] Card “Seu relógio trava na tatuagem?” para balcão
-- [ ] Vídeo curto 30s para TV do estúdio / stories do tatuador
-- [ ] Post modelo para o tatuador repostar (antes/depois sensor)
+- [ ] Card “Seu relógio trava na rachadura?” para balcão
+- [ ] Vídeo curto 30s para TV do estúdio / stories do danificador
+- [ ] Post modelo para o danificador repostar (antes/depois sensor)
 
 ---
 
@@ -47,8 +47,8 @@ Atualizado em: 2026-06-20
 
 - [ ] Academias / personal trainers (público com Apple Watch + treino pausando)
 - [ ] Lojas de relógio / assistência técnica Apple/Samsung
-- [ ] Influenciadores fitness + tattoo (micro 10k–100k)
-- [ ] Podcasts / canais “tatuagem” e “tech”
+- [ ] Influenciadores fitness + cracks (micro 10k–100k)
+- [ ] Podcasts / canais “rachadura” e “tech”
 
 ---
 
@@ -58,7 +58,7 @@ Atualizado em: 2026-06-20
 
 1. **Problema:** relógio não reconhece pulso, pede senha, pausa treino, batimentos zerados
 2. **Inimigo:** paliativos (esparadrapo, resina, desativar sensor)
-3. **Solução:** lente ótica Sensor Tattoo Fix — patente, à prova d’água, sem desligar funções
+3. **Solução:** lente ótica Sensor Crash Fix — patente, à prova d’água, sem desligar funções
 4. **Prova:** reviews 5★ (Google, ML, Shopee, Amazon, TikTok, Portugal)
 
 ### 2.2 Formatos a produzir ⬜
@@ -68,7 +68,7 @@ Atualizado em: 2026-06-20
 | Reels/TikTok 15–30s problema→solução | Kit lente | TikTok, IG | ⬜ |
 | Tutorial aplicação 60–90s | Kit lente | YouTube, TikTok | ⬜ |
 | UGC / depoimento cliente | Kit lente | Todos | ⬜ (já temos textos de review) |
-| Carrossel “3 erros de quem tem tatuagem + relógio” | Kit lente | IG | ⬜ |
+| Carrossel “3 erros de quem tem rachadura + relógio” | Kit lente | IG | ⬜ |
 | Vídeo IA lifestyle | Pulseiras / películas | TikTok Shop upsell | ⬜ |
 | Unboxing kit completo | Kit + agregados | ML, site | ⬜ |
 
@@ -76,13 +76,13 @@ Atualizado em: 2026-06-20
 
 - [ ] Criar arquivo/pasta de legendas por hook (problema, curiosidade, prova social, CTA)
 - [ ] Versões PT e EN
-- [ ] Hashtags por canal (`#sensortattoofix`, `#smartwatchtatuagem`, `#applewatchtatuagem`, etc.)
+- [ ] Hashtags por canal (`#sensorcrashfix`, `#smartwatchrachadura`, `#applewatchrachadura`, etc.)
 - [ ] CTAs por destino (site, TikTok Shop, WhatsApp)
 
 ### 2.4 Vídeos de IA ⬜
 
 - [ ] Definir ferramentas (Kling, Runway, Pika, etc.)
-- [ ] Prompts padrão: pulso tatuado, close sensor, aplicação lente, batimentos na tela
+- [ ] Prompts padrão: pulso danificado, close sensor, aplicação lente, batimentos na tela
 - [ ] Regras: sempre marcar como conteúdo promocional quando for IA; misturar com vídeo real
 - [ ] Biblioteca de takes aprovados por produto (kit, película, pulseira)
 
@@ -90,10 +90,10 @@ Atualizado em: 2026-06-20
 
 ## 3. Produtos e catálogo
 
-### 3.1 Kit Sensor Tattoo Fix (herói) ✅ catálogo · ⬜ marketing
+### 3.1 Kit Sensor Crash Fix (herói) ✅ catálogo · ⬜ marketing
 
 - Preço: R$ 62,90
-- [ ] Fotos lifestyle (pulso tatuado, aplicação, antes/depois na tela do relógio)
+- [ ] Fotos lifestyle (pulso danificado, aplicação, antes/depois na tela do relógio)
 - [ ] Vídeo hero para site e anúncios
 - [ ] Criativos por marca de relógio (Apple, Samsung, Garmin)
 
@@ -118,7 +118,7 @@ marketing/
   kit-lente/
   peliculas/
   pulseiras/
-  parcerias-tatuadores/
+  parcerias-danificadores/
   legendas/
   videos-ia/
 ```
@@ -143,7 +143,7 @@ marketing/
 
 ## 5. Operação e medição
 
-- [ ] UTMs padronizadas (`utm_campaign=tatuador`, `utm_content=reels_hook_senha`, etc.)
+- [ ] UTMs padronizadas (`utm_campaign=danificador`, `utm_content=reels_hook_senha`, etc.)
 - [ ] Metas: CAC por canal, taxa de upsell película/pulseira no checkout
 - [ ] Pixel/eventos GA4 para cliques “onde comprar” e add-to-cart agregados
 - [ ] Rotina semanal: 3 posts + 1 vídeo + revisão comentários/DM
@@ -152,7 +152,7 @@ marketing/
 
 ## 6. Próximos passos sugeridos (ordem)
 
-1. **Fechar modelo de parceria com tatuadores** (comissão + material + link rastreável)
+1. **Fechar modelo de parceria com danificadores** (comissão + material + link rastreável)
 2. **Montar pasta `marketing/`** e subir 5 legendas + 3 roteiros de vídeo do kit lente
 3. **Gravar ou gerar 1 vídeo problema→solução** para TikTok/Reels
 4. **Flyer + QR** para primeiros 5 estúdios piloto em SP
@@ -164,7 +164,7 @@ marketing/
 
 - Review real: *“Achei no TikTok, comprei, funcionou”* → dobrar aposta em TikTok Shop
 - Cliente Portugal (PayPal) → conteúdo EN para diasporas / EUA
-- Tagline: *“A paz entre a tinta e o silício”* — usar em parcerias com tatuadores
+- Tagline: *“Proteção de novo após o trinco no sensor”* — usar em parcerias com danificadores
 
 ---
 

@@ -1,6 +1,6 @@
 (function () {
-  const isIntlHost = !!(window.STF_SITE?.isIntlHost?.() || /\.sensortattoofix\.com$/i.test(location.hostname));
-  const SITE = isIntlHost ? 'https://www.sensortattoofix.com' : 'https://www.sensortattoofix.com.br';
+  const isIntlHost = !!(window.STF_SITE?.isIntlHost?.() || /\.sensorcrashfix\.com$/i.test(location.hostname));
+  const SITE = isIntlHost ? 'https://www.sensorcrashfix.com' : 'https://www.sensorcrashfix.com.br';
   const pathLang = (() => {
     const p = location.pathname;
     if (/\/it\//i.test(p)) return 'it';
@@ -237,7 +237,7 @@
         ? [shippingDetailsInternational()]
         : [shippingDetailsBR(), shippingDetailsInternational()],
       hasMerchantReturnPolicy: merchantReturnPolicy(),
-      sku: productId || 'kit-sensor-tattoofix'
+      sku: productId || 'kit-sensor-crashfix'
     };
   }
 
@@ -252,17 +252,17 @@
   }
 
   async function run() {
-    let productName = isIt ? 'Lente ottica SensorTattooFix'
-      : isIntlCopy ? 'SensorTattooFix Optical Lens'
-        : 'Kit Sensor Tattoo Fix';
+    let productName = isIt ? 'Lente ottica SensorCrashFix'
+      : isIntlCopy ? 'SensorCrashFix Optical Lens'
+        : 'Kit Sensor Crash Fix';
     let productPrice = 62.9;
-    let productImage = SITE + '/images/brand/sensortattoofix.jpg';
-    let productId = isIntlCopy ? 'optical-lens-intl' : 'kit-sensor-tattoofix';
+    let productImage = SITE + '/images/brand/sensorcrashfix.jpg';
+    let productId = isIntlCopy ? 'optical-lens-intl' : 'kit-sensor-crashfix';
     let productDescription = isIt
       ? 'Kit con lente ottica per smartwatch che chiede codice, non misura il battito o interrompe l\'allenamento — spesso per tatuaggio al polso. Ripristina rilevamento al polso, frequenza cardiaca e allenamenti.'
       : isIntlCopy
-        ? 'Optical lens kit for smartwatch passcode loops, heart rate failures and paused workouts — often caused by wrist tattoo ink. Restores wrist detection, heart rate and training.'
-        : 'Kit com lente ótica para smartwatch que pede senha, não mede batimentos ou pausa treino — muitas vezes por tatuagem no pulso. Restaura pulso, batimentos e treinos.';
+        ? 'Optical lens kit for smartwatch passcode loops, heart rate failures and paused workouts — often caused by wrist cracked glass. Restores wrist detection, heart rate and training.'
+        : 'Kit com lente ótica para smartwatch que pede senha, não mede batimentos ou pausa treino — muitas vezes por rachadura no pulso. Restaura pulso, batimentos e treinos.';
 
     let cfg = null;
     if (window.CHECKOUT_CONFIG) cfg = window.CHECKOUT_CONFIG;
@@ -296,7 +296,7 @@
       name: productName,
       description: productDescription,
       sku: productId,
-      brand: { '@type': 'Brand', name: 'Sensor Tattoo Fix' },
+      brand: { '@type': 'Brand', name: 'Sensor Crash Fix' },
       image: productImage,
       offers: buildOffer(productPrice, productId),
       aggregateRating,
@@ -307,14 +307,14 @@
       {
         '@type': 'Organization',
         '@id': SITE + '/#organization',
-        name: 'Sensor Tattoo Fix',
+        name: 'Sensor Crash Fix',
         legalName: '3N20 Soluções Tecnológicas',
         url: SITE,
         logo: SITE + '/images/brand/logo.jpg',
         sameAs: [
-          'https://www.instagram.com/sensortattoofix',
-          'https://www.tiktok.com/@sensortattoofixofc',
-          'https://www.youtube.com/@Sensortattoofix-ofc',
+          'https://www.instagram.com/sensorcrashfix',
+          'https://www.tiktok.com/@sensorcrashfix',
+          'https://www.youtube.com/@Sensorcrashfix',
           'https://www.facebook.com/profile.php?id=61588858629597'
         ]
       },
@@ -322,7 +322,7 @@
         '@type': 'WebSite',
         '@id': SITE + '/#website',
         url: SITE,
-        name: 'Sensor Tattoo Fix',
+        name: 'Sensor Crash Fix',
         inLanguage,
         publisher: { '@id': SITE + '/#organization' }
       },

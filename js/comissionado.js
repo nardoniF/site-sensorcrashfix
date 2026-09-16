@@ -1,6 +1,6 @@
 (function () {
   function apiBase() {
-    return String(window.CONFIG_BOOTSTRAP?.configApiUrl || 'https://api.sensortattoofix.com.br').replace(/\/$/, '');
+    return String(window.CONFIG_BOOTSTRAP?.configApiUrl || 'https://api.sensorcrashfix.com.br').replace(/\/$/, '');
   }
 
   function normalizeCode(raw) {

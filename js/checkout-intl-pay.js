@@ -17,7 +17,7 @@ window.STF_INTL_PAY = (function () {
   }
 
   function isActive() {
-    return !!(window.STF_SITE?.isIntlHost?.() || /\.sensortattoofix\.com$/i.test(location.hostname));
+    return !!(window.STF_SITE?.isIntlHost?.() || /\.sensorcrashfix\.com$/i.test(location.hostname));
   }
 
   async function loadConfig() {
@@ -139,7 +139,7 @@ window.STF_INTL_PAY = (function () {
     if (path.includes('/it/')) return 'it_IT';
     const htmlLang = String(document.documentElement.lang || '').toLowerCase();
     if (htmlLang.startsWith('it')) return 'it_IT';
-    if (htmlLang.startsWith('en') || /\.sensortattoofix\.com$/i.test(location.hostname)) return 'en_US';
+    if (htmlLang.startsWith('en') || /\.sensorcrashfix\.com$/i.test(location.hostname)) return 'en_US';
     return 'pt_BR';
   }
 
@@ -185,7 +185,7 @@ window.STF_INTL_PAY = (function () {
     } catch (_) { /* ignore */ }
     const path = String(location.pathname || '');
     if (path.includes('/it/')) return 'it';
-    if (path.includes('/en/') || /\.sensortattoofix\.com$/i.test(location.hostname)) return 'en';
+    if (path.includes('/en/') || /\.sensorcrashfix\.com$/i.test(location.hostname)) return 'en';
     const htmlLang = String(document.documentElement.lang || '').toLowerCase();
     if (htmlLang.startsWith('it')) return 'it';
     if (htmlLang.startsWith('en')) return 'en';
@@ -284,7 +284,7 @@ window.STF_INTL_PAY = (function () {
         retry: 'Riprova'
       };
     }
-    if (lang === 'pt' || (!path.includes('/en/') && !path.includes('/it/') && !/\.sensortattoofix\.com$/i.test(location.hostname))) {
+    if (lang === 'pt' || (!path.includes('/en/') && !path.includes('/it/') && !/\.sensorcrashfix\.com$/i.test(location.hostname))) {
       return {
         generic: 'Não foi possível concluir o pagamento. Tente novamente ou use outro método.',
         card: 'Cartão recusado. Confira os dados ou tente outro cartão.',

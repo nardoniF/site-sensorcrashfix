@@ -1,10 +1,10 @@
 /**
  * URLs canônicas hreflang — fonte única para HTML e sitemap.xml.
- * PT → sensortattoofix.com.br
- * EN/IT/DE/ES/PL/SL → sensortattoofix.com
+ * PT → sensorcrashfix.com.br
+ * EN/IT/DE/ES/PL/SL → sensorcrashfix.com
  */
-export const BR = 'https://www.sensortattoofix.com.br';
-export const COM = 'https://www.sensortattoofix.com';
+export const BR = 'https://www.sensorcrashfix.com.br';
+export const COM = 'https://www.sensorcrashfix.com';
 
 export const HREFLANG_ORDER = ['pt-BR', 'en', 'it', 'de', 'es', 'pl', 'sl', 'x-default'];
 
