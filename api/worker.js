@@ -3482,7 +3482,7 @@ function buildPendingConsultativeEmail(order, config, env, {
     <p>${escapeHtml(copy.help)}</p>
     <p>${escapeHtml(copy.offer)}</p>
     ${pixBlock}
-    <p style="margin-top:20px"><a href="${escapeHtml(copy.resumeUrl)}" style="display:inline-block;background:#ffc107;color:#000;text-decoration:none;font-weight:700;padding:12px 20px;border-radius:8px">${escapeHtml(copy.ctaPay)}</a></p>
+    <p style="margin-top:20px"><a href="${escapeHtml(copy.resumeUrl)}" style="display:inline-block;background:#5EC8D8;color:#000;text-decoration:none;font-weight:700;padding:12px 20px;border-radius:8px">${escapeHtml(copy.ctaPay)}</a></p>
     <p style="margin-top:24px"><strong>${escapeHtml(copy.contactsTitle)}</strong></p>
     <ul style="padding-left:18px;margin:8px 0 0">${contacts}</ul>
     <p style="margin-top:24px">${escapeHtml(copy.signOff)}<br>${escapeHtml(copy.signer)}</p>
@@ -13484,7 +13484,7 @@ function passwordResetEmailCopy(locale, resetUrl) {
       html: `<div style="font-family:Arial,sans-serif;max-width:560px;line-height:1.5;color:#222">
         <h2 style="margin:0 0 12px">Password reset</h2>
         <p>We received a request to reset your Sensor Crash Fix account password.</p>
-        <p><a href="${resetUrl}" style="display:inline-block;background:#ffc107;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Choose a new password</a></p>
+        <p><a href="${resetUrl}" style="display:inline-block;background:#5EC8D8;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Choose a new password</a></p>
         <p style="font-size:13px;color:#666">This link expires in 1 hour. If you didn’t ask for this, you can ignore this email.</p>
         <p style="font-size:12px;color:#888;word-break:break-all">${resetUrl}</p>
       </div>`,
@@ -13497,7 +13497,7 @@ function passwordResetEmailCopy(locale, resetUrl) {
       html: `<div style="font-family:Arial,sans-serif;max-width:560px;line-height:1.5;color:#222">
         <h2 style="margin:0 0 12px">Reimposta password</h2>
         <p>Abbiamo ricevuto una richiesta per reimpostare la password del tuo account Sensor Crash Fix.</p>
-        <p><a href="${resetUrl}" style="display:inline-block;background:#ffc107;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Scegli una nuova password</a></p>
+        <p><a href="${resetUrl}" style="display:inline-block;background:#5EC8D8;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Scegli una nuova password</a></p>
         <p style="font-size:13px;color:#666">Il link scade tra 1 ora. Se non hai richiesto tu, ignora questa email.</p>
         <p style="font-size:12px;color:#888;word-break:break-all">${resetUrl}</p>
       </div>`,
@@ -13510,7 +13510,7 @@ function passwordResetEmailCopy(locale, resetUrl) {
       html: `<div style="font-family:Arial,sans-serif;max-width:560px;line-height:1.5;color:#222">
         <h2 style="margin:0 0 12px">Ponastavitev gesla</h2>
         <p>Prejeli smo zahtevo za ponastavitev gesla vašega računa Sensor Crash Fix.</p>
-        <p><a href="${resetUrl}" style="display:inline-block;background:#ffc107;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Izberite novo geslo</a></p>
+        <p><a href="${resetUrl}" style="display:inline-block;background:#5EC8D8;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Izberite novo geslo</a></p>
         <p style="font-size:13px;color:#666">Povezava poteče v 1 uri. Če tega niste zahtevali, prezrite to sporočilo.</p>
         <p style="font-size:12px;color:#888;word-break:break-all">${resetUrl}</p>
       </div>`,
@@ -13522,7 +13522,7 @@ function passwordResetEmailCopy(locale, resetUrl) {
     html: `<div style="font-family:Arial,sans-serif;max-width:560px;line-height:1.5;color:#222">
       <h2 style="margin:0 0 12px">Redefinir senha</h2>
       <p>Recebemos um pedido para redefinir a senha da sua conta Sensor Crash Fix.</p>
-      <p><a href="${resetUrl}" style="display:inline-block;background:#ffc107;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Escolher nova senha</a></p>
+      <p><a href="${resetUrl}" style="display:inline-block;background:#5EC8D8;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Escolher nova senha</a></p>
       <p style="font-size:13px;color:#666">Este link expira em 1 hora. Se você não pediu isso, ignore este e-mail.</p>
       <p style="font-size:12px;color:#888;word-break:break-all">${resetUrl}</p>
     </div>`,
