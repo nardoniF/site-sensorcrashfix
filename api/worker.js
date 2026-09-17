@@ -105,7 +105,7 @@ const ALLOWED_ORIGINS = [
 ];
 const CONFIG_KEY = 'store-config';
 /** Pin igual ao cloudflare/scf-com-proxy.js — catálogo GitHub servido direto ao Worker (evita cache do proxy). */
-const SITE_CATALOG_COMMIT = '3299494b66c054c868ae927cc36d63658d342a46';
+const SITE_CATALOG_COMMIT = 'a107a94dd2c85724cb58743fdd38c8ebac6f36bd';
 const SITE_CATALOG_URLS = [
   'https://cdn.jsdelivr.net/gh/nardoniF/site-sensorcrashfix@' + SITE_CATALOG_COMMIT + '/data/store-config.json',
   'https://raw.githubusercontent.com/nardoniF/site-sensorcrashfix/' + SITE_CATALOG_COMMIT + '/data/store-config.json',
