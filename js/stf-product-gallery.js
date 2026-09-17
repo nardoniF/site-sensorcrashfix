@@ -42,33 +42,30 @@
    * 5 fotos da lente + aplicação + antes/depois.
    */
   const LENS_GALLERY_EN = [
-    '/images/lens-gallery/01-optical-correction-lens.png',
-    '/images/lens-gallery/02-ultra-thin.png',
-    '/images/lens-gallery/03-high-optical-transparency.png',
-    '/images/lens-gallery/04-engineered-refraction.png',
-    '/images/lens-gallery/05-whats-included.png',
+    '/images/kit-gallery/en/kit-01-embalagem.jpg',
     '/images/kit-gallery/en/kit-03-aplicacao.jpg',
-    '/images/kit-gallery/en/kit-06-antes-depois.jpg'
+    '/images/kit-gallery/en/kit-02-conteudo.jpg',
+    '/images/kit-gallery/en/kit-06-antes-depois.jpg',
+    '/images/kit-gallery/en/kit-07-beneficios.jpg',
+    '/images/kit-gallery/en/kit-05-acompanha.jpg'
   ];
 
   const LENS_GALLERY_IT = [
-    '/images/lens-gallery/it/01-optical-correction-lens.png',
-    '/images/lens-gallery/it/02-ultra-thin.png',
-    '/images/lens-gallery/it/03-high-optical-transparency.png',
-    '/images/lens-gallery/it/04-engineered-refraction.png',
-    '/images/lens-gallery/it/05-whats-included.png',
-    SHARED_APLICACAO,
-    '/images/kit-gallery/it/kit-06-antes-depois.jpg'
+    '/images/kit-gallery/it/kit-01-embalagem.jpg',
+    '/images/kit-gallery/it/kit-03-aplicacao.jpg',
+    '/images/kit-gallery/it/kit-02-conteudo.jpg',
+    '/images/kit-gallery/it/kit-06-antes-depois.jpg',
+    '/images/kit-gallery/it/kit-07-beneficios.jpg',
+    '/images/kit-gallery/it/kit-05-acompanha.jpg'
   ];
 
   const LENS_GALLERY_SHARED = [
-    '/images/lens-gallery/01-optical-correction-lens.png',
-    '/images/lens-gallery/02-ultra-thin.png',
-    '/images/lens-gallery/03-high-optical-transparency.png',
-    '/images/lens-gallery/04-engineered-refraction.png',
-    '/images/lens-gallery/05-whats-included.png',
-    SHARED_APLICACAO,
-    '/images/kit-gallery/kit-06-antes-depois.jpg'
+    '/images/kit-gallery/kit-01-embalagem.jpg',
+    '/images/kit-gallery/kit-03-aplicacao.jpg',
+    '/images/kit-gallery/kit-02-conteudo.jpg',
+    '/images/kit-gallery/kit-06-antes-depois.jpg',
+    '/images/kit-gallery/kit-07-beneficios.jpg',
+    '/images/kit-gallery/kit-05-acompanha.jpg'
   ];
 
   /** @deprecated alias */

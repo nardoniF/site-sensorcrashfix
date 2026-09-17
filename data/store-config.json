@@ -7,7 +7,7 @@
     "descriptionEn": "Lens cover for a cracked smartwatch sensor — restores seal and daily use",
     "descriptionIt": "Lente di copertura per sensore smartwatch incrinato — ripristina tenuta e uso",
     "price": 62.9,
-    "image": "https://www.sensorcrashfix.com.br/images/brand/sensorcrashfix.jpg",
+    "image": "/images/kit-gallery/kit-01-embalagem.jpg",
     "sensorMm": 27
   },
   "products": [
@@ -21,7 +21,7 @@
       "descriptionEn": "Lens cover for a cracked smartwatch sensor — restores seal and daily use",
       "descriptionIt": "Lente di copertura per sensore smartwatch incrinato — ripristina tenuta e uso",
       "price": 62.9,
-      "image": "https://www.sensorcrashfix.com.br/images/brand/sensorcrashfix.jpg",
+      "image": "/images/kit-gallery/kit-01-embalagem.jpg",
       "active": true,
       "requiresSmartwatch": true,
       "deviceType": "smartwatch",
@@ -37,7 +37,15 @@
       "descriptionDe": "Abdecklinse für gerissenen Smartwatch-Sensor — stellt Dichtung und Nutzung wieder her",
       "descriptionEs": "Lente de cobertura para sensor de smartwatch agrietado — restaura sellado y uso",
       "descriptionPl": "Soczewka ochronna na pęknięty czujnik smartwatcha — przywraca uszczelnienie i użytkowanie",
-      "descriptionSl": "Zaščitna leča za počeno tipalo pametne ure — obnovi tesnjenje in uporabo"
+      "descriptionSl": "Zaščitna leča za počeno tipalo pametne ure — obnovi tesnjenje in uporabo",
+      "images": [
+        "/images/kit-gallery/kit-03-aplicacao.jpg",
+        "/images/kit-gallery/kit-01-embalagem.jpg",
+        "/images/kit-gallery/kit-02-conteudo.jpg",
+        "/images/kit-gallery/kit-05-acompanha.jpg",
+        "/images/kit-gallery/kit-06-antes-depois.jpg",
+        "/images/kit-gallery/kit-07-beneficios.jpg"
+      ]
     },
     {
       "id": "kit-smartband-crashfix",
@@ -129,15 +137,14 @@
       "price": 62.9,
       "priceUsd": 12.99,
       "priceEur": 11.99,
-      "image": "/images/lens-gallery/01-optical-correction-lens.png",
+      "image": "/images/kit-gallery/en/kit-01-embalagem.jpg",
       "images": [
-        "/images/lens-gallery/01-optical-correction-lens.png",
-        "/images/lens-gallery/02-ultra-thin.png",
-        "/images/lens-gallery/03-high-optical-transparency.png",
-        "/images/lens-gallery/04-engineered-refraction.png",
-        "/images/lens-gallery/05-whats-included.png",
+        "/images/kit-gallery/en/kit-01-embalagem.jpg",
         "/images/kit-gallery/en/kit-03-aplicacao.jpg",
-        "/images/kit-gallery/en/kit-06-antes-depois.jpg"
+        "/images/kit-gallery/en/kit-02-conteudo.jpg",
+        "/images/kit-gallery/en/kit-06-antes-depois.jpg",
+        "/images/kit-gallery/en/kit-07-beneficios.jpg",
+        "/images/kit-gallery/en/kit-05-acompanha.jpg"
       ],
       "active": true,
       "requiresSmartwatch": true,

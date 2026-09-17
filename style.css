@@ -409,7 +409,7 @@ html[lang="it"] .nav-actions { gap: 6px; }
   padding: 0;
 }
 #produtos .product-image-wrap--lg img {
-  object-fit: contain;
+  object-fit: cover;
   background: #000;
 }
 .kit-box {
@@ -425,7 +425,7 @@ html[lang="it"] .nav-actions { gap: 6px; }
   max-width: 420px;
   max-height: none;
   aspect-ratio: 1 / 1;
-  object-fit: contain;
+  object-fit: cover;
   background: #000;
   border-radius: 12px;
 }
@@ -6323,9 +6323,9 @@ body.stf-lightbox-open { overflow: hidden; }
     font-weight: 600;
     margin-bottom: 16px;
 }
-.loja-card img { width: 100%; aspect-ratio: 1 / 1; object-fit: contain; background: #111; }
+.loja-card img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; background: #111; }
 .loja-card .stf-album { width: 100%; aspect-ratio: 1 / 1; background: #111; overflow: hidden; }
-.loja-card .stf-album img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: contain; object-position: center; background: #111; display: block; }
+.loja-card .stf-album img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; object-position: center; background: #111; display: block; }
 
 /* Product photo album — faint arrows on the image */
 .stf-album {
@@ -6405,7 +6405,7 @@ body.stf-lightbox-open { overflow: hidden; }
   display: block;
   width: 100%;
 }
-/* Home product album: square, shrink to fit — never crop */
+/* Home product album: square, fill the frame */
 .product-image-wrap .stf-album {
   width: 100%;
   height: 100%;
@@ -6420,21 +6420,22 @@ body.stf-lightbox-open { overflow: hidden; }
   max-width: none;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   display: block;
   margin: 0;
 }
 .kit-box-media .stf-album img {
-  max-width: 320px;
-  max-height: 280px;
+  max-width: 420px;
+  max-height: none;
   width: 100%;
-  height: auto;
-  object-fit: contain;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
   display: block;
   margin: 0 auto;
 }
-/* Loja: square card, full image visible (shrink, don't crop) */
+/* Loja: square card, fill entire space */
 .loja-card .stf-album {
   aspect-ratio: 1 / 1;
   background: #111;
@@ -6444,7 +6445,7 @@ body.stf-lightbox-open { overflow: hidden; }
   width: 100%;
   height: 100%;
   aspect-ratio: auto;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
 }
 .loja-card-body { padding: 16px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
