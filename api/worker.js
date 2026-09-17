@@ -1404,15 +1404,12 @@ function mergeSiteCatalog(config, site) {
     config.smartwatchCatalog,
     site.smartwatchCatalog
   );
+  // FAQ/reviews: catálogo do site (git) manda — evita FAQ Tattoo antiga presa no KV.
   if (Array.isArray(site.homeFaq) && site.homeFaq.length) {
-    next.homeFaq = Array.isArray(config.homeFaq) && config.homeFaq.length
-      ? config.homeFaq
-      : site.homeFaq;
+    next.homeFaq = site.homeFaq;
   }
-  if (Array.isArray(site.homeReviews) && site.homeReviews.length) {
-    next.homeReviews = Array.isArray(config.homeReviews) && config.homeReviews.length
-      ? config.homeReviews
-      : site.homeReviews;
+  if (Array.isArray(site.homeReviews)) {
+    next.homeReviews = site.homeReviews;
   }
   if (site.products?.length) {
     next.products = mergeSiteCatalogProducts(config.products, site.products);

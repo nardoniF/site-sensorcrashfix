@@ -11,7 +11,7 @@ workers_dev = true
 
 [[kv_namespaces]]
 binding = "STORE_KV"
-id = "4184c034aab941e58ce5cc1e3abaecdc"
+id = "c28d9f1e89dd41348ad7080b02d63054"
 
 [[d1_databases]]
 binding = "CLICKS_DB"
