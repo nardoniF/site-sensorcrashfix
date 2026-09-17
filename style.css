@@ -365,6 +365,71 @@ html[lang="it"] .nav-actions { gap: 6px; }
 .btn-primary { background: var(--primary); color: #000 !important; padding: 16px 26px; border-radius: 12px; text-decoration: none; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s; text-align: center; border: none; min-width: 220px; cursor: pointer; }
 .product-img { width: 100%; border-radius: 20px; border: 1px solid #222; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
 
+
+/* Crash Fix homepage: cracked-sphere icon + larger product square on black */
+.icon-cracked-sphere {
+  display: inline-block;
+  width: 2.1rem;
+  height: 2.1rem;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  background:
+    linear-gradient(135deg, transparent 46%, #5EC8D8 46%, #5EC8D8 54%, transparent 54%),
+    radial-gradient(circle at 35% 30%, #7ad4e0 0%, #5EC8D8 38%, #2a8a98 72%, #1a5c66 100%);
+  box-shadow: inset 0 0 0 2px rgba(94, 200, 216, 0.35);
+  position: relative;
+}
+.icon-cracked-sphere::before,
+.icon-cracked-sphere::after {
+  content: "";
+  position: absolute;
+  background: rgba(10, 10, 10, 0.85);
+  border-radius: 1px;
+}
+.icon-cracked-sphere::before {
+  width: 2px; height: 62%;
+  left: 48%; top: 18%;
+  transform: rotate(28deg);
+}
+.icon-cracked-sphere::after {
+  width: 2px; height: 48%;
+  left: 58%; top: 28%;
+  transform: rotate(-38deg);
+}
+.icon-cracked-sphere--benefit {
+  width: 2.4rem;
+  height: 2.4rem;
+  display: block;
+  margin: 0 auto 15px;
+}
+#produtos .product-image-wrap--lg {
+  width: min(100%, 460px);
+  background: #000;
+  border-color: #222;
+  padding: 0;
+}
+#produtos .product-image-wrap--lg img {
+  object-fit: contain;
+  background: #000;
+}
+.kit-box {
+  background: #0a0a0a;
+}
+.kit-box-media {
+  background: #000;
+  border-radius: 16px;
+  padding: 8px;
+}
+.kit-box-media img {
+  width: 100%;
+  max-width: 420px;
+  max-height: none;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  background: #000;
+  border-radius: 12px;
+}
+
 /* Crash Fix: hero visual preenche a coluna (sem fotinho em quadradão branco) */
 .home-page .hero-visual {
     position: relative;
