@@ -768,7 +768,7 @@ html[lang="it"] .nav-actions { gap: 6px; }
 .danger-box { border: 3px dashed var(--danger); color: var(--danger); padding: 50px; font-weight: 900; text-transform: uppercase; font-size: 1.5rem; transform: rotate(-8deg); text-align: center; width: fit-content; }
 
 /* KIT BOX */
-.kit-box { background: #1a1a1a; padding: 24px; border-radius: 20px; margin-top: 30px; border-left: 5px solid var(--primary); text-align: left; }
+.kit-box { background: #0a0a0a; padding: 24px; border-radius: 20px; margin-top: 30px; border-left: 5px solid var(--primary); text-align: left; }
 html.stf-lens-only .kit-box,
 body.stf-lens-only .kit-box { display: none !important; }
 .shipping-card--lens-only .shipping-card-main strong { font-size: 1rem; }
@@ -782,16 +782,21 @@ body.stf-lens-only .kit-box { display: none !important; }
 .kit-box-media {
     flex-shrink: 0;
     line-height: 0;
+    background: #000;
+    border-radius: 16px;
+    padding: 8px;
 }
 .kit-box-media img {
     width: auto;
-    max-width: 320px;
-    max-height: 280px;
+    max-width: 420px;
+    max-height: none;
     height: auto;
+    aspect-ratio: 1 / 1;
     border-radius: 12px;
-    border: 1px solid #333;
+    border: 1px solid #222;
     display: block;
     object-fit: contain;
+    background: #000;
 }
 .kit-box-content h3 { margin-bottom: 16px; color: var(--primary); }
 .kit-grid { display: flex; flex-direction: column; gap: 10px; }
