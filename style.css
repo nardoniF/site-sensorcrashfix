@@ -554,25 +554,6 @@ html[lang="it"] .nav-actions { gap: 6px; }
     text-align: center;
 }
 .about-card--story { text-align: left; }
-.about-story-photo {
-    margin: 28px 0 8px;
-    border-radius: 16px;
-    overflow: hidden;
-    border: 1px solid #2a2a2a;
-    background: #0a0a0a;
-}
-.about-story-photo img {
-    display: block;
-    width: 100%;
-    height: auto;
-}
-.about-story-photo figcaption {
-    padding: 12px 16px 14px;
-    font-size: 0.92rem;
-    line-height: 1.45;
-    color: var(--gray);
-    text-align: center;
-}
 .about-kicker {
     display: block;
     margin: 0 0 22px;
