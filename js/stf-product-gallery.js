@@ -30,7 +30,7 @@
 
   /**
    * .com / EN / IT — mesmo álbum na home, loja e checkout:
-   * embalagem, aplicação, conteúdo, antes/depois, o que acompanha.
+   * embalagem, aplicação, antes/depois.
    */
   const LENS_GALLERY_EN = [
     '/images/kit-gallery/en/kit-01-embalagem.jpg',
