@@ -43,8 +43,7 @@
         "/images/kit-gallery/kit-01-embalagem.jpg",
         "/images/kit-gallery/kit-02-conteudo.jpg",
         "/images/kit-gallery/kit-05-acompanha.jpg",
-        "/images/kit-gallery/kit-06-antes-depois.jpg",
-        "/images/kit-gallery/kit-07-beneficios.jpg"
+        "/images/kit-gallery/kit-06-antes-depois.jpg"
       ]
     },
     {
@@ -143,7 +142,6 @@
         "/images/kit-gallery/en/kit-03-aplicacao.jpg",
         "/images/kit-gallery/en/kit-02-conteudo.jpg",
         "/images/kit-gallery/en/kit-06-antes-depois.jpg",
-        "/images/kit-gallery/en/kit-07-beneficios.jpg",
         "/images/kit-gallery/en/kit-05-acompanha.jpg"
       ],
       "active": true,

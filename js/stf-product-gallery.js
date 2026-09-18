@@ -12,8 +12,7 @@
     '/images/kit-gallery/kit-01-embalagem.jpg',
     '/images/kit-gallery/kit-02-conteudo.jpg',
     '/images/kit-gallery/kit-05-acompanha.jpg',
-    '/images/kit-gallery/kit-06-antes-depois.jpg',
-    '/images/kit-gallery/kit-07-beneficios.jpg'
+    '/images/kit-gallery/kit-06-antes-depois.jpg'
   ];
 
   /** Shared photo (little/no copy) reused across locales. */
@@ -24,8 +23,7 @@
     '/images/kit-gallery/en/kit-01-embalagem.jpg',
     '/images/kit-gallery/en/kit-02-conteudo.jpg',
     '/images/kit-gallery/en/kit-05-acompanha.jpg',
-    '/images/kit-gallery/en/kit-06-antes-depois.jpg',
-    '/images/kit-gallery/en/kit-07-beneficios.jpg'
+    '/images/kit-gallery/en/kit-06-antes-depois.jpg'
   ];
 
   const IT_KIT_GALLERY = [
@@ -33,20 +31,18 @@
     '/images/kit-gallery/it/kit-01-embalagem.jpg',
     '/images/kit-gallery/it/kit-02-conteudo.jpg',
     '/images/kit-gallery/it/kit-05-acompanha.jpg',
-    '/images/kit-gallery/it/kit-06-antes-depois.jpg',
-    '/images/kit-gallery/it/kit-07-beneficios.jpg'
+    '/images/kit-gallery/it/kit-06-antes-depois.jpg'
   ];
 
   /**
    * .com / EN / IT — mesmo álbum na home, loja e checkout:
-   * 5 fotos da lente + aplicação + antes/depois.
+   * embalagem, aplicação, conteúdo, antes/depois, o que acompanha.
    */
   const LENS_GALLERY_EN = [
     '/images/kit-gallery/en/kit-01-embalagem.jpg',
     '/images/kit-gallery/en/kit-03-aplicacao.jpg',
     '/images/kit-gallery/en/kit-02-conteudo.jpg',
     '/images/kit-gallery/en/kit-06-antes-depois.jpg',
-    '/images/kit-gallery/en/kit-07-beneficios.jpg',
     '/images/kit-gallery/en/kit-05-acompanha.jpg'
   ];
 
@@ -55,7 +51,6 @@
     '/images/kit-gallery/it/kit-03-aplicacao.jpg',
     '/images/kit-gallery/it/kit-02-conteudo.jpg',
     '/images/kit-gallery/it/kit-06-antes-depois.jpg',
-    '/images/kit-gallery/it/kit-07-beneficios.jpg',
     '/images/kit-gallery/it/kit-05-acompanha.jpg'
   ];
 
@@ -64,7 +59,6 @@
     '/images/kit-gallery/kit-03-aplicacao.jpg',
     '/images/kit-gallery/kit-02-conteudo.jpg',
     '/images/kit-gallery/kit-06-antes-depois.jpg',
-    '/images/kit-gallery/kit-07-beneficios.jpg',
     '/images/kit-gallery/kit-05-acompanha.jpg'
   ];
 
