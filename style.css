@@ -7457,3 +7457,37 @@ a.conta-forgot-link { display: inline-block; }
 .forum-related-pick span { color: #555; font-size: .88rem; }
 .forum-related-pick small { color: #888; }
 .forum-related-actions { margin-top: .85rem; display: flex; flex-wrap: wrap; gap: .5rem; }
+
+
+/* Temporariamente oculto: paliativos, patentes, comunidade */
+#paliativos,
+section#paliativos,
+.nav-links a[href="#paliativos"],
+.nav-main a[href="#paliativos"],
+a[href="comunidade.html"],
+a[href="../comunidade.html"],
+a[href*="comunidade.html"],
+.badge:has(+ h1),
+.hero .badge,
+footer a[href*="comunidade"],
+.footer-links a[href*="comunidade"] {
+    display: none !important;
+}
+/* Hide patent wording leftovers in visible UI text via helper class */
+.hide-patent, [data-hide-patent] { display: none !important; }
+
+
+/* Patentes ainda não existem — ocultar bloco e textos */
+.about-patents,
+.about-patent,
+.about-story-heading:has(+ .about-body + .about-patents),
+h3.about-story-heading + .about-body:has(+ .about-patents) {
+    display: none !important;
+}
+/* Admin: Saldos e Comunidade ocultos */
+.admin-tab[data-admin-tab="saldos"],
+.admin-tab[data-admin-tab="comunidade"],
+#admin-tab-saldos,
+#admin-tab-comunidade {
+    display: none !important;
+}
