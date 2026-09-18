@@ -13,7 +13,7 @@ import {
   isBotUserAgent
 } from './geo-lang.js';
 
-const COMMIT = 'dab46d75ea578084ab34a44c7b4197fe2dd1f21f';
+const COMMIT = '98a3ae5654a6398fc59849c18d365b2c8ef9cac3';
 const ORIGINS = [
   'https://cdn.jsdelivr.net/gh/nardoniF/site-sensorcrashfix@' + COMMIT,
   'https://raw.githubusercontent.com/nardoniF/site-sensorcrashfix/' + COMMIT,
