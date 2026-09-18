@@ -190,13 +190,12 @@ const DEFAULT_CONFIG = {
       descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
       descriptionIt: 'Progettata per i sensori ottici degli smartwatch su sensore incrinato.',
       price: 62.9,
-      image: '/images/lens-gallery/01-optical-correction-lens.png',
+      image: '/images/kit-gallery/en/kit-01-embalagem.jpg',
       images: [
-        '/images/lens-gallery/01-optical-correction-lens.png',
-        '/images/lens-gallery/02-ultra-thin.png',
-        '/images/lens-gallery/03-high-optical-transparency.png',
-        '/images/lens-gallery/04-engineered-refraction.png',
-        '/images/lens-gallery/05-whats-included.png'
+        '/images/kit-gallery/en/kit-01-embalagem.jpg',
+        '/images/kit-gallery/en/kit-03-aplicacao.jpg',
+        '/images/kit-gallery/en/kit-02-conteudo.jpg',
+        '/images/kit-gallery/en/kit-06-antes-depois.jpg'
       ],
       active: true,
       requiresSmartwatch: true,
