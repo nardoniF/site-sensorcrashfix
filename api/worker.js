@@ -182,6 +182,31 @@ const DEFAULT_CONFIG = {
       markets: ['BR']
     },
     {
+      id: 'optical-lens-intl',
+      slug: 'optical-lens-intl',
+      name: 'SensorCrashFix Optical Lens',
+      nameEn: 'SensorCrashFix Optical Lens',
+      nameIt: 'Lente ottica SensorCrashFix',
+      description: 'Lente de correção óptica para smartwatch em pele danificado.',
+      descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
+      descriptionIt: 'Progettata per i sensori ottici degli smartwatch su sensore incrinato.',
+      price: 62.9,
+      image: '/images/lens-gallery/01-optical-correction-lens.png',
+      images: [
+        '/images/lens-gallery/01-optical-correction-lens.png',
+        '/images/lens-gallery/02-ultra-thin.png',
+        '/images/lens-gallery/03-high-optical-transparency.png',
+        '/images/lens-gallery/04-engineered-refraction.png',
+        '/images/lens-gallery/05-whats-included.png'
+      ],
+      active: true,
+      requiresSmartwatch: true,
+      deviceType: 'smartwatch',
+      weightGrams: 3,
+      sensorMm: 25,
+      markets: ['INT']
+    },
+    {
       id: 'optical-lens-smartband-intl',
       slug: 'optical-lens-smartband-intl',
       name: 'SensorCrashFix Smartband Lens',
@@ -208,31 +233,6 @@ const DEFAULT_CONFIG = {
       markets: ['INT'],
       aggregated: false
     },
-    {
-      id: 'optical-lens-intl',
-      slug: 'optical-lens-intl',
-      name: 'SensorCrashFix Optical Lens',
-      nameEn: 'SensorCrashFix Optical Lens',
-      nameIt: 'Lente ottica SensorCrashFix',
-      description: 'Lente de correção óptica para smartwatch em pele danificado.',
-      descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
-      descriptionIt: 'Progettata per i sensori ottici degli smartwatch su sensore incrinato.',
-      price: 62.9,
-      image: '/images/lens-gallery/01-optical-correction-lens.png',
-      images: [
-        '/images/lens-gallery/01-optical-correction-lens.png',
-        '/images/lens-gallery/02-ultra-thin.png',
-        '/images/lens-gallery/03-high-optical-transparency.png',
-        '/images/lens-gallery/04-engineered-refraction.png',
-        '/images/lens-gallery/05-whats-included.png'
-      ],
-      active: true,
-      requiresSmartwatch: true,
-      deviceType: 'smartwatch',
-      weightGrams: 3,
-      sensorMm: 25,
-      markets: ['INT']
-    }
   ],
   pix: { key: '29321223000132', keyType: 'cnpj', merchantName: '3N20 SOLUCOES TEC', merchantCity: 'SAO PAULO' },
   shipping: {

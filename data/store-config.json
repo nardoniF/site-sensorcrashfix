@@ -45,6 +45,42 @@
       ]
     },
     {
+      "id": "optical-lens-intl",
+      "slug": "optical-lens-intl",
+      "name": "SensorCrashFix Optical Lens",
+      "nameEn": "SensorCrashFix Optical Lens",
+      "nameIt": "Lente ottica SensorCrashFix",
+      "nameDe": "SensorCrashFix Optische Linse",
+      "nameEs": "Lente óptica SensorCrashFix",
+      "namePl": "Soczewka optyczna SensorCrashFix",
+      "description": "Lente de cobertura para sensor de smartwatch rachado.",
+      "descriptionEn": "Cover lens for a cracked smartwatch optical sensor.",
+      "descriptionIt": "Lente di copertura per sensore ottico smartwatch incrinato.",
+      "descriptionDe": "Abdecklinse für gerissenen optischen Smartwatch-Sensor.",
+      "descriptionEs": "Lente de cobertura para sensor óptico de smartwatch agrietado.",
+      "descriptionPl": "Soczewka ochronna na pęknięty czujnik optyczny smartwatcha.",
+      "price": 62.9,
+      "priceUsd": 12.99,
+      "priceEur": 11.99,
+      "image": "/images/kit-gallery/en/kit-01-embalagem.jpg",
+      "images": [
+        "/images/kit-gallery/en/kit-01-embalagem.jpg",
+        "/images/kit-gallery/en/kit-03-aplicacao.jpg",
+        "/images/kit-gallery/en/kit-06-antes-depois.jpg"
+      ],
+      "active": true,
+      "requiresSmartwatch": true,
+      "deviceType": "smartwatch",
+      "weightGrams": 3,
+      "sensorMm": 27,
+      "markets": [
+        "INT"
+      ],
+      "aggregated": false,
+      "nameSl": "Optična leča SensorCrashFix",
+      "descriptionSl": "Zaščitna leča za počeno optično tipalo pametne ure."
+    },
+    {
       "id": "kit-smartband-crashfix",
       "slug": "kit-smartband-crashfix",
       "name": "Kit Smartband Crash Fix",
@@ -115,42 +151,6 @@
       "aggregated": false,
       "nameSl": "Leča SensorCrashFix za pametno zapestnico",
       "descriptionSl": "Zaščitna leča za počeno optično tipalo pametne zapestnice."
-    },
-    {
-      "id": "optical-lens-intl",
-      "slug": "optical-lens-intl",
-      "name": "SensorCrashFix Optical Lens",
-      "nameEn": "SensorCrashFix Optical Lens",
-      "nameIt": "Lente ottica SensorCrashFix",
-      "nameDe": "SensorCrashFix Optische Linse",
-      "nameEs": "Lente óptica SensorCrashFix",
-      "namePl": "Soczewka optyczna SensorCrashFix",
-      "description": "Lente de cobertura para sensor de smartwatch rachado.",
-      "descriptionEn": "Cover lens for a cracked smartwatch optical sensor.",
-      "descriptionIt": "Lente di copertura per sensore ottico smartwatch incrinato.",
-      "descriptionDe": "Abdecklinse für gerissenen optischen Smartwatch-Sensor.",
-      "descriptionEs": "Lente de cobertura para sensor óptico de smartwatch agrietado.",
-      "descriptionPl": "Soczewka ochronna na pęknięty czujnik optyczny smartwatcha.",
-      "price": 62.9,
-      "priceUsd": 12.99,
-      "priceEur": 11.99,
-      "image": "/images/kit-gallery/en/kit-01-embalagem.jpg",
-      "images": [
-        "/images/kit-gallery/en/kit-01-embalagem.jpg",
-        "/images/kit-gallery/en/kit-03-aplicacao.jpg",
-        "/images/kit-gallery/en/kit-06-antes-depois.jpg"
-      ],
-      "active": true,
-      "requiresSmartwatch": true,
-      "deviceType": "smartwatch",
-      "weightGrams": 3,
-      "sensorMm": 27,
-      "markets": [
-        "INT"
-      ],
-      "aggregated": false,
-      "nameSl": "Optična leča SensorCrashFix",
-      "descriptionSl": "Zaščitna leča za počeno optično tipalo pametne ure."
     },
     {
       "id": "pelicula-amazfit-bip-2",
