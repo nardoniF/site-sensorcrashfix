@@ -3165,7 +3165,12 @@ ${worksheets}
 
     // Crash: marketplaces ficam no Admin Tattoo (mesma conta de anúncios).
     const HIDDEN_INTEGRATION_IDS = new Set(['mercadolivre', 'amazon', 'shopee']);
-    const visible = (integrations || []).filter((row) => !HIDDEN_INTEGRATION_IDS.has(row.id));
+    const HIDDEN_LABEL_RE = /mercado\s*livre|amazon|shopee/i;
+    const visible = (integrations || []).filter((row) => {
+      if (HIDDEN_INTEGRATION_IDS.has(row.id)) return false;
+      if (HIDDEN_LABEL_RE.test(String(row.label || ''))) return false;
+      return true;
+    });
 
     if (!visible.length) {
       tbody.innerHTML = '<tr><td colspan="3" class="admin-meta">Nenhuma integração retornada.</td></tr>';
@@ -3208,7 +3213,8 @@ ${worksheets}
 
   const CLICKS_SNAPSHOT_KEY = 'stf_admin_clicks_snapshot_v1';
   const BALANCES_SNAPSHOT_KEY = 'stf_admin_balances_snapshot_v2';
-  const ADMIN_TAB_IDS = new Set(['vendas', 'pedidos', 'cliques', 'saldos', 'api', 'clientes', 'pesquisa', 'comunidade', 'documentacao']);
+  const ADMIN_TAB_IDS = new Set(['pedidos', 'cliques', 'api', 'clientes', 'pesquisa', 'documentacao']);
+  const ADMIN_HIDDEN_TABS = new Set(['vendas', 'saldos', 'comunidade']);
   let lastBalancesSnapshot = null;
 
   function resolveDefaultAdminTab() {

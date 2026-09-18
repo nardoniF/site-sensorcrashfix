@@ -7498,9 +7498,11 @@ h3.about-story-heading + .about-body:has(+ .about-patents) {
     display: block !important;
 }
 
-/* Admin: Saldos e Comunidade ocultos */
+/* Admin: Vendas, Saldos e Comunidade ocultos */
+.admin-tab[data-admin-tab="vendas"],
 .admin-tab[data-admin-tab="saldos"],
 .admin-tab[data-admin-tab="comunidade"],
+#admin-tab-vendas,
 #admin-tab-saldos,
 #admin-tab-comunidade {
     display: none !important;
