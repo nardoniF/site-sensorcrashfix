@@ -14595,7 +14595,7 @@ async function trackGa4Purchase(env, order, payment) {
   const apiSecret = (env.GA4_API_SECRET || '').trim();
   if (!apiSecret) return;
 
-  const measurementId = (env.GA4_MEASUREMENT_ID || 'G-TFLZHJG9RN').trim();
+  const measurementId = (env.GA4_MEASUREMENT_ID || 'G-L852DLJ9KV').trim();
   const value = Number(payment?.value ?? order.total) || 0;
   const paymentType = order.pagamento || payment?.billingType || 'unknown';
   const itemName = order.produto || 'Kit Sensor Crash Fix';
