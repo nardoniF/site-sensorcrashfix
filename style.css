@@ -7467,14 +7467,12 @@ section#paliativos,
 a[href="comunidade.html"],
 a[href="../comunidade.html"],
 a[href*="comunidade.html"],
-.badge:has(+ h1),
-.hero .badge,
 footer a[href*="comunidade"],
-.footer-links a[href*="comunidade"] {
+.footer-links a[href*="comunidade"],
+.hide-patent,
+[data-hide-patent] {
     display: none !important;
 }
-/* Hide patent wording leftovers in visible UI text via helper class */
-.hide-patent, [data-hide-patent] { display: none !important; }
 
 
 /* Patentes ainda não existem — ocultar bloco e textos */
