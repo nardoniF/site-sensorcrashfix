@@ -98,13 +98,14 @@ nav,
 }
 .logo-tagline {
     margin: 0;
-    font-size: 0.82rem;
-    font-style: italic;
-    font-weight: 500;
-    line-height: 1.25;
-    letter-spacing: 0.04em;
-    color: #c4c4c4;
-    white-space: nowrap;
+    font-size: 0.9rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: 0.02em;
+    color: #b8f0f8;
+    white-space: normal;
+    max-width: 22rem;
 }
 
 .hero-brand-mobile {
@@ -326,7 +327,7 @@ nav,
 /* Header IT: rótulos um pouco mais longos — só ajustes de espaço, mesma tipografia do menu */
 html[lang="it"] .site-nav { gap: 10px; }
 html[lang="it"] .logo-text { font-size: 1.18rem; }
-html[lang="it"] .logo-tagline { font-size: 0.74rem; }
+html[lang="it"] .logo-tagline { font-size: 0.82rem; }
 html[lang="it"] .logo-img-link { width: 74px; height: 74px; }
 html[lang="it"] .site-social { min-width: 92px; padding: 0 10px; gap: 5px; }
 html[lang="it"] .nav-actions { gap: 6px; }
@@ -363,6 +364,38 @@ html[lang="it"] .nav-actions { gap: 6px; }
     display: none;
 }
 .btn-primary { background: var(--primary); color: #000 !important; padding: 16px 26px; border-radius: 12px; text-decoration: none; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s; text-align: center; border: none; min-width: 220px; cursor: pointer; }
+.hero-btns .btn-cta-primary {
+    background: #12D18E;
+    color: #04120c !important;
+    box-shadow: 0 0 28px rgba(18, 209, 142, 0.38);
+    border: 2px solid #12D18E;
+}
+.hero-btns .btn-cta-primary:hover {
+    background: #2aebab;
+    border-color: #2aebab;
+    transform: translateY(-1px);
+}
+.btn-outline {
+    background: transparent;
+    color: #fff !important;
+    padding: 16px 26px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: 0.3s;
+    text-align: center;
+    border: 2px solid #fff;
+    min-width: 220px;
+    cursor: pointer;
+}
+.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #fff;
+}
 .product-img { width: 100%; border-radius: 20px; border: 1px solid #222; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
 
 
@@ -1841,7 +1874,7 @@ footer,
     .logo-area { flex: 0 0 auto; min-width: 0; gap: 8px; }
     .logo-img-link { width: 56px; height: 56px; }
     .logo-text { font-size: 0.95rem; }
-    .logo-tagline { font-size: 0.68rem; }
+    .logo-tagline { font-size: 0.78rem; color: #c8f6fc; }
 
     /* Home mobile: marca no hero, header compacto + hambúrguer */
     .home-page .logo-area .logo-lockup { display: none; }
@@ -1906,8 +1939,12 @@ footer,
     }
     .home-page .hero-brand-mobile .logo-tagline {
         white-space: normal;
-        font-size: 0.78rem;
-        margin-top: 4px;
+        font-size: 0.86rem;
+        margin-top: 6px;
+        color: #c8f6fc;
+        max-width: 20rem;
+        margin-left: auto;
+        margin-right: auto;
     }
     .home-page .hero {
         min-height: calc(100dvh - 64px);
@@ -2033,14 +2070,15 @@ footer,
     .hero-btns > .store-official-bar.hero-store-bar .store-official-info strong { font-size: 0.95rem; }
     .hero-btns > .store-official-bar.hero-store-bar .store-official-price { font-size: 0.9rem; }
     .hero-btns > .store-official-bar.hero-store-bar .store-official-shipping { font-size: 0.7rem; }
-    .hero-btns > .btn-primary:not(.hero-cta-buy) {
+    .hero-btns > .btn-primary:not(.hero-cta-buy),
+    .hero-btns > .btn-outline {
         width: 100%;
         max-width: 100%;
         min-width: 0;
         box-sizing: border-box;
     }
-    .btn-primary { width: auto; min-width: unset; max-width: 220px; }
-    .btn-primary, .btn-secondary { margin-left: auto; margin-right: auto; }
+    .btn-primary, .btn-outline { width: auto; min-width: unset; max-width: 220px; }
+    .btn-primary, .btn-secondary, .btn-outline { margin-left: auto; margin-right: auto; }
     #produtos .product-solution-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
     #produtos .product-benefits-grid {
         display: grid !important;
@@ -3039,7 +3077,8 @@ a.stf-tiktok-card:hover {
         width: 100%;
         max-width: 100%;
     }
-    .home-page .hero-btns > .btn-primary:not(.hero-cta-buy) {
+    .home-page .hero-btns > .btn-primary:not(.hero-cta-buy),
+    .home-page .hero-btns > .btn-outline {
         max-width: 100%;
         width: 100%;
         min-width: 0;
