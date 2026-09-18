@@ -149,7 +149,13 @@ const DEFAULT_CONFIG = {
       descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
       descriptionIt: 'Progettata per i sensori ottici degli smartwatch su sensore incrinato.',
       price: 62.9,
-      image: 'https://www.sensorcrashfix.com.br/images/brand/sensorcrashfix.jpg',
+      image: '/images/kit-gallery/kit-01-embalagem.jpg',
+      images: [
+        '/images/kit-gallery/kit-03-aplicacao.jpg',
+        '/images/kit-gallery/kit-01-embalagem.jpg',
+        '/images/kit-gallery/kit-02-conteudo.jpg',
+        '/images/kit-gallery/kit-06-antes-depois.jpg'
+      ],
       active: true,
       requiresSmartwatch: true,
       deviceType: 'smartwatch',
