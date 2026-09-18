@@ -1,6 +1,6 @@
 /** Slovenian overrides — merged onto STRINGS.en in stf-i18n.js */
 window.STF_I18N_SL = {
-  'brand.tagline': 'Mir med tinto in silicijem',
+  'brand.tagline': 'Optična zaščita. Obnova in zaščita.',
   'nav.cart': 'Košarica',
   'nav.back': 'Nazaj',
   'nav.home': 'Domov',
