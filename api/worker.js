@@ -173,7 +173,6 @@ const DEFAULT_CONFIG = {
         '/images/smartband/kit-br/02-conteudo.jpg',
         '/images/smartband/kit-br/03-aplicacao.jpg',
         '/images/smartband/kit-br/04-antes-depois.jpg',
-        '/images/smartband/kit-br/05-lente.jpg'
       ],
       active: true,
       requiresSmartwatch: true,

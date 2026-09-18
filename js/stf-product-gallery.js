@@ -129,8 +129,7 @@
     '/images/smartband/kit-br/01-embalagem.jpg',
     '/images/smartband/kit-br/02-conteudo.jpg',
     '/images/smartband/kit-br/03-aplicacao.jpg',
-    '/images/smartband/kit-br/04-antes-depois.jpg',
-    '/images/smartband/kit-br/05-lente.jpg'
+    '/images/smartband/kit-br/04-antes-depois.jpg'
   ];
 
   const SMARTBAND_GALLERY_EN = [
