@@ -7482,10 +7482,19 @@ footer a[href*="comunidade"],
 h3.about-story-heading + .about-body:has(+ .about-patents) {
     display: none !important;
 }
-/* Admin: Saldos e Comunidade ocultos */
-.admin-tab[data-admin-tab="saldos"],
-.admin-tab[data-admin-tab="comunidade"],
-#admin-tab-saldos,
-#admin-tab-comunidade {
+/* Admin Crash: marketplaces gerenciados no Tattoo — ocultar UI */
+.admin-vendas-subtabs,
+.admin-vendas-subtab[data-vendas-subtab="mercadolivre"],
+.admin-vendas-subtab[data-vendas-subtab="shopee"],
+.admin-vendas-subtab[data-vendas-subtab="amazon"],
+.admin-vendas-subtab[data-vendas-subtab="consolidado"],
+#admin-vendas-mercadolivre,
+#admin-vendas-shopee,
+#admin-vendas-amazon,
+#admin-vendas-consolidado {
     display: none !important;
 }
+#admin-vendas-loja {
+    display: block !important;
+}
+

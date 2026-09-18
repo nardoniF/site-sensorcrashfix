@@ -2721,7 +2721,10 @@ ${worksheets}
   function showVendasSubtab(subtabId) {
     const container = document.getElementById('admin-tab-vendas');
     if (!container) return;
-    const id = subtabId || 'mercadolivre';
+    // Crash: só loja oficial (marketplaces no Tattoo).
+    const allowed = new Set(['loja']);
+    let id = subtabId || 'loja';
+    if (!allowed.has(id)) id = 'loja';
     container.querySelectorAll('[data-vendas-subtab]').forEach((tab) => {
       const active = tab.dataset.vendasSubtab === id;
       tab.classList.toggle('active', active);
@@ -2732,10 +2735,6 @@ ${worksheets}
     });
     try { localStorage.setItem('stf_admin_vendas_subtab', id); } catch (e) { /* ignore */ }
     if (id === 'loja') loadLojaSales();
-    if (id === 'mercadolivre') loadMlSales();
-    if (id === 'amazon') loadAmzSales();
-    if (id === 'shopee') loadShopeeSales();
-    if (id === 'consolidado') loadConsolidatedSales();
   }
 
   let vendasSubtabsWired = false;
@@ -2764,9 +2763,9 @@ ${worksheets}
     document.getElementById('btn-vendas-goto-pedidos')?.addEventListener('click', () => {
       document.querySelector('.admin-tab[data-admin-tab="pedidos"]')?.click();
     });
-    let saved = 'mercadolivre';
-    try { saved = localStorage.getItem('stf_admin_vendas_subtab') || 'mercadolivre'; } catch (e) { /* ignore */ }
-    if (!container.querySelector('#admin-vendas-' + saved)) saved = 'mercadolivre';
+    let saved = 'loja';
+    try { saved = localStorage.getItem('stf_admin_vendas_subtab') || 'loja'; } catch (e) { /* ignore */ }
+    if (saved !== 'loja' || !container.querySelector('#admin-vendas-' + saved)) saved = 'loja';
     showVendasSubtab(saved);
   }
 
@@ -3164,13 +3163,17 @@ ${worksheets}
     const checkedEl = document.getElementById('api-integrations-checked-at');
     if (!tbody) return;
 
-    if (!integrations?.length) {
+    // Crash: marketplaces ficam no Admin Tattoo (mesma conta de anúncios).
+    const HIDDEN_INTEGRATION_IDS = new Set(['mercadolivre', 'amazon', 'shopee']);
+    const visible = (integrations || []).filter((row) => !HIDDEN_INTEGRATION_IDS.has(row.id));
+
+    if (!visible.length) {
       tbody.innerHTML = '<tr><td colspan="3" class="admin-meta">Nenhuma integração retornada.</td></tr>';
       if (checkedEl) checkedEl.hidden = true;
       return;
     }
 
-    tbody.innerHTML = integrations.map((row) => {
+    tbody.innerHTML = visible.map((row) => {
       return `<tr>
         <td><strong>${escAttr(row.label)}</strong></td>
         <td>${escAttr(row.description)}</td>
