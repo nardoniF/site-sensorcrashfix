@@ -10,8 +10,6 @@
   const PT_GALLERY = [
     '/images/kit-gallery/kit-03-aplicacao.jpg',
     '/images/kit-gallery/kit-01-embalagem.jpg',
-    '/images/kit-gallery/kit-02-conteudo.jpg',
-    '/images/kit-gallery/kit-05-acompanha.jpg',
     '/images/kit-gallery/kit-06-antes-depois.jpg'
   ];
 
@@ -21,16 +19,12 @@
   const EN_KIT_GALLERY = [
     '/images/kit-gallery/en/kit-03-aplicacao.jpg',
     '/images/kit-gallery/en/kit-01-embalagem.jpg',
-    '/images/kit-gallery/en/kit-02-conteudo.jpg',
-    '/images/kit-gallery/en/kit-05-acompanha.jpg',
     '/images/kit-gallery/en/kit-06-antes-depois.jpg'
   ];
 
   const IT_KIT_GALLERY = [
     SHARED_APLICACAO,
     '/images/kit-gallery/it/kit-01-embalagem.jpg',
-    '/images/kit-gallery/it/kit-02-conteudo.jpg',
-    '/images/kit-gallery/it/kit-05-acompanha.jpg',
     '/images/kit-gallery/it/kit-06-antes-depois.jpg'
   ];
 
@@ -41,25 +35,19 @@
   const LENS_GALLERY_EN = [
     '/images/kit-gallery/en/kit-01-embalagem.jpg',
     '/images/kit-gallery/en/kit-03-aplicacao.jpg',
-    '/images/kit-gallery/en/kit-02-conteudo.jpg',
-    '/images/kit-gallery/en/kit-06-antes-depois.jpg',
-    '/images/kit-gallery/en/kit-05-acompanha.jpg'
+    '/images/kit-gallery/en/kit-06-antes-depois.jpg'
   ];
 
   const LENS_GALLERY_IT = [
     '/images/kit-gallery/it/kit-01-embalagem.jpg',
     '/images/kit-gallery/it/kit-03-aplicacao.jpg',
-    '/images/kit-gallery/it/kit-02-conteudo.jpg',
-    '/images/kit-gallery/it/kit-06-antes-depois.jpg',
-    '/images/kit-gallery/it/kit-05-acompanha.jpg'
+    '/images/kit-gallery/it/kit-06-antes-depois.jpg'
   ];
 
   const LENS_GALLERY_SHARED = [
     '/images/kit-gallery/kit-01-embalagem.jpg',
     '/images/kit-gallery/kit-03-aplicacao.jpg',
-    '/images/kit-gallery/kit-02-conteudo.jpg',
-    '/images/kit-gallery/kit-06-antes-depois.jpg',
-    '/images/kit-gallery/kit-05-acompanha.jpg'
+    '/images/kit-gallery/kit-06-antes-depois.jpg'
   ];
 
   /** @deprecated alias */
