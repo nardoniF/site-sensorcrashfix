@@ -9,49 +9,56 @@
       title: 'Smartwatch falha na pele tatuada?',
       body: 'Se o sensor <strong>não está rachado</strong>, mas o relógio pede senha toda hora, não marca batimento, pausa treinos ou “não detecta o pulso” — o problema costuma ser a <strong>tatuagem</strong>. Nesse caso a solução é a <strong>Sensor Tattoo Fix</strong>.',
       cta: 'Visitar Sensor Tattoo Fix',
-      hint: 'Produto irmão · mesma tecnologia de lente ótica'
+      hint: 'Produto irmão · mesma tecnologia de lente ótica',
+      float: 'Para smartwatch falhando em pele tatuada, acesse Sensor Tattoo Fix'
     },
     en: {
       eyebrow: 'Not a crack? It may be the tattoo',
       title: 'Smartwatch failing on tattooed skin?',
       body: 'If the sensor glass is <strong>not cracked</strong>, but the watch keeps asking for a passcode, won’t read heart rate, pauses workouts or “can’t detect your wrist” — it’s often the <strong>tattoo</strong>. Then you need <strong>Sensor Tattoo Fix</strong>.',
       cta: 'Visit Sensor Tattoo Fix',
-      hint: 'Sister product · same optical lens technology'
+      hint: 'Sister product · same optical lens technology',
+      float: 'For smartwatch failing on tattooed skin, visit Sensor Tattoo Fix'
     },
     it: {
       eyebrow: 'Non è una crepa? Può essere il tatuaggio',
       title: 'Lo smartwatch fallisce sulla pelle tatuata?',
       body: 'Se il vetro del sensore <strong>non è incrinato</strong>, ma l’orologio chiede codice di continuo, non legge il battito, interrompe l’allenamento o “non rileva il polso” — di solito è il <strong>tatuaggio</strong>. In quel caso serve <strong>Sensor Tattoo Fix</strong>.',
       cta: 'Vai su Sensor Tattoo Fix',
-      hint: 'Prodotto gemello · stessa tecnologia di lente ottica'
+      hint: 'Prodotto gemello · stessa tecnologia di lente ottica',
+      float: 'Per smartwatch che fallisce sulla pelle tatuata, vai su Sensor Tattoo Fix'
     },
     de: {
       eyebrow: 'Kein Riss? Vielleicht das Tattoo',
       title: 'Smartwatch versagt auf tätowierter Haut?',
       body: 'Wenn das Sensorglas <strong>nicht gerissen</strong> ist, die Uhr aber ständig den Code verlangt, den Puls nicht misst, Training abbricht oder „kein Handgelenk erkennt“ — oft liegt’s am <strong>Tattoo</strong>. Dann brauchen Sie <strong>Sensor Tattoo Fix</strong>.',
       cta: 'Zu Sensor Tattoo Fix',
-      hint: 'Schwesterprodukt · dieselbe optische Linsentechnologie'
+      hint: 'Schwesterprodukt · dieselbe optische Linsentechnologie',
+      float: 'Bei Smartwatch-Ausfall auf tätowierter Haut: Sensor Tattoo Fix'
     },
     es: {
       eyebrow: '¿No es una grieta? Puede ser el tatuaje',
       title: '¿El smartwatch falla en piel tatuada?',
       body: 'Si el cristal del sensor <strong>no está agrietado</strong>, pero el reloj pide código a cada rato, no mide el pulso, pausa entrenamientos o “no detecta la muñeca” — suele ser el <strong>tatuaje</strong>. Entonces necesitas <strong>Sensor Tattoo Fix</strong>.',
       cta: 'Visitar Sensor Tattoo Fix',
-      hint: 'Producto hermano · misma tecnología de lente óptica'
+      hint: 'Producto hermano · misma tecnología de lente óptica',
+      float: 'Para smartwatch que falla en piel tatuada, visita Sensor Tattoo Fix'
     },
     pl: {
       eyebrow: 'To nie pęknięcie? Może tatuaż',
       title: 'Smartwatch zawodzi na wytatuowanej skórze?',
       body: 'Jeśli szkło czujnika <strong>nie jest pęknięte</strong>, ale zegarek ciągle prosi o kod, nie mierzy tętna, przerywa trening lub „nie wykrywa nadgarstka” — często winny jest <strong>tatuaż</strong>. Wtedy potrzebujesz <strong>Sensor Tattoo Fix</strong>.',
       cta: 'Odwiedź Sensor Tattoo Fix',
-      hint: 'Produkt siostrzany · ta sama technologia soczewki optycznej'
+      hint: 'Produkt siostrzany · ta sama technologia soczewki optycznej',
+      float: 'Smartwatch zawodzi na tatuażu? Wejdź na Sensor Tattoo Fix'
     },
     sl: {
       eyebrow: 'Ni razpoka? Morda tetovaža',
       title: 'Pametna ura odpove na tetovirani koži?',
       body: 'Če steklo tipala <strong>ni počeno</strong>, ura pa ves čas zahteva geslo, ne meri utripa, prekine vadbo ali »ne zazna zapestja« — pogosto gre za <strong>tetovažo</strong>. Potem potrebujete <strong>Sensor Tattoo Fix</strong>.',
       cta: 'Obišči Sensor Tattoo Fix',
-      hint: 'Sesalski izdelek · ista tehnologija optične leče'
+      hint: 'Sesalski izdelek · ista tehnologija optične leče',
+      float: 'Pametna ura odpove na tetovaži? Obišči Sensor Tattoo Fix'
     }
   };
 
@@ -99,6 +106,32 @@
     return COPY[lang] || COPY.en;
   }
 
+  function ensureFloat(lang, href, copy) {
+    try {
+      if (!document.body || typeof document.createElement !== 'function') return;
+      let el = typeof document.getElementById === 'function'
+        ? document.getElementById('stf-sister-float')
+        : null;
+      if (!el) {
+        el = document.createElement('a');
+        el.id = 'stf-sister-float';
+        el.className = 'stf-sister-float';
+        el.target = '_blank';
+        el.rel = 'noopener noreferrer';
+        el.setAttribute('data-stf-sister-float', '');
+        el.setAttribute('data-evento', 'clique_sister_tattoofix_float');
+        el.setAttribute('data-rotulo', 'Float Tattoo Fix');
+        el.innerHTML = '<span class="stf-sister-float-text"></span>';
+        document.body.appendChild(el);
+      }
+      const text = (typeof el.querySelector === 'function' && el.querySelector('.stf-sister-float-text')) || el;
+      text.textContent = copy.float || COPY.en.float;
+      el.setAttribute('href', href);
+      el.setAttribute('aria-label', copy.float || COPY.en.float);
+      el.hidden = false;
+    } catch (_) { /* ignore in non-DOM / test sandboxes */ }
+  }
+
   function apply(root) {
     const scope = root || document;
     const lang = detectLang();
@@ -125,6 +158,9 @@
       });
       el.hidden = false;
     });
+    if (scope === document || scope === document.body) {
+      ensureFloat(lang, href, copy);
+    }
   }
 
   function boot() {

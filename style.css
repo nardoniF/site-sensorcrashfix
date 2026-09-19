@@ -7620,3 +7620,58 @@ h3.about-story-heading + .about-body:has(+ .about-patents) {
   .stf-sister-promo-inner { grid-template-columns: 1fr; gap: 22px; }
   .stf-sister-promo { padding: 36px 0; }
 }
+
+/* Float piscante — direita, acima do WhatsApp */
+.stf-sister-float {
+  position: fixed;
+  right: 40px;
+  bottom: 118px;
+  z-index: 1000;
+  max-width: 210px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1.5px solid var(--primary);
+  background: rgba(10, 10, 10, 0.92);
+  color: #fff !important;
+  text-decoration: none;
+  font-family: var(--font-nav);
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  animation: stf-sister-float-blink 1.15s ease-in-out infinite;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.stf-sister-float:hover {
+  transform: translateY(-2px);
+  border-color: #7edceb;
+  animation-play-state: paused;
+  opacity: 1;
+}
+.stf-sister-float-text {
+  display: block;
+  color: inherit;
+}
+@keyframes stf-sister-float-blink {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 0 0 rgba(94, 200, 216, 0.5);
+  }
+  50% {
+    opacity: 0.42;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 16px 2px rgba(94, 200, 216, 0.35);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stf-sister-float { animation: none; opacity: 1; }
+}
+@media (max-width: 640px) {
+  .stf-sister-float {
+    right: 16px;
+    bottom: 92px;
+    max-width: 158px;
+    padding: 10px 11px;
+    font-size: 0.7rem;
+  }
+}

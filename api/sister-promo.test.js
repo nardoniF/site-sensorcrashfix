@@ -42,7 +42,7 @@ test('home pages include sister promo markup', () => {
   for (const f of ['index.html', 'en/index.html', 'it/index.html']) {
     const html = fs.readFileSync(path.join(root, f), 'utf8');
     assert.match(html, /data-stf-sister-promo/);
-    assert.match(html, /stf-sister-promo\.js\?v=1/);
+    assert.match(html, /stf-sister-promo\.js\?v=2/);
     assert.match(html, /tattoo-fix-promo/);
   }
 });
@@ -52,4 +52,17 @@ test('PT SEO targets sensor trincado', () => {
   assert.match(html, /Sensor Trincado/i);
   assert.match(html, /sensor trincado/i);
   assert.doesNotMatch(html, /loja\.html[^>]*>[\s\S]{0,200}tatuagem/i);
+});
+
+test('float copy mentions tattooed-skin smartwatch CTA', () => {
+  const api = runWith('www.sensorcrashfix.com.br', 'pt');
+  assert.match(api.COPY.pt.float, /smartwatch falhando em pele tatuada/i);
+  assert.match(api.COPY.pt.float, /Sensor Tattoo Fix/i);
+  assert.match(api.COPY.en.float, /tattooed skin/i);
+});
+
+test('CSS defines blinking sister float', () => {
+  const css = fs.readFileSync(path.join(root, 'style.css'), 'utf8');
+  assert.match(css, /\.stf-sister-float\b/);
+  assert.match(css, /stf-sister-float-blink/);
 });
