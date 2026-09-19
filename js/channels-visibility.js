@@ -75,7 +75,7 @@ window.STF_CHANNELS = (function () {
     });
 
     document.querySelectorAll('.loja-marketplaces').forEach((aside) => {
-      const badges = aside.querySelectorAll('[data-channel^="store:"], .loja-mp-badge.store-tattoofix');
+      const badges = aside.querySelectorAll('[data-channel^="store:"]');
       const any = [...badges].some((el) => !el.hidden);
       setVisible(aside, any);
     });
