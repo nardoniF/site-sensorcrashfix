@@ -173,6 +173,9 @@
     const cfg = await loadConfig();
     renderFaq(cfg.homeFaq, lang);
     renderReviews(cfg.homeReviews, lang);
+    if (typeof window.STF_SISTER_LINK?.apply === 'function') {
+      window.STF_SISTER_LINK.apply();
+    }
     if (typeof window.STF_FAQ_EMBEDS?.refresh === 'function') {
       window.STF_FAQ_EMBEDS.refresh(document.getElementById('faq') || document);
     }

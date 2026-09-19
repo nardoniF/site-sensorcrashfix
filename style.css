@@ -603,6 +603,12 @@ html[lang="it"] .nav-actions { gap: 6px; }
     margin: 32px 0 16px;
     text-align: center;
 }
+.about-card a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.about-card a:hover { color: #fff; }
 .about-origin {
     font-size: 1.2rem;
     line-height: 1.7;
@@ -1260,6 +1266,42 @@ body.stf-feedback-open { overflow: hidden; }
 .loja-mp-badge.store-tiktok { background: #111 !important; color: #fff !important; border-color: #333; }
 .loja-mp-badge.store-tiktok i { color: #25f4ee !important; }
 .loja-mp-badge.store-tiktok span { color: #fff !important; }
+.loja-mp-badge.store-tattoofix {
+    background: #0a0a0a !important;
+    color: #ffc107 !important;
+    border-color: rgba(255, 193, 7, 0.55);
+    align-items: flex-start;
+    min-height: 0;
+    padding-top: 9px;
+    padding-bottom: 9px;
+}
+.loja-mp-badge.store-tattoofix .loja-mp-badge-logo {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+.loja-mp-badge.store-tattoofix .loja-mp-badge-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    white-space: normal;
+}
+.loja-mp-badge.store-tattoofix .loja-mp-badge-name {
+    color: #ffc107 !important;
+    font-weight: 800;
+    white-space: nowrap;
+}
+.loja-mp-badge.store-tattoofix .loja-mp-badge-hint {
+    color: rgba(255, 255, 255, 0.78) !important;
+    font-size: 0.65rem;
+    font-weight: 600;
+    line-height: 1.25;
+    white-space: normal;
+}
 
 @media (min-width: 768px) {
     .loja-marketplace-badges {
@@ -1472,6 +1514,13 @@ body.stf-feedback-open { overflow: hidden; }
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
 }
+.stores-grid-3--sister {
+    margin-top: 4px;
+    max-width: 360px;
+}
+.stores-grid-3--sister > .store-link {
+    grid-column: 1 / -1;
+}
 .stores-grid-3 > [hidden],
 .site-social > [hidden],
 .loja-marketplace-badges > [hidden],
@@ -1517,6 +1566,26 @@ body.stf-feedback-open { overflow: hidden; }
 .store-tiktok i { color: #fff !important; }
 .store-tiktok h3 { color: #fff !important; }
 .store-tiktok p { color: #25f4ee !important; }
+.store-tattoofix {
+    background: #0a0a0a !important;
+    border: 1.5px solid rgba(255, 193, 7, 0.65) !important;
+}
+.store-tattoofix .store-card-logo {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 14px;
+    box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.35);
+}
+.store-tattoofix h3 { color: #ffc107 !important; }
+.store-tattoofix p {
+    color: rgba(255, 255, 255, 0.88) !important;
+    font-size: 0.92rem !important;
+    font-weight: 600 !important;
+    line-height: 1.35 !important;
+    max-width: 16rem;
+}
 @media (min-width: 900px) {
     .stores-grid-3 { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
 }
@@ -7502,4 +7571,3 @@ h3.about-story-heading + .about-body:has(+ .about-patents) {
 #admin-tab-comunidade {
     display: none !important;
 }
-
