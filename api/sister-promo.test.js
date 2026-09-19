@@ -42,7 +42,7 @@ test('home pages include sister promo markup', () => {
   for (const f of ['index.html', 'en/index.html', 'it/index.html']) {
     const html = fs.readFileSync(path.join(root, f), 'utf8');
     assert.match(html, /data-stf-sister-promo/);
-    assert.match(html, /stf-sister-promo\.js\?v=2/);
+    assert.match(html, /stf-sister-promo\.js\?v=3/);
     assert.match(html, /tattoo-fix-promo/);
   }
 });
