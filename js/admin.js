@@ -5755,13 +5755,12 @@ ${worksheets}
   }
 
   const LENS_INTL_IMAGES = [
-    '/images/lens-gallery/01-optical-correction-lens.png',
-    '/images/lens-gallery/02-ultra-thin.png',
-    '/images/lens-gallery/03-high-optical-transparency.png',
-    '/images/lens-gallery/04-engineered-refraction.png',
-    '/images/lens-gallery/05-whats-included.png',
-    '/images/kit-gallery/en/kit-03-aplicacao.jpg',
-    '/images/kit-gallery/en/kit-06-antes-depois.jpg'
+    '/images/lens-gallery/01-optical-correction-lens.jpg',
+    '/images/lens-gallery/02-ultra-thin.jpg',
+    '/images/lens-gallery/03-high-optical-transparency.jpg',
+    '/images/lens-gallery/04-engineered-refraction.jpg',
+    '/images/lens-gallery/05-whats-included.jpg',
+    '/images/lens-gallery/06-aplicacao.jpg'
   ];
 
   function productMarketsOf(p) {
@@ -5868,7 +5867,7 @@ ${worksheets}
           <label class="full">Descrição PL<textarea data-field="descriptionPl" rows="2">${escTextarea(p.descriptionPl || '')}</textarea></label>
           <label class="full">Descrição SL<textarea data-field="descriptionSl" rows="2">${escTextarea(p.descriptionSl || '')}</textarea></label>
           <label class="full">Álbum de fotos <small class="admin-field-hint">uma URL por linha — ordem do carrossel na loja</small>
-            <textarea data-field="images" rows="5" placeholder="/images/lens-gallery/01-….png">${escTextarea((Array.isArray(p.images) ? p.images : []).join('\n'))}</textarea>
+            <textarea data-field="images" rows="5" placeholder="/images/lens-gallery/01-….jpg">${escTextarea((Array.isArray(p.images) ? p.images : []).join('\n'))}</textarea>
           </label>` : '';
     return `
       <div class="admin-product-row${isAggregated ? ' admin-product-row--aggregated' : ' admin-product-row--main'}" data-product-index="${i}" data-aggregated="${isAggregated ? '1' : '0'}" data-market="${escAttr(market)}">
@@ -5887,7 +5886,7 @@ ${worksheets}
             <input type="number" data-field="stock" min="0" step="1" value="${p.stock != null ? p.stock : ''}" placeholder="ilimitado">
           </label>
           <label>Slug (URL)<input type="text" data-field="slug" value="${p.slug || p.id || ''}" placeholder="${market === 'INT' ? 'optical-lens-intl' : 'kit-sensor-crashfix'}"></label>
-          <label class="full">URL da imagem principal<input type="text" data-field="image" value="${escAttr(p.image || '')}" placeholder="/images/lens-gallery/01-optical-correction-lens.png" spellcheck="false" autocomplete="off"></label>
+          <label class="full">URL da imagem principal<input type="text" data-field="image" value="${escAttr(p.image || '')}" placeholder="/images/lens-gallery/01-optical-correction-lens.jpg" spellcheck="false" autocomplete="off"></label>
           ${sensorField}
           <label>Peso (g)<input type="number" data-field="weightGrams" min="0.1" step="0.1" value="${p.weightGrams ?? 3}"></label>
           <div class="admin-product-flags">
