@@ -552,6 +552,7 @@
                         <div id="help-channels" class="admin-help-panel admin-help-panel--fieldset" hidden>
                             <p>Liga ou desliga ícones de redes (header/footer) e cards de marketplace (onde comprar / loja). Itens desligados somem do layout sem deixar buraco.</p>
                             <p>Em cada rede, cadastre a URL oficial — o site (header, footer e schema) usa o link salvo aqui. Se trocar o canal do YouTube, atualize só este campo e salve.</p>
+                            <p>Em cada marketplace, cole a URL do <strong>anúncio</strong> (produto na Shopee, ML, Amazon, TikTok Shop). O site (loja, onde comprar e home) passa a abrir esse link. Se trocar o anúncio, atualize o campo e salve — não precisa editar HTML.</p>
                         </div>
                         <p class="admin-meta" style="margin:0 0 10px">Redes sociais</p>
                         <div class="admin-channels-list">
@@ -572,13 +573,28 @@
                                 <input type="url" name="channelSocialFacebookUrl" placeholder="https://www.facebook.com/…" autocomplete="off" spellcheck="false">
                             </div>
                         </div>
-                        <p class="admin-meta" style="margin:16px 0 10px">Lojas / marketplaces</p>
-                        <div class="admin-channels-grid">
-                            <label class="label-check"><input type="checkbox" name="channelStoreOficial" checked><span>Loja oficial</span></label>
-                            <label class="label-check"><input type="checkbox" name="channelStoreMercadolivre" checked><span>Mercado Livre</span></label>
-                            <label class="label-check"><input type="checkbox" name="channelStoreShopee" checked><span>Shopee</span></label>
-                            <label class="label-check"><input type="checkbox" name="channelStoreTiktokShop" checked><span>TikTok Shop</span></label>
-                            <label class="label-check"><input type="checkbox" name="channelStoreAmazon" checked><span>Amazon</span></label>
+                        <p class="admin-meta" style="margin:16px 0 10px">Lojas / marketplaces — URL do anúncio</p>
+                        <div class="admin-channels-list">
+                            <div class="admin-channel-row">
+                                <label class="label-check"><input type="checkbox" name="channelStoreOficial" checked><span>Loja oficial</span></label>
+                                <span class="admin-meta" style="align-self:center">Abre a loja do site (sem URL externa)</span>
+                            </div>
+                            <div class="admin-channel-row">
+                                <label class="label-check"><input type="checkbox" name="channelStoreMercadolivre" checked><span>Mercado Livre</span></label>
+                                <input type="url" name="channelStoreMercadolivreUrl" placeholder="https://produto.mercadolivre.com.br/… ou /p/MLB…" autocomplete="off" spellcheck="false" aria-label="URL do anúncio Mercado Livre">
+                            </div>
+                            <div class="admin-channel-row">
+                                <label class="label-check"><input type="checkbox" name="channelStoreShopee" checked><span>Shopee</span></label>
+                                <input type="url" name="channelStoreShopeeUrl" placeholder="https://shopee.com.br/product/…/…" autocomplete="off" spellcheck="false" aria-label="URL do anúncio Shopee">
+                            </div>
+                            <div class="admin-channel-row">
+                                <label class="label-check"><input type="checkbox" name="channelStoreTiktokShop" checked><span>TikTok Shop</span></label>
+                                <input type="url" name="channelStoreTiktokShopUrl" placeholder="https://vt.tiktok.com/… ou link do produto" autocomplete="off" spellcheck="false" aria-label="URL do anúncio TikTok Shop">
+                            </div>
+                            <div class="admin-channel-row">
+                                <label class="label-check"><input type="checkbox" name="channelStoreAmazon" checked><span>Amazon</span></label>
+                                <input type="url" name="channelStoreAmazonUrl" placeholder="https://www.amazon.com.br/dp/…" autocomplete="off" spellcheck="false" aria-label="URL do anúncio Amazon">
+                            </div>
                         </div>
                     </fieldset>
 
@@ -1351,6 +1367,6 @@
     })();
     </script>
     <script type="module" src="js/sales-money.mjs?v=6"></script>
-    <script defer src="js/admin.js?v=225"></script>
+    <script defer src="js/admin.js?v=226"></script>
 </body>
 </html>

@@ -6249,6 +6249,13 @@ ${worksheets}
     facebook: 'https://www.facebook.com/profile.php?id=61588858629597'
   };
 
+  const CHANNEL_STORE_DEFAULTS = {
+    mercadolivre: 'https://produto.mercadolivre.com.br/MLB-6831525504-smartwatch-x-rachadura-sensor-nao-funciona-lentes-reparadoras-_JM',
+    shopee: 'https://shopee.com.br/product/479290797/58218461804/',
+    tiktok_shop: 'https://vt.tiktok.com/ZS9juMxSmKGjN-mns6O/',
+    amazon: 'https://www.amazon.com.br/dp/B0GYVBRGZS'
+  };
+
   function fillChannelsForm(channels) {
     const f = els.configForm;
     if (!f) return;
@@ -6275,11 +6282,13 @@ ${worksheets}
     set('channelStoreShopee', stores.shopee?.enabled, true);
     set('channelStoreTiktokShop', stores.tiktok_shop?.enabled, true);
     set('channelStoreAmazon', stores.amazon?.enabled, true);
+    setUrl('channelStoreMercadolivreUrl', stores.mercadolivre?.url, CHANNEL_STORE_DEFAULTS.mercadolivre);
+    setUrl('channelStoreShopeeUrl', stores.shopee?.url, CHANNEL_STORE_DEFAULTS.shopee);
+    setUrl('channelStoreTiktokShopUrl', stores.tiktok_shop?.url, CHANNEL_STORE_DEFAULTS.tiktok_shop);
+    setUrl('channelStoreAmazonUrl', stores.amazon?.url, CHANNEL_STORE_DEFAULTS.amazon);
   }
 
   function collectChannelsForm(f, current) {
-    const prev = current?.channels || {};
-    const prevStore = prev.stores || {};
     const social = (id, checked, urlField, fallbackUrl) => {
       const typed = String(f[urlField]?.value || '').trim();
       const url = typed || fallbackUrl || '';
@@ -6288,9 +6297,11 @@ ${worksheets}
         ...(url ? { url } : {})
       };
     };
-    const store = (id, checked, fallbackUrl) => {
+    const store = (id, checked, urlField, fallbackUrl) => {
       const out = { enabled: !!checked };
-      const url = String(prevStore[id]?.url || fallbackUrl || '').trim();
+      if (!urlField) return out;
+      const typed = String(f[urlField]?.value || '').trim();
+      const url = typed || fallbackUrl || '';
       if (url) out.url = url;
       return out;
     };
@@ -6303,10 +6314,10 @@ ${worksheets}
       },
       stores: {
         oficial: store('oficial', f.channelStoreOficial?.checked),
-        mercadolivre: store('mercadolivre', f.channelStoreMercadolivre?.checked, 'https://www.mercadolivre.com.br/reparo-sensor-trincado-garmin-lente-optica-prova-dagua/p/MLB2115658430?pdp_filters=item_id%3AMLB7646684042'),
-        shopee: store('shopee', f.channelStoreShopee?.checked, 'https://shopee.com.br/product/479290797/58218461804/'),
-        tiktok_shop: store('tiktok_shop', f.channelStoreTiktokShop?.checked, 'https://vt.tiktok.com/ZS9juMxSmKGjN-mns6O/'),
-        amazon: store('amazon', f.channelStoreAmazon?.checked, 'https://www.amazon.com.br/dp/B0GYVBRGZS')
+        mercadolivre: store('mercadolivre', f.channelStoreMercadolivre?.checked, 'channelStoreMercadolivreUrl', CHANNEL_STORE_DEFAULTS.mercadolivre),
+        shopee: store('shopee', f.channelStoreShopee?.checked, 'channelStoreShopeeUrl', CHANNEL_STORE_DEFAULTS.shopee),
+        tiktok_shop: store('tiktok_shop', f.channelStoreTiktokShop?.checked, 'channelStoreTiktokShopUrl', CHANNEL_STORE_DEFAULTS.tiktok_shop),
+        amazon: store('amazon', f.channelStoreAmazon?.checked, 'channelStoreAmazonUrl', CHANNEL_STORE_DEFAULTS.amazon)
       }
     };
   }
