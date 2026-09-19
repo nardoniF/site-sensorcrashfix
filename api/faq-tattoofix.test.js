@@ -10,10 +10,14 @@ const cfg = JSON.parse(fs.readFileSync(path.join(root, 'data/store-config.json')
 test('homeFaq includes Tattoo Fix redirect question', () => {
   const row = (cfg.homeFaq || []).find((r) => r.id === 'faq-11');
   assert.ok(row);
-  assert.match(row.question, /tatuag/i);
+  assert.match(row.question, /tatuagem/i);
+  assert.match(row.answer, /Crash Fix/i);
+  assert.match(row.answer, /lentes ópticas graduadas/i);
   assert.match(row.answer, /sensortattoofix\.com\.br/i);
   assert.match(row.answer, /data-sister-link/);
+  assert.match(row.answerEn, /tattooed skin/i);
   assert.match(row.answerEn, /sensortattoofix\.com/i);
+  assert.match(row.answerIt, /pelle tatuata/i);
   assert.match(row.answerIt, /sensortattoofix\.com\/it/i);
 });
 
