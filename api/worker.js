@@ -152,6 +152,7 @@ const DEFAULT_CONFIG = {
       image: '/images/kit-gallery/kit-01-embalagem.jpg',
       images: [
         '/images/kit-gallery/kit-01-embalagem.jpg',
+        '/images/kit-gallery/kit-03-aplicacao.jpg',
         '/images/kit-gallery/kit-02-conteudo.jpg',
         '/images/kit-gallery/kit-06-antes-depois.jpg'
       ],
@@ -198,6 +199,7 @@ const DEFAULT_CONFIG = {
       image: '/images/kit-gallery/en/kit-01-embalagem.jpg',
       images: [
         '/images/kit-gallery/en/kit-01-embalagem.jpg',
+        '/images/kit-gallery/en/kit-03-aplicacao.jpg',
         '/images/kit-gallery/en/kit-02-conteudo.jpg',
         '/images/kit-gallery/en/kit-06-antes-depois.jpg'
       ],

@@ -9,40 +9,46 @@
 
   const PT_GALLERY = [
     '/images/kit-gallery/kit-01-embalagem.jpg',
+    '/images/kit-gallery/kit-03-aplicacao.jpg',
     '/images/kit-gallery/kit-02-conteudo.jpg',
     '/images/kit-gallery/kit-06-antes-depois.jpg'
   ];
 
   const EN_KIT_GALLERY = [
     '/images/kit-gallery/en/kit-01-embalagem.jpg',
+    '/images/kit-gallery/en/kit-03-aplicacao.jpg',
     '/images/kit-gallery/en/kit-02-conteudo.jpg',
     '/images/kit-gallery/en/kit-06-antes-depois.jpg'
   ];
 
   const IT_KIT_GALLERY = [
     '/images/kit-gallery/it/kit-01-embalagem.jpg',
+    '/images/kit-gallery/it/kit-03-aplicacao.jpg',
     '/images/kit-gallery/it/kit-02-conteudo.jpg',
     '/images/kit-gallery/it/kit-06-antes-depois.jpg'
   ];
 
   /**
    * .com / EN / IT — mesmo álbum na home, loja e checkout:
-   * embalagem, conteúdo, antes/depois.
+   * embalagem, aplicação, conteúdo, antes/depois.
    */
   const LENS_GALLERY_EN = [
     '/images/kit-gallery/en/kit-01-embalagem.jpg',
+    '/images/kit-gallery/en/kit-03-aplicacao.jpg',
     '/images/kit-gallery/en/kit-02-conteudo.jpg',
     '/images/kit-gallery/en/kit-06-antes-depois.jpg'
   ];
 
   const LENS_GALLERY_IT = [
     '/images/kit-gallery/it/kit-01-embalagem.jpg',
+    '/images/kit-gallery/it/kit-03-aplicacao.jpg',
     '/images/kit-gallery/it/kit-02-conteudo.jpg',
     '/images/kit-gallery/it/kit-06-antes-depois.jpg'
   ];
 
   const LENS_GALLERY_SHARED = [
     '/images/kit-gallery/kit-01-embalagem.jpg',
+    '/images/kit-gallery/kit-03-aplicacao.jpg',
     '/images/kit-gallery/kit-02-conteudo.jpg',
     '/images/kit-gallery/kit-06-antes-depois.jpg'
   ];
@@ -178,10 +184,10 @@
     });
   }
 
-  /** Slides removidos / 404 — Ultra fica só no hero; KV antigo ainda manda essas URLs. */
+  /** Slides removidos / 404 — Ultra (hero) e arquivos mortos não entram na galeria. */
   function isDroppedGalleryUrl(url) {
     const n = normalizeUrl(url).toLowerCase();
-    return /kit-03-aplicacao|\/03-aplicacao-lente|kit-05-acompanha|kit-07-beneficios|\/05-lente\.jpg(\?|$)|sensor-rachado-dedo/i.test(n);
+    return /kit-05-acompanha|kit-07-beneficios|\/05-lente\.jpg(\?|$)|sensor-rachado-dedo/i.test(n);
   }
 
   function resolveImages(product) {
