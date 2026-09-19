@@ -435,14 +435,16 @@ html[lang="it"] .nav-actions { gap: 6px; }
   margin: 0 auto 15px;
 }
 #produtos .product-image-wrap--lg {
-  width: min(100%, 460px);
-  background: #000;
+  /* Quadrado compacto = altura da grade 3×2 (não metade da tela) */
+  width: min(100%, 280px);
+  max-width: 280px;
+  background: #111;
   border-color: #222;
   padding: 0;
 }
 #produtos .product-image-wrap--lg img {
-  object-fit: cover;
-  background: #000;
+  object-fit: contain;
+  background: #111;
 }
 .kit-box {
   background: #0a0a0a;
@@ -495,22 +497,25 @@ html[lang="it"] .nav-actions { gap: 6px; }
 
 #produtos .product-solution-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
-    gap: 18px 22px;
-    align-items: stretch;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 14px 18px;
+    align-items: start;
 }
 #produtos .product-benefits-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 10px;
     min-width: 0;
+    height: fit-content;
 }
 #produtos .product-solution-media {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    gap: 12px;
+    gap: 10px;
+    width: fit-content;
+    max-width: 280px;
     min-width: 0;
 }
 #produtos .product-image-wrap {
@@ -521,10 +526,10 @@ html[lang="it"] .nav-actions { gap: 6px; }
     border-radius: 14px;
     border: 1px solid #333;
     background: #121212;
-    width: 100%;
-    max-width: 100%;
+    width: 280px;
+    max-width: min(100%, 280px);
     aspect-ratio: 1 / 1;
-    height: auto;
+    height: 280px;
     margin: 0;
     box-sizing: border-box;
     overflow: hidden;
@@ -541,7 +546,8 @@ html[lang="it"] .nav-actions { gap: 6px; }
     height: 100%;
     max-width: none;
     border-radius: 12px;
-    object-fit: cover;
+    object-fit: contain;
+    background: #111;
 }
 
 #produtos .product-benefits-grid .benefit-card {
@@ -6525,10 +6531,14 @@ body.stf-lightbox-open { overflow: hidden; }
   max-width: none;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
   display: block;
   margin: 0;
+  background: #111;
+}
+#produtos .product-image-wrap .stf-album img {
+  object-fit: contain;
 }
 .kit-box-media .stf-album img {
   max-width: 420px;

@@ -299,20 +299,38 @@
     });
   }
 
-  /** Square album = height of the benefit icons grid (contain, never crop). */
+  /** Square album = exact height of the 3×2 benefits grid (never taller). */
   function syncProductAlbumToBenefits() {
     const benefits = document.querySelector('#produtos .product-benefits-grid');
     const wraps = document.querySelectorAll('#produtos .product-image-wrap');
     if (!benefits || !wraps.length) return;
-    const mediaCol = document.querySelector('#produtos .product-solution-media');
-    const mediaW = mediaCol ? mediaCol.getBoundingClientRect().width : 0;
+    // Collapse wrap so stretch/width cannot inflate the benefits measurement.
+    wraps.forEach((wrap) => {
+      wrap.style.width = '0px';
+      wrap.style.height = '0px';
+      wrap.style.maxWidth = '0px';
+      wrap.style.minWidth = '0px';
+      wrap.style.aspectRatio = '1 / 1';
+    });
+    void benefits.offsetHeight;
     const h = Math.round(benefits.getBoundingClientRect().height);
-    if (h < 120) return;
-    const side = Math.min(h, mediaW > 40 ? Math.floor(mediaW) : h);
+    if (h < 120) {
+      wraps.forEach((wrap) => {
+        wrap.style.width = '';
+        wrap.style.height = '';
+        wrap.style.maxWidth = '';
+        wrap.style.minWidth = '';
+        wrap.style.aspectRatio = '';
+      });
+      return;
+    }
+    // Match cards; hard cap so the square stays print-sized on wide screens.
+    const side = Math.min(h, 280);
     wraps.forEach((wrap) => {
       wrap.style.width = side + 'px';
       wrap.style.height = side + 'px';
-      wrap.style.maxWidth = '100%';
+      wrap.style.maxWidth = side + 'px';
+      wrap.style.minWidth = side + 'px';
       wrap.style.aspectRatio = '1 / 1';
     });
   }
