@@ -178,22 +178,31 @@
     });
   }
 
+  /** Slides removidos / 404 — Ultra fica só no hero; KV antigo ainda manda essas URLs. */
+  function isDroppedGalleryUrl(url) {
+    const n = normalizeUrl(url).toLowerCase();
+    return /kit-03-aplicacao|\/03-aplicacao-lente|kit-05-acompanha|kit-07-beneficios|\/05-lente\.jpg(\?|$)|sensor-rachado-dedo/i.test(n);
+  }
+
   function resolveImages(product) {
+    const lang = detectLang();
+    // Kit + smartband: álbum canônico (não misturar com images velhas do KV).
+    if (isSmartbandProduct(product)) {
+      return smartbandAlbum(lang);
+    }
+    if (isKitProduct(product)) {
+      return kitAlbum(lang);
+    }
     const fromAlbum = Array.isArray(product?.images) ? product.images : [];
     const primary = product?.image || '';
-    let list = uniqueUrls([primary, ...fromAlbum].filter((u) => u && !isLegacyKitHero(u)));
-    const lang = detectLang();
-    // Smartband: serve própria galeria por idioma/market
-    if (isSmartbandProduct(product)) {
-      return uniqueUrls([...list, ...smartbandAlbum(lang)]);
-    }
-    // .com / EN / IT: álbum completo por idioma (IT usa fotos em italiano)
-    if (isLensOnlyMarket() && (isKitProduct(product) || !list.length)) {
-      return uniqueUrls(localizeLensUrls([...list, ...lensAlbum(lang)], lang));
+    let list = uniqueUrls(
+      [primary, ...fromAlbum].filter((u) => u && !isLegacyKitHero(u) && !isDroppedGalleryUrl(u))
+    );
+    if (isLensOnlyMarket() && !list.length) {
+      return uniqueUrls(localizeLensUrls(lensAlbum(lang), lang));
     }
     if (list.length) return list;
-    if (isKitProduct(product)) return kitAlbum();
-    return kitAlbum();
+    return kitAlbum(lang);
   }
 
   function renderMarkup(images, alt, extraClass) {
@@ -232,6 +241,11 @@
     album.setAttribute('data-index', String(i));
     const img = album.querySelector('img');
     if (img) {
+      const fallback = images.find((u) => !isDroppedGalleryUrl(u)) || images[0];
+      img.onerror = function () {
+        this.onerror = null;
+        if (this.src !== fallback) this.src = fallback;
+      };
       img.src = images[i];
     }
   }

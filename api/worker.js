@@ -1304,6 +1304,13 @@ function supplementKitFromSite(kvProduct, siteProduct) {
   if (siteProduct?.image && isLegacyBrokenKitImage(kvProduct?.image)) {
     merged.image = siteProduct.image;
   }
+  // Galeria do git manda — evita Ultra/slides 404 presos no KV.
+  if (Array.isArray(siteProduct?.images) && siteProduct.images.length) {
+    merged.images = siteProduct.images.slice();
+  }
+  if (siteProduct?.image) {
+    merged.image = siteProduct.image;
+  }
   ['nameEn', 'nameIt', 'descriptionEn', 'descriptionIt'].forEach((field) => {
     if (!merged[field] && siteProduct?.[field]) merged[field] = siteProduct[field];
   });
