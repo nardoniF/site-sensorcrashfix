@@ -1347,6 +1347,14 @@ function supplementKitFromSite(kvProduct, siteProduct) {
   ['nameEn', 'nameIt', 'descriptionEn', 'descriptionIt'].forEach((field) => {
     if (!merged[field] && siteProduct?.[field]) merged[field] = siteProduct[field];
   });
+  // Markup intl: se o KV ainda não tem intlMarkupPercent, adota preços do catálogo git.
+  if (merged.intlMarkupPercent == null && siteProduct?.intlMarkupPercent != null) {
+    merged.intlMarkupPercent = siteProduct.intlMarkupPercent;
+    if (siteProduct.intlBaseBrl != null) merged.intlBaseBrl = siteProduct.intlBaseBrl;
+    intlPriceFieldNames(DEFAULT_INTL_CURRENCIES).forEach((field) => {
+      if (siteProduct[field] != null) merged[field] = siteProduct[field];
+    });
+  }
   return merged;
 }
 
@@ -1496,9 +1504,23 @@ async function fetchSiteCatalog() {
 }
 
 async function getPublicConfig(env) {
-  const config = await getConfig(env);
+  let config = await getConfig(env);
   const site = await fetchSiteCatalog();
-  return mergeSiteCatalog(config, site);
+  config = mergeSiteCatalog(config, site);
+  // One-shot: se INT ainda não tem markup no KV, recalcula e persiste (R$×markup×FX).
+  const needsMarkup = (config.products || []).some((p) => {
+    const m = Array.isArray(p?.markets) ? p.markets.map((x) => String(x).toUpperCase()) : [];
+    return m.includes('INT') && !m.includes('BR') && p.intlMarkupPercent == null;
+  });
+  if (needsMarkup && autoFxEnabled(config)) {
+    try {
+      await syncIntlProductPricesFromMarkupFx(env, { force: true });
+      config = mergeSiteCatalog(await getConfig(env), site);
+    } catch (err) {
+      console.warn('intl markup bootstrap:', err?.message || err);
+    }
+  }
+  return config;
 }
 
 function normalizeApiBaseUrl(api) {
