@@ -7,6 +7,16 @@ import { generateCommissionerStoryBanners } from './commissioner-banners.js';
 import { handleForumRoute } from './forum.js';
 import { refreshHomeContentI18n, mergePreservedI18n, homeContentI18nStatus } from './site-l10n.js';
 import {
+  DEFAULT_INTL_CURRENCIES,
+  normalizeIntlCurrencies,
+  activeIntlCurrencies,
+  applyMarkupFxToIntlProducts,
+  syncOpticalIntlBrlFromBrKit,
+  currencyForLocaleFromRegistry,
+  productListPriceFromRegistry,
+  intlPriceFieldNames
+} from './intl-money.js';
+import {
   bumpKvWriteCounter,
   buildKvDailyWriteBudget,
   buildD1DailyBudget,
@@ -105,7 +115,7 @@ const ALLOWED_ORIGINS = [
 ];
 const CONFIG_KEY = 'store-config';
 /** Pin igual ao cloudflare/scf-com-proxy.js — catálogo GitHub servido direto ao Worker (evita cache do proxy). */
-const SITE_CATALOG_COMMIT = '1cf81885bdeeff671ee72239115f86307ff50372';
+const SITE_CATALOG_COMMIT = '2d099c3aea40af18f8a434988c748d17f8a124c6';
 const SITE_CATALOG_URLS = [
   'https://cdn.jsdelivr.net/gh/nardoniF/site-sensorcrashfix@' + SITE_CATALOG_COMMIT + '/data/store-config.json',
   'https://raw.githubusercontent.com/nardoniF/site-sensorcrashfix/' + SITE_CATALOG_COMMIT + '/data/store-config.json',
@@ -196,6 +206,14 @@ const DEFAULT_CONFIG = {
       descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
       descriptionIt: 'Progettata per i sensori ottici degli smartwatch su sensore incrinato.',
       price: 62.9,
+      intlMarkupPercent: 70,
+      intlBaseBrl: 106.93,
+      priceUsd: 20.86,
+      priceEur: 17.95,
+      priceSek: 200,
+      priceNok: 193,
+      pricePln: 77.36,
+      priceGbp: 15.42,
       image: '/images/kit-gallery/en/kit-01-embalagem.jpg',
       images: [
         '/images/kit-gallery/en/kit-01-embalagem.jpg',
@@ -221,8 +239,14 @@ const DEFAULT_CONFIG = {
       descriptionEn: 'Designed for smartband optical sensors on cracked sensor.',
       descriptionIt: 'Progettata per i sensori ottici degli smartband su sensore incrinato.',
       price: 62.9,
-      priceUsd: 12.99,
-      priceEur: 11.99,
+      intlMarkupPercent: 70,
+      intlBaseBrl: 106.93,
+      priceUsd: 20.86,
+      priceEur: 17.95,
+      priceSek: 200,
+      priceNok: 193,
+      pricePln: 77.36,
+      priceGbp: 15.42,
       image: '/images/smartband/lens-en/01-embalagem.jpg',
       images: [
         '/images/smartband/lens-en/01-embalagem.jpg',
@@ -238,6 +262,13 @@ const DEFAULT_CONFIG = {
       aggregated: false
     },
   ],
+  intlCurrencies: DEFAULT_INTL_CURRENCIES.map((c) => ({
+    ...c,
+    langs: c.langs.slice(),
+    countries: c.countries.slice()
+  })),
+  intlCurrenciesAutoFx: true,
+  intlCurrenciesAutoPpp: true,
   pix: { key: '29321223000132', keyType: 'cnpj', merchantName: '3N20 SOLUCOES TEC', merchantCity: 'SAO PAULO' },
   shipping: {
     originCep: '02537190',
@@ -1316,6 +1347,14 @@ function supplementKitFromSite(kvProduct, siteProduct) {
   ['nameEn', 'nameIt', 'descriptionEn', 'descriptionIt'].forEach((field) => {
     if (!merged[field] && siteProduct?.[field]) merged[field] = siteProduct[field];
   });
+  // Markup intl: se o KV ainda não tem intlMarkupPercent, adota preços do catálogo git.
+  if (merged.intlMarkupPercent == null && siteProduct?.intlMarkupPercent != null) {
+    merged.intlMarkupPercent = siteProduct.intlMarkupPercent;
+    if (siteProduct.intlBaseBrl != null) merged.intlBaseBrl = siteProduct.intlBaseBrl;
+    intlPriceFieldNames(DEFAULT_INTL_CURRENCIES).forEach((field) => {
+      if (siteProduct[field] != null) merged[field] = siteProduct[field];
+    });
+  }
   return merged;
 }
 
@@ -1465,9 +1504,23 @@ async function fetchSiteCatalog() {
 }
 
 async function getPublicConfig(env) {
-  const config = await getConfig(env);
+  let config = await getConfig(env);
   const site = await fetchSiteCatalog();
-  return mergeSiteCatalog(config, site);
+  config = mergeSiteCatalog(config, site);
+  // One-shot: se INT ainda não tem markup no KV, recalcula e persiste (R$×markup×FX).
+  const needsMarkup = (config.products || []).some((p) => {
+    const m = Array.isArray(p?.markets) ? p.markets.map((x) => String(x).toUpperCase()) : [];
+    return m.includes('INT') && !m.includes('BR') && p.intlMarkupPercent == null;
+  });
+  if (needsMarkup && autoFxEnabled(config)) {
+    try {
+      await syncIntlProductPricesFromMarkupFx(env, { force: true });
+      config = mergeSiteCatalog(await getConfig(env), site);
+    } catch (err) {
+      console.warn('intl markup bootstrap:', err?.message || err);
+    }
+  }
+  return config;
 }
 
 function normalizeApiBaseUrl(api) {
@@ -1593,6 +1646,17 @@ function withConfigDefaults(stored) {
     mlFlexShippingCost: Number(stored.mlFlexShippingCost) > 0
       ? Math.round(Number(stored.mlFlexShippingCost) * 100) / 100
       : base.mlFlexShippingCost,
+    intlCurrencies: normalizeIntlCurrencies(stored.intlCurrencies),
+    intlCurrenciesAutoFx: stored.intlCurrenciesAutoFx != null
+      ? stored.intlCurrenciesAutoFx !== false
+      : (stored.intlCurrenciesAutoPpp != null
+        ? stored.intlCurrenciesAutoPpp !== false
+        : base.intlCurrenciesAutoFx !== false),
+    intlCurrenciesAutoPpp: stored.intlCurrenciesAutoFx != null
+      ? stored.intlCurrenciesAutoFx !== false
+      : (stored.intlCurrenciesAutoPpp != null
+        ? stored.intlCurrenciesAutoPpp !== false
+        : base.intlCurrenciesAutoPpp !== false),
     ...mergeKitCostConfig(stored, base)
   };
 }
@@ -2164,8 +2228,15 @@ function publicProductFields(p, config) {
   if (p.colorEn) row.colorEn = p.colorEn;
   if (Array.isArray(p.markets) && p.markets.length) row.markets = p.markets;
   if (Array.isArray(p.images) && p.images.length) row.images = p.images;
-  if (p.priceUsd != null) row.priceUsd = Number(p.priceUsd);
-  if (p.priceEur != null) row.priceEur = Number(p.priceEur);
+  intlPriceFieldNames(DEFAULT_INTL_CURRENCIES).forEach((field) => {
+    if (p[field] != null && Number.isFinite(Number(p[field]))) row[field] = Number(p[field]);
+  });
+  if (p.intlMarkupPercent != null && Number.isFinite(Number(p.intlMarkupPercent))) {
+    row.intlMarkupPercent = Number(p.intlMarkupPercent);
+  }
+  if (p.intlBaseBrl != null && Number.isFinite(Number(p.intlBaseBrl))) {
+    row.intlBaseBrl = Number(p.intlBaseBrl);
+  }
   const stock = productStockQty(p);
   row.inStock = productInStock(p, 1);
   if (stock != null) row.stock = stock;
@@ -2235,6 +2306,9 @@ function publicConfigView(config, env) {
     integrations: {
       addressAutocomplete: true
     },
+    intlCurrencies: activeIntlCurrencies(config),
+    intlCurrenciesAutoFx: config.intlCurrenciesAutoFx !== false && config.intlCurrenciesAutoPpp !== false,
+    intlCurrenciesAutoPpp: config.intlCurrenciesAutoFx !== false && config.intlCurrenciesAutoPpp !== false,
     updatedAt: config.updatedAt || null
   };
 }
@@ -2477,27 +2551,126 @@ function isIntlMarketProductRow(p) {
   return m.includes('INT') && !m.includes('BR');
 }
 
-async function syncIntlProductPricesFromFx(env) {
-  const config = await getConfig(env);
-  const products = config.products || [];
-  if (!products.length) return { updated: 0 };
-  const fxUsd = await fetchFxRate(env, 'USD');
-  const fxEur = await fetchFxRate(env, 'EUR');
-  let updated = 0;
-  products.forEach((p) => {
-    if (!isIntlMarketProductRow(p)) return;
-    const brl = Number(p.price) || 0;
-    if (!brl) return;
-    const usd = Math.round(brl * fxUsd.rate * 100) / 100;
-    const eur = Math.round(brl * fxEur.rate * 100) / 100;
-    if (p.priceUsd !== usd || p.priceEur !== eur) {
-      p.priceUsd = usd;
-      p.priceEur = eur;
-      updated += 1;
-    }
+async function fetchFxRatesMap(env, currencyCodes) {
+  const codes = [...new Set((currencyCodes || []).map((c) => String(c || '').toUpperCase()).filter((c) => c && c !== 'BRL'))];
+  const out = {};
+  await Promise.all(codes.map(async (code) => {
+    try {
+      const row = await fetchFxRate(env, code);
+      if (row?.rate > 0) out[code] = Number(row.rate);
+    } catch { /* skip missing */ }
+  }));
+  return out;
+}
+
+function autoFxEnabled(config) {
+  if (config?.intlCurrenciesAutoFx === false) return false;
+  if (config?.intlCurrenciesAutoPpp === false) return false;
+  return true;
+}
+
+const PRODUCT_I18N_PRESERVE_FIELDS = [
+  'nameEn', 'nameIt', 'nameDe', 'nameEs', 'namePl', 'nameSl',
+  'descriptionEn', 'descriptionIt', 'descriptionDe', 'descriptionEs', 'descriptionPl', 'descriptionSl',
+  'filmTypeEn', 'filmTypeDe', 'filmTypeEs', 'filmTypePl', 'filmTypeSl'
+];
+
+/** Merge body products with previous KV so Admin PT-only UI never wipes i18n. */
+function mergeProductsPreserveI18n(incoming, previous) {
+  const prevByKey = new Map();
+  (Array.isArray(previous) ? previous : []).forEach((p) => {
+    const key = String(p?.id || p?.slug || '').trim();
+    if (key) prevByKey.set(key, p);
   });
-  if (updated) await saveConfig(env, { ...config, products });
-  return { updated, usdRate: fxUsd.rate, eurRate: fxEur.rate };
+  return (Array.isArray(incoming) ? incoming : []).map((p) => {
+    const key = String(p?.id || p?.slug || '').trim();
+    const prev = prevByKey.get(key) || {};
+    const out = { ...prev, ...p };
+    PRODUCT_I18N_PRESERVE_FIELDS.forEach((field) => {
+      const nextVal = p?.[field];
+      const empty = nextVal == null || (typeof nextVal === 'string' && !String(nextVal).trim());
+      if (empty && prev[field]) out[field] = prev[field];
+    });
+    return out;
+  });
+}
+
+/** Fill missing name/description i18n from PT with light phrasebook (never overwrite existing). */
+function fillMissingProductI18nFromPt(products) {
+  const LANGS = [
+    ['En', (s) => s],
+    ['It', (s) => s
+      .replace(/SensorCrashFix Optical Lens/gi, 'Lente ottica SensorCrashFix')
+      .replace(/SensorCrashFix Smartband Lens/gi, 'Lente Smartband SensorCrashFix')
+      .replace(/Lente de cobertura para sensor de smartwatch rachado\./gi, 'Lente di copertura per sensore ottico smartwatch incrinato.')
+      .replace(/Lente de cobertura para sensor de smartband rachado\./gi, 'Lente di copertura per sensore ottico smartband incrinato.')
+      .replace(/Kit Sensor Crash Fix/gi, 'Kit Sensor Crash Fix')
+      .replace(/Kit Smartband Crash Fix/gi, 'Kit Smartband Crash Fix')],
+    ['De', (s) => s
+      .replace(/SensorCrashFix Optical Lens/gi, 'SensorCrashFix Optische Linse')
+      .replace(/SensorCrashFix Smartband Lens/gi, 'SensorCrashFix Smartband-Linse')
+      .replace(/Lente de cobertura para sensor de smartwatch rachado\./gi, 'Abdecklinse für gerissenen optischen Smartwatch-Sensor.')
+      .replace(/Lente de cobertura para sensor de smartband rachado\./gi, 'Abdecklinse für gerissenen optischen Smartband-Sensor.')],
+    ['Es', (s) => s
+      .replace(/SensorCrashFix Optical Lens/gi, 'Lente óptica SensorCrashFix')
+      .replace(/SensorCrashFix Smartband Lens/gi, 'Lente Smartband SensorCrashFix')
+      .replace(/Lente de cobertura para sensor de smartwatch rachado\./gi, 'Lente de cobertura para sensor óptico de smartwatch agrietado.')
+      .replace(/Lente de cobertura para sensor de smartband rachado\./gi, 'Lente de cobertura para sensor óptico de smartband agrietado.')],
+    ['Pl', (s) => s
+      .replace(/SensorCrashFix Optical Lens/gi, 'Soczewka optyczna SensorCrashFix')
+      .replace(/SensorCrashFix Smartband Lens/gi, 'Soczewka Smartband SensorCrashFix')
+      .replace(/Lente de cobertura para sensor de smartwatch rachado\./gi, 'Soczewka ochronna na pęknięty czujnik optyczny smartwatcha.')
+      .replace(/Lente de cobertura para sensor de smartband rachado\./gi, 'Soczewka ochronna na pęknięty czujnik optyczny opaski.')],
+    ['Sl', (s) => s
+      .replace(/SensorCrashFix Optical Lens/gi, 'Optična leča SensorCrashFix')
+      .replace(/SensorCrashFix Smartband Lens/gi, 'Leča SensorCrashFix za pametno zapestnico')
+      .replace(/Lente de cobertura para sensor de smartwatch rachado\./gi, 'Zaščitna leča za počeno optično tipalo pametne ure.')
+      .replace(/Lente de cobertura para sensor de smartband rachado\./gi, 'Zaščitna leča za počeno optično tipalo pametne zapestnice.')]
+  ];
+  return (Array.isArray(products) ? products : []).map((p) => {
+    const out = { ...p };
+    const namePt = String(p?.name || '').trim();
+    const descPt = String(p?.description || '').trim();
+    LANGS.forEach(([suffix, transform]) => {
+      const nameKey = 'name' + suffix;
+      const descKey = 'description' + suffix;
+      if (!out[nameKey] && namePt) {
+        const t = transform(namePt);
+        out[nameKey] = t || namePt;
+      }
+      if (!out[descKey] && descPt) {
+        const t = transform(descPt);
+        out[descKey] = t || descPt;
+      }
+    });
+    return out;
+  });
+}
+
+/** Recompute INT foreign list prices: (R$ × markup%) × FX. */
+async function syncIntlProductPricesFromMarkupFx(env, { force = false } = {}) {
+  const config = await getConfig(env);
+  if (!force && !autoFxEnabled(config)) return { updated: 0, skipped: true };
+  const currencies = normalizeIntlCurrencies(config.intlCurrencies);
+  const synced = syncOpticalIntlBrlFromBrKit(config.products || []);
+  const fxRates = await fetchFxRatesMap(env, currencies.map((c) => c.code));
+  const { products, updated } = applyMarkupFxToIntlProducts(synced.products, currencies, fxRates);
+  const changed = updated || synced.synced;
+  if (changed) {
+    await saveConfig(env, {
+      ...config,
+      products,
+      intlCurrencies: currencies,
+      intlCurrenciesAutoFx: true,
+      intlCurrenciesAutoPpp: true
+    });
+  }
+  return { updated: updated + (synced.synced ? 1 : 0), currencies: currencies.map((c) => c.code), fxRates };
+}
+
+/** @deprecated name — cron used raw FX; now markup + FX */
+async function syncIntlProductPricesFromFx(env) {
+  return syncIntlProductPricesFromMarkupFx(env);
 }
 
 async function intlForeignCharge(order, env, config, items, currency) {
@@ -10487,6 +10660,19 @@ function quoteInternational(config, countryCode) {
   };
 }
 
+
+async function handleFxRates(request, env, origin) {
+  const raw = new URL(request.url).searchParams.get('to') || 'USD,EUR,GBP,PLN,SEK,NOK';
+  const codes = [...new Set(String(raw).split(/[\s,;]+/).map((c) => c.toUpperCase()).filter(Boolean))];
+  try {
+    const rates = await fetchFxRatesMap(env, codes);
+    return json({ base: 'BRL', rates, fetchedAt: new Date().toISOString() }, 200, origin);
+  } catch (err) {
+    return json({ error: err.message || 'Câmbio indisponível.' }, 502, origin);
+  }
+}
+
+
 async function findAsaasCustomerByCpf(base, apiKey, cpfCnpj) {
   const res = await fetch(`${base}/customers?cpfCnpj=${encodeURIComponent(cpfCnpj)}&limit=1`, {
     headers: asaasHeaders(apiKey)
@@ -17672,7 +17858,9 @@ async function handlePutConfig(request, env, origin, ctx) {
     smartwatchModelMeta: body.smartwatchModelMeta != null
       ? { ...(current.smartwatchModelMeta || {}), ...body.smartwatchModelMeta }
       : (current.smartwatchModelMeta || {}),
-    products: body.products?.length ? body.products : current.products,
+    products: body.products?.length
+      ? fillMissingProductI18nFromPt(mergeProductsPreserveI18n(body.products, current.products))
+      : current.products,
     formsubmit: { ...current.formsubmit, ...body.formsubmit },
     emails: { ...(current.emails || {}), ...(body.emails || {}) },
     api: { ...current.api, ...body.api },
@@ -17690,8 +17878,29 @@ async function handlePutConfig(request, env, origin, ctx) {
       : (current.homeFaq || []),
     homeReviews: body.homeReviews != null
       ? mergePreservedI18n(Array.isArray(body.homeReviews) ? body.homeReviews : current.homeReviews || [], current.homeReviews || [])
-      : (current.homeReviews || [])
+      : (current.homeReviews || []),
+    intlCurrencies: body.intlCurrencies != null
+      ? normalizeIntlCurrencies(body.intlCurrencies)
+      : normalizeIntlCurrencies(current.intlCurrencies),
+    intlCurrenciesAutoFx: body.intlCurrenciesAutoFx != null
+      ? body.intlCurrenciesAutoFx !== false
+      : (body.intlCurrenciesAutoPpp != null
+        ? body.intlCurrenciesAutoPpp !== false
+        : autoFxEnabled(current)),
+    intlCurrenciesAutoPpp: body.intlCurrenciesAutoFx != null
+      ? body.intlCurrenciesAutoFx !== false
+      : (body.intlCurrenciesAutoPpp != null
+        ? body.intlCurrenciesAutoPpp !== false
+        : autoFxEnabled(current))
   };
+  // Textos GLOBAL (name/description): i18n preservado + fill a partir do PT quando faltar.
+  // MARKET-SPECIFIC (images, markets, price, kit vs lente) NÃO passa por i18n.
+  if (autoFxEnabled(merged)) {
+    const synced = syncOpticalIntlBrlFromBrKit(merged.products || []);
+    const fxRates = await fetchFxRatesMap(env, (merged.intlCurrencies || []).map((c) => c.code));
+    const applied = applyMarkupFxToIntlProducts(synced.products, merged.intlCurrencies, fxRates);
+    merged.products = applied.products;
+  }
   if (merged.products?.[0]) {
     merged.product = {
       name: merged.products[0].name,
@@ -17715,6 +17924,62 @@ async function handlePutConfig(request, env, origin, ctx) {
   if (ctx && typeof ctx.waitUntil === 'function') ctx.waitUntil(runI18n);
   else await runI18n;
   return json(saved, 200, origin);
+}
+
+
+async function handleAdminApplyIntlMarkupFx(request, env, origin) {
+  if (!(await isValidSession(env, bearerToken(request)))) {
+    return json({ error: 'Não autorizado.' }, 401, origin);
+  }
+  let body = {};
+  try {
+    body = await request.json();
+  } catch {
+    body = {};
+  }
+  const current = await getConfig(env);
+  const currencies = body.intlCurrencies != null
+    ? normalizeIntlCurrencies(body.intlCurrencies)
+    : normalizeIntlCurrencies(current.intlCurrencies);
+  const auto = body.intlCurrenciesAutoFx != null
+    ? body.intlCurrenciesAutoFx !== false
+    : (body.intlCurrenciesAutoPpp != null
+      ? body.intlCurrenciesAutoPpp !== false
+      : autoFxEnabled(current));
+  const synced = syncOpticalIntlBrlFromBrKit(current.products || []);
+  const fxRates = await fetchFxRatesMap(env, currencies.map((c) => c.code));
+  const { products, updated } = applyMarkupFxToIntlProducts(synced.products, currencies, fxRates);
+  const saved = await saveConfig(env, {
+    ...current,
+    products,
+    intlCurrencies: currencies,
+    intlCurrenciesAutoFx: auto,
+    intlCurrenciesAutoPpp: auto
+  });
+  return json({
+    ok: true,
+    updated: updated + (synced.synced ? 1 : 0),
+    syncedOpticalBrl: synced.synced,
+    fxRates,
+    currencies: currencies.map((c) => ({ code: c.code, decimals: c.decimals })),
+    products: (saved.products || []).filter(isIntlMarketProductRow).map((p) => ({
+      id: p.id,
+      price: p.price,
+      intlMarkupPercent: p.intlMarkupPercent,
+      intlBaseBrl: p.intlBaseBrl,
+      priceUsd: p.priceUsd,
+      priceEur: p.priceEur,
+      priceSek: p.priceSek,
+      priceNok: p.priceNok,
+      pricePln: p.pricePln,
+      priceGbp: p.priceGbp
+    }))
+  }, 200, origin);
+}
+
+/** @deprecated alias — PPP removed; markup + FX */
+async function handleAdminApplyIntlPpp(request, env, origin) {
+  return handleAdminApplyIntlMarkupFx(request, env, origin);
 }
 
 async function handleAdminHomeI18nRefresh(request, env, origin, ctx) {
@@ -18909,6 +19174,15 @@ export default {
       }
       if (path === '/fx/rate' && request.method === 'GET') {
         return handleFxRate(request, env, origin);
+      }
+      if (path === '/fx/rates' && request.method === 'GET') {
+        return handleFxRates(request, env, origin);
+      }
+      if (path === '/admin/intl-money/apply-markup-fx' && request.method === 'POST') {
+        return handleAdminApplyIntlMarkupFx(request, env, origin);
+      }
+      if (path === '/admin/intl-money/apply-ppp' && request.method === 'POST') {
+        return handleAdminApplyIntlMarkupFx(request, env, origin);
       }
       if (path === '/shipping/quote' && request.method === 'GET') {
         return handleShippingQuote(request, env, origin, ctx);
