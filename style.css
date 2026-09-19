@@ -603,6 +603,12 @@ html[lang="it"] .nav-actions { gap: 6px; }
     margin: 32px 0 16px;
     text-align: center;
 }
+.about-card a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.about-card a:hover { color: #fff; }
 .about-origin {
     font-size: 1.2rem;
     line-height: 1.7;
@@ -7502,4 +7508,3 @@ h3.about-story-heading + .about-body:has(+ .about-patents) {
 #admin-tab-comunidade {
     display: none !important;
 }
-
