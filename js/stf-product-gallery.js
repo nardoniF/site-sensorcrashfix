@@ -8,24 +8,18 @@
   const SMARTBAND_IDS = new Set(['kit-smartband-crashfix', 'optical-lens-smartband-intl']);
 
   const PT_GALLERY = [
-    '/images/kit-gallery/kit-03-aplicacao.jpg',
     '/images/kit-gallery/kit-01-embalagem.jpg',
     '/images/kit-gallery/kit-02-conteudo.jpg',
     '/images/kit-gallery/kit-06-antes-depois.jpg'
   ];
 
-  /** Shared photo (little/no copy) reused across locales. */
-  const SHARED_APLICACAO = '/images/kit-gallery/kit-03-aplicacao.jpg';
-
   const EN_KIT_GALLERY = [
-    '/images/kit-gallery/en/kit-03-aplicacao.jpg',
     '/images/kit-gallery/en/kit-01-embalagem.jpg',
     '/images/kit-gallery/en/kit-02-conteudo.jpg',
     '/images/kit-gallery/en/kit-06-antes-depois.jpg'
   ];
 
   const IT_KIT_GALLERY = [
-    SHARED_APLICACAO,
     '/images/kit-gallery/it/kit-01-embalagem.jpg',
     '/images/kit-gallery/it/kit-02-conteudo.jpg',
     '/images/kit-gallery/it/kit-06-antes-depois.jpg'
@@ -33,25 +27,22 @@
 
   /**
    * .com / EN / IT — mesmo álbum na home, loja e checkout:
-   * embalagem, aplicação, antes/depois.
+   * embalagem, conteúdo, antes/depois.
    */
   const LENS_GALLERY_EN = [
     '/images/kit-gallery/en/kit-01-embalagem.jpg',
-    '/images/kit-gallery/en/kit-03-aplicacao.jpg',
     '/images/kit-gallery/en/kit-02-conteudo.jpg',
     '/images/kit-gallery/en/kit-06-antes-depois.jpg'
   ];
 
   const LENS_GALLERY_IT = [
     '/images/kit-gallery/it/kit-01-embalagem.jpg',
-    '/images/kit-gallery/it/kit-03-aplicacao.jpg',
     '/images/kit-gallery/it/kit-02-conteudo.jpg',
     '/images/kit-gallery/it/kit-06-antes-depois.jpg'
   ];
 
   const LENS_GALLERY_SHARED = [
     '/images/kit-gallery/kit-01-embalagem.jpg',
-    '/images/kit-gallery/kit-03-aplicacao.jpg',
     '/images/kit-gallery/kit-02-conteudo.jpg',
     '/images/kit-gallery/kit-06-antes-depois.jpg'
   ];
