@@ -495,31 +495,37 @@ html[lang="it"] .nav-actions { gap: 6px; }
 
 #produtos .product-solution-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    align-items: start;
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+    gap: 18px 22px;
+    align-items: stretch;
+}
+#produtos .product-benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    min-width: 0;
 }
 #produtos .product-solution-media {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    gap: 16px;
+    gap: 12px;
     min-width: 0;
 }
 #produtos .product-image-wrap {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 8px;
-    border-radius: 12px;
+    padding: 0;
+    border-radius: 14px;
     border: 1px solid #333;
-    background: #1a1a1a;
-    width: min(100%, 380px);
+    background: #121212;
+    width: 100%;
     max-width: 100%;
     aspect-ratio: 1 / 1;
     height: auto;
-    margin: 0 auto;
+    margin: 0;
     box-sizing: border-box;
     overflow: hidden;
 }
@@ -540,23 +546,79 @@ html[lang="it"] .nav-actions { gap: 6px; }
 
 #produtos .product-benefits-grid .benefit-card {
     width: 100%;
-    padding: 16px 14px;
+    background: #1a1a1a;
+    padding: 12px 10px;
+    border-radius: 12px;
+    border: 1px solid #333;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+    min-width: 0;
+    box-sizing: border-box;
 }
 
 #produtos .product-benefits-grid .benefit-card i {
-    margin-bottom: 12px;
+    font-size: 1.5rem;
+    color: var(--primary);
+    margin: 0 0 2px;
+    display: block;
+    line-height: 1;
+}
+
+#produtos .product-benefits-grid .benefit-card .icon-cracked-sphere--benefit {
+    margin: 0 0 2px;
 }
 
 #produtos .product-benefits-grid .benefit-card h3 {
-    font-size: 1rem;
-    margin-bottom: 8px;
+    color: var(--primary);
+    font-size: 0.9rem;
+    margin: 0;
+    line-height: 1.25;
+    font-weight: 800;
 }
 
 #produtos .product-benefits-grid .benefit-card p {
-    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 0.76rem;
+    margin: 0;
+    line-height: 1.35;
 }
 
+#produtos .product-solution-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0;
+    background: var(--primary);
+    color: #000 !important;
+    text-decoration: none;
+    font-weight: 800;
+    padding: 11px 26px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+}
+
+#produtos.content-section {
+    min-height: 100dvh;
+    box-sizing: border-box;
+    padding-top: 70px;
+    padding-bottom: 28px;
+    display: flex;
+    align-items: flex-start;
+}
+#produtos > .container {
+    width: 100%;
+}
+#produtos .section-title {
+    font-size: clamp(1.45rem, 2.5vw, 2rem);
+    margin-bottom: 16px;
+}
+#produtos .kit-box {
+    margin-top: 40px;
+}
 /* SEÇÕES GERAIS */
 .content-section { padding: 60px 0; }
 #paliativos {
@@ -569,9 +631,6 @@ html[lang="it"] .nav-actions { gap: 6px; }
 }
 #paliativos > .container {
     width: 100%;
-}
-#produtos.content-section {
-    padding-top: 72px;
 }
 .grey-bg { background: #080808; }
 .section-title { font-size: 2.5rem; text-align: center; margin-bottom: 30px; font-weight: 900; }
@@ -2080,11 +2139,11 @@ footer,
     }
     .btn-primary, .btn-outline { width: auto; min-width: unset; max-width: 220px; }
     .btn-primary, .btn-secondary, .btn-outline { margin-left: auto; margin-right: auto; }
-    #produtos .product-solution-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
+    #produtos .product-solution-grid { grid-template-columns: 1fr !important; gap: 18px !important; }
     #produtos .product-benefits-grid {
         display: grid !important;
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 16px !important;
+        gap: 10px !important;
         width: 100% !important;
         max-width: 100% !important;
         min-width: 0 !important;
@@ -2092,8 +2151,14 @@ footer,
     #produtos .product-benefits-grid > .benefit-card {
         width: 100% !important;
         min-width: 0 !important;
+        padding: 12px 10px !important;
     }
-    #produtos > .container > div > .product-image-wrap { max-width: 100%; margin-top: 20px; justify-self: center; }
+    #produtos.content-section {
+        min-height: 0;
+        padding-top: 56px;
+        padding-bottom: 24px;
+    }
+    #produtos > .container > div > .product-image-wrap { max-width: 100%; margin-top: 8px; justify-self: center; }
     #produtos > .container > div > .product-image-wrap img { max-width: 100%; }
     
     .flex-row { flex-direction: column; }
