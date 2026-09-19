@@ -29,29 +29,28 @@
   ];
 
   /**
-   * .com / EN / IT — mesmo álbum na home, loja e checkout:
-   * embalagem, aplicação, conteúdo, antes/depois.
+   * .com / EN / IT — álbum lens-only (sem kit líquido):
+   * hero, features, conteúdo, aplicação.
    */
   const LENS_GALLERY_EN = [
-    '/images/kit-gallery/en/kit-01-embalagem.jpg',
-    '/images/kit-gallery/en/kit-03-aplicacao.jpg',
-    '/images/kit-gallery/en/kit-02-conteudo.jpg',
-    '/images/kit-gallery/en/kit-06-antes-depois.jpg'
+    '/images/lens-gallery/01-optical-correction-lens.jpg',
+    '/images/lens-gallery/02-ultra-thin.jpg',
+    '/images/lens-gallery/03-high-optical-transparency.jpg',
+    '/images/lens-gallery/04-engineered-refraction.jpg',
+    '/images/lens-gallery/05-whats-included.jpg',
+    '/images/lens-gallery/06-aplicacao.jpg'
   ];
 
   const LENS_GALLERY_IT = [
-    '/images/kit-gallery/it/kit-01-embalagem.jpg',
-    '/images/kit-gallery/it/kit-03-aplicacao.jpg',
-    '/images/kit-gallery/it/kit-02-conteudo.jpg',
-    '/images/kit-gallery/it/kit-06-antes-depois.jpg'
+    '/images/lens-gallery/it/01-optical-correction-lens.jpg',
+    '/images/lens-gallery/it/02-ultra-thin.jpg',
+    '/images/lens-gallery/it/03-high-optical-transparency.jpg',
+    '/images/lens-gallery/it/04-engineered-refraction.jpg',
+    '/images/lens-gallery/it/05-whats-included.jpg',
+    '/images/lens-gallery/it/06-aplicacao.jpg'
   ];
 
-  const LENS_GALLERY_SHARED = [
-    '/images/kit-gallery/kit-01-embalagem.jpg',
-    '/images/kit-gallery/kit-03-aplicacao.jpg',
-    '/images/kit-gallery/kit-02-conteudo.jpg',
-    '/images/kit-gallery/kit-06-antes-depois.jpg'
-  ];
+  const LENS_GALLERY_SHARED = LENS_GALLERY_EN.slice();
 
   /** @deprecated alias */
   const KIT_ALBUM = PT_GALLERY;
@@ -151,8 +150,10 @@
 
   function smartbandAlbum(lang) {
     const l = lang || detectLang();
-    if (l === 'en') return SMARTBAND_GALLERY_EN.slice();
-    if (l === 'it') return SMARTBAND_GALLERY_IT.slice();
+    if (isLensOnlyMarket()) {
+      if (l === 'it') return SMARTBAND_GALLERY_IT.slice();
+      return SMARTBAND_GALLERY_EN.slice();
+    }
     return SMARTBAND_GALLERY_BR.slice();
   }
 

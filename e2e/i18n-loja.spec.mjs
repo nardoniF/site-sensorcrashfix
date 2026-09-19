@@ -29,7 +29,7 @@ for (const lang of ['de', 'es', 'pl', 'sl']) {
         slug: 'optical-lens-intl',
         name: 'Lens',
         price: 62.9,
-        image: '/images/lens-gallery/01-optical-correction-lens.png',
+        image: '/images/lens-gallery/01-optical-correction-lens.jpg',
         qty: 1,
         requiresSmartwatch: true,
         deviceType: 'smartwatch',

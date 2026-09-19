@@ -105,7 +105,7 @@ const ALLOWED_ORIGINS = [
 ];
 const CONFIG_KEY = 'store-config';
 /** Pin igual ao cloudflare/scf-com-proxy.js — catálogo GitHub servido direto ao Worker (evita cache do proxy). */
-const SITE_CATALOG_COMMIT = '1cf81885bdeeff671ee72239115f86307ff50372';
+const SITE_CATALOG_COMMIT = '13be33ba0d61e7143358b98cb6bb259de262b658';
 const SITE_CATALOG_URLS = [
   'https://cdn.jsdelivr.net/gh/nardoniF/site-sensorcrashfix@' + SITE_CATALOG_COMMIT + '/data/store-config.json',
   'https://raw.githubusercontent.com/nardoniF/site-sensorcrashfix/' + SITE_CATALOG_COMMIT + '/data/store-config.json',
@@ -196,12 +196,14 @@ const DEFAULT_CONFIG = {
       descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
       descriptionIt: 'Progettata per i sensori ottici degli smartwatch su sensore incrinato.',
       price: 62.9,
-      image: '/images/kit-gallery/en/kit-01-embalagem.jpg',
+      image: '/images/lens-gallery/01-optical-correction-lens.jpg',
       images: [
-        '/images/kit-gallery/en/kit-01-embalagem.jpg',
-        '/images/kit-gallery/en/kit-03-aplicacao.jpg',
-        '/images/kit-gallery/en/kit-02-conteudo.jpg',
-        '/images/kit-gallery/en/kit-06-antes-depois.jpg'
+        '/images/lens-gallery/01-optical-correction-lens.jpg',
+        '/images/lens-gallery/02-ultra-thin.jpg',
+        '/images/lens-gallery/03-high-optical-transparency.jpg',
+        '/images/lens-gallery/04-engineered-refraction.jpg',
+        '/images/lens-gallery/05-whats-included.jpg',
+        '/images/lens-gallery/06-aplicacao.jpg'
       ],
       active: true,
       requiresSmartwatch: true,
