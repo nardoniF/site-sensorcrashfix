@@ -61,8 +61,8 @@
       "descriptionEs": "Lente de cobertura para sensor óptico de smartwatch agrietado.",
       "descriptionPl": "Soczewka ochronna na pęknięty czujnik optyczny smartwatcha.",
       "price": 62.9,
-      "priceUsd": 12.99,
-      "priceEur": 11.99,
+      "priceUsd": 20.86,
+      "priceEur": 17.95,
       "image": "/images/kit-gallery/en/kit-01-embalagem.jpg",
       "images": [
         "/images/kit-gallery/en/kit-01-embalagem.jpg",
@@ -80,7 +80,13 @@
       ],
       "aggregated": false,
       "nameSl": "Optična leča SensorCrashFix",
-      "descriptionSl": "Zaščitna leča za počeno optično tipalo pametne ure."
+      "descriptionSl": "Zaščitna leča za počeno optično tipalo pametne ure.",
+      "intlMarkupPercent": 70,
+      "intlBaseBrl": 106.93,
+      "priceSek": 200.0,
+      "priceNok": 193.0,
+      "pricePln": 77.36,
+      "priceGbp": 15.42
     },
     {
       "id": "kit-smartband-crashfix",
@@ -133,8 +139,8 @@
       "descriptionEs": "Lente de cobertura para sensor óptico de smartband agrietado.",
       "descriptionPl": "Soczewka ochronna na pęknięty czujnik optyczny opaski.",
       "price": 62.9,
-      "priceUsd": 12.99,
-      "priceEur": 11.99,
+      "priceUsd": 20.86,
+      "priceEur": 17.95,
       "image": "/images/smartband/lens-en/01-embalagem.jpg",
       "images": [
         "/images/smartband/lens-en/01-embalagem.jpg",
@@ -151,7 +157,13 @@
       ],
       "aggregated": false,
       "nameSl": "Leča SensorCrashFix za pametno zapestnico",
-      "descriptionSl": "Zaščitna leča za počeno optično tipalo pametne zapestnice."
+      "descriptionSl": "Zaščitna leča za počeno optično tipalo pametne zapestnice.",
+      "intlMarkupPercent": 70,
+      "intlBaseBrl": 106.93,
+      "priceSek": 200.0,
+      "priceNok": 193.0,
+      "pricePln": 77.36,
+      "priceGbp": 15.42
     },
     {
       "id": "pelicula-amazfit-bip-2",
@@ -5688,5 +5700,93 @@
       "media": []
     }
   ],
-  "homeReviews": []
+  "homeReviews": [],
+  "intlCurrencies": [
+    {
+      "code": "USD",
+      "label": "Dólar (USD)",
+      "langs": [
+        "en"
+      ],
+      "countries": [
+        "US",
+        "CA",
+        "AU",
+        "NZ",
+        "SG",
+        "HK"
+      ],
+      "decimals": 2,
+      "active": true
+    },
+    {
+      "code": "GBP",
+      "label": "Libra (GBP)",
+      "langs": [],
+      "countries": [
+        "GB"
+      ],
+      "decimals": 2,
+      "active": true
+    },
+    {
+      "code": "EUR",
+      "label": "Euro (EUR)",
+      "langs": [
+        "it",
+        "de",
+        "es",
+        "sl"
+      ],
+      "countries": [
+        "IT",
+        "DE",
+        "ES",
+        "SI",
+        "FR",
+        "NL",
+        "FI",
+        "AT",
+        "BE",
+        "PT",
+        "IE"
+      ],
+      "decimals": 2,
+      "active": true
+    },
+    {
+      "code": "PLN",
+      "label": "Złoty (PLN)",
+      "langs": [
+        "pl"
+      ],
+      "countries": [
+        "PL"
+      ],
+      "decimals": 2,
+      "active": true
+    },
+    {
+      "code": "SEK",
+      "label": "Coroa sueca (SEK)",
+      "langs": [],
+      "countries": [
+        "SE"
+      ],
+      "decimals": 0,
+      "active": true
+    },
+    {
+      "code": "NOK",
+      "label": "Coroa norueguesa (NOK)",
+      "langs": [],
+      "countries": [
+        "NO"
+      ],
+      "decimals": 0,
+      "active": true
+    }
+  ],
+  "intlCurrenciesAutoFx": true,
+  "intlCurrenciesAutoPpp": true
 }

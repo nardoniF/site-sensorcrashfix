@@ -7503,3 +7503,19 @@ h3.about-story-heading + .about-body:has(+ .about-patents) {
     display: none !important;
 }
 
+
+/* Admin: moedas readonly no produto .com */
+.admin-intl-price-ro input[readonly] {
+  background: #f3f4f6;
+  color: #374151;
+  cursor: default;
+}
+.admin-intl-base-brl {
+  display: block;
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-top: 2px;
+}
+.admin-product-i18n-hint {
+  margin: 0 0 8px;
+}
