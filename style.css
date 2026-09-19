@@ -103,15 +103,15 @@ nav,
 .logo-tagline {
     margin: 0;
     font-family: inherit;
-    /* Mesma fonte do nome; um pouco menor para o nome continuar em evidência */
-    font-size: 0.72em;
+    /* Mesma fonte e mesmo tamanho do nome; peso mais leve */
+    font-size: 1em;
     font-style: normal;
     font-weight: 500;
-    line-height: 1.2;
+    line-height: 1.15;
     letter-spacing: 0.01em;
     color: #9adfea;
     white-space: normal;
-    max-width: 28em;
+    max-width: 26em;
 }
 
 .hero-brand-mobile {
@@ -1952,7 +1952,7 @@ footer,
         font-weight: 500;
         margin-top: 6px;
         color: #c8f6fc;
-        max-width: 22em;
+        max-width: 26em;
         margin-left: auto;
         margin-right: auto;
     }
