@@ -428,7 +428,7 @@ const DEFAULT_CONFIG = {
         enabled: true,
         url: 'https://www.mercadolivre.com.br/reparo-sensor-trincado-garmin-lente-optica-prova-dagua/p/MLB2115658430?pdp_filters=item_id%3AMLB7646684042'
       },
-      shopee: { enabled: true, url: 'https://shopee.com.br/product/479290797/58268311093/' },
+      shopee: { enabled: true, url: 'https://shopee.com.br/product/479290797/58218461804/' },
       tiktok_shop: { enabled: true, url: 'https://vt.tiktok.com/ZS9juMxSmKGjN-mns6O/' },
       amazon: { enabled: true, url: 'https://www.amazon.com.br/dp/B0GYVBRGZS' }
     }
