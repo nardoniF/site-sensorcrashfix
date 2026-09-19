@@ -76,19 +76,9 @@ nav,
     border-radius: 50%;
 }
 
-/* Lockup do header: nome + slogan na mesma fonte/tamanho; peso marca o nome */
-.logo-lockup {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-    font-family: var(--font-nav);
-    font-size: 1.42rem;
-}
-
+/* Lockup do header — espelho do Sensor Tattoo Fix: slogan menor e itálico */
 .logo-text {
-    font-family: inherit;
-    font-size: 1em;
+    font-size: 1.42rem;
     font-weight: 900;
     line-height: 1;
     letter-spacing: 0.02em;
@@ -100,18 +90,21 @@ nav,
 .logo-text .logo-word { color: #fff; }
 .logo-text .logo-accent { color: var(--primary); }
 
+.logo-lockup {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
 .logo-tagline {
     margin: 0;
-    font-family: inherit;
-    /* Mesma fonte e mesmo tamanho do nome; peso mais leve */
-    font-size: 1em;
-    font-style: normal;
+    font-size: 0.82rem;
+    font-style: italic;
     font-weight: 500;
-    line-height: 1.15;
-    letter-spacing: 0.01em;
-    color: #9adfea;
-    white-space: normal;
-    max-width: 26em;
+    line-height: 1.25;
+    letter-spacing: 0.04em;
+    color: #c4c4c4;
+    white-space: nowrap;
 }
 
 .hero-brand-mobile {
@@ -325,14 +318,15 @@ nav,
 @media (max-width: 1280px) {
     .nav-main a { font-size: 0.73rem; }
     .nav-main { gap: 3px 7px; }
-    .logo-lockup { font-size: 1.2rem; }
+    .logo-text { font-size: 1.2rem; }
     .logo-img-link { width: 76px; height: 76px; }
     .site-social { min-width: 96px; padding: 0 12px; }
 }
 
 /* Header IT: rótulos um pouco mais longos — só ajustes de espaço, mesma tipografia do menu */
 html[lang="it"] .site-nav { gap: 10px; }
-html[lang="it"] .logo-lockup { font-size: 1.18rem; }
+html[lang="it"] .logo-text { font-size: 1.18rem; }
+html[lang="it"] .logo-tagline { font-size: 0.74rem; }
 html[lang="it"] .logo-img-link { width: 74px; height: 74px; }
 html[lang="it"] .site-social { min-width: 92px; padding: 0 10px; gap: 5px; }
 html[lang="it"] .nav-actions { gap: 6px; }
@@ -1878,8 +1872,8 @@ footer,
     nav { position: relative; flex-wrap: nowrap; gap: 6px; }
     .logo-area { flex: 0 0 auto; min-width: 0; gap: 8px; }
     .logo-img-link { width: 56px; height: 56px; }
-    .logo-lockup { font-size: 0.95rem; }
-    .logo-tagline { color: #c8f6fc; }
+    .logo-text { font-size: 0.95rem; }
+    .logo-tagline { font-size: 0.68rem; }
 
     /* Home mobile: marca no hero, header compacto + hambúrguer */
     .home-page .logo-area .logo-lockup { display: none; }
@@ -1936,25 +1930,16 @@ footer,
         display: block;
         margin: 0 0 14px;
         text-align: center;
-        font-family: var(--font-nav);
-        font-size: 1.15rem;
     }
     .home-page .hero-brand-mobile .logo-text {
         display: flex;
         justify-content: center;
-        font-size: 1em;
-        font-family: inherit;
+        font-size: 1.15rem;
     }
     .home-page .hero-brand-mobile .logo-tagline {
         white-space: normal;
-        font-size: 1em;
-        font-family: inherit;
-        font-weight: 500;
-        margin-top: 6px;
-        color: #c8f6fc;
-        max-width: 26em;
-        margin-left: auto;
-        margin-right: auto;
+        font-size: 0.78rem;
+        margin-top: 4px;
     }
     .home-page .hero {
         min-height: calc(100dvh - 64px);
