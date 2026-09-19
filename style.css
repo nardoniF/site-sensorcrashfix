@@ -2146,6 +2146,11 @@ footer,
     .btn-primary, .btn-outline { width: auto; min-width: unset; max-width: 220px; }
     .btn-primary, .btn-secondary, .btn-outline { margin-left: auto; margin-right: auto; }
     #produtos .product-solution-grid { grid-template-columns: 1fr !important; gap: 18px !important; }
+    #produtos .product-solution-media {
+        width: 100% !important;
+        max-width: 280px !important;
+        margin: 0 auto !important;
+    }
     #produtos .product-benefits-grid {
         display: grid !important;
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
@@ -2164,8 +2169,13 @@ footer,
         padding-top: 56px;
         padding-bottom: 24px;
     }
-    #produtos > .container > div > .product-image-wrap { max-width: 100%; margin-top: 8px; justify-self: center; }
-    #produtos > .container > div > .product-image-wrap img { max-width: 100%; }
+    #produtos .product-image-wrap {
+        width: min(100%, 280px) !important;
+        max-width: 280px !important;
+        height: auto !important;
+        margin: 8px auto 0 !important;
+    }
+    #produtos .product-image-wrap img { max-width: 100%; }
     
     .flex-row { flex-direction: column; }
     .danger-box { transform: rotate(0deg); width: 100%; margin-top: 20px; }
