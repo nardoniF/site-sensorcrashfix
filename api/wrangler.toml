@@ -65,6 +65,6 @@ crons = []
 # CORREIOS_CONTRACT             — cartão de postagem (10 dígitos)
 # CORREIOS_COMMERCIAL_CONTRACT  — contrato comercial (ex.: 9912752041)
 # RESEND_API_KEY       — e-mails com remetente profissional (resend.com, grátis até 3k/mês)
-# EMAIL_FROM           — opcional: Sensor Crash Fix <pedidos@sensorcrashfix.com.br>
+# EMAIL_FROM           — opcional: Sensor CrashFix <pedidos@sensorcrashfix.com.br>
 # GA4_API_SECRET       — secret do Measurement Protocol (GA4 → Fluxos de dados → seu site)
 # GOOGLE_PLACES_API_KEY  — opcional: autocomplete de endereço internacional (senão usa Photon/OSM grátis)
