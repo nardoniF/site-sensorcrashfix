@@ -346,9 +346,10 @@ html[lang="it"] .nav-actions { gap: 6px; }
     min-height: 100dvh;
     box-sizing: border-box;
     display: flex;
-    align-items: center;
-    padding-top: 72px;
-    padding-bottom: 40px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-top: 88px;
+    padding-bottom: 28px;
     scroll-margin-top: 0;
 }
 .home-page .hero > .container { width: 100%; max-width: 100%; }
