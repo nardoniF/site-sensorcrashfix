@@ -1,6 +1,6 @@
 /** German overrides — merged onto STRINGS.en in stf-i18n.js */
 window.STF_I18N_DE = {
-  'brand.tagline': 'Präventiver Schutz. Sofortlösung.',
+  'brand.tagline': 'Graduierte optische Abschirmung. Prävention und Reparatur.',
   'nav.cart': 'Warenkorb',
   'nav.back': 'Zurück',
   'nav.home': 'Startseite',

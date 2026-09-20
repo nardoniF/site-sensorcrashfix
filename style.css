@@ -124,6 +124,15 @@ nav,
     color: #c4c4c4;
     white-space: nowrap;
 }
+.logo-tagline--sub {
+    font-style: normal;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #ddd;
+    white-space: nowrap;
+}
 
 .hero-brand-mobile {
     display: none;

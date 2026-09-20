@@ -1,6 +1,6 @@
 /** Slovenian overrides — merged onto STRINGS.en in stf-i18n.js */
 window.STF_I18N_SL = {
-  'brand.tagline': 'Preventivna zaščita. Takojšnja rešitev.',
+  'brand.tagline': 'Graduirana Optična Zaščita. Preprečevanje in popravilo.',
   'nav.cart': 'Košarica',
   'nav.back': 'Nazaj',
   'nav.home': 'Domov',

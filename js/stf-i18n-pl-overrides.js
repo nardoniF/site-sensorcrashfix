@@ -1,6 +1,6 @@
 /** Polish overrides — merged onto STRINGS.en in stf-i18n.js */
 window.STF_I18N_PL = {
-  'brand.tagline': 'Ochrona prewencyjna. Natychmiastowe rozwiązanie.',
+  'brand.tagline': 'Gradacyjna Osłona Optyczna. Prewencja i naprawa.',
   'nav.cart': 'Koszyk',
   'nav.back': 'Wstecz',
   'nav.home': 'Strona główna',

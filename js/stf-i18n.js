@@ -5,7 +5,7 @@
 window.STF_I18N = (function () {
   const STRINGS = {
     pt: {
-      'brand.tagline': 'Proteção preventiva. Solução imediata.',
+      'brand.tagline': 'Blindagem Óptica Graduada. Prevenção e reparo.',
       'nav.cart': 'Carrinho',
       'nav.back': 'Voltar',
       'nav.home': 'Início',
@@ -382,7 +382,7 @@ window.STF_I18N = (function () {
       'page.checkoutDescEn': 'Official Sensor CrashFix checkout — PayPal, cards, tracked shipping.'
     },
     en: {
-      'brand.tagline': 'Preventive protection. Immediate solution.',
+      'brand.tagline': 'Graded Optical Shield. Prevention and repair.',
       'nav.cart': 'Cart',
       'nav.back': 'Back',
       'nav.home': 'Home',
@@ -1117,7 +1117,7 @@ window.STF_I18N = (function () {
 
   function applyShellDom() {
     if (!isLocalized()) return;
-    applyText('.logo-tagline', 'brand.tagline');
+    applyText('.logo-tagline:not(.logo-tagline--sub)', 'brand.tagline');
     const cartLink = document.querySelector('.cart-nav-link');
     if (cartLink) {
       const badge = cartLink.querySelector('[data-cart-badge]');
@@ -1152,7 +1152,7 @@ window.STF_I18N = (function () {
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) metaDesc.content = t(checkoutDescKey(getLang()));
 
-    applyText('.logo-tagline', 'brand.tagline');
+    applyText('.logo-tagline:not(.logo-tagline--sub)', 'brand.tagline');
 
     const cartLink = document.querySelector('.cart-nav-link');
     if (cartLink) {
@@ -1312,7 +1312,7 @@ window.STF_I18N = (function () {
     if (metaDesc) {
       metaDesc.content = t(storeMetaDescKey(getLang()));
     }
-    applyText('.logo-tagline', 'brand.tagline');
+    applyText('.logo-tagline:not(.logo-tagline--sub)', 'brand.tagline');
     applyText('h1.section-title', 'store.title');
     applyText('.loja-marketplaces-label', 'store.alsoOnLabel');
     applyText('.loja-mp-badge.store-ml span', 'store.mp.ml');
@@ -1406,7 +1406,7 @@ window.STF_I18N = (function () {
     if (!isLocalized()) return;
 
     document.title = t('conta.pageTitle');
-    applyText('.logo-tagline', 'brand.tagline');
+    applyText('.logo-tagline:not(.logo-tagline--sub)', 'brand.tagline');
 
     const whereBuy = document.querySelector('.checkout-nav a[href*="onde-comprar"], .checkout-nav a[href*="index"]');
     if (whereBuy && whereBuy.getAttribute('href')?.includes('onde-comprar')) {
