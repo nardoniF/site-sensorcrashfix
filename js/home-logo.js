@@ -9,7 +9,7 @@
     });
   });
 
-  /** Foto do hero = altura do bloco de texto (desktop). */
+  /** Formato Tattoo: foto na largura da coluna, altura ≈ bloco de texto. */
   function syncHeroVisualToText() {
     var text = document.querySelector('.home-page .hero-text');
     var visual = document.querySelector('.home-page .hero-visual');
@@ -17,18 +17,18 @@
     if (window.matchMedia('(max-width: 900px)').matches) {
       visual.style.width = '';
       visual.style.height = '';
-      visual.style.maxWidth = '';
+      visual.style.minHeight = '';
       visual.style.maxHeight = '';
       return;
     }
     var h = Math.round(text.getBoundingClientRect().height);
-    if (h < 160) return;
-    var col = visual.parentElement ? visual.parentElement.getBoundingClientRect().width : h;
-    var side = Math.max(220, Math.min(h, Math.floor(col), 460));
-    visual.style.width = side + 'px';
-    visual.style.height = side + 'px';
-    visual.style.maxWidth = '100%';
+    if (h < 200) return;
+    // Retângulo largo como Tattoo (não quadrado): altura do texto, largura 100% da coluna
+    visual.style.width = '100%';
+    visual.style.height = h + 'px';
+    visual.style.minHeight = h + 'px';
     visual.style.maxHeight = 'none';
+    visual.style.aspectRatio = 'auto';
   }
 
   function watchHeroVisual() {
@@ -40,10 +40,8 @@
         syncHeroVisualToText();
       });
       ro.observe(text);
-      window.addEventListener('resize', syncHeroVisualToText);
-    } else {
-      window.addEventListener('resize', syncHeroVisualToText);
     }
+    window.addEventListener('resize', syncHeroVisualToText);
     requestAnimationFrame(syncHeroVisualToText);
     setTimeout(syncHeroVisualToText, 300);
   }

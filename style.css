@@ -346,44 +346,44 @@ html[lang="it"] .nav-actions { gap: 6px; }
     min-height: 100dvh;
     box-sizing: border-box;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     padding-top: 72px;
-    padding-bottom: 24px;
+    padding-bottom: 40px;
     scroll-margin-top: 0;
 }
 .home-page .hero > .container { width: 100%; max-width: 100%; }
 .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 55px; align-items: center; min-width: 0; }
-.home-page .hero-grid { gap: 24px 36px; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); align-items: start; }
+.home-page .hero-grid { gap: 55px; grid-template-columns: 1fr 1fr; align-items: center; }
 .hero-text { min-width: 0; max-width: 100%; }
 .badge { color: var(--primary); font-weight: 800; text-transform: uppercase; border: 1px solid var(--primary); padding: 6px 14px; border-radius: 50px; font-size: 0.9rem; }
 .hero h1 { font-size: 3.5rem; font-weight: 900; line-height: 1.05; margin: 28px 0; }
-/* Hero home: tipografia legível, ainda cabendo numa tela */
+/* Hero home: formato Tattoo — tipografia grande, foto retangular alinhada ao texto */
 .home-page .hero h1 {
-    font-size: clamp(1.85rem, 3vw, 2.75rem);
-    line-height: 1.12;
-    margin: 14px 0 16px;
+    font-size: clamp(2rem, 3.2vw, 3.15rem);
+    line-height: 1.08;
+    margin: 18px 0 18px;
     max-width: none;
 }
 .home-page .hero .badge {
-    padding: 5px 12px;
-    font-size: 0.82rem;
+    padding: 6px 14px;
+    font-size: 0.85rem;
 }
 .hero p { font-size: 1.1rem; color: var(--gray); margin-bottom: 38px; }
 .home-page .hero p {
-    font-size: clamp(0.98rem, 1.25vw, 1.08rem);
+    font-size: clamp(1rem, 1.3vw, 1.12rem);
     line-height: 1.45;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
 }
 .home-page .hero p + .hero-btns,
 .home-page .hero p:last-of-type {
-    margin-bottom: 20px;
+    margin-bottom: 22px;
 }
-.home-page .hero-btns { gap: 14px; }
+.home-page .hero-btns { gap: 16px; }
 .home-page .hero-btns .btn-primary,
 .home-page .hero-btns .btn-outline {
-    padding: 13px 22px;
-    min-width: 0;
-    font-size: 0.95rem;
+    padding: 14px 24px;
+    min-width: 180px;
+    font-size: 0.98rem;
 }
 .hero-btns { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
 .hero-cta-buy-short { display: none; }
@@ -489,17 +489,16 @@ html[lang="it"] .nav-actions { gap: 6px; }
   border-radius: 12px;
 }
 
-/* Crash Fix: foto do hero alinhada à altura do bloco de texto (JS sync) */
+/* Crash Fix: foto hero no formato Tattoo — largura da coluna, altura do texto */
 .home-page .hero-visual {
     position: relative;
-    align-self: start;
-    width: min(100%, 420px);
-    max-width: 100%;
-    min-height: 0;
-    aspect-ratio: 1 / 1;
+    align-self: stretch;
+    width: 100%;
+    max-width: none;
+    min-height: min(48vh, 420px);
     height: auto;
-    margin-left: auto;
-    margin-top: 0;
+    aspect-ratio: auto;
+    margin: 0;
     display: flex;
     align-items: stretch;
     background: #0d0d0d;
@@ -511,7 +510,7 @@ html[lang="it"] .nav-actions { gap: 6px; }
 .home-page .hero-visual .product-img {
     width: 100%;
     height: 100%;
-    min-height: 0;
+    min-height: inherit;
     object-fit: cover;
     object-position: center;
     border-radius: 0;
@@ -521,10 +520,13 @@ html[lang="it"] .nav-actions { gap: 6px; }
 }
 @media (max-width: 900px) {
     .home-page .hero-visual {
-        width: min(100%, 300px);
-        max-width: min(100%, 300px);
-        height: auto;
-        margin: 0 auto;
+        width: 100%;
+        max-width: 100%;
+        min-height: 260px;
+        height: auto !important;
+    }
+    .home-page .hero-visual .product-img {
+        min-height: 260px;
     }
 }
 
