@@ -1,5 +1,5 @@
 name = "sensorcrashfix-payments"
-# Domínio/Worker públicos = Crash Fix.
+# Domínio/Worker públicos = CrashFix.
 # Secrets de pagamento/frete: mesmos PROVEDORES do Tattoo (valores copiados no Worker Crash).
 # DADOS: KV + D1 DEVEM ser exclusivos do Crash — NÃO reutilizar IDs do Tattoo.
 # Se o Admin Crash listar pedidos do Tattoo, rode: npm run isolate-store
