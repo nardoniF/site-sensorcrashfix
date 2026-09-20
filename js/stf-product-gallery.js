@@ -299,38 +299,39 @@
     });
   }
 
-  /** Square album = exact height of the 3×2 benefits grid (never taller). */
+  /** Álbum quadrado + CTA: base do "Onde comprar" = base dos cards. */
   function syncProductAlbumToBenefits() {
     const benefits = document.querySelector('#produtos .product-benefits-grid');
     const wraps = document.querySelectorAll('#produtos .product-image-wrap');
     if (!benefits || !wraps.length) return;
-    // Collapse wrap so stretch/width cannot inflate the benefits measurement.
-    wraps.forEach((wrap) => {
-      wrap.style.width = '0px';
-      wrap.style.height = '0px';
-      wrap.style.maxWidth = '0px';
-      wrap.style.minWidth = '0px';
-      wrap.style.aspectRatio = '1 / 1';
-    });
-    void benefits.offsetHeight;
-    const h = Math.round(benefits.getBoundingClientRect().height);
-    if (h < 120) {
-      wraps.forEach((wrap) => {
-        wrap.style.width = '';
-        wrap.style.height = '';
-        wrap.style.maxWidth = '';
-        wrap.style.minWidth = '';
-        wrap.style.aspectRatio = '';
+    const mediaCol = document.querySelector('#produtos .product-solution-media');
+    const mediaW = mediaCol ? mediaCol.getBoundingClientRect().width : 0;
+    const benefitsH = Math.round(benefits.getBoundingClientRect().height);
+    if (benefitsH < 120) return;
+    let reservedBelow = 0;
+    if (mediaCol) {
+      const gap = parseFloat(getComputedStyle(mediaCol).gap) || 16;
+      const cta = [...mediaCol.children].find((el) => {
+        if (el.tagName !== 'A') return false;
+        if (wraps[0] && wraps[0].contains(el)) return false;
+        return true;
       });
-      return;
+      if (cta) {
+        const cs = getComputedStyle(cta);
+        const mt = parseFloat(cs.marginTop) || 0;
+        const mb = parseFloat(cs.marginBottom) || 0;
+        const ctaH = Math.ceil(cta.getBoundingClientRect().height);
+        reservedBelow = Math.ceil(gap + mt + mb + ctaH);
+      } else {
+        reservedBelow = Math.ceil(gap + 48);
+      }
     }
-    // Match cards; hard cap so the square stays print-sized on wide screens.
-    const side = Math.min(h, 280);
+    const target = Math.max(140, benefitsH - reservedBelow);
+    const side = Math.min(target, mediaW > 40 ? Math.floor(mediaW) : target);
     wraps.forEach((wrap) => {
       wrap.style.width = side + 'px';
       wrap.style.height = side + 'px';
-      wrap.style.maxWidth = side + 'px';
-      wrap.style.minWidth = side + 'px';
+      wrap.style.maxWidth = '100%';
       wrap.style.aspectRatio = '1 / 1';
     });
   }

@@ -435,12 +435,8 @@ html[lang="it"] .nav-actions { gap: 6px; }
   margin: 0 auto 15px;
 }
 #produtos .product-image-wrap--lg {
-  /* Quadrado compacto = altura da grade 3×2 (não metade da tela) */
-  width: min(100%, 280px);
-  max-width: 280px;
   background: #111;
   border-color: #222;
-  padding: 0;
 }
 #produtos .product-image-wrap--lg img {
   object-fit: contain;
@@ -497,14 +493,14 @@ html[lang="it"] .nav-actions { gap: 6px; }
 
 #produtos .product-solution-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 14px 18px;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
     align-items: start;
 }
 #produtos .product-benefits-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
     min-width: 0;
     height: fit-content;
 }
@@ -513,24 +509,22 @@ html[lang="it"] .nav-actions { gap: 6px; }
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    gap: 10px;
-    width: fit-content;
-    max-width: 280px;
+    gap: 16px;
     min-width: 0;
 }
 #produtos .product-image-wrap {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0;
-    border-radius: 14px;
+    padding: 8px;
+    border-radius: 12px;
     border: 1px solid #333;
     background: #121212;
-    width: 280px;
-    max-width: min(100%, 280px);
+    width: min(100%, 380px);
+    max-width: 100%;
     aspect-ratio: 1 / 1;
-    height: 280px;
-    margin: 0;
+    height: auto;
+    margin: 0 auto;
     box-sizing: border-box;
     overflow: hidden;
 }
@@ -546,7 +540,7 @@ html[lang="it"] .nav-actions { gap: 6px; }
     height: 100%;
     max-width: none;
     border-radius: 12px;
-    object-fit: contain;
+    object-fit: contain; /* nunca crop */
     background: #111;
 }
 
@@ -2145,16 +2139,16 @@ footer,
     }
     .btn-primary, .btn-outline { width: auto; min-width: unset; max-width: 220px; }
     .btn-primary, .btn-secondary, .btn-outline { margin-left: auto; margin-right: auto; }
-    #produtos .product-solution-grid { grid-template-columns: 1fr !important; gap: 18px !important; }
+    #produtos .product-solution-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
     #produtos .product-solution-media {
         width: 100% !important;
-        max-width: 280px !important;
+        max-width: 380px !important;
         margin: 0 auto !important;
     }
     #produtos .product-benefits-grid {
         display: grid !important;
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 10px !important;
+        gap: 16px !important;
         width: 100% !important;
         max-width: 100% !important;
         min-width: 0 !important;
@@ -2170,10 +2164,10 @@ footer,
         padding-bottom: 24px;
     }
     #produtos .product-image-wrap {
-        width: min(100%, 280px) !important;
-        max-width: 280px !important;
+        width: min(100%, 380px) !important;
+        max-width: 100% !important;
         height: auto !important;
-        margin: 8px auto 0 !important;
+        margin: 0 auto !important;
     }
     #produtos .product-image-wrap img { max-width: 100%; }
     
