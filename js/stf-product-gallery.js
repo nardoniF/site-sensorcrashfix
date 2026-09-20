@@ -299,21 +299,16 @@
     });
   }
 
-  /** Álbum = altura exata da grade (espelho Tattoo); CTA absolute na base do stage. */
+  /** Square album = height of the benefit icons grid (contain, never crop) — same as Tattoo. */
   function syncProductAlbumToBenefits() {
     const benefits = document.querySelector('#produtos .product-benefits-grid');
     const wraps = document.querySelectorAll('#produtos .product-image-wrap');
     if (!benefits || !wraps.length) return;
     const mediaCol = document.querySelector('#produtos .product-solution-media');
-    const stage = document.querySelector('#produtos .product-album-stage');
     const mediaW = mediaCol ? mediaCol.getBoundingClientRect().width : 0;
-    const benefitsH = Math.round(benefits.getBoundingClientRect().height);
-    if (benefitsH < 120) return;
-    const side = Math.min(benefitsH, mediaW > 40 ? Math.floor(mediaW) : benefitsH);
-    if (stage) {
-      stage.style.width = side + 'px';
-      stage.style.maxWidth = '100%';
-    }
+    const h = Math.round(benefits.getBoundingClientRect().height);
+    if (h < 120) return;
+    const side = Math.min(h, mediaW > 40 ? Math.floor(mediaW) : h);
     wraps.forEach((wrap) => {
       wrap.style.width = side + 'px';
       wrap.style.height = side + 'px';
@@ -322,51 +317,17 @@
     });
   }
 
-  /** Kit: quadrado da foto = altura do bloco “O que vem no Kit”. */
-  function syncKitMediaToContent() {
-    const kit = document.querySelector('#produtos .kit-box');
-    if (!kit || kit.hidden || kit.getAttribute('aria-hidden') === 'true') return;
-    if (getComputedStyle(kit).display === 'none') return;
-    const content = kit.querySelector('.kit-box-content');
-    const media = kit.querySelector('.kit-box-media');
-    if (!content || !media) return;
-    const contentH = Math.round(content.getBoundingClientRect().height);
-    if (contentH < 80) return;
-    const layout = kit.querySelector('.kit-box-layout');
-    const layoutW = layout ? layout.getBoundingClientRect().width : 0;
-    const maxSide = layoutW > 120 ? Math.floor((layoutW - 24) * 0.45) : contentH;
-    const side = Math.max(140, Math.min(contentH, maxSide, 420));
-    media.style.width = side + 'px';
-    media.style.height = side + 'px';
-    media.style.maxWidth = '100%';
-    media.style.aspectRatio = '1 / 1';
-    media.querySelectorAll('img').forEach((img) => {
-      img.style.width = '100%';
-      img.style.height = '100%';
-      img.style.maxWidth = 'none';
-      img.style.maxHeight = 'none';
-      img.style.objectFit = 'contain';
-    });
-  }
-
-  function syncProdutosLayout() {
-    syncProductAlbumToBenefits();
-    syncKitMediaToContent();
-  }
-
   function watchProductAlbumSize() {
-    syncProdutosLayout();
+    syncProductAlbumToBenefits();
     const benefits = document.querySelector('#produtos .product-benefits-grid');
-    const media = document.querySelector('#produtos .product-solution-media');
-    const kitContent = document.querySelector('#produtos .kit-box .kit-box-content');
     if (!benefits || typeof ResizeObserver === 'undefined') {
-      window.addEventListener('resize', syncProdutosLayout);
+      window.addEventListener('resize', syncProductAlbumToBenefits);
       return;
     }
-    const ro = new ResizeObserver(() => syncProdutosLayout());
+    const ro = new ResizeObserver(() => syncProductAlbumToBenefits());
     ro.observe(benefits);
+    const media = document.querySelector('#produtos .product-solution-media');
     if (media) ro.observe(media);
-    if (kitContent) ro.observe(kitContent);
   }
 
   /** Hide kit packaging block on lens-only markets. */
@@ -398,9 +359,7 @@
     enhanceExisting,
     showIndex,
     detectLang,
-    syncProductAlbumToBenefits,
-    syncKitMediaToContent,
-    syncProdutosLayout
+    syncProductAlbumToBenefits
   };
 
   function boot() {
@@ -422,18 +381,8 @@
       const alt = product
         ? (window.STF_PELICULA?.productLabel?.(product) || product.nameEn || product.name || 'Sensor Crash Fix')
         : (isLensOnlyMarket() ? 'SensorCrashFix Optical Lens' : 'Sensor Crash Fix');
-      // Álbum monta imagens; sync roda depois (2ª passagem após load)
       enhanceExisting('.product-image-wrap', imgs, alt);
-      // IMPORTANTE: sync DEPOIS do álbum montar; 2ª passagem após imagens
-      requestAnimationFrame(() => {
-        watchProductAlbumSize();
-        setTimeout(syncProdutosLayout, 300);
-        setTimeout(syncProdutosLayout, 900);
-        document.querySelectorAll('#produtos .product-image-wrap img, #produtos .kit-box-media img').forEach((img) => {
-          if (img.complete) return;
-          img.addEventListener('load', syncProdutosLayout, { once: true });
-        });
-      });
+      watchProductAlbumSize();
     };
     run();
   }

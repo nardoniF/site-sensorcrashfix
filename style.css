@@ -343,54 +343,19 @@ html[lang="it"] .nav-actions { gap: 6px; }
 /* HERO */
 .hero { padding: 80px 0 90px; background: radial-gradient(circle at top right, #1a1a1a, #0a0a0a); }
 .home-page .hero {
-    min-height: 100dvh;
-    box-sizing: border-box;
+    min-height: calc(100dvh - 100px);
     display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    padding-top: 68px;
-    padding-bottom: 24px;
+    align-items: center;
+    padding-top: 32px;
+    padding-bottom: 48px;
     scroll-margin-top: 0;
 }
-.home-page .hero > .container {
-    width: 100%;
-    max-width: 100%;
-    margin-top: 0;
-    margin-bottom: 0;
-}
+.home-page .hero > .container { width: 100%; max-width: 100%; }
 .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 55px; align-items: center; min-width: 0; }
-.home-page .hero-grid { gap: 55px; grid-template-columns: 1fr 1fr; align-items: center; }
 .hero-text { min-width: 0; max-width: 100%; }
 .badge { color: var(--primary); font-weight: 800; text-transform: uppercase; border: 1px solid var(--primary); padding: 6px 14px; border-radius: 50px; font-size: 0.9rem; }
 .hero h1 { font-size: 3.5rem; font-weight: 900; line-height: 1.05; margin: 28px 0; }
-/* Hero home: formato Tattoo — tipografia grande, foto retangular alinhada ao texto */
-.home-page .hero h1 {
-    font-size: clamp(2rem, 3.2vw, 3.15rem);
-    line-height: 1.08;
-    margin: 18px 0 18px;
-    max-width: none;
-}
-.home-page .hero .badge {
-    padding: 6px 14px;
-    font-size: 0.85rem;
-}
 .hero p { font-size: 1.1rem; color: var(--gray); margin-bottom: 38px; }
-.home-page .hero p {
-    font-size: clamp(1rem, 1.3vw, 1.12rem);
-    line-height: 1.45;
-    margin-bottom: 14px;
-}
-.home-page .hero p + .hero-btns,
-.home-page .hero p:last-of-type {
-    margin-bottom: 22px;
-}
-.home-page .hero-btns { gap: 16px; }
-.home-page .hero-btns .btn-primary,
-.home-page .hero-btns .btn-outline {
-    padding: 14px 24px;
-    min-width: 180px;
-    font-size: 0.98rem;
-}
 .hero-btns { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
 .hero-cta-buy-short { display: none; }
 /* Must beat .store-official-bar { display:flex } or the store CTA leaks onto desktop */
@@ -469,106 +434,21 @@ html[lang="it"] .nav-actions { gap: 6px; }
   display: block;
   margin: 0 auto 15px;
 }
-#produtos .product-image-wrap--lg {
-  background: #111;
-  border-color: #222;
-}
-#produtos .product-image-wrap--lg img {
-  object-fit: contain;
-  background: #111;
-}
-.kit-box {
-  background: #0a0a0a;
-}
-.kit-box-media {
-  background: #000;
-  border-radius: 16px;
-  padding: 8px;
-}
-.kit-box-media img {
-  width: 100%;
-  max-width: none;
-  max-height: none;
-  aspect-ratio: 1 / 1;
-  object-fit: contain;
-  background: #000;
-  border-radius: 12px;
-}
 
-/* Crash Fix: foto hero no formato Tattoo — largura da coluna, altura do texto */
-.home-page .hero-visual {
-    position: relative;
-    align-self: stretch;
-    width: 100%;
-    max-width: none;
-    min-height: min(48vh, 420px);
-    height: auto;
-    aspect-ratio: auto;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 28px;
-    background: #0d0d0d;
-    border-radius: 20px;
-    overflow: hidden;
-    border: 1px solid #222;
-    box-sizing: border-box;
-}
-.home-page .hero-visual .product-img {
-    width: 100%;
-    height: 100%;
-    min-height: 0;
-    object-fit: cover;
-    object-position: center;
-    border-radius: 14px;
-    border: none;
-    box-shadow: none;
-    display: block;
-}
-@media (max-width: 900px) {
-    .home-page .hero-visual {
-        width: 100%;
-        max-width: 100%;
-        min-height: 260px;
-        height: auto !important;
-        padding: 18px;
-    }
-    .home-page .hero-visual .product-img {
-        min-height: 0;
-    }
-}
-
-
+/* Espelho 1:1 Tattoo Fix (#produtos / kit) — brand Crash via --primary */
 #produtos .product-solution-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
     align-items: start;
 }
-#produtos .product-benefits-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    min-width: 0;
-    height: fit-content;
-}
 #produtos .product-solution-media {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    gap: 0;
+    gap: 16px;
     min-width: 0;
-}
-/* Espelho Tattoo: stage = altura dos cards; CTA absolute na base do quadrado */
-#produtos .product-album-stage {
-    position: relative;
-    display: block;
-    width: 100%;
-    max-width: 100%;
-    margin: 0 auto;
-    box-sizing: border-box;
 }
 #produtos .product-image-wrap {
     display: flex;
@@ -577,12 +457,12 @@ html[lang="it"] .nav-actions { gap: 6px; }
     padding: 8px;
     border-radius: 12px;
     border: 1px solid #333;
-    background: #121212;
-    width: 100%;
+    background: #1a1a1a;
+    width: min(100%, 380px);
     max-width: 100%;
     aspect-ratio: 1 / 1;
     height: auto;
-    margin: 0;
+    margin: 0 auto;
     box-sizing: border-box;
     overflow: hidden;
 }
@@ -598,104 +478,59 @@ html[lang="it"] .nav-actions { gap: 6px; }
     height: 100%;
     max-width: none;
     border-radius: 12px;
-    object-fit: contain; /* nunca crop */
-    background: #111;
+    object-fit: contain;
 }
 
-/* Álbum preenche o wrap */
-#produtos .product-image-wrap .stf-album {
-    width: 100%;
-    height: 100%;
-    max-width: none;
-    margin: 0;
-    aspect-ratio: auto;
+#produtos .product-benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
 }
-
 #produtos .product-benefits-grid .benefit-card {
     width: 100%;
     background: #1a1a1a;
-    padding: 12px 10px;
+    padding: 16px 14px;
     border-radius: 12px;
     border: 1px solid #333;
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 4px;
-    min-width: 0;
-    box-sizing: border-box;
 }
 
 #produtos .product-benefits-grid .benefit-card i {
-    font-size: 1.5rem;
+    font-size: 2rem;
     color: var(--primary);
-    margin: 0 0 2px;
+    margin-bottom: 12px;
     display: block;
-    line-height: 1;
 }
 
 #produtos .product-benefits-grid .benefit-card .icon-cracked-sphere--benefit {
-    margin: 0 0 2px;
+    width: 2rem;
+    height: 2rem;
+    margin: 0 auto 12px;
 }
 
 #produtos .product-benefits-grid .benefit-card h3 {
     color: var(--primary);
-    font-size: 0.9rem;
-    margin: 0;
-    line-height: 1.25;
-    font-weight: 800;
+    font-size: 1rem;
+    margin-bottom: 8px;
 }
 
 #produtos .product-benefits-grid .benefit-card p {
+    font-size: 0.85rem;
     color: rgba(255, 255, 255, 0.86);
-    font-size: 0.76rem;
     margin: 0;
-    line-height: 1.35;
 }
 
 #produtos .product-solution-cta {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 0;
+    display: inline-block;
+    margin-top: 20px;
     background: var(--primary);
-    color: #000 !important;
+    color: #000;
     text-decoration: none;
     font-weight: 800;
-    padding: 11px 26px;
+    padding: 12px 28px;
     border-radius: 10px;
-    font-size: 0.95rem;
-}
-#produtos .product-album-stage .product-solution-cta {
-    position: absolute;
-    left: 14px;
-    right: 14px;
-    bottom: 14px;
-    width: auto;
-    z-index: 4;
-    margin: 0;
-    box-sizing: border-box;
 }
 
-#produtos.content-section {
-    min-height: 100dvh;
-    box-sizing: border-box;
-    padding-top: 70px;
-    padding-bottom: 28px;
-    display: flex;
-    align-items: flex-start;
-}
-#produtos > .container {
-    width: 100%;
-}
-#produtos .section-title {
-    font-size: clamp(1.45rem, 2.5vw, 2rem);
-    margin-bottom: 16px;
-}
-#produtos .kit-box {
-    margin-top: 40px;
-}
 /* SEÇÕES GERAIS */
 .content-section { padding: 60px 0; }
 #paliativos {
@@ -942,7 +777,7 @@ html[lang="it"] .nav-actions { gap: 6px; }
 .danger-box { border: 3px dashed var(--danger); color: var(--danger); padding: 50px; font-weight: 900; text-transform: uppercase; font-size: 1.5rem; transform: rotate(-8deg); text-align: center; width: fit-content; }
 
 /* KIT BOX */
-.kit-box { background: #0a0a0a; padding: 24px; border-radius: 20px; margin-top: 30px; border-left: 5px solid var(--primary); text-align: left; }
+.kit-box { background: #1a1a1a; padding: 24px; border-radius: 20px; margin-top: 30px; border-left: 5px solid var(--primary); text-align: left; }
 html.stf-lens-only .kit-box,
 body.stf-lens-only .kit-box { display: none !important; }
 .shipping-card--lens-only .shipping-card-main strong { font-size: 1rem; }
@@ -951,31 +786,21 @@ body.stf-lens-only .kit-box { display: none !important; }
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 24px;
-    align-items: start;
+    align-items: center;
 }
 .kit-box-media {
     flex-shrink: 0;
     line-height: 0;
-    background: #000;
-    border-radius: 16px;
-    padding: 8px;
-    width: min(100%, 280px);
-    max-width: 100%;
-    aspect-ratio: 1 / 1;
-    box-sizing: border-box;
-    overflow: hidden;
 }
 .kit-box-media img {
-    width: 100%;
-    max-width: none;
-    max-height: none;
-    height: 100%;
-    aspect-ratio: 1 / 1;
+    width: auto;
+    max-width: 320px;
+    max-height: 280px;
+    height: auto;
     border-radius: 12px;
-    border: 1px solid #222;
+    border: 1px solid #333;
     display: block;
     object-fit: contain;
-    background: #000;
 }
 .kit-box-content h3 { margin-bottom: 16px; color: var(--primary); }
 .kit-grid { display: flex; flex-direction: column; gap: 10px; }
@@ -984,8 +809,8 @@ body.stf-lens-only .kit-box { display: none !important; }
 
 @media (max-width: 768px) {
     .kit-box-layout { grid-template-columns: 1fr; gap: 20px; }
-    .kit-box-media { text-align: center; width: min(100%, 280px); margin: 0 auto; }
-    .kit-box-media img { max-width: 100%; max-height: none; margin: 0 auto; }
+    .kit-box-media { text-align: center; }
+    .kit-box-media img { max-width: 300px; max-height: 260px; margin: 0 auto; }
 }
 
 /* CONTATO */
@@ -2222,15 +2047,6 @@ footer,
     .btn-primary, .btn-outline { width: auto; min-width: unset; max-width: 220px; }
     .btn-primary, .btn-secondary, .btn-outline { margin-left: auto; margin-right: auto; }
     #produtos .product-solution-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
-    #produtos .product-solution-media {
-        width: 100% !important;
-        max-width: 420px !important;
-        margin: 0 auto !important;
-    }
-    #produtos .product-album-stage {
-        width: 100% !important;
-        max-width: 100% !important;
-    }
     #produtos .product-benefits-grid {
         display: grid !important;
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
@@ -2242,20 +2058,9 @@ footer,
     #produtos .product-benefits-grid > .benefit-card {
         width: 100% !important;
         min-width: 0 !important;
-        padding: 12px 10px !important;
     }
-    #produtos.content-section {
-        min-height: 0;
-        padding-top: 56px;
-        padding-bottom: 24px;
-    }
-    #produtos .product-image-wrap {
-        width: 100% !important;
-        max-width: 100% !important;
-        height: auto !important;
-        margin: 0 auto !important;
-    }
-    #produtos .product-image-wrap img { max-width: 100%; }
+    #produtos > .container > div > .product-image-wrap { max-width: 100%; margin-top: 20px; justify-self: center; }
+    #produtos > .container > div > .product-image-wrap img { max-width: 100%; }
     
     .flex-row { flex-direction: column; }
     .danger-box { transform: rotate(0deg); width: 100%; margin-top: 20px; }
@@ -6627,16 +6432,12 @@ body.stf-lightbox-open { overflow: hidden; }
   margin: 0;
   background: #111;
 }
-#produtos .product-image-wrap .stf-album img {
-  object-fit: contain;
-}
 .kit-box-media .stf-album img {
-  max-width: 420px;
-  max-height: none;
+  max-width: 320px;
+  max-height: 280px;
   width: 100%;
-  height: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
   display: block;
   margin: 0 auto;
 }
