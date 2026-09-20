@@ -434,6 +434,16 @@ html[lang="it"] .nav-actions { gap: 6px; }
     border-color: #fff;
 }
 .product-img { width: 100%; border-radius: 20px; border: 1px solid #222; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+/* Hero home: foto do relógio um pouco menor que a coluna */
+.home-page .hero-visual {
+    width: 90%;
+    max-width: 100%;
+    justify-self: center;
+}
+.home-page .hero-visual .product-img {
+    width: 100%;
+    display: block;
+}
 
 
 /* Sensor CrashFix homepage: cracked-sphere icon + larger product square on black */
