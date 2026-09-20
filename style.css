@@ -544,6 +544,15 @@ html[lang="it"] .nav-actions { gap: 6px; }
     background: #111;
 }
 
+/* Álbum preenche o wrap; NÃO forçar height 100% no wrap (senão iguala só os cards e o botão sobra) */
+#produtos .product-image-wrap .stf-album {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    margin: 0;
+    aspect-ratio: auto;
+}
+
 #produtos .product-benefits-grid .benefit-card {
     width: 100%;
     background: #1a1a1a;

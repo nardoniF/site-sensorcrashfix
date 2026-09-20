@@ -311,21 +311,15 @@
     let reservedBelow = 0;
     if (mediaCol) {
       const gap = parseFloat(getComputedStyle(mediaCol).gap) || 16;
-      const cta = [...mediaCol.children].find((el) => {
-        if (el.tagName !== 'A') return false;
-        if (wraps[0] && wraps[0].contains(el)) return false;
-        return true;
-      });
+      const cta = [...mediaCol.children].find((el) => el.tagName === 'A' && !(wraps[0] && wraps[0].contains(el)));
       if (cta) {
         const cs = getComputedStyle(cta);
-        const mt = parseFloat(cs.marginTop) || 0;
-        const mb = parseFloat(cs.marginBottom) || 0;
-        const ctaH = Math.ceil(cta.getBoundingClientRect().height);
-        reservedBelow = Math.ceil(gap + mt + mb + ctaH);
-      } else {
-        reservedBelow = Math.ceil(gap + 48);
-      }
+        reservedBelow = Math.ceil(
+          gap + (parseFloat(cs.marginTop) || 0) + (parseFloat(cs.marginBottom) || 0) + cta.getBoundingClientRect().height
+        );
+      } else reservedBelow = gap + 48;
     }
+    // altura do álbum = altura dos cards − (gap + botão)
     const target = Math.max(140, benefitsH - reservedBelow);
     const side = Math.min(target, mediaW > 40 ? Math.floor(mediaW) : target);
     wraps.forEach((wrap) => {
@@ -339,13 +333,13 @@
   function watchProductAlbumSize() {
     syncProductAlbumToBenefits();
     const benefits = document.querySelector('#produtos .product-benefits-grid');
+    const media = document.querySelector('#produtos .product-solution-media');
     if (!benefits || typeof ResizeObserver === 'undefined') {
       window.addEventListener('resize', syncProductAlbumToBenefits);
       return;
     }
     const ro = new ResizeObserver(() => syncProductAlbumToBenefits());
     ro.observe(benefits);
-    const media = document.querySelector('#produtos .product-solution-media');
     if (media) ro.observe(media);
   }
 
@@ -400,8 +394,18 @@
       const alt = product
         ? (window.STF_PELICULA?.productLabel?.(product) || product.nameEn || product.name || 'Sensor Crash Fix')
         : (isLensOnlyMarket() ? 'SensorCrashFix Optical Lens' : 'Sensor Crash Fix');
-      enhanceExisting('.product-image-wrap', imgs, alt);
-      watchProductAlbumSize();
+      // Só o álbum de #produtos (não kit / loja)
+      enhanceExisting('#produtos .product-image-wrap', imgs, alt);
+      // IMPORTANTE: sync DEPOIS do álbum montar; 2ª passagem após imagens
+      requestAnimationFrame(() => {
+        watchProductAlbumSize();
+        setTimeout(syncProductAlbumToBenefits, 300);
+        setTimeout(syncProductAlbumToBenefits, 900);
+        document.querySelectorAll('#produtos .product-image-wrap img').forEach((img) => {
+          if (img.complete) return;
+          img.addEventListener('load', syncProductAlbumToBenefits, { once: true });
+        });
+      });
     };
     run();
   }
