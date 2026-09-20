@@ -5,7 +5,7 @@
 window.STF_I18N = (function () {
   const STRINGS = {
     pt: {
-      'brand.tagline': 'Blindagem óptica. Restauração e proteção.',
+      'brand.tagline': 'Proteção preventiva. Solução imediata.',
       'nav.cart': 'Carrinho',
       'nav.back': 'Voltar',
       'nav.home': 'Início',
@@ -382,7 +382,7 @@ window.STF_I18N = (function () {
       'page.checkoutDescEn': 'Official Sensor Crash Fix checkout — PayPal, cards, tracked shipping.'
     },
     en: {
-      'brand.tagline': 'Optical shielding. Restoration and protection.',
+      'brand.tagline': 'Preventive protection. Immediate solution.',
       'nav.cart': 'Cart',
       'nav.back': 'Back',
       'nav.home': 'Home',

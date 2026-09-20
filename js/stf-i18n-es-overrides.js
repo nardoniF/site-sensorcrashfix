@@ -1,6 +1,6 @@
 /** Spanish overrides — merged onto STRINGS.en in stf-i18n.js */
 window.STF_I18N_ES = {
-  'brand.tagline': 'Blindaje óptico. Restauración y protección.',
+  'brand.tagline': 'Protección preventiva. Solución inmediata.',
   'nav.cart': 'Carrito',
   'nav.back': 'Volver',
   'nav.home': 'Inicio',
