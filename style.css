@@ -452,10 +452,10 @@ html[lang="it"] .nav-actions { gap: 6px; }
 }
 .kit-box-media img {
   width: 100%;
-  max-width: 420px;
+  max-width: none;
   max-height: none;
   aspect-ratio: 1 / 1;
-  object-fit: cover;
+  object-fit: contain;
   background: #000;
   border-radius: 12px;
 }
@@ -902,7 +902,7 @@ body.stf-lens-only .kit-box { display: none !important; }
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 24px;
-    align-items: center;
+    align-items: start;
 }
 .kit-box-media {
     flex-shrink: 0;
@@ -910,12 +910,17 @@ body.stf-lens-only .kit-box { display: none !important; }
     background: #000;
     border-radius: 16px;
     padding: 8px;
+    width: min(100%, 280px);
+    max-width: 100%;
+    aspect-ratio: 1 / 1;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 .kit-box-media img {
-    width: auto;
-    max-width: 420px;
+    width: 100%;
+    max-width: none;
     max-height: none;
-    height: auto;
+    height: 100%;
     aspect-ratio: 1 / 1;
     border-radius: 12px;
     border: 1px solid #222;
@@ -930,8 +935,8 @@ body.stf-lens-only .kit-box { display: none !important; }
 
 @media (max-width: 768px) {
     .kit-box-layout { grid-template-columns: 1fr; gap: 20px; }
-    .kit-box-media { text-align: center; }
-    .kit-box-media img { max-width: 300px; max-height: 260px; margin: 0 auto; }
+    .kit-box-media { text-align: center; width: min(100%, 280px); margin: 0 auto; }
+    .kit-box-media img { max-width: 100%; max-height: none; margin: 0 auto; }
 }
 
 /* CONTATO */

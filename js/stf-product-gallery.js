@@ -322,17 +322,51 @@
     });
   }
 
-  function watchProductAlbumSize() {
+  /** Kit: quadrado da foto = altura do bloco “O que vem no Kit”. */
+  function syncKitMediaToContent() {
+    const kit = document.querySelector('#produtos .kit-box');
+    if (!kit || kit.hidden || kit.getAttribute('aria-hidden') === 'true') return;
+    if (getComputedStyle(kit).display === 'none') return;
+    const content = kit.querySelector('.kit-box-content');
+    const media = kit.querySelector('.kit-box-media');
+    if (!content || !media) return;
+    const contentH = Math.round(content.getBoundingClientRect().height);
+    if (contentH < 80) return;
+    const layout = kit.querySelector('.kit-box-layout');
+    const layoutW = layout ? layout.getBoundingClientRect().width : 0;
+    const maxSide = layoutW > 120 ? Math.floor((layoutW - 24) * 0.45) : contentH;
+    const side = Math.max(140, Math.min(contentH, maxSide, 420));
+    media.style.width = side + 'px';
+    media.style.height = side + 'px';
+    media.style.maxWidth = '100%';
+    media.style.aspectRatio = '1 / 1';
+    media.querySelectorAll('img').forEach((img) => {
+      img.style.width = '100%';
+      img.style.height = '100%';
+      img.style.maxWidth = 'none';
+      img.style.maxHeight = 'none';
+      img.style.objectFit = 'contain';
+    });
+  }
+
+  function syncProdutosLayout() {
     syncProductAlbumToBenefits();
+    syncKitMediaToContent();
+  }
+
+  function watchProductAlbumSize() {
+    syncProdutosLayout();
     const benefits = document.querySelector('#produtos .product-benefits-grid');
     const media = document.querySelector('#produtos .product-solution-media');
+    const kitContent = document.querySelector('#produtos .kit-box .kit-box-content');
     if (!benefits || typeof ResizeObserver === 'undefined') {
-      window.addEventListener('resize', syncProductAlbumToBenefits);
+      window.addEventListener('resize', syncProdutosLayout);
       return;
     }
-    const ro = new ResizeObserver(() => syncProductAlbumToBenefits());
+    const ro = new ResizeObserver(() => syncProdutosLayout());
     ro.observe(benefits);
     if (media) ro.observe(media);
+    if (kitContent) ro.observe(kitContent);
   }
 
   /** Hide kit packaging block on lens-only markets. */
@@ -364,7 +398,9 @@
     enhanceExisting,
     showIndex,
     detectLang,
-    syncProductAlbumToBenefits
+    syncProductAlbumToBenefits,
+    syncKitMediaToContent,
+    syncProdutosLayout
   };
 
   function boot() {
@@ -391,11 +427,11 @@
       // IMPORTANTE: sync DEPOIS do álbum montar; 2ª passagem após imagens
       requestAnimationFrame(() => {
         watchProductAlbumSize();
-        setTimeout(syncProductAlbumToBenefits, 300);
-        setTimeout(syncProductAlbumToBenefits, 900);
-        document.querySelectorAll('#produtos .product-image-wrap img').forEach((img) => {
+        setTimeout(syncProdutosLayout, 300);
+        setTimeout(syncProdutosLayout, 900);
+        document.querySelectorAll('#produtos .product-image-wrap img, #produtos .kit-box-media img').forEach((img) => {
           if (img.complete) return;
-          img.addEventListener('load', syncProductAlbumToBenefits, { once: true });
+          img.addEventListener('load', syncProdutosLayout, { once: true });
         });
       });
     };
