@@ -299,29 +299,21 @@
     });
   }
 
-  /** Álbum quadrado + CTA: base do "Onde comprar" = base dos cards. */
+  /** Álbum = altura exata da grade (espelho Tattoo); CTA absolute na base do stage. */
   function syncProductAlbumToBenefits() {
     const benefits = document.querySelector('#produtos .product-benefits-grid');
     const wraps = document.querySelectorAll('#produtos .product-image-wrap');
     if (!benefits || !wraps.length) return;
     const mediaCol = document.querySelector('#produtos .product-solution-media');
+    const stage = document.querySelector('#produtos .product-album-stage');
     const mediaW = mediaCol ? mediaCol.getBoundingClientRect().width : 0;
     const benefitsH = Math.round(benefits.getBoundingClientRect().height);
     if (benefitsH < 120) return;
-    let reservedBelow = 0;
-    if (mediaCol) {
-      const gap = parseFloat(getComputedStyle(mediaCol).gap) || 16;
-      const cta = [...mediaCol.children].find((el) => el.tagName === 'A' && !(wraps[0] && wraps[0].contains(el)));
-      if (cta) {
-        const cs = getComputedStyle(cta);
-        reservedBelow = Math.ceil(
-          gap + (parseFloat(cs.marginTop) || 0) + (parseFloat(cs.marginBottom) || 0) + cta.getBoundingClientRect().height
-        );
-      } else reservedBelow = gap + 48;
+    const side = Math.min(benefitsH, mediaW > 40 ? Math.floor(mediaW) : benefitsH);
+    if (stage) {
+      stage.style.width = side + 'px';
+      stage.style.maxWidth = '100%';
     }
-    // altura do álbum = altura dos cards − (gap + botão)
-    const target = Math.max(140, benefitsH - reservedBelow);
-    const side = Math.min(target, mediaW > 40 ? Math.floor(mediaW) : target);
     wraps.forEach((wrap) => {
       wrap.style.width = side + 'px';
       wrap.style.height = side + 'px';
@@ -394,8 +386,8 @@
       const alt = product
         ? (window.STF_PELICULA?.productLabel?.(product) || product.nameEn || product.name || 'Sensor Crash Fix')
         : (isLensOnlyMarket() ? 'SensorCrashFix Optical Lens' : 'Sensor Crash Fix');
-      // Só o álbum de #produtos (não kit / loja)
-      enhanceExisting('#produtos .product-image-wrap', imgs, alt);
+      // Álbum monta imagens; sync roda depois (2ª passagem após load)
+      enhanceExisting('.product-image-wrap', imgs, alt);
       // IMPORTANTE: sync DEPOIS do álbum montar; 2ª passagem após imagens
       requestAnimationFrame(() => {
         watchProductAlbumSize();
