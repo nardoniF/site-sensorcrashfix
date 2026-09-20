@@ -7,11 +7,11 @@ import { fileURLToPath } from 'url';
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const cfg = JSON.parse(fs.readFileSync(path.join(root, 'data/store-config.json'), 'utf8'));
 
-test('homeFaq includes Tattoo Fix redirect question', () => {
+test('homeFaq includes Sensor TattooFix redirect question', () => {
   const row = (cfg.homeFaq || []).find((r) => r.id === 'faq-11');
   assert.ok(row);
   assert.match(row.question, /tatuagem/i);
-  assert.match(row.answer, /Crash Fix/i);
+  assert.match(row.answer, /Sensor CrashFix/i);
   assert.match(row.answer, /lentes ópticas graduadas/i);
   assert.match(row.answer, /sensortattoofix\.com\.br/i);
   assert.match(row.answer, /data-sister-link/);

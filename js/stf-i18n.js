@@ -120,7 +120,7 @@ window.STF_I18N = (function () {
       'account.loginUnavailable': 'Login indisponível. Tente em Minha Conta.',
       'account.loginFail': 'Não foi possível entrar.',
       'conta.title': 'Minha Conta',
-      'conta.pageTitle': 'Minha Conta | Sensor Crash Fix',
+      'conta.pageTitle': 'Minha Conta | Sensor CrashFix',
       'conta.intro': 'Acesse seus pedidos ou crie uma conta para comprar mais rápido.',
       'conta.tabLogin': 'Entrar',
       'conta.tabRegister': 'Criar conta',
@@ -205,12 +205,12 @@ window.STF_I18N = (function () {
       'conta.formStreetIntl': 'Endereço',
       'conta.formAptNumber': 'Apto / número',
       'conta.formStateIntl': 'Estado / província',
-      'ondeComprar.pageTitle': 'Onde Comprar | Sensor Crash Fix',
-      'ondeComprar.pageTitleEn': 'Where to Buy | Sensor Crash Fix — Passcode & Heart Rate Problems',
-      'ondeComprar.metaDesc': 'Relógio pede senha, não lê batimentos ou pausa treino? Compre a lente Sensor Crash Fix na loja oficial.',
-      'ondeComprar.metaDescEn': 'Watch asks for passcode, won\'t read heart rate or pauses workouts? Buy the Sensor Crash Fix lens on our official store — PayPal, cards and tracked shipping.',
-      'ondeComprar.badge': 'Kit Sensor Crash Fix',
-      'ondeComprar.badgeIntl': 'Sensor Crash Fix Lens',
+      'ondeComprar.pageTitle': 'Onde Comprar | Sensor CrashFix',
+      'ondeComprar.pageTitleEn': 'Where to Buy | Sensor CrashFix — Passcode & Heart Rate Problems',
+      'ondeComprar.metaDesc': 'Relógio pede senha, não lê batimentos ou pausa treino? Compre a lente Sensor CrashFix na loja oficial.',
+      'ondeComprar.metaDescEn': 'Watch asks for passcode, won\'t read heart rate or pauses workouts? Buy the Sensor CrashFix lens on our official store — PayPal, cards and tracked shipping.',
+      'ondeComprar.badge': 'Kit Sensor CrashFix',
+      'ondeComprar.badgeIntl': 'Sensor CrashFix Lens',
       'ondeComprar.h1': 'Escolha onde comprar com segurança',
       'ondeComprar.intro': 'Avaliações <strong>5 estrelas</strong> de clientes reais.',
       'ondeComprar.introEn': '<strong>5-star reviews</strong> from verified buyers.',
@@ -376,10 +376,10 @@ window.STF_I18N = (function () {
       'watch.otherBrand': 'Outra / não listada',
       'watch.groupOtherBrands': 'Outras marcas',
       'watch.groupOthers': 'Outros',
-      'page.checkoutTitle': 'Comprar Direto | Sensor Crash Fix — Loja Oficial',
-      'page.checkoutDesc': 'Checkout oficial Sensor Crash Fix — cartão, PayPal, envio nacional e internacional.',
-      'page.checkoutTitleEn': 'Checkout | Sensor Crash Fix — Official Store',
-      'page.checkoutDescEn': 'Official Sensor Crash Fix checkout — PayPal, cards, tracked shipping.'
+      'page.checkoutTitle': 'Comprar Direto | Sensor CrashFix — Loja Oficial',
+      'page.checkoutDesc': 'Checkout oficial Sensor CrashFix — cartão, PayPal, envio nacional e internacional.',
+      'page.checkoutTitleEn': 'Checkout | Sensor CrashFix — Official Store',
+      'page.checkoutDescEn': 'Official Sensor CrashFix checkout — PayPal, cards, tracked shipping.'
     },
     en: {
       'brand.tagline': 'Preventive protection. Immediate solution.',
@@ -497,7 +497,7 @@ window.STF_I18N = (function () {
       'account.loginUnavailable': 'Sign-in unavailable. Try My Account.',
       'account.loginFail': 'Could not sign in.',
       'conta.title': 'My Account',
-      'conta.pageTitle': 'My Account | Sensor Crash Fix',
+      'conta.pageTitle': 'My Account | Sensor CrashFix',
       'conta.intro': 'Sign in to see your orders or create an account for faster checkout.',
       'conta.tabLogin': 'Sign in',
       'conta.tabRegister': 'Create account',
@@ -582,12 +582,12 @@ window.STF_I18N = (function () {
       'conta.formStreetIntl': 'Street address',
       'conta.formAptNumber': 'Apt / number',
       'conta.formStateIntl': 'State / province',
-      'ondeComprar.pageTitle': 'Where to Buy | Sensor Crash Fix — Passcode & Heart Rate Problems',
-      'ondeComprar.pageTitleEn': 'Where to Buy | Sensor Crash Fix — Passcode & Heart Rate Problems',
-      'ondeComprar.metaDesc': 'Watch asks for passcode, won\'t read heart rate or pauses workouts? Buy the Sensor Crash Fix lens on our official store — PayPal, cards and tracked shipping.',
-      'ondeComprar.metaDescEn': 'Watch asks for passcode, won\'t read heart rate or pauses workouts? Buy the Sensor Crash Fix lens on our official store — PayPal, cards and tracked shipping.',
-      'ondeComprar.badge': 'Sensor Crash Fix Lens',
-      'ondeComprar.badgeIntl': 'Sensor Crash Fix Lens',
+      'ondeComprar.pageTitle': 'Where to Buy | Sensor CrashFix — Passcode & Heart Rate Problems',
+      'ondeComprar.pageTitleEn': 'Where to Buy | Sensor CrashFix — Passcode & Heart Rate Problems',
+      'ondeComprar.metaDesc': 'Watch asks for passcode, won\'t read heart rate or pauses workouts? Buy the Sensor CrashFix lens on our official store — PayPal, cards and tracked shipping.',
+      'ondeComprar.metaDescEn': 'Watch asks for passcode, won\'t read heart rate or pauses workouts? Buy the Sensor CrashFix lens on our official store — PayPal, cards and tracked shipping.',
+      'ondeComprar.badge': 'Sensor CrashFix Lens',
+      'ondeComprar.badgeIntl': 'Sensor CrashFix Lens',
       'ondeComprar.h1': 'Official store',
       'ondeComprar.intro': '<strong>5-star reviews</strong> from verified buyers.',
       'ondeComprar.introEn': '<strong>5-star reviews</strong> from verified buyers.',
@@ -642,7 +642,7 @@ window.STF_I18N = (function () {
       'store.priceSuffix': 'Card & PayPal',
       'store.intlSuffix': 'PayPal & cards · Tracked shipping',
       'store.title': 'Official Store',
-      'store.metaDescEn': 'Buy the Sensor Crash Fix kit — optical lens when your watch asks for passcode every 10 seconds, won\'t read heart rate, disconnects or pauses workouts (often a cracked sensor glass losing waterproofing). PayPal, cards and tracked shipping.',
+      'store.metaDescEn': 'Buy the Sensor CrashFix kit — optical lens when your watch asks for passcode every 10 seconds, won\'t read heart rate, disconnects or pauses workouts (often a cracked sensor glass losing waterproofing). PayPal, cards and tracked shipping.',
       'store.loading': 'Loading products...',
       'store.empty': 'No products available at the moment.',
       'store.added': 'Added to cart!',
@@ -762,12 +762,12 @@ window.STF_I18N = (function () {
       'watch.otherBrand': 'Other / not listed',
       'watch.groupOtherBrands': 'Other brands',
       'watch.groupOthers': 'Others',
-      'page.checkoutTitle': 'Checkout | Sensor Crash Fix — Official Store',
-      'page.checkoutDesc': 'Official Sensor Crash Fix checkout — PayPal, cards, tracked shipping.',
-      'page.checkoutTitleEn': 'Checkout | Sensor Crash Fix — Official Store',
-      'page.checkoutDescEn': 'Official Sensor Crash Fix checkout — PayPal, cards, tracked shipping.',
-      'page.checkoutTitleIt': 'Checkout | Sensor Crash Fix — Negozio ufficiale',
-      'page.checkoutDescIt': 'Checkout ufficiale Sensor Crash Fix — PayPal, carte, spedizione tracciata.'
+      'page.checkoutTitle': 'Checkout | Sensor CrashFix — Official Store',
+      'page.checkoutDesc': 'Official Sensor CrashFix checkout — PayPal, cards, tracked shipping.',
+      'page.checkoutTitleEn': 'Checkout | Sensor CrashFix — Official Store',
+      'page.checkoutDescEn': 'Official Sensor CrashFix checkout — PayPal, cards, tracked shipping.',
+      'page.checkoutTitleIt': 'Checkout | Sensor CrashFix — Negozio ufficiale',
+      'page.checkoutDescIt': 'Checkout ufficiale Sensor CrashFix — PayPal, carte, spedizione tracciata.'
     }
   };
 
@@ -1307,7 +1307,7 @@ window.STF_I18N = (function () {
 
   function applyLojaDom() {
     if (!isLocalized()) return;
-    document.title = t('store.title') + ' | Sensor Crash Fix';
+    document.title = t('store.title') + ' | Sensor CrashFix';
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
       metaDesc.content = t(storeMetaDescKey(getLang()));

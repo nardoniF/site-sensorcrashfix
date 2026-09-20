@@ -379,8 +379,8 @@
       }
       const imgs = product ? resolveImages(product) : kitAlbum();
       const alt = product
-        ? (window.STF_PELICULA?.productLabel?.(product) || product.nameEn || product.name || 'Sensor Crash Fix')
-        : (isLensOnlyMarket() ? 'SensorCrashFix Optical Lens' : 'Sensor Crash Fix');
+        ? (window.STF_PELICULA?.productLabel?.(product) || product.nameEn || product.name || 'Sensor CrashFix')
+        : (isLensOnlyMarket() ? 'SensorCrashFix Optical Lens' : 'Sensor CrashFix');
       enhanceExisting('.product-image-wrap', imgs, alt);
       watchProductAlbumSize();
     };

@@ -1,5 +1,5 @@
 /**
- * Ajusta links data-sister-link para o Tattoo Fix certo (.com.br vs .com + idioma).
+ * Ajusta links data-sister-link para o Sensor TattooFix certo (.com.br vs .com + idioma).
  */
 (function () {
   function isBrHost() {

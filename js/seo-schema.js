@@ -254,7 +254,7 @@
   async function run() {
     let productName = isIt ? 'Lente ottica SensorCrashFix'
       : isIntlCopy ? 'SensorCrashFix Optical Lens'
-        : 'Kit Sensor Crash Fix';
+        : 'Kit Sensor CrashFix';
     let productPrice = 62.9;
     let productImage = SITE + '/images/brand/sensorcrashfix.jpg';
     let productId = isIntlCopy ? 'optical-lens-intl' : 'kit-sensor-crashfix';
@@ -296,7 +296,7 @@
       name: productName,
       description: productDescription,
       sku: productId,
-      brand: { '@type': 'Brand', name: 'Sensor Crash Fix' },
+      brand: { '@type': 'Brand', name: 'Sensor CrashFix' },
       image: productImage,
       offers: buildOffer(productPrice, productId),
       aggregateRating,
@@ -307,7 +307,7 @@
       {
         '@type': 'Organization',
         '@id': SITE + '/#organization',
-        name: 'Sensor Crash Fix',
+        name: 'Sensor CrashFix',
         legalName: '3N20 Soluções Tecnológicas',
         url: SITE,
         logo: SITE + '/images/brand/logo.jpg',
@@ -322,7 +322,7 @@
         '@type': 'WebSite',
         '@id': SITE + '/#website',
         url: SITE,
-        name: 'Sensor Crash Fix',
+        name: 'Sensor CrashFix',
         inLanguage,
         publisher: { '@id': SITE + '/#organization' }
       },

@@ -1,6 +1,6 @@
-# Deploy — Sensor Crash Fix (reusa infra do Tattoo)
+# Deploy — Sensor CrashFix (reusa infra do Tattoo)
 
-Site/marca/produto públicos são **Sensor Crash Fix** (`sensorcrashfix.com.br` / `.com`).
+Site/marca/produto públicos são **Sensor CrashFix** (`sensorcrashfix.com.br` / `.com`).
 A operação **reaproveita os mesmos provedores** do Tattoo (Asaas, MP, Correios, PayPal/Stripe…), mas o **Worker Crash é separado**: copie os secrets e use KV/D1 exclusivos (`scf-store` / `scf-data`).
 
 ## O que é novo (público)

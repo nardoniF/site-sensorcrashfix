@@ -50,7 +50,7 @@
     "faq": {
       "faq-1": {
         "question": "Después de que el sensor se rompió, el reloj pide la contraseña todo el tiempo. ¿Por qué?",
-        "answer": "Porque la grieta dificulta la <strong>detección de muñeca/brazo</strong>: el reloj cree que se lo quitaron y pide la clave otra vez. El adhesivo/lente Sensor Crash Fix <strong>puede o no</strong> recuperar esa función — en muchos casos se estabiliza; en otros el daño es demasiado grande."
+        "answer": "Porque la grieta dificulta la <strong>detección de muñeca/brazo</strong>: el reloj cree que se lo quitaron y pide la clave otra vez. El adhesivo/lente Sensor CrashFix <strong>puede o no</strong> recuperar esa función — en muchos casos se estabiliza; en otros el daño es demasiado grande."
       },
       "faq-2": {
         "question": "Después de la grieta / caída, ya no mide el ritmo cardíaco. ¿Por qué?",
@@ -65,7 +65,7 @@
         "answer": "Porque no calcula bien el pulso y el sistema cree que <strong>interrumpiste el entrenamiento</strong>. La lente <strong>puede evitar</strong> esas pausas falsas."
       },
       "faq-5": {
-        "question": "¿Cómo corrige el sensor la lente Sensor Crash Fix?",
+        "question": "¿Cómo corrige el sensor la lente Sensor CrashFix?",
         "answer": "Es como una <strong>lente de repuesto</strong>: una cubierta óptica adhesiva que se pone <strong>encima</strong> del sensor agrietado. Sella de nuevo, protege el cristal y en muchos casos devuelve la lectura óptica sin abrir el reloj."
       },
       "faq-6": {
@@ -96,7 +96,7 @@
     "faq": {
       "faq-1": {
         "question": "Po pęknięciu czujnika zegarek ciągle prosi o hasło. Dlaczego?",
-        "answer": "Bo pęknięcie utrudnia <strong>wykrywanie nadgarstka</strong>: zegarek myśli, że został zdjęty, i znów prosi o kod. Soczewka/klej Sensor Crash Fix <strong>może, ale nie musi</strong> przywrócić tę funkcję."
+        "answer": "Bo pęknięcie utrudnia <strong>wykrywanie nadgarstka</strong>: zegarek myśli, że został zdjęty, i znów prosi o kod. Soczewka/klej Sensor CrashFix <strong>może, ale nie musi</strong> przywrócić tę funkcję."
       },
       "faq-2": {
         "question": "Po pęknięciu / upadku nie mierzy tętna. Dlaczego?",
@@ -111,7 +111,7 @@
         "answer": "Bo źle liczy tętno i system myśli, że <strong>przerwałeś trening</strong>. Soczewka <strong>może zapobiec</strong> fałszywym pauzom."
       },
       "faq-5": {
-        "question": "Jak soczewka Sensor Crash Fix naprawia czujnik?",
+        "question": "Jak soczewka Sensor CrashFix naprawia czujnik?",
         "answer": "To jak <strong>soczewka zapasowa</strong>: optyczna nakładka klejąca <strong>na</strong> pęknięty czujnik. Uszczelnia, chroni szkło i często przywraca odczyt optyczny bez otwierania zegarka."
       },
       "faq-6": {
@@ -142,7 +142,7 @@
     "faq": {
       "faq-1": {
         "question": "Po počeni tipalu ura ves čas zahteva geslo. Zakaj?",
-        "answer": "Ker razpoka ovira <strong>zaznavanje zapestja</strong>: ura misli, da je snjeta, in znova zahteva kodo. Leča/lepilni Sensor Crash Fix <strong>lahko ali ne</strong> obnovi to funkcijo."
+        "answer": "Ker razpoka ovira <strong>zaznavanje zapestja</strong>: ura misli, da je snjeta, in znova zahteva kodo. Leča/lepilni Sensor CrashFix <strong>lahko ali ne</strong> obnovi to funkcijo."
       },
       "faq-2": {
         "question": "Po počitvi / padcu ne meri več srčnega utripa. Zakaj?",
@@ -157,7 +157,7 @@
         "answer": "Ker slabo meri utrip in sistem misli, da ste <strong>prekinili trening</strong>. Leča <strong>lahko prepreči</strong> lažne pavze."
       },
       "faq-5": {
-        "question": "Kako leča Sensor Crash Fix popravi tipalo?",
+        "question": "Kako leča Sensor CrashFix popravi tipalo?",
         "answer": "Kot <strong>nadomestna leča</strong>: optična lepilna prevleka <strong>čez</strong> počeno tipalo. Ponovno zatesni, zaščiti steklo in pogosto obnovi optično branje brez odpiranja ure."
       },
       "faq-6": {

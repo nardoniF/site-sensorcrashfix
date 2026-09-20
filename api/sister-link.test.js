@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 
-test('marketplaces no longer include Tattoo Fix store card', () => {
+test('marketplaces no longer include Sensor TattooFix store card', () => {
   const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
   assert.doesNotMatch(index, /store-tattoofix/);
   const loja = fs.readFileSync(path.join(root, 'loja.html'), 'utf8');

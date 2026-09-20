@@ -1,7 +1,7 @@
 window.STF_FOOTER = (function () {
   const INFO = {
-    brandPlain: 'Sensor Crash Fix',
-    brandTitle: 'Sensor <span class="logo-accent">Crash Fix</span>',
+    brandPlain: 'Sensor CrashFix',
+    brandTitle: 'Sensor <span class="logo-accent">Sensor CrashFix</span>',
     company: '3N20 Soluções Tecnológicas',
     cnpj: '29.321.223/0001-32',
     patentNational: 'BR 20 2026 010875 3',

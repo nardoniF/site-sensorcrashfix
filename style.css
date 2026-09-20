@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;1,400;1,500&family=Outfit:wght@500;600;700&display=swap');
 
 :root {
-    --primary: #5EC8D8; /* Crash Fix ice/cyan — não amarelo Tattoo */
+    --primary: #5EC8D8; /* Sensor CrashFix ice/cyan — não amarelo Tattoo */
     --bg: #0a0a0a;
     --card: #141414;
     --text: #ffffff;
@@ -76,7 +76,7 @@ nav,
     border-radius: 50%;
 }
 
-/* Lockup do header — espelho do Sensor Tattoo Fix: slogan menor e itálico */
+/* Lockup do header — espelho do Sensor TattooFix: slogan menor e itálico */
 .logo-text {
     font-size: 1.42rem;
     font-weight: 900;
@@ -130,9 +130,9 @@ nav,
 }
 .hero-brand-lockup {
     display: block;
-    width: min(100%, 440px);
+    width: min(100%, 480px);
     height: auto;
-    max-height: 148px;
+    max-height: 160px;
     object-fit: contain;
     object-position: left center;
 }
@@ -436,7 +436,7 @@ html[lang="it"] .nav-actions { gap: 6px; }
 .product-img { width: 100%; border-radius: 20px; border: 1px solid #222; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
 
 
-/* Crash Fix homepage: cracked-sphere icon + larger product square on black */
+/* Sensor CrashFix homepage: cracked-sphere icon + larger product square on black */
 .icon-cracked-sphere {
   display: inline-block;
   width: 2.1rem;
@@ -473,7 +473,7 @@ html[lang="it"] .nav-actions { gap: 6px; }
   margin: 0 auto 15px;
 }
 
-/* Espelho 1:1 Tattoo Fix (#produtos / kit) — brand Crash via --primary */
+/* Espelho 1:1 Sensor TattooFix (#produtos / kit) — brand Crash via --primary */
 #produtos .product-solution-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1947,8 +1947,8 @@ footer,
     }
     .home-page .hero-brand-mobile .hero-brand-lockup {
         margin: 0 auto;
-        width: min(100%, 340px);
-        max-height: 120px;
+        width: min(100%, 380px);
+        max-height: 140px;
         object-position: center;
     }
     .home-page .hero-brand-mobile .logo-text {
