@@ -1,5 +1,5 @@
 /**
- * Renderiza FAQ e elogios da home a partir de store-config (PT / EN / IT / DE / ES / PL).
+ * Renderiza FAQ e elogios da home a partir de store-config (PT / EN / IT / DE / ES / PL / SL / FR / NO / SV / NL).
  */
 (function () {
   let l10nCache = null;
@@ -27,7 +27,7 @@
   }
 
   function pickL10n(kind, id, field, lang) {
-    if (!l10nCache || !['de', 'es', 'pl', 'sl'].includes(lang)) return '';
+    if (!l10nCache || !['de', 'es', 'pl', 'sl', 'fr', 'no', 'sv', 'nl'].includes(lang)) return '';
     const bucket = l10nCache[lang]?.[kind]?.[id];
     return bucket?.[field] || '';
   }
@@ -129,7 +129,7 @@
   async function loadL10n() {
     if (l10nCache) return l10nCache;
     try {
-      const res = await fetch('/data/home-content-l10n.json?v=2', { cache: 'no-store' });
+      const res = await fetch('/data/home-content-l10n.json?v=3', { cache: 'no-store' });
       if (res.ok) l10nCache = await res.json();
     } catch (e) {
       console.warn('home-content: falha ao carregar l10n', e);
@@ -169,7 +169,7 @@
     const reviews = document.getElementById('home-reviews-root');
     if (!root && !reviews) return;
     const lang = pageLang();
-    if (['de', 'es', 'pl', 'sl'].includes(lang)) await loadL10n();
+    if (['de', 'es', 'pl', 'sl', 'fr', 'no', 'sv', 'nl'].includes(lang)) await loadL10n();
     const cfg = await loadConfig();
     renderFaq(cfg.homeFaq, lang);
     renderReviews(cfg.homeReviews, lang);
