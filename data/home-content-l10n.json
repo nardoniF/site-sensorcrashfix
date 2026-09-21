@@ -41,6 +41,10 @@
       "faq-10": {
         "question": "Stört die Linse beim Laden?",
         "answer": "Nein. Ultra-dünn — normales Laden inkl. Magnet/Induktion <strong>mit aufgeklebter Linse</strong>."
+      },
+      "faq-11": {
+        "question": "Behebt die Sensor-CrashFix-Linse einen Sensor, der auf tätowierter Haut versagt?",
+        "answer": "Nein — <strong>Sensor CrashFix</strong> ist für einen <strong>gerissenem/beschädigten Sensor</strong>. Wenn die Uhr auf einem <strong>Tattoo</strong> versagt (kein Puls, pausiertes Training, ständiger Code), gibt es <strong>Sensor TattooFix</strong>."
       }
     },
     "reviews": {}
@@ -50,7 +54,7 @@
     "faq": {
       "faq-1": {
         "question": "Después de que el sensor se rompió, el reloj pide la contraseña todo el tiempo. ¿Por qué?",
-        "answer": "Porque la grieta dificulta la <strong>detección de muñeca/brazo</strong>: el reloj cree que se lo quitaron y pide la clave otra vez. El adhesivo/lente Sensor Crash Fix <strong>puede o no</strong> recuperar esa función — en muchos casos se estabiliza; en otros el daño es demasiado grande."
+        "answer": "Porque la grieta dificulta la <strong>detección de muñeca/brazo</strong>: el reloj cree que se lo quitaron y pide la clave otra vez. El adhesivo/lente Sensor CrashFix <strong>puede o no</strong> recuperar esa función — en muchos casos se estabiliza; en otros el daño es demasiado grande."
       },
       "faq-2": {
         "question": "Después de la grieta / caída, ya no mide el ritmo cardíaco. ¿Por qué?",
@@ -65,7 +69,7 @@
         "answer": "Porque no calcula bien el pulso y el sistema cree que <strong>interrumpiste el entrenamiento</strong>. La lente <strong>puede evitar</strong> esas pausas falsas."
       },
       "faq-5": {
-        "question": "¿Cómo corrige el sensor la lente Sensor Crash Fix?",
+        "question": "¿Cómo corrige el sensor la lente Sensor CrashFix?",
         "answer": "Es como una <strong>lente de repuesto</strong>: una cubierta óptica adhesiva que se pone <strong>encima</strong> del sensor agrietado. Sella de nuevo, protege el cristal y en muchos casos devuelve la lectura óptica sin abrir el reloj."
       },
       "faq-6": {
@@ -87,6 +91,10 @@
       "faq-10": {
         "question": "¿La lente interfiere con la carga?",
         "answer": "No. Es ultrafina — cargas con normalidad <strong>con la lente puesta</strong>."
+      },
+      "faq-11": {
+        "question": "¿La lente Sensor CrashFix corrige un sensor que falla en piel tatuada?",
+        "answer": "No — <strong>Sensor CrashFix</strong> es para un sensor <strong>agrietado/roto</strong>. Si el reloj falla con un <strong>tatuaje</strong> (sin pulso, entrenamientos en pausa, código constante), existe <strong>Sensor TattooFix</strong>."
       }
     },
     "reviews": {}
@@ -96,7 +104,7 @@
     "faq": {
       "faq-1": {
         "question": "Po pęknięciu czujnika zegarek ciągle prosi o hasło. Dlaczego?",
-        "answer": "Bo pęknięcie utrudnia <strong>wykrywanie nadgarstka</strong>: zegarek myśli, że został zdjęty, i znów prosi o kod. Soczewka/klej Sensor Crash Fix <strong>może, ale nie musi</strong> przywrócić tę funkcję."
+        "answer": "Bo pęknięcie utrudnia <strong>wykrywanie nadgarstka</strong>: zegarek myśli, że został zdjęty, i znów prosi o kod. Soczewka/klej Sensor CrashFix <strong>może, ale nie musi</strong> przywrócić tę funkcję."
       },
       "faq-2": {
         "question": "Po pęknięciu / upadku nie mierzy tętna. Dlaczego?",
@@ -111,7 +119,7 @@
         "answer": "Bo źle liczy tętno i system myśli, że <strong>przerwałeś trening</strong>. Soczewka <strong>może zapobiec</strong> fałszywym pauzom."
       },
       "faq-5": {
-        "question": "Jak soczewka Sensor Crash Fix naprawia czujnik?",
+        "question": "Jak soczewka Sensor CrashFix naprawia czujnik?",
         "answer": "To jak <strong>soczewka zapasowa</strong>: optyczna nakładka klejąca <strong>na</strong> pęknięty czujnik. Uszczelnia, chroni szkło i często przywraca odczyt optyczny bez otwierania zegarka."
       },
       "faq-6": {
@@ -133,6 +141,10 @@
       "faq-10": {
         "question": "Czy soczewka przeszkadza w ładowaniu?",
         "answer": "Nie. Jest bardzo cienka — ładujesz normalnie <strong>z założoną soczewką</strong>."
+      },
+      "faq-11": {
+        "question": "Czy soczewka Sensor CrashFix naprawia czujnik, który zawodzi na wytatuowanej skórze?",
+        "answer": "Nie — <strong>Sensor CrashFix</strong> jest do <strong>pękniętego/uszkodzonego czujnika</strong>. Jeśli zegarek zawodzi na <strong>tatuażu</strong> (brak tętna, pauza treningu, ciągły kod), jest <strong>Sensor TattooFix</strong>."
       }
     },
     "reviews": {}
@@ -142,7 +154,7 @@
     "faq": {
       "faq-1": {
         "question": "Po počeni tipalu ura ves čas zahteva geslo. Zakaj?",
-        "answer": "Ker razpoka ovira <strong>zaznavanje zapestja</strong>: ura misli, da je snjeta, in znova zahteva kodo. Leča/lepilni Sensor Crash Fix <strong>lahko ali ne</strong> obnovi to funkcijo."
+        "answer": "Ker razpoka ovira <strong>zaznavanje zapestja</strong>: ura misli, da je snjeta, in znova zahteva kodo. Leča/lepilni Sensor CrashFix <strong>lahko ali ne</strong> obnovi to funkcijo."
       },
       "faq-2": {
         "question": "Po počitvi / padcu ne meri več srčnega utripa. Zakaj?",
@@ -157,7 +169,7 @@
         "answer": "Ker slabo meri utrip in sistem misli, da ste <strong>prekinili trening</strong>. Leča <strong>lahko prepreči</strong> lažne pavze."
       },
       "faq-5": {
-        "question": "Kako leča Sensor Crash Fix popravi tipalo?",
+        "question": "Kako leča Sensor CrashFix popravi tipalo?",
         "answer": "Kot <strong>nadomestna leča</strong>: optična lepilna prevleka <strong>čez</strong> počeno tipalo. Ponovno zatesni, zaščiti steklo in pogosto obnovi optično branje brez odpiranja ure."
       },
       "faq-6": {
@@ -179,6 +191,210 @@
       "faq-10": {
         "question": "Ali leča moti polnjenje?",
         "answer": "Ne. Je ultra tanka — polnite normalno <strong>z nameščeno lečo</strong>."
+      },
+      "faq-11": {
+        "question": "Ali leča Sensor CrashFix popravi tipalo, ki odpove na tetovirani koži?",
+        "answer": "Ne — <strong>Sensor CrashFix</strong> je za <strong>počeno/poškodovano tipalo</strong>. Če ura odpove na <strong>tetovaži</strong> (brez utripa, ustavljena vadba, nenehna koda), obstaja <strong>Sensor TattooFix</strong>."
+      }
+    },
+    "reviews": {}
+  },
+  "fr": {
+    "reviewsSummary": "",
+    "faq": {
+      "faq-1": {
+        "question": "Après la fissure du capteur, ma montre demande sans cesse le code. Pourquoi ?",
+        "answer": "Parce que la fissure perturbe la <strong>détection de poignet/bras</strong> : la montre croit qu’elle a été retirée et redemande le code. La lentille Sensor CrashFix <strong>peut</strong> rétablir cette fonction — pas dans tous les cas. Avec le bon diamètre, ça vaut le coup d’essayer."
+      },
+      "faq-2": {
+        "question": "Après la fissure / la chute, la montre ne mesure plus le rythme cardiaque. Pourquoi ?",
+        "answer": "Le capteur optique utilise la lumière. Avec un verre <strong>fissuré</strong>, le signal devient instable ou disparaît. La lentille <strong>peut faire revenir la lecture</strong> — pas une garantie à 100 %, mais l’étape la plus simple avant une réparation coûteuse."
+      },
+      "faq-3": {
+        "question": "Mon capteur est fissuré et la montre se déconnecte / perd le poignet toute seule. Pourquoi ?",
+        "answer": "Sans signal stable, la smartwatch croit qu’elle a <strong>quitté le bras</strong>. La lentille/l’adhésif <strong>peut</strong> restabiliser la détection."
+      },
+      "faq-4": {
+        "question": "Pourquoi ma montre met-elle les entraînements en pause toute seule avec un capteur fissuré ?",
+        "answer": "Parce qu’elle ne calcule plus bien le pouls/poignet et croit que vous avez <strong>interrompu l’entraînement</strong>. La lentille <strong>peut</strong> éviter ces fausses pauses."
+      },
+      "faq-5": {
+        "question": "Comment la lentille Sensor CrashFix corrige-t-elle le capteur ?",
+        "answer": "Comme une <strong>lentille de remplacement</strong> : un couvercle optique adhésif placé <strong>par-dessus</strong> le capteur fissuré. Elle reseal, protège le verre et, dans de nombreux cas, restaure la lecture optique — sans ouvrir la montre."
+      },
+      "faq-6": {
+        "question": "Ça marche sur Apple Watch ?",
+        "answer": "Oui. Ça fonctionne sur <strong>toutes les smartwatches</strong> avec capteur optique — Apple Watch inclus. Ce qui change, c’est le <strong>diamètre (mm)</strong>."
+      },
+      "faq-7": {
+        "question": "Ça marche sur Samsung Galaxy Watch ?",
+        "answer": "Oui. Ça fonctionne sur <strong>toutes les smartwatches</strong> — Galaxy Watch/Ultra et autres marques. Choisissez les <strong>mm</strong> dans la boutique."
+      },
+      "faq-8": {
+        "question": "La lentille restaure-t-elle l’étanchéité ?",
+        "answer": "Oui, c’est un objectif principal : couvrir la fissure et <strong>resealer</strong> pour la sueur, la pluie, le lavage des mains et la natation légère."
+      },
+      "faq-9": {
+        "question": "Comment installer la lentille ?",
+        "answer": "Nettoyez le capteur, retirez le film de l’adhésif, centrez la lentille et appuyez ~30 secondes — <strong>par-dessus</strong> le verre fissuré, sans ouvrir la montre."
+      },
+      "faq-10": {
+        "question": "La lentille gêne-t-elle la charge ?",
+        "answer": "Non. Ultra-fine — vous chargez normalement <strong>avec la lentille en place</strong>."
+      },
+      "faq-11": {
+        "question": "La lentille Sensor CrashFix corrige-t-elle un capteur qui échoue sur peau tatouée ?",
+        "answer": "Non — <strong>Sensor CrashFix</strong> est pour un capteur <strong>fissuré/cassé</strong>. Si la montre échoue sur un <strong>tatouage</strong> (pas de pouls, entraînements en pause, code permanent), il existe <strong>Sensor TattooFix</strong>."
+      }
+    },
+    "reviews": {}
+  },
+  "no": {
+    "reviewsSummary": "",
+    "faq": {
+      "faq-1": {
+        "question": "Etter at sensoren sprakk, ber klokken stadig om kode. Hvorfor?",
+        "answer": "Fordi sprekken forstyrrer <strong>håndledds-/armgjenkjenning</strong>: klokken tror den er tatt av og ber om kode igjen. Sensor CrashFix-linsen <strong>kan</strong> gjenopprette funksjonen — men ikke alltid. Med riktig diameter er det verdt å prøve."
+      },
+      "faq-2": {
+        "question": "Etter sprekk / fall måler klokken ikke lenger puls. Hvorfor?",
+        "answer": "Den optiske sensoren bruker lys. Med <strong>sprukket</strong> glass blir signalet ustabilt eller forsvinner. Linsen <strong>kan bringe avlesningen tilbake</strong> — ingen 100 % garanti, men det enkleste steget før dyr reparasjon."
+      },
+      "faq-3": {
+        "question": "Sensoren er sprukket og klokken kobler fra / mister håndleddet av seg selv. Hvorfor?",
+        "answer": "Uten stabilt sensorsignal tror smartklokken at den <strong>forlot armen</strong>. Linsen/limet <strong>kan</strong> stabilisere gjenkjenningen igjen."
+      },
+      "faq-4": {
+        "question": "Hvorfor pauser klokken treninger av seg selv med sprukket sensor?",
+        "answer": "Fordi den ikke beregner puls/håndledd godt, og systemet tror du <strong>avbrøt treningen</strong>. Linsen <strong>kan</strong> unngå falske pauser."
+      },
+      "faq-5": {
+        "question": "Hvordan fikser Sensor CrashFix-linsen sensoren?",
+        "answer": "Som en <strong>erstatningslinse</strong>: et limt optisk deksel <strong>oppå</strong> den sprukne sensoren. Den forsegler på nytt, beskytter glasset og gjenoppretter ofte optisk avlesning — uten å åpne klokken."
+      },
+      "faq-6": {
+        "question": "Fungerer det på Apple Watch?",
+        "answer": "Ja. Det fungerer på <strong>alle smartklokker</strong> med optisk sensor — inkludert Apple Watch. Det som endres er <strong>diameter (mm)</strong>."
+      },
+      "faq-7": {
+        "question": "Fungerer det på Samsung Galaxy Watch?",
+        "answer": "Ja. Det fungerer på <strong>alle smartklokker</strong> — Galaxy Watch/Ultra og andre merker. Velg riktige <strong>mm</strong> i butikken."
+      },
+      "faq-8": {
+        "question": "Gjenoppretter linsen vanntetthet?",
+        "answer": "Ja, et hovedmål: dekke sprekken og <strong>forsegle på nytt</strong> for svette, regn, håndvask og lett svømming."
+      },
+      "faq-9": {
+        "question": "Hvordan monterer jeg linsen?",
+        "answer": "Rens sensoren, fjern limfolien, sentrer linsen og trykk ~30 sekunder — <strong>oppå</strong> sprukket glass, uten å åpne klokken."
+      },
+      "faq-10": {
+        "question": "Forstyrrer linsen lading?",
+        "answer": "Nei. Ultratynn — du lader normalt <strong>med linsen på</strong>."
+      },
+      "faq-11": {
+        "question": "Fikser Sensor CrashFix-linsen en sensor som feiler på tatovert hud?",
+        "answer": "Nei — <strong>Sensor CrashFix</strong> er for <strong>sprukket/ødelagt sensor</strong>. Hvis klokken feiler på <strong>tatovering</strong> (ingen puls, pauset trening, stadig kode), finnes <strong>Sensor TattooFix</strong>."
+      }
+    },
+    "reviews": {}
+  },
+  "sv": {
+    "reviewsSummary": "",
+    "faq": {
+      "faq-1": {
+        "question": "Efter att sensorn sprack ber klockan ständigt om kod. Varför?",
+        "answer": "För att sprickan stör <strong>handleds-/armigenkänning</strong>: klockan tror att den tagits av och ber om kod igen. Sensor CrashFix-linsen <strong>kan</strong> återställa funktionen — men inte alltid. Med rätt diameter är det värt att försöka."
+      },
+      "faq-2": {
+        "question": "Efter spricka / fall mäter klockan inte längre puls. Varför?",
+        "answer": "Den optiska sensorn använder ljus. Med <strong>sprucket</strong> glas blir signalen ostabil eller försvinner. Linsen <strong>kan få avläsningen tillbaka</strong> — ingen 100 % garanti, men det enklaste steget före dyr reparation."
+      },
+      "faq-3": {
+        "question": "Sensorn är sprucken och klockan kopplar från / tappar handleden av sig själv. Varför?",
+        "answer": "Utan stabil sensorsignal tror smartklockan att den <strong>lämnat armen</strong>. Linsen/limmet <strong>kan</strong> stabilisera igenkänningen igen."
+      },
+      "faq-4": {
+        "question": "Varför pausar klockan träningspass av sig själv med sprucken sensor?",
+        "answer": "För att den inte beräknar puls/handled bra, så systemet tror att du <strong>avbröt träningen</strong>. Linsen <strong>kan</strong> undvika falska pauser."
+      },
+      "faq-5": {
+        "question": "Hur fixar Sensor CrashFix-linsen sensorn?",
+        "answer": "Som en <strong>ersättningslins</strong>: ett limmat optiskt skydd <strong>ovanpå</strong> den spruckna sensorn. Den tätar igen, skyddar glaset och återställer ofta optisk avläsning — utan att öppna klockan."
+      },
+      "faq-6": {
+        "question": "Fungerar det på Apple Watch?",
+        "answer": "Ja. Det fungerar på <strong>alla smartklockor</strong> med optisk sensor — inklusive Apple Watch. Det som ändras är <strong>diametern (mm)</strong>."
+      },
+      "faq-7": {
+        "question": "Fungerar det på Samsung Galaxy Watch?",
+        "answer": "Ja. Det fungerar på <strong>alla smartklockor</strong> — Galaxy Watch/Ultra och andra märken. Välj rätt <strong>mm</strong> i butiken."
+      },
+      "faq-8": {
+        "question": "Återställer linsen vattentätheten?",
+        "answer": "Ja, ett huvudmål: täcka sprickan och <strong>täta igen</strong> för svett, regn, handtvätt och lätt simning."
+      },
+      "faq-9": {
+        "question": "Hur installerar jag linsen?",
+        "answer": "Rengör sensorn, ta bort limfilmen, centrera linsen och tryck ~30 sekunder — <strong>ovanpå</strong> sprucket glas, utan att öppna klockan."
+      },
+      "faq-10": {
+        "question": "Stör linsen laddningen?",
+        "answer": "Nej. Ultratunn — du laddar normalt <strong>med linsen på</strong>."
+      },
+      "faq-11": {
+        "question": "Fixar Sensor CrashFix-linsen en sensor som failar på tatuerad hud?",
+        "answer": "Nej — <strong>Sensor CrashFix</strong> är för <strong>sprucken/trasig sensor</strong>. Om klockan failar på <strong>tatuering</strong> (ingen puls, pausad träning, ständig kod) finns <strong>Sensor TattooFix</strong>."
+      }
+    },
+    "reviews": {}
+  },
+  "nl": {
+    "reviewsSummary": "",
+    "faq": {
+      "faq-1": {
+        "question": "Na de gebarsten sensor vraagt mijn horloge steeds om de code. Waarom?",
+        "answer": "Omdat de barst de <strong>pols-/armdetectie</strong> verstoort: het horloge denkt dat het is afgedaan en vraagt opnieuw om de code. De Sensor CrashFix-lens <strong>kan</strong> die functie herstellen — niet in elk geval. Met de juiste diameter is het de moeite waard."
+      },
+      "faq-2": {
+        "question": "Na de barst / val meet het horloge geen hartslag meer. Waarom?",
+        "answer": "De optische sensor gebruikt licht. Met <strong>gebarsten</strong> glas wordt het signaal onstabiel of verdwijnt. De lens <strong>kan de meting terugbrengen</strong> — geen 100 % garantie, maar de eenvoudigste stap vóór dure reparatie."
+      },
+      "faq-3": {
+        "question": "Mijn sensor is gebarsten en het horloge koppelt los / verliest de pols vanzelf. Waarom?",
+        "answer": "Zonder stabiel sensorsignaal denkt de smartwatch dat hij <strong>de arm heeft verlaten</strong>. De lens/lijm <strong>kan</strong> de detectie opnieuw stabiliseren."
+      },
+      "faq-4": {
+        "question": "Waarom pauzeert mijn horloge trainingen vanzelf bij een gebarsten sensor?",
+        "answer": "Omdat het horloge pols/hartslag niet goed meet en denkt dat je de training <strong>hebt onderbroken</strong>. De lens <strong>kan</strong> valse pauzes voorkomen."
+      },
+      "faq-5": {
+        "question": "Hoe herstelt de Sensor CrashFix-lens de sensor?",
+        "answer": "Als een <strong>vervanglens</strong>: een klevende optische afdekking <strong>bovenop</strong> de gebarsten sensor. Hij dicht opnieuw af, beschermt het glas en herstelt in veel gevallen de optische meting — zonder het horloge te openen."
+      },
+      "faq-6": {
+        "question": "Werkt het op Apple Watch?",
+        "answer": "Ja. Het werkt op <strong>alle smartwatches</strong> met optische sensor — inclusief Apple Watch. Wat verandert is de <strong>diameter (mm)</strong>."
+      },
+      "faq-7": {
+        "question": "Werkt het op Samsung Galaxy Watch?",
+        "answer": "Ja. Het werkt op <strong>alle smartwatches</strong> — Galaxy Watch/Ultra en andere merken. Kies de juiste <strong>mm</strong> in de winkel."
+      },
+      "faq-8": {
+        "question": "Herstelt de lens de waterdichtheid?",
+        "answer": "Ja, een hoofddoel: de barst bedekken en <strong>opnieuw afdichten</strong> voor zweet, regen, handen wassen en licht zwemmen."
+      },
+      "faq-9": {
+        "question": "Hoe installeer ik de lens?",
+        "answer": "Reinig de sensor, verwijder de lijmfolie, centreer de lens en druk ~30 seconden — <strong>bovenop</strong> het gebarsten glas, zonder het horloge te openen."
+      },
+      "faq-10": {
+        "question": "Stoort de lens het opladen?",
+        "answer": "Nee. Ultradun — je laadt normaal <strong>met de lens erop</strong>."
+      },
+      "faq-11": {
+        "question": "Lost de Sensor CrashFix-lens een sensor op die faalt op getatoeëerde huid?",
+        "answer": "Nee — <strong>Sensor CrashFix</strong> is voor een <strong>gebarsten/kapotte sensor</strong>. Als het horloge faalt op een <strong>tatoeage</strong> (geen hartslag, gepauzeerde training, constante code), bestaat <strong>Sensor TattooFix</strong>."
       }
     },
     "reviews": {}

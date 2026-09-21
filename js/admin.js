@@ -3,14 +3,14 @@
   const bootstrap = window.CONFIG_BOOTSTRAP || {};
 
   const DEFAULT_EMAILS = {
-    from: 'Sensor Crash Fix <pedidos@sensorcrashfix.com.br>',
+    from: 'Sensor CrashFix <pedidos@sensorcrashfix.com.br>',
     shopPaidSubject: 'PAGO — {orderId}',
-    customerOrderSubject: 'Pedido {orderId} registrado — Sensor Crash Fix',
-    customerPixSubject: 'PIX do pedido {orderId} — Sensor Crash Fix',
+    customerOrderSubject: 'Pedido {orderId} registrado — Sensor CrashFix',
+    customerPixSubject: 'PIX do pedido {orderId} — Sensor CrashFix',
     customerPaidSubject: 'Pagamento confirmado — {orderId}',
     motoboySubject: 'Entrega motoboy — {orderId}',
-    couponSubject: 'Você vendeu com seu cupom — comissão {amount} — Sensor Crash Fix',
-    testSubject: 'Teste — Sensor Crash Fix',
+    couponSubject: 'Você vendeu com seu cupom — comissão {amount} — Sensor CrashFix',
+    testSubject: 'Teste — Sensor CrashFix',
     testTo: '',
     pendingPaypal: 'Finalize o pagamento no PayPal. Você receberá outro e-mail quando o pagamento for confirmado.',
     pendingCard: 'Finalize o pagamento no link enviado. Você receberá outro e-mail quando o pagamento for confirmado.',
@@ -26,7 +26,7 @@
     abandonedSubject: 'Seu pedido {orderId} ainda está reservado — finalize quando quiser',
     abandonedWeeklySubject: 'Lembrete semanal — pedido {orderId} aguardando pagamento',
     abandonedIntro: 'Notamos que seu pedido ficou pendente. Seus itens ainda estão reservados — finalize o pagamento pelo link abaixo.',
-    abandonedWeeklyIntro: 'Passou uma semana e seu pedido ainda aguarda pagamento. Se ainda quiser o Sensor Crash Fix, é só concluir pelo link.',
+    abandonedWeeklyIntro: 'Passou uma semana e seu pedido ainda aguarda pagamento. Se ainda quiser o Sensor CrashFix, é só concluir pelo link.',
     abandonedCta: 'Finalizar meu pedido',
     pixGreeting: 'Olá, {nome}!',
     pixIntro: 'Seu pedido {orderId} foi registrado. Para concluir a compra, pague o PIX abaixo:',
@@ -5930,7 +5930,7 @@ ${worksheets}
           ...intlMain.map((p) => ({ ...p, markets: ['INT'], aggregated: false }))
         ];
         renderProducts(rebuilt.length ? rebuilt : [{
-          id: 'kit-sensor-crashfix', slug: 'kit-sensor-crashfix', name: 'Kit Sensor Crash Fix',
+          id: 'kit-sensor-crashfix', slug: 'kit-sensor-crashfix', name: 'Kit Sensor CrashFix',
           description: '', price: 62.9, image: '/images/brand/sensorcrashfix.jpg', active: true,
           requiresSmartwatch: true, weightGrams: 3, sensorMm: 25, markets: ['BR']
         }]);
@@ -8075,7 +8075,7 @@ ${worksheets}
     all.push({
       id: 'lente-br-' + Date.now(),
       slug: 'lente-br-' + Date.now(),
-      name: 'Nova lente Sensor Crash Fix',
+      name: 'Nova lente Sensor CrashFix',
       description: '',
       price: 62.9,
       image: '/images/brand/sensorcrashfix.jpg',

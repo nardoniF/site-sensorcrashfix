@@ -1,8 +1,8 @@
 {
   "product": {
-    "name": "Kit Sensor Crash Fix",
-    "nameEn": "Sensor Crash Fix Lens",
-    "nameIt": "Lente Sensor Crash Fix",
+    "name": "Kit Sensor CrashFix",
+    "nameEn": "Sensor CrashFix Lens",
+    "nameIt": "Lente Sensor CrashFix",
     "description": "Lente/cobertura para sensor de smartwatch rachado — restaura vedação e uso",
     "descriptionEn": "Lens cover for a cracked smartwatch sensor — restores seal and daily use",
     "descriptionIt": "Lente di copertura per sensore smartwatch incrinato — ripristina tenuta e uso",
@@ -14,9 +14,9 @@
     {
       "id": "kit-sensor-crashfix",
       "slug": "kit-sensor-crashfix",
-      "name": "Kit Sensor Crash Fix",
-      "nameEn": "Sensor Crash Fix Lens",
-      "nameIt": "Lente Sensor Crash Fix",
+      "name": "Kit Sensor CrashFix",
+      "nameEn": "Sensor CrashFix Lens",
+      "nameIt": "Lente Sensor CrashFix",
       "description": "Lente/cobertura para sensor de smartwatch rachado — restaura vedação e uso",
       "descriptionEn": "Lens cover for a cracked smartwatch sensor — restores seal and daily use",
       "descriptionIt": "Lente di copertura per sensore smartwatch incrinato — ripristina tenuta e uso",
@@ -30,10 +30,10 @@
       "markets": [
         "BR"
       ],
-      "nameDe": "Sensor Crash Fix Linse",
-      "nameEs": "Lente Sensor Crash Fix",
-      "namePl": "Soczewka Sensor Crash Fix",
-      "nameSl": "Leča Sensor Crash Fix",
+      "nameDe": "Sensor CrashFix Linse",
+      "nameEs": "Lente Sensor CrashFix",
+      "namePl": "Soczewka Sensor CrashFix",
+      "nameSl": "Leča Sensor CrashFix",
       "descriptionDe": "Abdecklinse für gerissenen Smartwatch-Sensor — stellt Dichtung und Nutzung wieder her",
       "descriptionEs": "Lente de cobertura para sensor de smartwatch agrietado — restaura sellado y uso",
       "descriptionPl": "Soczewka ochronna na pęknięty czujnik smartwatcha — przywraca uszczelnienie i użytkowanie",
@@ -85,9 +85,9 @@
     {
       "id": "kit-smartband-crashfix",
       "slug": "kit-smartband-crashfix",
-      "name": "Kit Smartband Crash Fix",
-      "nameEn": "Smartband Crash Fix Kit",
-      "nameIt": "Kit Smartband Crash Fix",
+      "name": "Kit Smartband Sensor CrashFix",
+      "nameEn": "Smartband Sensor CrashFix Kit",
+      "nameIt": "Kit Smartband Sensor CrashFix",
       "deviceType": "smartband",
       "description": "Lente para sensor de smartband rachado — kit completo",
       "descriptionEn": "Lens for cracked smartband sensor — full kit",
@@ -107,10 +107,10 @@
       "markets": [
         "BR"
       ],
-      "nameDe": "Smartband Crash Fix Kit",
-      "nameEs": "Kit Smartband Crash Fix",
-      "namePl": "Zestaw Smartband Crash Fix",
-      "nameSl": "Komplet Smartband Crash Fix",
+      "nameDe": "Smartband Sensor CrashFix Kit",
+      "nameEs": "Kit Smartband Sensor CrashFix",
+      "namePl": "Zestaw Smartband Sensor CrashFix",
+      "nameSl": "Komplet Smartband Sensor CrashFix",
       "descriptionDe": "Linse für gerissenen Smartband-Sensor — komplettes Kit",
       "descriptionEs": "Lente para sensor de smartband agrietado — kit completo",
       "descriptionPl": "Soczewka na pęknięty czujnik opaski — pełny zestaw",
@@ -572,8 +572,8 @@
       "slug": "pelicula-apple-45mm",
       "name": "Película de tela — Apple Watch 45mm",
       "nameEn": "Screen protector — Apple Watch 45mm",
-      "description": "Película de alta qualidade — protege a tela e combina com o envio do seu kit Sensor Crash Fix.",
-      "descriptionEn": "High-quality film — protects your screen and ships with your Sensor Crash Fix kit.",
+      "description": "Película de alta qualidade — protege a tela e combina com o envio do seu kit Sensor CrashFix.",
+      "descriptionEn": "High-quality film — protects your screen and ships with your Sensor CrashFix kit.",
       "price": 20,
       "image": "/images/produtos/pelicula-apple-45mm.svg",
       "active": true,
@@ -1561,7 +1561,7 @@
     "intlServiceCode": "45128",
     "serviceName": "Mini Envios",
     "sender": {
-      "brand": "Sensor Crash Fix",
+      "brand": "Sensor CrashFix",
       "company": "3N20 Soluções Tecnológicas LTDA",
       "cnpj": "29.321.223/0001-32",
       "rua": "Rua Engenheiro Roberto Dabus Buazar",
@@ -3079,7 +3079,7 @@
   },
   "formsubmit": {
     "email": "contato@sensorcrashfix.com.br",
-    "subject": "Novo pedido — Loja Oficial Sensor Crash Fix"
+    "subject": "Novo pedido — Loja Oficial Sensor CrashFix"
   },
   "whatsapp": "5511913394665",
   "siteUrl": "https://www.sensorcrashfix.com.br",
@@ -5574,9 +5574,9 @@
       "question": "Depois que o sensor quebrou, meu relógio fica pedindo senha o tempo todo. Por quê?",
       "questionEn": "After my sensor cracked, my watch keeps asking for the passcode. Why?",
       "questionIt": "Dopo che il sensore si è incrinato, l’orologio chiede continuamente il codice. Perché?",
-      "answer": "Porque o trinco atrapalha a <strong>detecção de braço/pulso</strong>: o relógio acha que foi tirado do pulso e pede a senha de novo (em alguns modelos, várias vezes por minuto). A lente/adesivo Sensor Crash Fix <strong>pode ou não</strong> fazer essa funcionalidade voltar — em muitos casos a leitura estabiliza e as pedidas de senha param; em outros, o dano no sensor é grande demais. Vale testar com o mm certo do seu modelo.",
-      "answerEn": "Because the crack interferes with <strong>wrist/on-arm detection</strong>: the watch thinks it was removed and asks for the passcode again (on some models, many times per minute). The Sensor Crash Fix lens/adhesive <strong>may or may not</strong> restore that — in many cases reading stabilizes and the passcode prompts stop; in others the sensor damage is too severe. Worth trying with the right mm for your model.",
-      "answerIt": "Perché la crepa interferisce con il <strong>rilevamento del polso</strong>: l’orologio crede di essere stato tolto e chiede di nuovo il codice. La lente/adesivo Sensor Crash Fix <strong>può o meno</strong> ripristinare questa funzione — in molti casi la lettura si stabilizza; in altri il danno è troppo grave. Vale la pena provare con i mm giusti.",
+      "answer": "Porque o trinco atrapalha a <strong>detecção de braço/pulso</strong>: o relógio acha que foi tirado do pulso e pede a senha de novo (em alguns modelos, várias vezes por minuto). A lente/adesivo Sensor CrashFix <strong>pode ou não</strong> fazer essa funcionalidade voltar — em muitos casos a leitura estabiliza e as pedidas de senha param; em outros, o dano no sensor é grande demais. Vale testar com o mm certo do seu modelo.",
+      "answerEn": "Because the crack interferes with <strong>wrist/on-arm detection</strong>: the watch thinks it was removed and asks for the passcode again (on some models, many times per minute). The Sensor CrashFix lens/adhesive <strong>may or may not</strong> restore that — in many cases reading stabilizes and the passcode prompts stop; in others the sensor damage is too severe. Worth trying with the right mm for your model.",
+      "answerIt": "Perché la crepa interferisce con il <strong>rilevamento del polso</strong>: l’orologio crede di essere stato tolto e chiede di nuovo il codice. La lente/adesivo Sensor CrashFix <strong>può o meno</strong> ripristinare questa funzione — in molti casi la lettura si stabilizza; in altri il danno è troppo grave. Vale la pena provare con i mm giusti.",
       "media": []
     },
     {
@@ -5586,9 +5586,9 @@
       "question": "Depois que o sensor trincou / o relógio caiu, ele não mede mais batimento cardíaco. Por quê?",
       "questionEn": "After the sensor cracked / the watch fell, it no longer reads heart rate. Why?",
       "questionIt": "Dopo che il sensore si è incrinato / l’orologio è caduto, non legge più il battito. Perché?",
-      "answer": "O sensor ótico usa luz para ler o pulso. Com o vidro <strong>trincado</strong>, o sinal fica irregular ou some — batimento zerado, falhando no treino ou sumindo do app. A lente Sensor Crash Fix cobre o dano e <strong>pode fazer a leitura voltar</strong> a funcionar; não é garantia em 100% dos casos (depende do tamanho do trinco), mas é o caminho mais simples antes de um reparo caro.",
-      "answerEn": "The optical sensor uses light to read your pulse. With <strong>cracked</strong> glass the signal becomes unstable or disappears — zero HR, dropouts mid-workout, or nothing in the app. The Sensor Crash Fix lens covers the damage and <strong>can restore reading</strong>; it’s not a 100% guarantee (depends how bad the crack is), but it’s the simplest step before an expensive repair.",
-      "answerIt": "Il sensore ottico usa la luce per leggere il polso. Con il vetro <strong>incrinato</strong> il segnale diventa irregolare o sparisce. La lente Sensor Crash Fix copre il danno e <strong>può far tornare</strong> la lettura; non è garanzia al 100% (dipende dalla crepa), ma è il passo più semplice prima di una riparazione costosa.",
+      "answer": "O sensor ótico usa luz para ler o pulso. Com o vidro <strong>trincado</strong>, o sinal fica irregular ou some — batimento zerado, falhando no treino ou sumindo do app. A lente Sensor CrashFix cobre o dano e <strong>pode fazer a leitura voltar</strong> a funcionar; não é garantia em 100% dos casos (depende do tamanho do trinco), mas é o caminho mais simples antes de um reparo caro.",
+      "answerEn": "The optical sensor uses light to read your pulse. With <strong>cracked</strong> glass the signal becomes unstable or disappears — zero HR, dropouts mid-workout, or nothing in the app. The Sensor CrashFix lens covers the damage and <strong>can restore reading</strong>; it’s not a 100% guarantee (depends how bad the crack is), but it’s the simplest step before an expensive repair.",
+      "answerIt": "Il sensore ottico usa la luce per leggere il polso. Con il vetro <strong>incrinato</strong> il segnale diventa irregolare o sparisce. La lente Sensor CrashFix copre il danno e <strong>può far tornare</strong> la lettura; non è garanzia al 100% (dipende dalla crepa), ma è il passo più semplice prima di una riparazione costosa.",
       "media": []
     },
     {
@@ -5610,18 +5610,18 @@
       "question": "Por que meu relógio pausa os treinos e atividades sozinho com o sensor trincado?",
       "questionEn": "Why does my watch pause workouts and activities by itself with a cracked sensor?",
       "questionIt": "Perché l’orologio mette in pausa allenamenti e attività da solo con il sensore incrinato?",
-      "answer": "Porque, com o trinco, ele deixa de calcular bem o batimento/pulso e o sistema entende que você <strong>interrompeu o treino</strong> ou tirou o aparelho — e pausa sozinho para “economizar”. A lente Sensor Crash Fix <strong>pode fazer os treinos voltarem</strong> a rodar sem pausas falsas, ao restaurar a interface ótica sobre o sensor danificado.",
-      "answerEn": "Because with the crack it can’t compute heart rate/wrist well, so the system thinks you <strong>stopped the workout</strong> or removed the watch — and pauses on its own. The Sensor Crash Fix lens <strong>can let workouts run again</strong> without false pauses by restoring the optical interface over the damaged sensor.",
-      "answerIt": "Perché con la crepa non calcola bene battito/polso e il sistema pensa che tu abbia <strong>interrotto l’allenamento</strong> o tolto l’orologio — e mette in pausa. La lente Sensor Crash Fix <strong>può far ripartire</strong> gli allenamenti senza pause false, ripristinando l’interfaccia ottica sul sensore danneggiato.",
+      "answer": "Porque, com o trinco, ele deixa de calcular bem o batimento/pulso e o sistema entende que você <strong>interrompeu o treino</strong> ou tirou o aparelho — e pausa sozinho para “economizar”. A lente Sensor CrashFix <strong>pode fazer os treinos voltarem</strong> a rodar sem pausas falsas, ao restaurar a interface ótica sobre o sensor danificado.",
+      "answerEn": "Because with the crack it can’t compute heart rate/wrist well, so the system thinks you <strong>stopped the workout</strong> or removed the watch — and pauses on its own. The Sensor CrashFix lens <strong>can let workouts run again</strong> without false pauses by restoring the optical interface over the damaged sensor.",
+      "answerIt": "Perché con la crepa non calcola bene battito/polso e il sistema pensa che tu abbia <strong>interrotto l’allenamento</strong> o tolto l’orologio — e mette in pausa. La lente Sensor CrashFix <strong>può far ripartire</strong> gli allenamenti senza pause false, ripristinando l’interfaccia ottica sul sensore danneggiato.",
       "media": []
     },
     {
       "id": "faq-5",
       "active": true,
       "order": 5,
-      "question": "Como a lente Sensor Crash Fix corrige o sensor?",
-      "questionEn": "How does the Sensor Crash Fix lens fix the sensor?",
-      "questionIt": "Come la lente Sensor Crash Fix corregge il sensore?",
+      "question": "Como a lente Sensor CrashFix corrige o sensor?",
+      "questionEn": "How does the Sensor CrashFix lens fix the sensor?",
+      "questionIt": "Come la lente Sensor CrashFix corregge il sensore?",
       "answer": "É como uma <strong>lente sobressalente</strong>: uma cobertura óptica adesiva que a gente coloca <strong>por cima</strong> do sensor trincado. Ela veda de novo a área danificada, protege o vidro e, em muitos casos, devolve a leitura ótica (pulso, batimento, detecção de braço) sem abrir o relógio nem trocar o módulo.",
       "answerEn": "It’s like a <strong>spare/replacement lens</strong>: an adhesive optical cover you place <strong>on top of</strong> the cracked sensor. It reseals the damaged area, protects the glass and, in many cases, restores optical reading (wrist, heart rate, on-arm detection) without opening the watch or replacing the module.",
       "answerIt": "È come una <strong>lente di ricambio</strong>: una copertura ottica adesiva che si mette <strong>sopra</strong> il sensore incrinato. Risigilla l’area danneggiata, protegge il vetro e in molti casi ripristina la lettura ottica senza aprire l’orologio né sostituire il modulo.",
@@ -5685,6 +5685,18 @@
       "answer": "Não. É ultrafina — você carrega normalmente, inclusive no carregador magnético/indutivo, <strong>com a lente colada</strong>.",
       "answerEn": "No. It’s ultra-thin — you charge normally, including magnetic/inductive chargers, <strong>with the lens on</strong>.",
       "answerIt": "No. È ultra sottile — ricarichi normalmente, anche sul caricatore magnetico/induttivo, <strong>con la lente applicata</strong>.",
+      "media": []
+    },
+    {
+      "id": "faq-11",
+      "active": true,
+      "order": 11,
+      "question": "A lente da Sensor CrashFix resolve o problema do sensor falhando na tatuagem?",
+      "questionEn": "Does the Sensor CrashFix lens fix a sensor that fails on tattooed skin?",
+      "questionIt": "La lente Sensor CrashFix risolve il sensore che fallisce sulla pelle tatuata?",
+      "answer": "Não — a <strong>Sensor CrashFix</strong> é para <strong>sensor trincado/rachado</strong>. Para falha na <strong>tatuagem</strong> (não lê batimento, pausa treinos, pede senha o tempo todo) existe uma lente específica: a <a href=\"https://www.sensortattoofix.com.br/\" data-sister-link data-evento=\"clique_sister_tattoofix\" data-rotulo=\"FAQ Sensor TattooFix PT\" target=\"_blank\" rel=\"noopener noreferrer\"><strong>Sensor TattooFix</strong></a>. A Sensor TattooFix produz <strong>lentes ópticas graduadas e à prova d’água</strong> para devolver as funções do sensor de qualquer smartwatch em <strong>pele tatuada</strong> — acesse <a href=\"https://www.sensortattoofix.com.br/\" data-sister-link data-evento=\"clique_sister_tattoofix\" data-rotulo=\"FAQ Sensor TattooFix site PT\" target=\"_blank\" rel=\"noopener noreferrer\">www.sensortattoofix.com.br</a>.",
+      "answerEn": "No — <strong>Sensor CrashFix</strong> is for a <strong>cracked/broken sensor</strong>. If the watch fails on a <strong>tattoo</strong> (no heart rate, paused workouts, constant passcode prompts), there is a dedicated lens: <a href=\"https://www.sensortattoofix.com/\" data-sister-link data-evento=\"clique_sister_tattoofix\" data-rotulo=\"FAQ Sensor TattooFix EN\" target=\"_blank\" rel=\"noopener noreferrer\"><strong>Sensor TattooFix</strong></a>. Sensor TattooFix makes <strong>graded, waterproof optical lenses</strong> that restore sensor functions on <strong>tattooed skin</strong> for any smartwatch — visit <a href=\"https://www.sensortattoofix.com/\" data-sister-link data-evento=\"clique_sister_tattoofix\" data-rotulo=\"FAQ Sensor TattooFix site EN\" target=\"_blank\" rel=\"noopener noreferrer\">www.sensortattoofix.com</a>.",
+      "answerIt": "No — <strong>Sensor CrashFix</strong> è per un <strong>sensore incrinato/rotto</strong>. Se l’orologio fallisce per un <strong>tatuaggio</strong> (non legge il battito, mette in pausa gli allenamenti, chiede il codice di continuo), c’è una lente dedicata: <a href=\"https://www.sensortattoofix.com/it/\" data-sister-link data-evento=\"clique_sister_tattoofix\" data-rotulo=\"FAQ Sensor TattooFix IT\" target=\"_blank\" rel=\"noopener noreferrer\"><strong>Sensor TattooFix</strong></a>. Sensor TattooFix produce <strong>lenti ottiche graduate e impermeabili</strong> per ripristinare le funzioni del sensore su <strong>pelle tatuata</strong> con qualsiasi smartwatch — vai su <a href=\"https://www.sensortattoofix.com/it/\" data-sister-link data-evento=\"clique_sister_tattoofix\" data-rotulo=\"FAQ Sensor TattooFix site IT\" target=\"_blank\" rel=\"noopener noreferrer\">www.sensortattoofix.com/it</a>.",
       "media": []
     }
   ],

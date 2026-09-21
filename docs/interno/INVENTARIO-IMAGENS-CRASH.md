@@ -1,4 +1,4 @@
-# Inventário de imagens — Sensor Crash Fix
+# Inventário de imagens — Sensor CrashFix
 
 Legenda: **OK** = alinhado ao Crash · **SUBSTITUÍDO** = trocado nesta entrega · **FOTOGRAFAR** = humano ainda precisa
 
@@ -6,7 +6,7 @@ Legenda: **OK** = alinhado ao Crash · **SUBSTITUÍDO** = trocado nesta entrega 
 
 | Arquivo | Status | Nota |
 |---------|--------|------|
-| `images/brand/logo.jpg` | SUBSTITUÍDO | Logo Sensor Crash Fix (gerado) |
+| `images/brand/logo.jpg` | SUBSTITUÍDO | Logo Sensor CrashFix (gerado) |
 | `images/brand/sensorcrashfix.jpg` | SUBSTITUÍDO | Aplicação da lente |
 | `images/home/relogio_home.jpg` | SUBSTITUÍDO | Sensor rachado (hero) |
 | `images/home/relogio_home2.jpg` | SUBSTITUÍDO | Uso com água / batimentos |
@@ -37,7 +37,7 @@ Legenda: **OK** = alinhado ao Crash · **SUBSTITUÍDO** = trocado nesta entrega 
 
 1. Sensor trincado close (vários modelos Apple/Samsung/Garmin/Fitbit/Whoop)
 2. Depois: lente aplicada + gotas d’água
-3. Embalagem física com marca Sensor Crash Fix
+3. Embalagem física com marca Sensor CrashFix
 4. Fundador sem tinta visível (ou crop sem tattoo)
 5. Depoimentos de clientes Crash (vedação / batimento após trinco)
 

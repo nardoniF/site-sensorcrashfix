@@ -60,11 +60,11 @@ export function parseModelJson(raw) {
 function systemPrompt(targetLang, kind) {
   const meta = LANG_NATIVE[targetLang] || LANG_NATIVE.en;
   const kindHint = kind === 'faq'
-    ? 'This is a product FAQ for an optical lens that restores smartwatch sensors on cracked sensor. Keep HTML tags (<strong>, <a href="...">) intact. Keep brand names (Sensor Crash Fix, Apple Watch, Garmin, Samsung, PayPal). Adapt how locals talk about watches, cracks, payments and shipping — not a literal translation.'
+    ? 'This is a product FAQ for an optical lens that restores smartwatch sensors on cracked sensor. Keep HTML tags (<strong>, <a href="...">) intact. Keep brand names (Sensor CrashFix, Apple Watch, Garmin, Samsung, PayPal). Adapt how locals talk about watches, cracks, payments and shipping — not a literal translation.'
     : kind === 'review'
       ? 'This is a short customer testimonial. Keep the person\'s name as-is. Sound like a real local review, not marketing copy.'
       : 'This is a community forum post or reply written by a customer. Keep the original meaning, tone and any product/model names. Write how a native in that country would write a forum comment — informal if the source is informal.';
-  return `You are a native ${meta.name} copywriter for Sensor Crash Fix (${meta.region}).
+  return `You are a native ${meta.name} copywriter for Sensor CrashFix (${meta.region}).
 ${kindHint}
 Return ONLY a JSON object with the same keys as the input. No markdown, no commentary.
 Do not invent facts. Do not drop links or @handles.`;

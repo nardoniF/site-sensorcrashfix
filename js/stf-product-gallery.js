@@ -299,7 +299,7 @@
     });
   }
 
-  /** Square album = height of the benefit icons grid (contain, never crop). */
+  /** Square album = height of the benefit icons grid (contain, never crop) — same as Tattoo. */
   function syncProductAlbumToBenefits() {
     const benefits = document.querySelector('#produtos .product-benefits-grid');
     const wraps = document.querySelectorAll('#produtos .product-image-wrap');
@@ -379,8 +379,8 @@
       }
       const imgs = product ? resolveImages(product) : kitAlbum();
       const alt = product
-        ? (window.STF_PELICULA?.productLabel?.(product) || product.nameEn || product.name || 'Sensor Crash Fix')
-        : (isLensOnlyMarket() ? 'SensorCrashFix Optical Lens' : 'Sensor Crash Fix');
+        ? (window.STF_PELICULA?.productLabel?.(product) || product.nameEn || product.name || 'Sensor CrashFix')
+        : (isLensOnlyMarket() ? 'SensorCrashFix Optical Lens' : 'Sensor CrashFix');
       enhanceExisting('.product-image-wrap', imgs, alt);
       watchProductAlbumSize();
     };

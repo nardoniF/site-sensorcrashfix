@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;1,400;1,500&family=Outfit:wght@500;600;700&display=swap');
 
 :root {
-    --primary: #5EC8D8; /* Crash Fix ice/cyan — não amarelo Tattoo */
+    --primary: #5EC8D8; /* Sensor CrashFix ice/cyan — não amarelo Tattoo */
     --bg: #0a0a0a;
     --card: #141414;
     --text: #ffffff;
@@ -76,7 +76,7 @@ nav,
     border-radius: 50%;
 }
 
-/* Lockup do header — espelho do Sensor Tattoo Fix: slogan menor e itálico */
+/* Lockup do header — espelho do Sensor TattooFix: slogan menor e itálico */
 .logo-text {
     font-size: 1.42rem;
     font-weight: 900;
@@ -96,6 +96,24 @@ nav,
     gap: 3px;
     min-width: 0;
 }
+.logo-lockup--img {
+    text-decoration: none;
+    align-self: center;
+    line-height: 0;
+}
+/* Lockup já traz o emblema — some o círculo separado no desktop */
+.logo-area:has(.logo-lockup--img) > .logo-img-link {
+    display: none;
+}
+.logo-lockup-img {
+    display: block;
+    /* Lockup maior para slogan/marca bem legíveis no header */
+    height: 112px;
+    width: auto;
+    max-width: min(400px, 38vw);
+    object-fit: contain;
+    object-position: left center;
+}
 .logo-tagline {
     margin: 0;
     font-size: 0.82rem;
@@ -106,9 +124,26 @@ nav,
     color: #c4c4c4;
     white-space: nowrap;
 }
+.logo-tagline--sub {
+    font-style: normal;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #ddd;
+    white-space: nowrap;
+}
 
 .hero-brand-mobile {
     display: none;
+}
+.hero-brand-lockup {
+    display: block;
+    width: min(100%, 480px);
+    height: auto;
+    max-height: 160px;
+    object-fit: contain;
+    object-position: left center;
 }
 
 .nav-panel {
@@ -320,6 +355,7 @@ nav,
     .nav-main { gap: 3px 7px; }
     .logo-text { font-size: 1.2rem; }
     .logo-img-link { width: 76px; height: 76px; }
+    .logo-lockup-img { height: 96px; max-width: min(340px, 36vw); }
     .site-social { min-width: 96px; padding: 0 12px; }
 }
 
@@ -356,6 +392,17 @@ html[lang="it"] .nav-actions { gap: 6px; }
 .badge { color: var(--primary); font-weight: 800; text-transform: uppercase; border: 1px solid var(--primary); padding: 6px 14px; border-radius: 50px; font-size: 0.9rem; }
 .hero h1 { font-size: 3.5rem; font-weight: 900; line-height: 1.05; margin: 28px 0; }
 .hero p { font-size: 1.1rem; color: var(--gray); margin-bottom: 38px; }
+/* Home: menos respiro entre parágrafos para os CTAs não ficarem sob o FAB Sugestões */
+.home-page .hero p {
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+.home-page .hero p:last-of-type {
+    margin-bottom: 20px;
+}
+.home-page .hero h1 {
+    margin: 18px 0 14px;
+}
 .hero-btns { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
 .hero-cta-buy-short { display: none; }
 /* Must beat .store-official-bar { display:flex } or the store CTA leaks onto desktop */
@@ -396,9 +443,19 @@ html[lang="it"] .nav-actions { gap: 6px; }
     border-color: #fff;
 }
 .product-img { width: 100%; border-radius: 20px; border: 1px solid #222; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+/* Hero home: foto do relógio um pouco menor que a coluna */
+.home-page .hero-visual {
+    width: 90%;
+    max-width: 100%;
+    justify-self: center;
+}
+.home-page .hero-visual .product-img {
+    width: 100%;
+    display: block;
+}
 
 
-/* Crash Fix homepage: cracked-sphere icon + larger product square on black */
+/* Sensor CrashFix homepage: cracked-sphere icon + larger product square on black */
 .icon-cracked-sphere {
   display: inline-block;
   width: 2.1rem;
@@ -434,65 +491,8 @@ html[lang="it"] .nav-actions { gap: 6px; }
   display: block;
   margin: 0 auto 15px;
 }
-#produtos .product-image-wrap--lg {
-  width: min(100%, 460px);
-  background: #000;
-  border-color: #222;
-  padding: 0;
-}
-#produtos .product-image-wrap--lg img {
-  object-fit: cover;
-  background: #000;
-}
-.kit-box {
-  background: #0a0a0a;
-}
-.kit-box-media {
-  background: #000;
-  border-radius: 16px;
-  padding: 8px;
-}
-.kit-box-media img {
-  width: 100%;
-  max-width: 420px;
-  max-height: none;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  background: #000;
-  border-radius: 12px;
-}
 
-/* Crash Fix: hero visual preenche a coluna (sem fotinho em quadradão branco) */
-.home-page .hero-visual {
-    position: relative;
-    align-self: stretch;
-    min-height: min(72vh, 640px);
-    display: flex;
-    align-items: stretch;
-    background: #0d0d0d;
-    border-radius: 20px;
-    overflow: hidden;
-    border: 1px solid #222;
-}
-.home-page .hero-visual .product-img {
-    width: 100%;
-    height: 100%;
-    min-height: min(72vh, 640px);
-    object-fit: cover;
-    object-position: center;
-    border-radius: 0;
-    border: none;
-    box-shadow: none;
-    display: block;
-}
-@media (max-width: 900px) {
-    .home-page .hero-visual,
-    .home-page .hero-visual .product-img {
-        min-height: 280px;
-    }
-}
-
-
+/* Espelho 1:1 Sensor TattooFix (#produtos / kit) — brand Crash via --primary */
 #produtos .product-solution-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -535,26 +535,57 @@ html[lang="it"] .nav-actions { gap: 6px; }
     height: 100%;
     max-width: none;
     border-radius: 12px;
-    object-fit: cover;
+    object-fit: contain;
 }
 
+#produtos .product-benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
 #produtos .product-benefits-grid .benefit-card {
     width: 100%;
+    background: #1a1a1a;
     padding: 16px 14px;
+    border-radius: 12px;
+    border: 1px solid #333;
     text-align: center;
 }
 
 #produtos .product-benefits-grid .benefit-card i {
+    font-size: 2rem;
+    color: var(--primary);
     margin-bottom: 12px;
+    display: block;
+}
+
+#produtos .product-benefits-grid .benefit-card .icon-cracked-sphere--benefit {
+    width: 2rem;
+    height: 2rem;
+    margin: 0 auto 12px;
 }
 
 #produtos .product-benefits-grid .benefit-card h3 {
+    color: var(--primary);
     font-size: 1rem;
     margin-bottom: 8px;
 }
 
 #produtos .product-benefits-grid .benefit-card p {
     font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.86);
+    margin: 0;
+}
+
+#produtos .product-solution-cta {
+    display: inline-block;
+    margin-top: 20px;
+    background: var(--primary);
+    color: #000;
+    text-decoration: none;
+    font-weight: 800;
+    padding: 12px 28px;
+    border-radius: 10px;
 }
 
 /* SEÇÕES GERAIS */
@@ -569,9 +600,6 @@ html[lang="it"] .nav-actions { gap: 6px; }
 }
 #paliativos > .container {
     width: 100%;
-}
-#produtos.content-section {
-    padding-top: 72px;
 }
 .grey-bg { background: #080808; }
 .section-title { font-size: 2.5rem; text-align: center; margin-bottom: 30px; font-weight: 900; }
@@ -603,6 +631,12 @@ html[lang="it"] .nav-actions { gap: 6px; }
     margin: 32px 0 16px;
     text-align: center;
 }
+.about-card a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.about-card a:hover { color: #fff; }
 .about-origin {
     font-size: 1.2rem;
     line-height: 1.7;
@@ -800,7 +834,7 @@ html[lang="it"] .nav-actions { gap: 6px; }
 .danger-box { border: 3px dashed var(--danger); color: var(--danger); padding: 50px; font-weight: 900; text-transform: uppercase; font-size: 1.5rem; transform: rotate(-8deg); text-align: center; width: fit-content; }
 
 /* KIT BOX */
-.kit-box { background: #0a0a0a; padding: 24px; border-radius: 20px; margin-top: 30px; border-left: 5px solid var(--primary); text-align: left; }
+.kit-box { background: #1a1a1a; padding: 24px; border-radius: 20px; margin-top: 30px; border-left: 5px solid var(--primary); text-align: left; }
 html.stf-lens-only .kit-box,
 body.stf-lens-only .kit-box { display: none !important; }
 .shipping-card--lens-only .shipping-card-main strong { font-size: 1rem; }
@@ -814,21 +848,16 @@ body.stf-lens-only .kit-box { display: none !important; }
 .kit-box-media {
     flex-shrink: 0;
     line-height: 0;
-    background: #000;
-    border-radius: 16px;
-    padding: 8px;
 }
 .kit-box-media img {
     width: auto;
-    max-width: 420px;
-    max-height: none;
+    max-width: 320px;
+    max-height: 280px;
     height: auto;
-    aspect-ratio: 1 / 1;
     border-radius: 12px;
-    border: 1px solid #222;
+    border: 1px solid #333;
     display: block;
     object-fit: contain;
-    background: #000;
 }
 .kit-box-content h3 { margin-bottom: 16px; color: var(--primary); }
 .kit-grid { display: flex; flex-direction: column; gap: 10px; }
@@ -1876,7 +1905,11 @@ footer,
     .logo-tagline { font-size: 0.68rem; }
 
     /* Home mobile: marca no hero, header compacto + hambúrguer */
-    .home-page .logo-area .logo-lockup { display: none; }
+    .home-page .logo-area .logo-lockup,
+    .home-page .logo-area .logo-lockup--img { display: none; }
+    .home-page .logo-area:has(.logo-lockup--img) > .logo-img-link {
+        display: flex;
+    }
     .home-page .site-social { display: none; }
     .home-page .site-nav {
         justify-content: space-between;
@@ -1930,6 +1963,12 @@ footer,
         display: block;
         margin: 0 0 14px;
         text-align: center;
+    }
+    .home-page .hero-brand-mobile .hero-brand-lockup {
+        margin: 0 auto;
+        width: min(100%, 380px);
+        max-height: 140px;
+        object-position: center;
     }
     .home-page .hero-brand-mobile .logo-text {
         display: flex;
@@ -6454,18 +6493,18 @@ body.stf-lightbox-open { overflow: hidden; }
   max-width: none;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
   display: block;
   margin: 0;
+  background: #111;
 }
 .kit-box-media .stf-album img {
-  max-width: 420px;
-  max-height: none;
+  max-width: 320px;
+  max-height: 280px;
   width: 100%;
-  height: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
   display: block;
   margin: 0 auto;
 }
@@ -7502,4 +7541,3 @@ h3.about-story-heading + .about-body:has(+ .about-patents) {
 #admin-tab-comunidade {
     display: none !important;
 }
-

@@ -1,7 +1,7 @@
 window.STF_FOOTER = (function () {
   const INFO = {
-    brandPlain: 'Sensor Crash Fix',
-    brandTitle: 'Sensor <span class="logo-accent">Crash Fix</span>',
+    brandPlain: 'Sensor CrashFix',
+    brandTitle: 'Sensor <span class="logo-accent">Sensor CrashFix</span>',
     company: '3N20 Soluções Tecnológicas',
     cnpj: '29.321.223/0001-32',
     patentNational: 'BR 20 2026 010875 3',
@@ -86,6 +86,46 @@ window.STF_FOOTER = (function () {
       patentLinePrefix: 'Nacionalni patent',
       patentLineJoin: 'Mednarodni',
       rights: 'Vse pravice pridržane.'
+    },
+    fr: {
+      socialTitle: 'Suivez nos réseaux officiels',
+      faq: 'FAQ',
+      community: 'Communauté',
+      feedback: 'Que manquait-il sur le site ?',
+      commissioner: 'Devenez affilié',
+      patentLinePrefix: 'Brevet national',
+      patentLineJoin: 'International',
+      rights: 'Tous droits réservés.'
+    },
+    no: {
+      socialTitle: 'Følg våre offisielle kanaler',
+      faq: 'FAQ',
+      community: 'Fellesskap',
+      feedback: 'Hva manglet på nettstedet?',
+      commissioner: 'Bli partner',
+      patentLinePrefix: 'Nasjonalt patent',
+      patentLineJoin: 'Internasjonalt',
+      rights: 'Alle rettigheter forbeholdt.'
+    },
+    sv: {
+      socialTitle: 'Följ våra officiella kanaler',
+      faq: 'FAQ',
+      community: 'Community',
+      feedback: 'Vad saknades på webbplatsen?',
+      commissioner: 'Bli partner',
+      patentLinePrefix: 'Nationellt patent',
+      patentLineJoin: 'Internationellt',
+      rights: 'Alla rättigheter förbehållna.'
+    },
+    nl: {
+      socialTitle: 'Volg onze officiële kanalen',
+      faq: 'FAQ',
+      community: 'Community',
+      feedback: 'Wat ontbrak er op de site?',
+      commissioner: 'Word partner',
+      patentLinePrefix: 'Nationaal patent',
+      patentLineJoin: 'Internationaal',
+      rights: 'Alle rechten voorbehouden.'
     }
   };
 
@@ -147,6 +187,10 @@ window.STF_FOOTER = (function () {
         pl: `Opatentowana technologia · ${INFO.patentInternational}`,
         sl: `Patentirana tehnologija · ${INFO.patentInternational}`,
         it: `Tecnologia brevettata · ${INFO.patentInternational}`,
+        fr: `Technologie brevetée · ${INFO.patentInternational}`,
+        no: `Patentert teknologi · ${INFO.patentInternational}`,
+        sv: `Patenterad teknik · ${INFO.patentInternational}`,
+        nl: `Gepatenteerde technologie · ${INFO.patentInternational}`,
         en: `Patented technology · ${INFO.patentInternational}`
       };
       return intl[lang] || intl.en;
