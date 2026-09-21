@@ -893,7 +893,7 @@ window.STF_I18N = (function () {
 
   function getPathLang() {
     const path = location.pathname;
-    for (const lang of ['it', 'de', 'es', 'pl', 'sl']) {
+    for (const lang of ['it', 'de', 'es', 'pl', 'sl', 'fr', 'no', 'sv', 'nl']) {
       if (path.includes(`/${lang}/`) || path === `/${lang}`) return lang;
     }
     if (isComHost()) return 'en';
@@ -919,6 +919,10 @@ window.STF_I18N = (function () {
   function isEs() { return getLang() === 'es'; }
   function isPl() { return getLang() === 'pl'; }
   function isSl() { return getLang() === 'sl'; }
+  function isFr() { return getLang() === 'fr'; }
+  function isNo() { return getLang() === 'no'; }
+  function isSv() { return getLang() === 'sv'; }
+  function isNl() { return getLang() === 'nl'; }
 
   function isLocalized() {
     return getLang() !== 'pt';
