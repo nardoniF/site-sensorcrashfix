@@ -382,7 +382,7 @@ window.STF_I18N = (function () {
       'page.checkoutDescEn': 'Official Sensor CrashFix checkout — PayPal, cards, tracked shipping.'
     },
     en: {
-      'brand.tagline': 'Graded Optical Shield. Prevention and repair.',
+      'brand.tagline': 'Graduated Optical Shielding. Prevention and repair.',
       'nav.cart': 'Cart',
       'nav.back': 'Back',
       'nav.home': 'Home',

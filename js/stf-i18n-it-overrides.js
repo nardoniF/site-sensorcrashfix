@@ -1,6 +1,6 @@
 /** Italian overrides — merged onto STRINGS.en in stf-i18n.js */
 window.STF_I18N_IT = {
-  'brand.tagline': 'Blindatura Ottica Graduata. Prevenzione e riparazione.',
+  'brand.tagline': 'Schermatura Ottica Graduata. Prevenzione e riparazione.',
   'nav.cart': 'Carrello',
   'nav.back': 'Indietro',
   'nav.home': 'Home',

@@ -1,6 +1,6 @@
 /** Polish overrides — merged onto STRINGS.en in stf-i18n.js */
 window.STF_I18N_PL = {
-  'brand.tagline': 'Gradacyjna Osłona Optyczna. Prewencja i naprawa.',
+  'brand.tagline': 'Stopniowane Ekranowanie Optyczne. Zapobieganie i naprawa.',
   'nav.cart': 'Koszyk',
   'nav.back': 'Wstecz',
   'nav.home': 'Strona główna',
