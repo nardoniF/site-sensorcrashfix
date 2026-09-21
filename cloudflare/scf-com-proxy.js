@@ -1,7 +1,7 @@
 /**
  * Storefront proxy — serves pinned GitHub commit via jsDelivr.
- * - .com / www.sensorcrashfix.com → EN (/) + IT/DE/ES/PL/SL (/it/, /de/, …)
- * - .com.br → Portuguese (repo root); paths /de|/es|/pl|/sl|/it|/en redirecionam ao .com
+ * - .com / www.sensorcrashfix.com → EN (/) + IT/DE/ES/PL/SL/FR/NO/SV/NL (/it/, /de/, …)
+ * - .com.br → Portuguese (repo root); paths /de|/es|/pl|/sl|/it|/en|/fr|/no|/sv|/nl redirecionam ao .com
  * - First-hit: cookie / CF-IPCountry / Accept-Language → redirect para idioma nativo
  * IMPORTANT: pin COMMIT after each push so domains are not stuck on stale @main cache.
  */
@@ -79,7 +79,7 @@ const COM_SHARED_ROOT_PAGES = new Set([
   '/google7b1cb2c1f70b0fda.html',
 ]);
 
-const INTL_LANGS = ['it', 'de', 'es', 'pl', 'sl'];
+const INTL_LANGS = ['it', 'de', 'es', 'pl', 'sl', 'fr', 'no', 'sv', 'nl'];
 
 function mapPathCom(pathname) {
   if (isStaticAsset(pathname)) return pathname;
@@ -178,7 +178,7 @@ function patchHtml(html, originPath, br) {
     html = html.replace(/<head([^>]*)>/i, `<head$1><base href="${baseHref}">`);
   }
   if (!/stf-lang-nav\.js/i.test(html)) {
-    html = html.replace(/<head([^>]*)>/i, `<head$1><script src="/js/stf-lang-nav.js?v=7"></script>`);
+    html = html.replace(/<head([^>]*)>/i, `<head$1><script src="/js/stf-lang-nav.js?v=8"></script>`);
   }
   return html;
 }
@@ -289,7 +289,7 @@ export default {
 
     // Intl canônico no .com — consolidar .com.br/{de,es,pl,sl,it,en}/ → .com
     if (br) {
-      const m = url.pathname.match(/^\/(de|es|pl|sl|it)(\/.*)?$/i);
+      const m = url.pathname.match(/^\/(de|es|pl|sl|it|fr|no|sv|nl)(\/.*)?$/i);
       if (m) {
         const dest = new URL(`https://www.sensorcrashfix.com/${m[1].toLowerCase()}${m[2] || '/'}`);
         dest.search = url.search;
@@ -314,7 +314,7 @@ export default {
     if (!isBotUserAgent(request.headers.get('user-agent'))) {
       const hadStfLang = url.searchParams.has('stf_lang');
       const force = String(url.searchParams.get('stf_lang') || '').toLowerCase();
-      const forcedLang = ['pt', 'en', 'it', 'de', 'es', 'pl', 'sl'].includes(force) ? force : null;
+      const forcedLang = ['pt', 'en', 'it', 'de', 'es', 'pl', 'sl', 'fr', 'no', 'sv', 'nl'].includes(force) ? force : null;
       if (forcedLang) url.searchParams.delete('stf_lang');
       const preferred = forcedLang || resolvePreferredLang({
         cookieHeader: request.headers.get('cookie'),

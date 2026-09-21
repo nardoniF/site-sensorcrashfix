@@ -771,13 +771,17 @@ window.STF_I18N = (function () {
     }
   };
 
-  const PATH_LANGS = ['en', 'it', 'de', 'es', 'pl', 'sl'];
+  const PATH_LANGS = ['en', 'it', 'de', 'es', 'pl', 'sl', 'fr', 'no', 'sv', 'nl'];
   const OVERRIDE_GLOBALS = {
     it: 'STF_I18N_IT',
     de: 'STF_I18N_DE',
     es: 'STF_I18N_ES',
     pl: 'STF_I18N_PL',
-    sl: 'STF_I18N_SL'
+    sl: 'STF_I18N_SL',
+    fr: 'STF_I18N_FR',
+    no: 'STF_I18N_NO',
+    sv: 'STF_I18N_SV',
+    nl: 'STF_I18N_NL'
   };
 
   function ensureExtraStrings() {
@@ -799,7 +803,11 @@ window.STF_I18N = (function () {
       de: 'page.checkoutTitleDe',
       es: 'page.checkoutTitleEs',
       pl: 'page.checkoutTitlePl',
-      sl: 'page.checkoutTitleSl'
+      sl: 'page.checkoutTitleSl',
+      fr: 'page.checkoutTitle',
+      no: 'page.checkoutTitle',
+      sv: 'page.checkoutTitle',
+      nl: 'page.checkoutTitle'
     };
     return map[lang] || 'page.checkoutTitleEn';
   }
@@ -810,7 +818,11 @@ window.STF_I18N = (function () {
       de: 'page.checkoutDescDe',
       es: 'page.checkoutDescEs',
       pl: 'page.checkoutDescPl',
-      sl: 'page.checkoutDescSl'
+      sl: 'page.checkoutDescSl',
+      fr: 'page.checkoutDesc',
+      no: 'page.checkoutDesc',
+      sv: 'page.checkoutDesc',
+      nl: 'page.checkoutDesc'
     };
     return map[lang] || 'page.checkoutDescEn';
   }
@@ -946,7 +958,7 @@ window.STF_I18N = (function () {
   }
 
   function setLang(lang) {
-    const htmlLang = { pt: 'pt-BR', en: 'en', it: 'it', de: 'de', es: 'es', pl: 'pl', sl: 'sl' };
+    const htmlLang = { pt: 'pt-BR', en: 'en', it: 'it', de: 'de', es: 'es', pl: 'pl', sl: 'sl', fr: 'fr', no: 'no', sv: 'sv', nl: 'nl' };
     const l = PATH_LANGS.includes(lang) ? lang : (lang === 'pt' ? 'pt' : 'en');
     try { sessionStorage.setItem('stf_lang', l); } catch (e) { /* ignore */ }
     document.documentElement.lang = htmlLang[l] || l;
@@ -957,7 +969,7 @@ window.STF_I18N = (function () {
     const lang = getLang();
     ensureExtraStrings();
     let s = STRINGS[lang]?.[key];
-    if (!s && ['de', 'es', 'pl', 'sl'].includes(lang)) s = STRINGS.en?.[key];
+    if (!s && ['de', 'es', 'pl', 'sl', 'fr', 'no', 'sv', 'nl'].includes(lang)) s = STRINGS.en?.[key];
     if (!s && lang === 'it') s = STRINGS.en?.[key];
     if (!s) s = STRINGS.pt[key] ?? key;
     if (vars) {

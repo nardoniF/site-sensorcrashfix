@@ -8,7 +8,7 @@
     if (window.STF_PAGE_LANG?.get) return window.STF_PAGE_LANG.get();
     if (window.STF_I18N?.getLang) return window.STF_I18N.getLang();
     const lang = (document.documentElement.lang || 'pt').slice(0, 2).toLowerCase();
-    if (['pt', 'en', 'it', 'de', 'es', 'pl', 'sl'].includes(lang)) return lang;
+    if (['pt', 'en', 'it', 'de', 'es', 'pl', 'sl', 'fr', 'no', 'sv', 'nl'].includes(lang)) return lang;
     return 'pt';
   }
 
