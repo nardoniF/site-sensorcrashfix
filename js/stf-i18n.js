@@ -1590,7 +1590,7 @@ window.STF_I18N = (function () {
   });
 
   return {
-    t, getLang, isEn, isIt, isDe, isEs, isPl, isSl, isLocalized, checkoutMarket, isIntlCheckoutShell, setLang, inEnDir, inItDir, inLangDir, assetPrefix, pageHref, accountHref, comprarPageHref,
+    t, getLang, isEn, isIt, isDe, isEs, isPl, isSl, isFr, isNo, isSv, isNl, isLocalized, checkoutMarket, isIntlCheckoutShell, setLang, inEnDir, inItDir, inLangDir, assetPrefix, pageHref, accountHref, comprarPageHref,
     applyCheckoutDom, applyCheckoutFormPlaceholders, applyLojaDom, applyContaDom, applyOndeComprarDom, applyShellDom,
     langQuery, lojaHref, STRINGS
   };

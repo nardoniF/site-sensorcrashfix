@@ -8,8 +8,34 @@ export const COM = 'https://www.sensorcrashfix.com';
 
 export const HREFLANG_ORDER = ['pt-BR', 'en', 'it', 'de', 'es', 'pl', 'sl', 'fr', 'no', 'sv', 'nl', 'x-default'];
 
+/**
+ * Cluster SEO: mesmo conteúdo, slug localizado por idioma.
+ * Chave usada em PUBLIC_PAGES; arquivos reais em SEO_PAGE_FILES.
+ */
+export const SEO_PAGE_FILES = {
+  'seo:cracked-sensor': {
+    'pt-BR': 'sensor-trincado.html',
+    en: 'cracked-sensor.html',
+    it: 'sensore-incrinato.html',
+    de: 'sensor-gerissen.html',
+    es: 'sensor-roto.html',
+    pl: 'pekniety-czujnik.html',
+    sl: 'poceno-tipalo.html',
+    fr: 'capteur-fissure.html',
+    no: 'sprukket-sensor.html',
+    sv: 'sprucken-sensor.html',
+    nl: 'gebarsten-sensor.html',
+  },
+};
+
 /** Páginas indexáveis (SEO). */
-export const PUBLIC_PAGES = ['index', 'loja.html', 'onde-comprar.html', 'comunidade.html'];
+export const PUBLIC_PAGES = [
+  'index',
+  'loja.html',
+  'onde-comprar.html',
+  'comunidade.html',
+  'seo:cracked-sensor',
+];
 
 /** Páginas noindex — hreflang para consistência, sem sitemap. */
 export const NOINDEX_PAGES = ['comprar.html', 'minha-conta.html'];
@@ -28,10 +54,21 @@ export function canonicalHost(lang) {
   return COM;
 }
 
+/** Nome do arquivo HTML (ou '' para index) no locale. */
+export function pageFileName(lang, page) {
+  const code = lang === 'pt' ? 'pt-BR' : lang;
+  if (page.startsWith('seo:') && SEO_PAGE_FILES[page]) {
+    const map = SEO_PAGE_FILES[page];
+    return map[code] || map.en;
+  }
+  if (page === 'index') return '';
+  return page;
+}
+
 /** @param {'pt-BR'|'en'|'it'|'de'|'es'|'pl'|'sl'|'fr'|'no'|'sv'|'nl'|'x-default'} lang */
 export function hreflangUrl(lang, page) {
-  const file = page === 'index' ? '' : page;
-  if (lang === 'pt-BR') return file ? `${BR}/${file}` : `${BR}/`;
+  const file = pageFileName(lang === 'x-default' ? 'pt-BR' : lang, page);
+  if (lang === 'pt-BR' || lang === 'x-default') return file ? `${BR}/${file}` : `${BR}/`;
   if (lang === 'en') return file ? `${COM}/${file}` : `${COM}/`;
   if (lang === 'it') return file ? `${COM}/it/${file}` : `${COM}/it/`;
   if (lang === 'de') return file ? `${COM}/de/${file}` : `${COM}/de/`;
@@ -42,7 +79,6 @@ export function hreflangUrl(lang, page) {
   if (lang === 'no') return file ? `${COM}/no/${file}` : `${COM}/no/`;
   if (lang === 'sv') return file ? `${COM}/sv/${file}` : `${COM}/sv/`;
   if (lang === 'nl') return file ? `${COM}/nl/${file}` : `${COM}/nl/`;
-  if (lang === 'x-default') return file ? `${BR}/${file}` : `${BR}/`;
   throw new Error(`hreflang desconhecido: ${lang}`);
 }
 
@@ -64,13 +100,23 @@ export function xhtmlLinkTags(page, indent = '    ') {
   ).join('\n');
 }
 
+/** Mapa reverso: nome de arquivo → chave PUBLIC_PAGES (inclui SEO). */
+function pageKeyFromFile(fileName) {
+  if (fileName === 'index.html' || fileName === 'index') return 'index';
+  for (const [key, map] of Object.entries(SEO_PAGE_FILES)) {
+    if (Object.values(map).includes(fileName)) return key;
+  }
+  return fileName;
+}
+
 /** @returns {{ lang: string, page: string } | null} */
 export function parseLocaleFile(rel) {
   const norm = rel.replace(/\\/g, '/');
   const m = norm.match(/^(?:(en|it|de|es|pl|sl|fr|no|sv|nl)\/)?([^/]+\.html|index\.html)$/);
   if (!m) return null;
   const lang = m[1] || 'pt-BR';
-  const page = m[2] === 'index.html' ? 'index' : m[2];
+  const fileName = m[2] === 'index.html' ? 'index.html' : m[2];
+  const page = pageKeyFromFile(fileName);
   if (!ALL_PAGES.includes(page)) return null;
   return { lang, page };
 }
@@ -78,6 +124,14 @@ export function parseLocaleFile(rel) {
 export function localeHtmlFiles() {
   const files = [];
   for (const page of ALL_PAGES) {
+    if (page.startsWith('seo:')) {
+      const map = SEO_PAGE_FILES[page];
+      files.push(map['pt-BR']);
+      for (const lang of LANG_DIRS) {
+        files.push(`${lang}/${map[lang]}`);
+      }
+      continue;
+    }
     const rootName = page === 'index' ? 'index.html' : page;
     files.push(rootName);
     for (const lang of LANG_DIRS) {

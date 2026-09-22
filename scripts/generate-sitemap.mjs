@@ -25,6 +25,7 @@ const PRIORITY = {
   'loja.html': '0.8',
   'onde-comprar.html': '0.7',
   'comunidade.html': '0.75',
+  'seo:cracked-sensor': '0.9',
 };
 
 const CHANGEFREQ = {
@@ -32,6 +33,7 @@ const CHANGEFREQ = {
   'loja.html': 'weekly',
   'onde-comprar.html': 'monthly',
   'comunidade.html': 'daily',
+  'seo:cracked-sensor': 'weekly',
 };
 
 function buildUrlset(langs) {

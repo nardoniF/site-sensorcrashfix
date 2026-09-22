@@ -8,6 +8,10 @@
     if (/\/es\//i.test(p)) return 'es';
     if (/\/pl\//i.test(p)) return 'pl';
     if (/\/sl\//i.test(p)) return 'sl';
+    if (/\/fr\//i.test(p)) return 'fr';
+    if (/\/no\//i.test(p)) return 'no';
+    if (/\/sv\//i.test(p)) return 'sv';
+    if (/\/nl\//i.test(p)) return 'nl';
     if (/\/en\//i.test(p)) return 'en';
     if (isIntlHost) return 'en';
     return 'pt';
@@ -17,13 +21,27 @@
   const isEs = pathLang === 'es';
   const isPl = pathLang === 'pl';
   const isSl = pathLang === 'sl';
+  const isFr = pathLang === 'fr';
+  const isNo = pathLang === 'no';
+  const isSv = pathLang === 'sv';
+  const isNl = pathLang === 'nl';
   const isEn = pathLang === 'en';
-  const isIntlCopy = isEn || isIt || isDe || isEs || isPl || isSl;
-  const langPrefix = isIt ? '/it/' : isDe ? '/de/' : isEs ? '/es/' : isPl ? '/pl/' : isSl ? '/sl/' : isEn ? '/en/' : '/';
-  const pageUrl = isIntlHost
-    ? (pathLang === 'en' ? SITE + '/' : SITE + langPrefix)
-    : (pathLang === 'pt' ? SITE + '/' : SITE + langPrefix);
-  const inLanguage = isIt ? 'it' : isDe ? 'de' : isEs ? 'es' : isPl ? 'pl' : isSl ? 'sl' : isEn ? 'en' : 'pt-BR';
+  const isIntlCopy = isEn || isIt || isDe || isEs || isPl || isSl || isFr || isNo || isSv || isNl;
+  const LANG_PREFIX = {
+    it: '/it/', de: '/de/', es: '/es/', pl: '/pl/', sl: '/sl/',
+    fr: '/fr/', no: '/no/', sv: '/sv/', nl: '/nl/', en: '/en/'
+  };
+  const langPrefix = LANG_PREFIX[pathLang] || '/';
+  const pageUrl = (() => {
+    const canon = document.querySelector('link[rel="canonical"]')?.getAttribute('href');
+    if (canon) return canon;
+    if (isIntlHost) return pathLang === 'en' ? SITE + '/' : SITE + langPrefix;
+    return pathLang === 'pt' ? SITE + '/' : SITE + langPrefix;
+  })();
+  const inLanguage = ({
+    it: 'it', de: 'de', es: 'es', pl: 'pl', sl: 'sl',
+    fr: 'fr', no: 'nb', sv: 'sv', nl: 'nl', en: 'en', pt: 'pt-BR'
+  })[pathLang] || 'pt-BR';
 
   /** Fallback if DOM/config still empty when Googlebot runs (real customer quotes). */
   const FALLBACK_REVIEWS = {
@@ -43,7 +61,10 @@
     if (!row) return '';
     const fromI18n = row.i18n?.[pathLang]?.[field];
     if (fromI18n) return String(fromI18n);
-    const suffix = { en: 'En', it: 'It', de: 'De', es: 'Es', pl: 'Pl', sl: 'Sl' }[pathLang];
+    const suffix = {
+      en: 'En', it: 'It', de: 'De', es: 'Es', pl: 'Pl', sl: 'Sl',
+      fr: 'Fr', no: 'No', sv: 'Sv', nl: 'Nl'
+    }[pathLang];
     if (suffix && row[field + suffix]) return String(row[field + suffix]);
     if (isIntlCopy && row[field + 'En']) return String(row[field + 'En']);
     return String(row[field] || '');
@@ -259,10 +280,16 @@
     let productImage = SITE + '/images/brand/sensorcrashfix.jpg';
     let productId = isIntlCopy ? 'optical-lens-intl' : 'kit-sensor-crashfix';
     let productDescription = isIt
-      ? 'Kit con lente ottica per sensore incrinato dello smartwatch: ripristina tenuta, rilevamento al polso, frequenza cardiaca e allenamenti senza sostituire il modulo.'
-      : isIntlCopy
-        ? 'Optical cover lens for cracked smartwatch sensor glass: restores the seal, wrist detection, heart rate and training without replacing the module.'
-        : 'Kit com lente ótica para sensor trincado/rachado no smartwatch: restaura vedação, pulso, batimentos e treinos sem trocar o módulo.';
+      ? 'Kit con lente ottica per sensore incrinato o rotto dello smartwatch: ripristina tenuta, rilevamento al polso, frequenza cardiaca e allenamenti senza sostituire il modulo.'
+      : isDe
+        ? 'Optische Abdecklinse für gerissenen oder kaputten Smartwatch-Sensor: stellt Dichtung, Pulsmessung und Training wieder her — ohne Modulwechsel.'
+        : isEs
+          ? 'Lente óptica para sensor agrietado o roto del smartwatch: restaura sellado, detección de muñeca y pulsaciones sin cambiar el módulo.'
+          : isFr
+            ? 'Lentille optique pour capteur fissuré ou cassé de smartwatch : restaure l’étanchéité, la détection au poignet et le rythme cardiaque sans changer le module.'
+            : isIntlCopy
+              ? 'Optical cover lens for cracked or broken smartwatch sensor glass: restores the seal, wrist detection, heart rate and training without replacing the module.'
+              : 'Kit com lente ótica para sensor trincado, rachado ou quebrado no smartwatch: restaura vedação, pulso, batimentos e treinos sem trocar o módulo.';
 
     let cfg = null;
     if (window.CHECKOUT_CONFIG) cfg = window.CHECKOUT_CONFIG;
