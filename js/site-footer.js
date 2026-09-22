@@ -320,7 +320,7 @@ window.STF_FOOTER = (function () {
       <a class="footer-tattoofix-promo" href="${href}" target="_blank" rel="noopener" data-evento="clique_tattoofix" data-rotulo="${rotulo}" aria-label="Sensor Tattoo Fix — ${s.tattooTagline}">
         <span class="footer-tattoofix-see">${s.tattooSeeAlso}</span>
         <span class="footer-tattoofix-logo" aria-hidden="true">
-          <img src="${logoSrc}" alt="" width="128" height="128" loading="lazy" decoding="async">
+          <img src="${logoSrc}" alt="" width="128" height="128" loading="eager" decoding="async" fetchpriority="high">
         </span>
         <span class="footer-tattoofix-tag">${s.tattooTagline}</span>
       </a>
