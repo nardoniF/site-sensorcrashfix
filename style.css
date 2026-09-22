@@ -1881,6 +1881,258 @@ footer,
     margin-right: auto;
 }
 
+/* Cross-promo Sensor Tattoo Fix — lado direito do rodapé (espelho animado do banner no Tattoo Fix) */
+.footer-shell {
+    position: relative;
+    display: block;
+}
+.footer-main {
+    width: 100%;
+}
+.footer-tattoofix-promo {
+    --tattoo-gold: #E8B923;
+    --tattoo-gold-bright: #FFD54A;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--tattoo-gold);
+    max-width: 11rem;
+    margin: 28px auto 0;
+    padding: 4px 6px;
+    transition: color 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
+}
+.footer-tattoofix-tag {
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--tattoo-gold);
+    max-width: 11em;
+    animation: stf-tattoo-tag-glow 2.4s ease-in-out infinite;
+}
+.footer-tattoofix-see {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+    line-height: 1.2;
+    animation: stf-tattoo-see-flash 2.8s ease-in-out infinite;
+}
+.footer-tattoofix-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 168px;
+    height: 168px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #0a0a0a;
+    box-shadow:
+      0 0 18px rgba(232, 185, 35, 0.35),
+      0 0 36px rgba(232, 185, 35, 0.18);
+    line-height: 0;
+    position: relative;
+    animation: stf-tattoo-logo-bob 3.2s ease-in-out infinite;
+}
+.footer-tattoofix-logo::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232, 185, 35, 0.22) 0%, transparent 68%);
+    z-index: 0;
+    pointer-events: none;
+    animation: stf-tattoo-aura 2.2s ease-in-out infinite;
+}
+.footer-tattoofix-logo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid rgba(232, 185, 35, 0.8);
+    box-shadow:
+      0 0 10px rgba(232, 185, 35, 0.55),
+      inset 0 0 12px rgba(232, 185, 35, 0.15);
+    z-index: 2;
+    pointer-events: none;
+    animation: stf-tattoo-ring 2.6s linear infinite;
+}
+.footer-tattoofix-logo img {
+    width: 168px;
+    height: 168px;
+    max-width: none;
+    flex: 0 0 auto;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    margin: 0;
+    border-radius: 50%;
+    position: relative;
+    z-index: 1;
+    animation: stf-tattoo-logo-pulse 2.2s ease-in-out infinite;
+}
+@keyframes stf-tattoo-aura {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
+}
+@keyframes stf-tattoo-ring {
+    0% {
+      opacity: 0.85;
+      border-color: rgba(232, 185, 35, 0.7);
+      box-shadow:
+        0 0 8px rgba(232, 185, 35, 0.45),
+        inset 0 0 10px rgba(232, 185, 35, 0.12);
+    }
+    40% {
+      opacity: 1;
+      border-color: rgba(255, 213, 74, 0.95);
+      box-shadow:
+        0 0 16px rgba(255, 213, 74, 0.7),
+        inset 0 0 14px rgba(232, 185, 35, 0.22);
+    }
+    100% {
+      opacity: 0.75;
+      border-color: rgba(232, 185, 35, 0.55);
+      box-shadow:
+        0 0 8px rgba(232, 185, 35, 0.4),
+        inset 0 0 10px rgba(232, 185, 35, 0.12);
+    }
+}
+@keyframes stf-tattoo-logo-pulse {
+    0%, 100% {
+      filter: drop-shadow(0 0 6px rgba(232, 185, 35, 0.35));
+    }
+    50% {
+      filter: drop-shadow(0 0 18px rgba(232, 185, 35, 0.85))
+              drop-shadow(0 0 32px rgba(200, 150, 20, 0.45));
+    }
+}
+@keyframes stf-tattoo-logo-bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+@keyframes stf-tattoo-see-flash {
+    0%, 100% { color: rgba(255, 255, 255, 0.45); letter-spacing: 0.14em; }
+    45% { color: rgba(255, 255, 255, 0.95); letter-spacing: 0.2em; text-shadow: 0 0 10px rgba(232, 185, 35, 0.55); }
+    55% { color: rgba(232, 185, 35, 0.95); letter-spacing: 0.18em; }
+}
+@keyframes stf-tattoo-tag-glow {
+    0%, 100% {
+      color: var(--tattoo-gold);
+      text-shadow: 0 0 4px rgba(232, 185, 35, 0.25);
+      opacity: 0.85;
+    }
+    50% {
+      color: var(--tattoo-gold-bright);
+      text-shadow:
+        0 0 8px rgba(232, 185, 35, 0.85),
+        0 0 18px rgba(232, 185, 35, 0.45);
+      opacity: 1;
+    }
+}
+.footer-tattoofix-promo:hover,
+.footer-tattoofix-promo:focus-visible {
+    transform: translateY(-2px);
+    outline: none;
+}
+.footer-tattoofix-promo:hover .footer-tattoofix-see,
+.footer-tattoofix-promo:focus-visible .footer-tattoofix-see {
+    animation: none;
+    color: #fff;
+    text-shadow: 0 0 12px rgba(232, 185, 35, 0.7);
+}
+.footer-tattoofix-promo:hover .footer-tattoofix-logo,
+.footer-tattoofix-promo:focus-visible .footer-tattoofix-logo {
+    animation: none;
+    transform: translateY(-2px);
+}
+.footer-tattoofix-promo:hover .footer-tattoofix-logo img,
+.footer-tattoofix-promo:focus-visible .footer-tattoofix-logo img {
+    animation: none;
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 22px rgba(232, 185, 35, 0.95))
+            drop-shadow(0 0 40px rgba(200, 150, 20, 0.55));
+}
+.footer-tattoofix-promo:hover .footer-tattoofix-logo::before,
+.footer-tattoofix-promo:focus-visible .footer-tattoofix-logo::before {
+    opacity: 1;
+    transform: scale(1.12);
+    animation: none;
+}
+.footer-tattoofix-promo:hover .footer-tattoofix-tag,
+.footer-tattoofix-promo:focus-visible .footer-tattoofix-tag {
+    animation: none;
+    color: #ffe082;
+    text-shadow: 0 0 12px rgba(232, 185, 35, 0.9);
+}
+@media (prefers-reduced-motion: reduce) {
+    .footer-tattoofix-logo,
+    .footer-tattoofix-logo::before,
+    .footer-tattoofix-logo::after,
+    .footer-tattoofix-logo img,
+    .footer-tattoofix-see,
+    .footer-tattoofix-tag {
+        animation: none !important;
+    }
+    .footer-tattoofix-logo::before {
+        opacity: 0.55;
+        transform: none;
+    }
+    .footer-tattoofix-logo::after {
+        opacity: 0.6;
+        transform: none;
+    }
+    .footer-tattoofix-logo img {
+        filter: drop-shadow(0 0 10px rgba(232, 185, 35, 0.4));
+    }
+}
+@media (min-width: 900px) {
+    .site-footer > .container {
+        position: relative;
+    }
+    .footer-tattoofix-promo {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        margin: 0;
+        z-index: 1;
+        max-width: 10.5rem;
+    }
+    .footer-tattoofix-promo:hover,
+    .footer-tattoofix-promo:focus-visible {
+        transform: translateY(calc(-50% - 2px));
+    }
+    .footer-main {
+        padding-right: 11.5rem;
+        padding-left: 11.5rem;
+        box-sizing: border-box;
+    }
+}
+@media (max-width: 899px) {
+    .footer-tattoofix-promo {
+        margin-top: 24px;
+        padding-top: 18px;
+        border-top: 1px solid #1a1a1a;
+        max-width: none;
+    }
+    .footer-tattoofix-logo {
+        width: 148px;
+        height: 148px;
+    }
+    .footer-tattoofix-logo img {
+        width: 148px;
+        height: 148px;
+    }
+}
+
 /* RESPONSIVIDADE */
 @media (max-width: 1024px) {
     .hero h1 { font-size: 2.8rem; }
