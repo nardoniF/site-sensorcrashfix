@@ -1932,9 +1932,11 @@ footer,
     padding: 0;
     border: none;
     border-radius: 50%;
-    overflow: visible;
-    background: transparent;
-    box-shadow: none;
+    overflow: hidden;
+    background: #0a0a0a;
+    box-shadow:
+      0 0 18px rgba(232, 185, 35, 0.35),
+      0 0 36px rgba(232, 185, 35, 0.18);
     line-height: 0;
     position: relative;
     animation: stf-tattoo-logo-bob 3.2s ease-in-out infinite;
@@ -1942,9 +1944,9 @@ footer,
 .footer-tattoofix-logo::before {
     content: '';
     position: absolute;
-    inset: -10px;
+    inset: 0;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(232, 185, 35, 0.45) 0%, rgba(232, 185, 35, 0.12) 42%, transparent 70%);
+    background: radial-gradient(circle, rgba(232, 185, 35, 0.22) 0%, transparent 68%);
     z-index: 0;
     pointer-events: none;
     animation: stf-tattoo-aura 2.2s ease-in-out infinite;
@@ -1952,23 +1954,24 @@ footer,
 .footer-tattoofix-logo::after {
     content: '';
     position: absolute;
-    inset: -4px;
+    inset: 0;
     border-radius: 50%;
-    border: 2px solid rgba(232, 185, 35, 0.55);
+    border: 2px solid rgba(232, 185, 35, 0.8);
     box-shadow:
       0 0 10px rgba(232, 185, 35, 0.55),
-      0 0 22px rgba(232, 185, 35, 0.28),
       inset 0 0 12px rgba(232, 185, 35, 0.15);
-    z-index: 0;
+    z-index: 2;
     pointer-events: none;
     animation: stf-tattoo-ring 2.6s linear infinite;
 }
 .footer-tattoofix-logo img {
-    width: 168px;
-    height: 168px;
+    /* Maior que o orb: corta a folga do PNG e cola emblema/texto na borda */
+    width: 218px;
+    height: 218px;
     max-width: none;
-    object-fit: contain;
-    object-position: center;
+    flex: 0 0 auto;
+    object-fit: cover;
+    object-position: center 45%;
     display: block;
     margin: 0;
     border-radius: 50%;
@@ -1977,33 +1980,37 @@ footer,
     animation: stf-tattoo-logo-pulse 2.2s ease-in-out infinite;
 }
 @keyframes stf-tattoo-aura {
-    0%, 100% { opacity: 0.45; transform: scale(0.92); }
-    50% { opacity: 1; transform: scale(1.08); }
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
 }
 @keyframes stf-tattoo-ring {
     0% {
-      transform: scale(1) rotate(0deg);
       opacity: 0.85;
       border-color: rgba(232, 185, 35, 0.7);
+      box-shadow:
+        0 0 8px rgba(232, 185, 35, 0.45),
+        inset 0 0 10px rgba(232, 185, 35, 0.12);
     }
     40% {
-      transform: scale(1.06) rotate(140deg);
       opacity: 1;
       border-color: rgba(255, 213, 74, 0.95);
+      box-shadow:
+        0 0 16px rgba(255, 213, 74, 0.7),
+        inset 0 0 14px rgba(232, 185, 35, 0.22);
     }
     100% {
-      transform: scale(1) rotate(360deg);
       opacity: 0.75;
       border-color: rgba(232, 185, 35, 0.55);
+      box-shadow:
+        0 0 8px rgba(232, 185, 35, 0.4),
+        inset 0 0 10px rgba(232, 185, 35, 0.12);
     }
 }
 @keyframes stf-tattoo-logo-pulse {
     0%, 100% {
-      transform: scale(1);
       filter: drop-shadow(0 0 6px rgba(232, 185, 35, 0.35));
     }
     50% {
-      transform: scale(1.06);
       filter: drop-shadow(0 0 18px rgba(232, 185, 35, 0.85))
               drop-shadow(0 0 32px rgba(200, 150, 20, 0.45));
     }
@@ -2117,10 +2124,13 @@ footer,
         border-top: 1px solid #1a1a1a;
         max-width: none;
     }
-    .footer-tattoofix-logo,
-    .footer-tattoofix-logo img {
+    .footer-tattoofix-logo {
         width: 148px;
         height: 148px;
+    }
+    .footer-tattoofix-logo img {
+        width: 192px;
+        height: 192px;
     }
 }
 
