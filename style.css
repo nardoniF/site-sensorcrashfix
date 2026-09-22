@@ -1966,8 +1966,8 @@ footer,
 }
 .footer-tattoofix-logo img {
     /* Maior que o orb: corta a folga do PNG e cola emblema/texto na borda */
-    width: 218px;
-    height: 218px;
+    width: 248px;
+    height: 248px;
     max-width: none;
     flex: 0 0 auto;
     object-fit: cover;
@@ -2129,8 +2129,8 @@ footer,
         height: 148px;
     }
     .footer-tattoofix-logo img {
-        width: 192px;
-        height: 192px;
+        width: 220px;
+        height: 220px;
     }
 }
 
