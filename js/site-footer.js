@@ -27,7 +27,7 @@ window.STF_FOOTER = (function () {
       patentLineJoin: 'Internacional',
       rights: 'Todos os direitos reservados.',
       tattooSeeAlso: 'Veja também',
-      tattooTagline: 'Para tatuagem no sensor'
+      tattooTagline: 'Sensor falhando na tattoo'
     },
     en: {
       socialTitle: 'Follow our official channels',
@@ -39,7 +39,7 @@ window.STF_FOOTER = (function () {
       patentLineJoin: 'International',
       rights: 'All rights reserved.',
       tattooSeeAlso: 'See also',
-      tattooTagline: 'For tattooed sensors'
+      tattooTagline: 'Sensor failing on the tattoo'
     },
     it: {
       socialTitle: 'Segui i nostri canali ufficiali',
@@ -51,7 +51,7 @@ window.STF_FOOTER = (function () {
       patentLineJoin: 'Internazionale',
       rights: 'Tutti i diritti riservati.',
       tattooSeeAlso: 'Vedi anche',
-      tattooTagline: 'Per tatuaggi sul sensore'
+      tattooTagline: 'Sensore che fallisce sul tattoo'
     },
     de: {
       socialTitle: 'Folgen Sie unseren offiziellen Kanälen',
@@ -63,7 +63,7 @@ window.STF_FOOTER = (function () {
       patentLineJoin: 'International',
       rights: 'Alle Rechte vorbehalten.',
       tattooSeeAlso: 'Siehe auch',
-      tattooTagline: 'Für Tattoos am Sensor'
+      tattooTagline: 'Sensor fällt beim Tattoo aus'
     },
     es: {
       socialTitle: 'Sigue nuestras redes oficiales',
@@ -75,7 +75,7 @@ window.STF_FOOTER = (function () {
       patentLineJoin: 'Internacional',
       rights: 'Todos los derechos reservados.',
       tattooSeeAlso: 'Ver también',
-      tattooTagline: 'Para tatuaje en el sensor'
+      tattooTagline: 'Sensor fallando en el tattoo'
     },
     pl: {
       socialTitle: 'Obserwuj nasze oficjalne kanały',
@@ -87,7 +87,7 @@ window.STF_FOOTER = (function () {
       patentLineJoin: 'Międzynarodowy',
       rights: 'Wszelkie prawa zastrzeżone.',
       tattooSeeAlso: 'Zobacz też',
-      tattooTagline: 'Na tatuaż na czujniku'
+      tattooTagline: 'Sensor zawodzi na tatuażu'
     },
     sl: {
       socialTitle: 'Sledite našim uradnim kanalom',
@@ -99,7 +99,7 @@ window.STF_FOOTER = (function () {
       patentLineJoin: 'Mednarodni',
       rights: 'Vse pravice pridržane.',
       tattooSeeAlso: 'Glej tudi',
-      tattooTagline: 'Za tetovažo na tipalu'
+      tattooTagline: 'Senzor odpoveduje na tetovažo'
     },
     fr: {
       socialTitle: 'Suivez nos réseaux officiels',
@@ -111,7 +111,7 @@ window.STF_FOOTER = (function () {
       patentLineJoin: 'International',
       rights: 'Tous droits réservés.',
       tattooSeeAlso: 'Voir aussi',
-      tattooTagline: 'Pour tatouage sur le capteur'
+      tattooTagline: 'Capteur qui échoue sur le tattoo'
     },
     no: {
       socialTitle: 'Følg våre offisielle kanaler',
@@ -123,7 +123,7 @@ window.STF_FOOTER = (function () {
       patentLineJoin: 'Internasjonalt',
       rights: 'Alle rettigheter forbeholdt.',
       tattooSeeAlso: 'Se også',
-      tattooTagline: 'For tatovering på sensoren'
+      tattooTagline: 'Sensor som svikter på tattoo'
     },
     sv: {
       socialTitle: 'Följ våra officiella kanaler',
@@ -135,7 +135,7 @@ window.STF_FOOTER = (function () {
       patentLineJoin: 'Internationellt',
       rights: 'Alla rättigheter förbehållna.',
       tattooSeeAlso: 'Se också',
-      tattooTagline: 'För tatuering på sensorn'
+      tattooTagline: 'Sensor som fallerar på tatueringen'
     },
     nl: {
       socialTitle: 'Volg onze officiële kanalen',
@@ -147,7 +147,7 @@ window.STF_FOOTER = (function () {
       patentLineJoin: 'Internationaal',
       rights: 'Alle rechten voorbehouden.',
       tattooSeeAlso: 'Bekijk ook',
-      tattooTagline: 'Voor tattoo op de sensor'
+      tattooTagline: 'Sensor die faalt op de tattoo'
     }
   };
 
@@ -314,7 +314,7 @@ window.STF_FOOTER = (function () {
   function tattooFixPromo(lang, prefix) {
     const s = t(lang);
     const href = tattooFixHref(lang);
-    const logoSrc = `${prefix}images/partners/sensortattoofix-icon.png?v=6`;
+    const logoSrc = `${prefix}images/partners/sensortattoofix-icon.png?v=7`;
     const rotulo = `Footer TattooFix${lang !== 'pt' ? ' ' + lang.toUpperCase() : ''}`;
     return `
       <a class="footer-tattoofix-promo" href="${href}" target="_blank" rel="noopener" data-evento="clique_tattoofix" data-rotulo="${rotulo}" aria-label="Sensor Tattoo Fix — ${s.tattooTagline}">
