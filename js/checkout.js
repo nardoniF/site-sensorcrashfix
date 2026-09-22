@@ -113,8 +113,10 @@ window.STF_MONEY = window.STF_MONEY || (function () {
 
   function checkoutLocale() {
     if (!isIntlCheckoutShell()) return 'pt';
-    const lang = window.STF_I18N?.getLang?.() || 'en';
-    if (lang === 'it' || lang === 'de' || lang === 'es' || lang === 'pl' || lang === 'sl' || lang === 'en') return lang;
+    const lang = window.STF_I18N?.getLang?.()
+      || (location.pathname.match(/^\/(en|it|de|es|pl|sl|fr|no|sv|nl)(\/|$)/i) || [])[1]
+      || 'en';
+    if (['it', 'de', 'es', 'pl', 'sl', 'fr', 'no', 'sv', 'nl', 'en'].includes(lang)) return lang;
     return 'en';
   }
 
@@ -509,69 +511,31 @@ window.STF_MONEY = window.STF_MONEY || (function () {
       : d.replace(/(\d{2})(\d{5})(\d{0,4})/,'($1) $2-$3').trim();
   }
 
-  const PHONE_DIAL = {
-    BR: { flag: '🇧🇷', dial: '55' },
-    US: { flag: '🇺🇸', dial: '1' },
-    CA: { flag: '🇨🇦', dial: '1' },
-    AU: { flag: '🇦🇺', dial: '61' },
-    NZ: { flag: '🇳🇿', dial: '64' },
-    GB: { flag: '🇬🇧', dial: '44' },
-    IE: { flag: '🇮🇪', dial: '353' },
-    DE: { flag: '🇩🇪', dial: '49' },
-    FR: { flag: '🇫🇷', dial: '33' },
-    IT: { flag: '🇮🇹', dial: '39' },
-    ES: { flag: '🇪🇸', dial: '34' },
-    PT: { flag: '🇵🇹', dial: '351' },
-    NL: { flag: '🇳🇱', dial: '31' },
-    BE: { flag: '🇧🇪', dial: '32' },
-    CH: { flag: '🇨🇭', dial: '41' },
-    AT: { flag: '🇦🇹', dial: '43' },
-    SI: { flag: '🇸🇮', dial: '386' },
-    SE: { flag: '🇸🇪', dial: '46' },
-    NO: { flag: '🇳🇴', dial: '47' },
-    DK: { flag: '🇩🇰', dial: '45' },
-    PL: { flag: '🇵🇱', dial: '48' },
-    CZ: { flag: '🇨🇿', dial: '420' },
-    JP: { flag: '🇯🇵', dial: '81' },
-    KR: { flag: '🇰🇷', dial: '82' },
-    SG: { flag: '🇸🇬', dial: '65' },
-    HK: { flag: '🇭🇰', dial: '852' },
-    AE: { flag: '🇦🇪', dial: '971' },
-    ZA: { flag: '🇿🇦', dial: '27' },
-    MX: { flag: '🇲🇽', dial: '52' },
-    AR: { flag: '🇦🇷', dial: '54' },
-    CL: { flag: '🇨🇱', dial: '56' },
-    CO: { flag: '🇨🇴', dial: '57' },
-    UY: { flag: '🇺🇾', dial: '598' },
-    PY: { flag: '🇵🇾', dial: '595' }
-  };
-
   function phoneDialEl() {
     return document.getElementById('phone-dial');
   }
 
   function currentPhoneDial() {
     const code = String(els.paisCode?.value || (isInternational ? '' : 'BR')).toUpperCase();
+    if (window.STF_PHONE_DIAL?.infoForCountry) {
+      return window.STF_PHONE_DIAL.infoForCountry(code, isInternational);
+    }
     if (!code || code === 'OTHER') return null;
-    return PHONE_DIAL[code] || null;
+    return null;
   }
 
   function updatePhoneDialBadge() {
-    const dialEl = phoneDialEl();
-    const input = els.form?.telefone;
-    const wrap = input?.closest('.checkout-phone-field');
-    if (!dialEl || !input) return;
-    const info = isInternational ? currentPhoneDial() : PHONE_DIAL.BR;
-    if (!info) {
-      dialEl.hidden = true;
-      dialEl.textContent = '';
-      wrap?.classList.remove('has-dial');
+    if (window.STF_PHONE_DIAL?.sync) {
+      window.STF_PHONE_DIAL.sync({
+        country: els.paisCode?.value,
+        intl: isInternational
+      });
       return;
     }
-    dialEl.hidden = false;
-    dialEl.textContent = `${info.flag} +${info.dial}`;
-    dialEl.setAttribute('title', `+${info.dial}`);
-    wrap?.classList.add('has-dial');
+    const dialEl = phoneDialEl();
+    const input = els.form?.telefone;
+    if (!dialEl || !input) return;
+    dialEl.hidden = true;
   }
 
   function formatPhoneInput(v, intl) {
@@ -1687,8 +1651,16 @@ window.STF_MONEY = window.STF_MONEY || (function () {
   }
 
   function intlCountryLocale() {
-    const lang = (document.documentElement.lang || '').toLowerCase();
+    const lang = (window.STF_I18N?.getLang?.() || document.documentElement.lang || '').toLowerCase();
     if (lang.startsWith('it')) return 'it';
+    if (lang.startsWith('de')) return 'de';
+    if (lang.startsWith('es')) return 'es';
+    if (lang.startsWith('pl')) return 'pl';
+    if (lang.startsWith('sl')) return 'sl';
+    if (lang.startsWith('fr')) return 'fr';
+    if (lang.startsWith('no') || lang.startsWith('nb') || lang.startsWith('nn')) return 'nb';
+    if (lang.startsWith('sv')) return 'sv';
+    if (lang.startsWith('nl')) return 'nl';
     if (lang.startsWith('en')) return 'en';
     return 'pt-BR';
   }
@@ -1703,14 +1675,47 @@ window.STF_MONEY = window.STF_MONEY || (function () {
     }
   }
 
+  /** País padrão do checkout pelo idioma da página (nunca null no shell intl). */
   function defaultIntlCountry() {
-    const lang = (document.documentElement.lang || '').toLowerCase();
-    if (lang.startsWith('it')) return 'IT';
-    if (lang.startsWith('en')) return 'US';
-    return null;
+    const lang = String(
+      window.STF_I18N?.getLang?.()
+      || (location.pathname.match(/^\/(en|it|de|es|pl|sl|fr|no|sv|nl)(\/|$)/i) || [])[1]
+      || document.documentElement.lang
+      || 'en'
+    ).toLowerCase().slice(0, 2);
+    const map = {
+      pt: 'BR', en: 'US', it: 'IT', de: 'DE', es: 'ES', pl: 'PL',
+      sl: 'SI', fr: 'FR', no: 'NO', nb: 'NO', nn: 'NO', sv: 'SE', nl: 'NL'
+    };
+    if (isIntlCheckoutShell()) return map[lang] || 'US';
+    return map[lang] || 'BR';
+  }
+
+  function countryOptionExists(code) {
+    if (!els.paisCode || !code) return false;
+    return [...els.paisCode.options].some((o) => o.value === code);
+  }
+
+  function pickSelectableCountry(preferred) {
+    const candidates = [
+      preferred,
+      defaultIntlCountry(),
+      window.STF_MONEY?.visitorCountry?.(),
+      'US',
+      'IT',
+      'DE',
+      'PT'
+    ].map((c) => String(c || '').toUpperCase()).filter(Boolean);
+    for (const code of candidates) {
+      if (code === 'BR' && isIntlCheckoutShell()) continue;
+      if (countryOptionExists(code)) return code;
+    }
+    const first = [...(els.paisCode?.options || [])].find((o) => o.value && o.value !== 'BR');
+    return first?.value || (isIntlCheckoutShell() ? '' : 'BR');
   }
 
   async function resolveDefaultIntlCountry() {
+    const langDef = defaultIntlCountry();
     const base = apiBase() || (window.CONFIG_BOOTSTRAP?.configApiUrl || '').replace(/\/$/, '');
     if (base) {
       try {
@@ -1718,21 +1723,52 @@ window.STF_MONEY = window.STF_MONEY || (function () {
         if (res.ok) {
           const data = await res.json();
           const code = String(data.country || '').trim().toUpperCase();
-          if (code && code !== 'BR' && code !== 'XX' && code !== 'T1') return code;
+          // No shell intl, BR (ou códigos inválidos) → fallback do idioma
+          if (code && code !== 'BR' && code !== 'XX' && code !== 'T1') {
+            if (countryOptionExists(code) || !els.paisCode?.options?.length) return code;
+          }
         }
       } catch { /* geo indisponível */ }
     }
-    return defaultIntlCountry();
+    return langDef;
+  }
+
+  function applyCountrySelection(code, { force } = {}) {
+    if (!els.paisCode || !code) return false;
+    if (!force && els.paisCode.value && !(isIntlCheckoutShell() && els.paisCode.value === 'BR')) {
+      // Já tem país válido (ex.: rascunho / opção estática no HTML)
+      if (countryOptionExists(els.paisCode.value)) return false;
+    }
+    const next = pickSelectableCountry(code);
+    if (!next) return false;
+    els.paisCode.value = next;
+    toggleAddressForm();
+    updatePhoneField();
+    try {
+      els.paisCode.dispatchEvent(new Event('change', { bubbles: true }));
+    } catch (_) { /* ignore */ }
+    return true;
   }
 
   async function initializeLocalizedCheckout() {
+    if (!els.paisCode || !isIntlCheckoutShell()) return;
+    // Garante seleção imediata pelo idioma (antes/sem geo)
+    if (!els.paisCode.value || (isIntlCheckoutShell() && els.paisCode.value === 'BR')) {
+      applyCountrySelection(defaultIntlCountry(), { force: true });
+    }
     const def = await resolveDefaultIntlCountry();
-    if (!def || !els.paisCode) return;
-    const has = [...els.paisCode.options].some((o) => o.value === def);
-    if (!has) return;
+    if (!def) return;
+    // Só sobrescreve se ainda vazio ou se o geo for mais específico e o valor atual é só o default de idioma
     if (!els.paisCode.value || els.paisCode.value === 'BR') {
-      els.paisCode.value = def;
-      toggleAddressForm();
+      applyCountrySelection(def, { force: true });
+    } else if (
+      isIntlCheckoutShell()
+      && def !== els.paisCode.value
+      && countryOptionExists(def)
+      && els.paisCode.value === defaultIntlCountry()
+    ) {
+      // Geo do visitante diferente do default do idioma → preferir geo
+      applyCountrySelection(def, { force: true });
     }
   }
 
@@ -1740,13 +1776,7 @@ window.STF_MONEY = window.STF_MONEY || (function () {
     const src = config || cfg || window.CHECKOUT_CONFIG;
     if (!els.paisCode || !src) return;
     const intl = src.internationalShipping || {};
-    if (isLocalizedSite()) {
-      const brOpt = els.paisCode.querySelector('option[value="BR"]');
-      if (brOpt) brOpt.remove();
-    }
-    while (els.paisCode.options.length > 1) {
-      els.paisCode.remove(1);
-    }
+    const prev = els.paisCode.value;
     const locale = intlCountryLocale();
     const fromApi = Array.isArray(src.internationalCountries) ? src.internationalCountries : null;
     const entries = fromApi && fromApi.length
@@ -1757,6 +1787,16 @@ window.STF_MONEY = window.STF_MONEY || (function () {
       : Object.entries(intl)
         .filter(([code]) => code !== 'OTHER')
         .map(([code, z]) => ({ code, label: intlCountryLabel(code, z.label) }));
+
+    els.paisCode.innerHTML = '';
+
+    if (!isLocalizedSite()) {
+      const br = document.createElement('option');
+      br.value = 'BR';
+      br.textContent = 'Brasil';
+      els.paisCode.appendChild(br);
+    }
+
     entries
       .filter((e) => e.code && e.code !== 'BR' && e.code !== 'OTHER')
       .sort((a, b) => a.label.localeCompare(b.label, locale))
@@ -1770,6 +1810,16 @@ window.STF_MONEY = window.STF_MONEY || (function () {
     other.value = 'OTHER';
     other.textContent = L('country.other');
     els.paisCode.appendChild(other);
+
+    // Nunca deixar o select sem país no pedido
+    const restore = pickSelectableCountry(prev || defaultIntlCountry());
+    if (restore) {
+      els.paisCode.value = restore;
+    }
+    try {
+      els.paisCode.dispatchEvent(new Event('change', { bubbles: true }));
+    } catch (_) { /* ignore */ }
+    updatePhoneField();
   }
 
   function populateSelects() {
@@ -3491,6 +3541,7 @@ window.STF_MONEY = window.STF_MONEY || (function () {
       // Market shell first — never let BR CEP/PIX HTML bleed into EN/IT (or vice versa)
       applyCheckoutMarketShell();
       window.STF_I18N?.applyCheckoutDom?.();
+      updatePhoneField();
       cfg = await StoreConfig.load();
       products = cfg.products?.length ? cfg.products : (cfg.product ? [cfg.product] : []);
       window.STF_CART?.syncPrices?.(products);
@@ -3499,6 +3550,8 @@ window.STF_MONEY = window.STF_MONEY || (function () {
       populateSelects();
       updateSmartwatchVisibility();
       await initializeLocalizedCheckout();
+      toggleAddressForm();
+      updatePhoneField();
       if (isInternational) await refreshDisplayCurrency();
       window.STF_CART?.initBadges();
       const mpDone = await handleMercadoPagoReturn();
@@ -3588,7 +3641,9 @@ window.STF_MONEY = window.STF_MONEY || (function () {
     if (!orderSidebarLocked) {
       try { seedCartFromUrl(); } catch (e) { console.warn('stf-config-ready seed', e); }
     }
-    initializeLocalizedCheckout().catch(() => {});
+    initializeLocalizedCheckout().finally(() => {
+      syncCountryUi();
+    });
     if (!orderSidebarLocked && window.STF_CART && !window.STF_CART.isEmpty()) {
       try {
         renderCartSidebar();
@@ -3600,4 +3655,14 @@ window.STF_MONEY = window.STF_MONEY || (function () {
       }
     }
   });
+
+  function syncCountryUi() {
+    toggleAddressForm();
+    updatePhoneField();
+  }
+
+  window.STF_CHECKOUT = {
+    syncCountryUi,
+    refreshPhoneDial: updatePhoneField
+  };
 })();
