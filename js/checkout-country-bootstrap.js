@@ -125,6 +125,8 @@
       ensureSelected(sel);
     }
     sel.dispatchEvent(new Event('change', { bubbles: true }));
+    window.STF_PHONE_DIAL?.sync?.({ country: sel.value });
+    window.STF_CHECKOUT?.syncCountryUi?.();
   }
 
   if (document.readyState === 'loading') {
