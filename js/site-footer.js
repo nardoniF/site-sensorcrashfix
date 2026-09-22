@@ -314,13 +314,13 @@ window.STF_FOOTER = (function () {
   function tattooFixPromo(lang, prefix) {
     const s = t(lang);
     const href = tattooFixHref(lang);
-    const logoSrc = `${prefix}images/partners/sensortattoofix-icon.png?v=4`;
+    const logoSrc = `${prefix}images/partners/sensortattoofix-icon.png?v=5`;
     const rotulo = `Footer TattooFix${lang !== 'pt' ? ' ' + lang.toUpperCase() : ''}`;
     return `
       <a class="footer-tattoofix-promo" href="${href}" target="_blank" rel="noopener" data-evento="clique_tattoofix" data-rotulo="${rotulo}" aria-label="Sensor Tattoo Fix — ${s.tattooTagline}">
         <span class="footer-tattoofix-see">${s.tattooSeeAlso}</span>
         <span class="footer-tattoofix-logo" aria-hidden="true">
-          <img src="${logoSrc}" alt="" width="128" height="128" loading="eager" decoding="async" fetchpriority="high">
+          <img src="${logoSrc}" alt="" width="168" height="168" loading="eager" decoding="async" fetchpriority="high">
         </span>
         <span class="footer-tattoofix-tag">${s.tattooTagline}</span>
       </a>
