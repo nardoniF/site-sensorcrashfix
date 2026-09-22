@@ -65,4 +65,20 @@
     <changefreq>daily</changefreq>
     <priority>0.75</priority>
   </url>
+  <url>
+    <loc>https://www.sensorcrashfix.com.br/sensor-trincado.html</loc>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://www.sensorcrashfix.com.br/sensor-trincado.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.sensorcrashfix.com/cracked-sensor.html"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.sensorcrashfix.com/it/sensore-incrinato.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.sensorcrashfix.com/de/sensor-gerissen.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.sensorcrashfix.com/es/sensor-roto.html"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://www.sensorcrashfix.com/pl/pekniety-czujnik.html"/>
+    <xhtml:link rel="alternate" hreflang="sl" href="https://www.sensorcrashfix.com/sl/poceno-tipalo.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.sensorcrashfix.com/fr/capteur-fissure.html"/>
+    <xhtml:link rel="alternate" hreflang="no" href="https://www.sensorcrashfix.com/no/sprukket-sensor.html"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://www.sensorcrashfix.com/sv/sprucken-sensor.html"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://www.sensorcrashfix.com/nl/gebarsten-sensor.html"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
 </urlset>

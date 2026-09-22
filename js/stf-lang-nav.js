@@ -8,6 +8,22 @@
   const INTL_LANGS = ['it', 'de', 'es', 'pl', 'sl', 'fr', 'no', 'sv', 'nl'];
   const ALL_LANGS = ['pt', 'en', 'it', 'de', 'es', 'pl', 'sl', 'fr', 'no', 'sv', 'nl'];
 
+  /** Slugs localizados do cluster SEO “sensor trincado / cracked sensor”. */
+  const SEO_CRACKED_BY_LANG = {
+    pt: 'sensor-trincado.html',
+    en: 'cracked-sensor.html',
+    it: 'sensore-incrinato.html',
+    de: 'sensor-gerissen.html',
+    es: 'sensor-roto.html',
+    pl: 'pekniety-czujnik.html',
+    sl: 'poceno-tipalo.html',
+    fr: 'capteur-fissure.html',
+    no: 'sprukket-sensor.html',
+    sv: 'sprucken-sensor.html',
+    nl: 'gebarsten-sensor.html'
+  };
+  const SEO_CRACKED_FILES = new Set(Object.values(SEO_CRACKED_BY_LANG));
+
   const LANG_META = {
     pt: { code: 'PT', flag: 'br', label: 'Português (Brasil)' },
     en: { code: 'EN', flag: 'us', label: 'English' },
@@ -54,23 +70,30 @@
     return last && last.includes('.') ? last : 'index.html';
   }
 
-  function brPtUrl() {
+  /** Arquivo equivalente no idioma alvo (ex.: sensor-trincado.html → cracked-sensor.html). */
+  function pageFileForLang(lang) {
     const f = pageFile();
+    if (SEO_CRACKED_FILES.has(f)) return SEO_CRACKED_BY_LANG[lang] || SEO_CRACKED_BY_LANG.en;
+    return f;
+  }
+
+  function brPtUrl() {
+    const f = pageFileForLang('pt');
     return f === 'index.html' ? BR + '/' : BR + '/' + f;
   }
 
   function comEnUrl() {
-    const f = pageFile();
+    const f = pageFileForLang('en');
     return f === 'index.html' ? COM + '/' : COM + '/' + f;
   }
 
   function comLangUrl(lang) {
-    const f = pageFile();
+    const f = pageFileForLang(lang);
     return f === 'index.html' ? `${COM}/${lang}/` : `${COM}/${lang}/${f}`;
   }
 
   function brLangUrl(lang) {
-    const f = pageFile();
+    const f = pageFileForLang(lang);
     return f === 'index.html' ? `${BR}/${lang}/` : `${BR}/${lang}/${f}`;
   }
 
