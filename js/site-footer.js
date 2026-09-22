@@ -314,7 +314,7 @@ window.STF_FOOTER = (function () {
   function tattooFixPromo(lang, prefix) {
     const s = t(lang);
     const href = tattooFixHref(lang);
-    const logoSrc = `${prefix}images/partners/sensortattoofix-icon.png?v=5`;
+    const logoSrc = `${prefix}images/partners/sensortattoofix-icon.png?v=6`;
     const rotulo = `Footer TattooFix${lang !== 'pt' ? ' ' + lang.toUpperCase() : ''}`;
     return `
       <a class="footer-tattoofix-promo" href="${href}" target="_blank" rel="noopener" data-evento="clique_tattoofix" data-rotulo="${rotulo}" aria-label="Sensor Tattoo Fix — ${s.tattooTagline}">

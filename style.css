@@ -1965,13 +1965,12 @@ footer,
     animation: stf-tattoo-ring 2.6s linear infinite;
 }
 .footer-tattoofix-logo img {
-    /* Maior que o orb: corta a folga do PNG e cola emblema/texto na borda */
-    width: 248px;
-    height: 248px;
+    width: 168px;
+    height: 168px;
     max-width: none;
     flex: 0 0 auto;
     object-fit: cover;
-    object-position: center 45%;
+    object-position: center;
     display: block;
     margin: 0;
     border-radius: 50%;
@@ -2129,8 +2128,8 @@ footer,
         height: 148px;
     }
     .footer-tattoofix-logo img {
-        width: 220px;
-        height: 220px;
+        width: 148px;
+        height: 148px;
     }
 }
 
