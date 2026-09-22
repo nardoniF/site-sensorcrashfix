@@ -1751,7 +1751,7 @@ window.STF_MONEY = window.STF_MONEY || (function () {
   }
 
   async function initializeLocalizedCheckout() {
-    if (!els.paisCode) return;
+    if (!els.paisCode || !isIntlCheckoutShell()) return;
     // Garante seleção imediata pelo idioma (antes/sem geo)
     if (!els.paisCode.value || (isIntlCheckoutShell() && els.paisCode.value === 'BR')) {
       applyCountrySelection(defaultIntlCountry(), { force: true });
@@ -3641,7 +3641,7 @@ window.STF_MONEY = window.STF_MONEY || (function () {
     if (!orderSidebarLocked) {
       try { seedCartFromUrl(); } catch (e) { console.warn('stf-config-ready seed', e); }
     }
-    initializeLocalizedCheckout().catch(() => {
+    initializeLocalizedCheckout().finally(() => {
       syncCountryUi();
     });
     if (!orderSidebarLocked && window.STF_CART && !window.STF_CART.isEmpty()) {

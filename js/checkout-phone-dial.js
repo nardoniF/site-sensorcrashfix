@@ -40,6 +40,10 @@ window.STF_PHONE_DIAL = (function () {
   };
 
   function isIntlCheckoutContext() {
+    if (/\.sensorcrashfix\.com\.br$/i.test(location.hostname)) {
+      const path = location.pathname || '';
+      if (!/^\/(en|it|de|es|pl|sl|fr|no|sv|nl)(\/|$)/i.test(path)) return false;
+    }
     if (/\.sensorcrashfix\.com$/i.test(location.hostname) && !/\.com\.br$/i.test(location.hostname)) {
       return true;
     }
