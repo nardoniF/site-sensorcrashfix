@@ -1926,8 +1926,8 @@ footer,
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 128px;
-    height: 128px;
+    width: 152px;
+    height: 152px;
     margin: 0;
     padding: 0;
     border: none;
@@ -1964,8 +1964,8 @@ footer,
     animation: stf-tattoo-ring 2.6s linear infinite;
 }
 .footer-tattoofix-logo img {
-    width: 128px;
-    height: 128px;
+    width: 152px;
+    height: 152px;
     max-width: none;
     object-fit: cover;
     object-position: center;
@@ -2119,8 +2119,8 @@ footer,
     }
     .footer-tattoofix-logo,
     .footer-tattoofix-logo img {
-        width: 112px;
-        height: 112px;
+        width: 136px;
+        height: 136px;
     }
 }
 
