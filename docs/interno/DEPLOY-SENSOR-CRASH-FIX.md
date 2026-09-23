@@ -1,7 +1,7 @@
-# Deploy — Sensor Crash Fix (reusa infra do Tattoo)
+# Deploy — Sensor CrashFix (reusa infra do Tattoo)
 
-Site/marca/produto públicos são **Sensor Crash Fix** (`sensorcrashfix.com.br` / `.com`).
-A operação (pagamentos, frete, e-mail, WhatsApp) **reaproveita a mesma infraestrutura** que você já tem no Sensor Tattoo Fix — não precisa recriar Asaas, Mercado Pago, Correios, Uber, PayPal/Stripe, Z-API, Resend do zero.
+Site/marca/produto públicos são **Sensor CrashFix** (`sensorcrashfix.com.br` / `.com`).
+A operação **reaproveita os mesmos provedores** do Tattoo (Asaas, MP, Correios, PayPal/Stripe…), mas o **Worker Crash é separado**: copie os secrets e use KV/D1 exclusivos (`scf-store` / `scf-data`).
 
 ## O que é novo (público)
 
@@ -26,7 +26,8 @@ Copie os **mesmos secrets** já configurados no Worker do Tattoo (mesma conta Cl
 
 No `api/wrangler.toml` desta branch:
 
-- `CF_ACCOUNT_ID` e IDs de KV/D1 apontam para a **mesma conta** (podem ser os mesmos namespaces do Tattoo se quiser **um único Admin/pedidos**, ou crie `scf-*` novos se preferir separar dados).
+- `CF_ACCOUNT_ID` na mesma conta Cloudflare.
+- **KV `scf-store` + D1 `scf-data` exclusivos do Crash** (não reutilizar IDs do Tattoo — senão o Admin mistura vendas/pedidos/cliques).
 - Rotas públicas já vão para `api.sensorcrashfix.com.br` / zonas Crash.
 
 ## Passos rápidos
@@ -65,3 +66,51 @@ npx wrangler deploy
 - [ ] Fotos reais de produto (placeholders gerados no repo; ver `docs/interno/INVENTARIO-IMAGENS-CRASH.md`)
 - [ ] Atualizar `COMMIT` no `scf-com-proxy.js` após merge/push
 - [ ] GA4 / Formsubmit / Apple Pay domain verification nos hosts Crash
+
+
+## Copiar secrets (obrigatório)
+
+O Worker Crash hoje pode ter só `ADMIN_PASSWORD`. Sem o restante, a aba **API → Status das integrações** fica “Não configurado”.
+
+No Mac (com wrangler logado), para cada secret do Tattoo:
+
+```bash
+cd api
+# Liste o que falta no Crash:
+npx wrangler secret list --name sensorcrashfix-payments
+
+# Cole os mesmos valores do Tattoo (Dashboard → Workers → sensortattoofix-payments → Settings → Variables
+# ou re-cole do cofre/1Password):
+npx wrangler secret put MP_ACCESS_TOKEN
+npx wrangler secret put ASAAS_API_KEY
+npx wrangler secret put ASAAS_WEBHOOK_TOKEN
+npx wrangler secret put PAYPAL_CLIENT_ID
+npx wrangler secret put PAYPAL_CLIENT_SECRET
+npx wrangler secret put STRIPE_SECRET_KEY
+npx wrangler secret put STRIPE_PUBLISHABLE_KEY
+npx wrangler secret put STRIPE_WEBHOOK_SECRET
+npx wrangler secret put CORREIOS_USER
+npx wrangler secret put CORREIOS_PASSWORD
+npx wrangler secret put CORREIOS_CONTRACT
+npx wrangler secret put CORREIOS_COMMERCIAL_CONTRACT
+npx wrangler secret put SUPERFRETE_TOKEN
+npx wrangler secret put UBER_DIRECT_CLIENT_ID
+npx wrangler secret put UBER_DIRECT_CLIENT_SECRET
+npx wrangler secret put UBER_DIRECT_CUSTOMER_ID
+npx wrangler secret put RESEND_API_KEY
+npx wrangler secret put CF_API_TOKEN
+npx wrangler secret put GA4_API_SECRET
+npx wrangler secret put STORE_URL
+npx wrangler secret put ML_CLIENT_ID
+npx wrangler secret put ML_CLIENT_SECRET
+npx wrangler secret put ML_REFRESH_TOKEN
+npx wrangler secret put AMZ_LWA_CLIENT_ID
+npx wrangler secret put AMZ_LWA_CLIENT_SECRET
+npx wrangler secret put AMZ_LWA_REFRESH_TOKEN
+npx wrangler secret put SHOPEE_PARTNER_KEY
+# Opcional WhatsApp:
+# npx wrangler secret put ZAPI_INSTANCE_ID
+# npx wrangler secret put ZAPI_TOKEN
+```
+
+Depois: `npx wrangler deploy` e confira Admin → API → Status das integrações.

@@ -1,6 +1,6 @@
-# Deploy completo — Sensor Crash Fix API
+# Deploy completo — Sensor CrashFix API
 
-> Domínios/Worker públicos são Crash Fix. Secrets de pagamento/frete: **reutilize os mesmos do Tattoo** (Asaas, Mercado Pago, Correios, etc.). Detalhes: [docs/interno/DEPLOY-SENSOR-CRASH-FIX.md](../docs/interno/DEPLOY-SENSOR-CRASH-FIX.md).
+> Domínios/Worker públicos são Sensor CrashFix. Secrets de pagamento/frete: **reutilize os mesmos do Tattoo** (Asaas, Mercado Pago, Correios, etc.). Detalhes: [docs/interno/DEPLOY-SENSOR-CRASH-FIX.md](../docs/interno/DEPLOY-SENSOR-CRASH-FIX.md).
 
 
 > **Manual completo (URLs, secrets, frete, Correios):** [documentacao.html](../documentacao.html) no site ou aba **Documentação** no admin.

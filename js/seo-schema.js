@@ -254,15 +254,15 @@
   async function run() {
     let productName = isIt ? 'Lente ottica SensorCrashFix'
       : isIntlCopy ? 'SensorCrashFix Optical Lens'
-        : 'Kit Sensor Crash Fix';
+        : 'Kit Sensor CrashFix';
     let productPrice = 62.9;
     let productImage = SITE + '/images/brand/sensorcrashfix.jpg';
     let productId = isIntlCopy ? 'optical-lens-intl' : 'kit-sensor-crashfix';
     let productDescription = isIt
-      ? 'Kit con lente ottica per smartwatch che chiede codice, non misura il battito o interrompe l\'allenamento — spesso per tatuaggio al polso. Ripristina rilevamento al polso, frequenza cardiaca e allenamenti.'
+      ? 'Kit con lente ottica per sensore incrinato dello smartwatch: ripristina tenuta, rilevamento al polso, frequenza cardiaca e allenamenti senza sostituire il modulo.'
       : isIntlCopy
-        ? 'Optical lens kit for smartwatch passcode loops, heart rate failures and paused workouts — often caused by wrist cracked glass. Restores wrist detection, heart rate and training.'
-        : 'Kit com lente ótica para smartwatch que pede senha, não mede batimentos ou pausa treino — muitas vezes por rachadura no pulso. Restaura pulso, batimentos e treinos.';
+        ? 'Optical cover lens for cracked smartwatch sensor glass: restores the seal, wrist detection, heart rate and training without replacing the module.'
+        : 'Kit com lente ótica para sensor trincado/rachado no smartwatch: restaura vedação, pulso, batimentos e treinos sem trocar o módulo.';
 
     let cfg = null;
     if (window.CHECKOUT_CONFIG) cfg = window.CHECKOUT_CONFIG;
@@ -296,7 +296,7 @@
       name: productName,
       description: productDescription,
       sku: productId,
-      brand: { '@type': 'Brand', name: 'Sensor Crash Fix' },
+      brand: { '@type': 'Brand', name: 'Sensor CrashFix' },
       image: productImage,
       offers: buildOffer(productPrice, productId),
       aggregateRating,
@@ -307,7 +307,7 @@
       {
         '@type': 'Organization',
         '@id': SITE + '/#organization',
-        name: 'Sensor Crash Fix',
+        name: 'Sensor CrashFix',
         legalName: '3N20 Soluções Tecnológicas',
         url: SITE,
         logo: SITE + '/images/brand/logo.jpg',
@@ -322,7 +322,7 @@
         '@type': 'WebSite',
         '@id': SITE + '/#website',
         url: SITE,
-        name: 'Sensor Crash Fix',
+        name: 'Sensor CrashFix',
         inLanguage,
         publisher: { '@id': SITE + '/#organization' }
       },

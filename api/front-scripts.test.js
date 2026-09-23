@@ -30,7 +30,7 @@ test('PIX payload is EMV with BR and CRC', () => {
   const payload = PixGenerator.generatePixPayload({
     key: '29321223000132',
     keyType: 'cnpj',
-    merchantName: 'Sensor Crash Fix',
+    merchantName: 'Sensor CrashFix',
     merchantCity: 'Sao Paulo',
     amount: 79.9,
     txid: 'STFTEST1'

@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;1,400;1,500&family=Outfit:wght@500;600;700&display=swap');
 
 :root {
-    --primary: #ffc107;
+    --primary: #5EC8D8; /* Sensor CrashFix ice/cyan — não amarelo Tattoo */
     --bg: #0a0a0a;
     --card: #141414;
     --text: #ffffff;
@@ -76,7 +76,7 @@ nav,
     border-radius: 50%;
 }
 
-/* Lockup do header: junto, só cor diferente — não confundir com textos do site */
+/* Lockup do header — espelho do Sensor TattooFix: slogan menor e itálico */
 .logo-text {
     font-size: 1.42rem;
     font-weight: 900;
@@ -96,6 +96,24 @@ nav,
     gap: 3px;
     min-width: 0;
 }
+.logo-lockup--img {
+    text-decoration: none;
+    align-self: center;
+    line-height: 0;
+}
+/* Lockup já traz o emblema — some o círculo separado no desktop */
+.logo-area:has(.logo-lockup--img) > .logo-img-link {
+    display: none;
+}
+.logo-lockup-img {
+    display: block;
+    /* Lockup maior para slogan/marca bem legíveis no header */
+    height: 112px;
+    width: auto;
+    max-width: min(400px, 38vw);
+    object-fit: contain;
+    object-position: left center;
+}
 .logo-tagline {
     margin: 0;
     font-size: 0.82rem;
@@ -106,9 +124,26 @@ nav,
     color: #c4c4c4;
     white-space: nowrap;
 }
+.logo-tagline--sub {
+    font-style: normal;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #ddd;
+    white-space: nowrap;
+}
 
 .hero-brand-mobile {
     display: none;
+}
+.hero-brand-lockup {
+    display: block;
+    width: min(100%, 480px);
+    height: auto;
+    max-height: 160px;
+    object-fit: contain;
+    object-position: left center;
 }
 
 .nav-panel {
@@ -320,6 +355,7 @@ nav,
     .nav-main { gap: 3px 7px; }
     .logo-text { font-size: 1.2rem; }
     .logo-img-link { width: 76px; height: 76px; }
+    .logo-lockup-img { height: 96px; max-width: min(340px, 36vw); }
     .site-social { min-width: 96px; padding: 0 12px; }
 }
 
@@ -356,6 +392,17 @@ html[lang="it"] .nav-actions { gap: 6px; }
 .badge { color: var(--primary); font-weight: 800; text-transform: uppercase; border: 1px solid var(--primary); padding: 6px 14px; border-radius: 50px; font-size: 0.9rem; }
 .hero h1 { font-size: 3.5rem; font-weight: 900; line-height: 1.05; margin: 28px 0; }
 .hero p { font-size: 1.1rem; color: var(--gray); margin-bottom: 38px; }
+/* Home: menos respiro entre parágrafos para os CTAs não ficarem sob o FAB Sugestões */
+.home-page .hero p {
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+.home-page .hero p:last-of-type {
+    margin-bottom: 20px;
+}
+.home-page .hero h1 {
+    margin: 18px 0 14px;
+}
 .hero-btns { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
 .hero-cta-buy-short { display: none; }
 /* Must beat .store-official-bar { display:flex } or the store CTA leaks onto desktop */
@@ -363,8 +410,89 @@ html[lang="it"] .nav-actions { gap: 6px; }
     display: none;
 }
 .btn-primary { background: var(--primary); color: #000 !important; padding: 16px 26px; border-radius: 12px; text-decoration: none; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s; text-align: center; border: none; min-width: 220px; cursor: pointer; }
+.hero-btns .btn-cta-primary {
+    background: #12D18E;
+    color: #04120c !important;
+    box-shadow: 0 0 28px rgba(18, 209, 142, 0.38);
+    border: 2px solid #12D18E;
+}
+.hero-btns .btn-cta-primary:hover {
+    background: #2aebab;
+    border-color: #2aebab;
+    transform: translateY(-1px);
+}
+.btn-outline {
+    background: transparent;
+    color: #fff !important;
+    padding: 16px 26px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: 0.3s;
+    text-align: center;
+    border: 2px solid #fff;
+    min-width: 220px;
+    cursor: pointer;
+}
+.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #fff;
+}
 .product-img { width: 100%; border-radius: 20px; border: 1px solid #222; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+/* Hero home: foto do relógio um pouco menor que a coluna */
+.home-page .hero-visual {
+    width: 90%;
+    max-width: 100%;
+    justify-self: center;
+}
+.home-page .hero-visual .product-img {
+    width: 100%;
+    display: block;
+}
 
+
+/* Sensor CrashFix homepage: cracked-sphere icon + larger product square on black */
+.icon-cracked-sphere {
+  display: inline-block;
+  width: 2.1rem;
+  height: 2.1rem;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  background:
+    linear-gradient(135deg, transparent 46%, #5EC8D8 46%, #5EC8D8 54%, transparent 54%),
+    radial-gradient(circle at 35% 30%, #7ad4e0 0%, #5EC8D8 38%, #2a8a98 72%, #1a5c66 100%);
+  box-shadow: inset 0 0 0 2px rgba(94, 200, 216, 0.35);
+  position: relative;
+}
+.icon-cracked-sphere::before,
+.icon-cracked-sphere::after {
+  content: "";
+  position: absolute;
+  background: rgba(10, 10, 10, 0.85);
+  border-radius: 1px;
+}
+.icon-cracked-sphere::before {
+  width: 2px; height: 62%;
+  left: 48%; top: 18%;
+  transform: rotate(28deg);
+}
+.icon-cracked-sphere::after {
+  width: 2px; height: 48%;
+  left: 58%; top: 28%;
+  transform: rotate(-38deg);
+}
+.icon-cracked-sphere--benefit {
+  width: 2.4rem;
+  height: 2.4rem;
+  display: block;
+  margin: 0 auto 15px;
+}
+
+/* Espelho 1:1 Sensor TattooFix (#produtos / kit) — brand Crash via --primary */
 #produtos .product-solution-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -410,23 +538,54 @@ html[lang="it"] .nav-actions { gap: 6px; }
     object-fit: contain;
 }
 
+#produtos .product-benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
 #produtos .product-benefits-grid .benefit-card {
     width: 100%;
+    background: #1a1a1a;
     padding: 16px 14px;
+    border-radius: 12px;
+    border: 1px solid #333;
     text-align: center;
 }
 
 #produtos .product-benefits-grid .benefit-card i {
+    font-size: 2rem;
+    color: var(--primary);
     margin-bottom: 12px;
+    display: block;
+}
+
+#produtos .product-benefits-grid .benefit-card .icon-cracked-sphere--benefit {
+    width: 2rem;
+    height: 2rem;
+    margin: 0 auto 12px;
 }
 
 #produtos .product-benefits-grid .benefit-card h3 {
+    color: var(--primary);
     font-size: 1rem;
     margin-bottom: 8px;
 }
 
 #produtos .product-benefits-grid .benefit-card p {
     font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.86);
+    margin: 0;
+}
+
+#produtos .product-solution-cta {
+    display: inline-block;
+    margin-top: 20px;
+    background: var(--primary);
+    color: #000;
+    text-decoration: none;
+    font-weight: 800;
+    padding: 12px 28px;
+    border-radius: 10px;
 }
 
 /* SEÇÕES GERAIS */
@@ -441,9 +600,6 @@ html[lang="it"] .nav-actions { gap: 6px; }
 }
 #paliativos > .container {
     width: 100%;
-}
-#produtos.content-section {
-    padding-top: 72px;
 }
 .grey-bg { background: #080808; }
 .section-title { font-size: 2.5rem; text-align: center; margin-bottom: 30px; font-weight: 900; }
@@ -475,6 +631,12 @@ html[lang="it"] .nav-actions { gap: 6px; }
     margin: 32px 0 16px;
     text-align: center;
 }
+.about-card a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.about-card a:hover { color: #fff; }
 .about-origin {
     font-size: 1.2rem;
     line-height: 1.7;
@@ -723,7 +885,7 @@ body.stf-lens-only .kit-box { display: none !important; }
     position: fixed; left: 24px; bottom: 40px; z-index: 1000;
     display: inline-flex; align-items: center; gap: 10px;
     padding: 12px 18px; border-radius: 999px;
-    border: 1px solid rgba(255, 193, 7, 0.35);
+    border: 1px solid rgba(94, 200, 216, 0.35);
     background: linear-gradient(145deg, rgba(22, 22, 22, 0.98), rgba(10, 10, 10, 0.98));
     color: #f5f5f5; font-size: 0.88rem; font-family: var(--font-nav);
     box-shadow: 0 6px 24px rgba(0,0,0,0.5); cursor: pointer; transition: 0.25s ease;
@@ -732,14 +894,14 @@ body.stf-lens-only .kit-box { display: none !important; }
     border-color: var(--primary);
     color: #fff;
     transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(255, 193, 7, 0.15);
+    box-shadow: 0 8px 28px rgba(94, 200, 216, 0.15);
 }
 .stf-feedback-fab i {
     color: var(--primary); font-size: 1.15rem;
     width: 28px; height: 28px;
     display: inline-flex; align-items: center; justify-content: center;
     border-radius: 50%;
-    background: rgba(255, 193, 7, 0.12);
+    background: rgba(94, 200, 216, 0.12);
 }
 .stf-feedback-overlay {
     position: fixed; inset: 0; z-index: 1002;
@@ -781,7 +943,7 @@ body.stf-lens-only .kit-box { display: none !important; }
 .stf-feedback-field textarea:focus,
 .stf-feedback-field input:focus {
     outline: none; border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.12);
+    box-shadow: 0 0 0 3px rgba(94, 200, 216, 0.12);
 }
 .stf-feedback-submit {
     width: 100%; margin-top: 4px;
@@ -817,12 +979,12 @@ body.stf-feedback-open { overflow: hidden; }
 }
 .footer-action-btn i { font-size: 0.95rem; }
 .footer-action-btn--feedback {
-  background: rgba(255, 193, 7, 0.12);
-  border-color: rgba(255, 193, 7, 0.45);
+  background: rgba(94, 200, 216, 0.12);
+  border-color: rgba(94, 200, 216, 0.45);
   color: var(--primary);
 }
 .footer-action-btn--feedback:hover {
-  background: rgba(255, 193, 7, 0.22);
+  background: rgba(94, 200, 216, 0.22);
   border-color: var(--primary);
   transform: translateY(-1px);
 }
@@ -1234,7 +1396,7 @@ body.stf-feedback-open { overflow: hidden; }
 }
 .store-official-bar:hover {
     background: #141414;
-    box-shadow: 0 6px 20px rgba(255, 193, 7, 0.15);
+    box-shadow: 0 6px 20px rgba(94, 200, 216, 0.15);
     transform: translateY(-2px);
 }
 .store-icon-circle {
@@ -1451,9 +1613,9 @@ body.stf-feedback-open { overflow: hidden; }
     background: linear-gradient(
         to bottom,
         transparent 0%,
-        rgba(255, 193, 7, 0.22) 22%,
-        rgba(255, 193, 7, 0.1) 50%,
-        rgba(255, 193, 7, 0.22) 78%,
+        rgba(94, 200, 216, 0.22) 22%,
+        rgba(94, 200, 216, 0.1) 50%,
+        rgba(94, 200, 216, 0.22) 78%,
         transparent 100%
     );
     pointer-events: none;
@@ -1469,9 +1631,9 @@ body.stf-feedback-open { overflow: hidden; }
     background: linear-gradient(
         to right,
         transparent 0%,
-        rgba(255, 193, 7, 0.2) 25%,
-        rgba(255, 193, 7, 0.08) 50%,
-        rgba(255, 193, 7, 0.2) 75%,
+        rgba(94, 200, 216, 0.2) 25%,
+        rgba(94, 200, 216, 0.08) 50%,
+        rgba(94, 200, 216, 0.2) 75%,
         transparent 100%
     );
     pointer-events: none;
@@ -1517,7 +1679,7 @@ body.stf-feedback-open { overflow: hidden; }
 .review-quote .review-sign-source {
     font-family: 'Inter', sans-serif;
     font-size: 0.62rem;
-    color: rgba(255, 193, 7, 0.55);
+    color: rgba(94, 200, 216, 0.55);
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -1543,8 +1705,8 @@ body.stf-feedback-open { overflow: hidden; }
         border-image: linear-gradient(
             to right,
             transparent,
-            rgba(255, 193, 7, 0.15) 30%,
-            rgba(255, 193, 7, 0.15) 70%,
+            rgba(94, 200, 216, 0.15) 30%,
+            rgba(94, 200, 216, 0.15) 70%,
             transparent
         ) 1;
     }
@@ -1557,7 +1719,7 @@ body.stf-feedback-open { overflow: hidden; }
 .reviews-videos {
     margin-top: 48px;
     padding-top: 40px;
-    border-top: 1px solid rgba(255, 193, 7, 0.12);
+    border-top: 1px solid rgba(94, 200, 216, 0.12);
 }
 .reviews-videos-title {
     font-family: 'Outfit', sans-serif;
@@ -1618,7 +1780,7 @@ body.stf-feedback-open { overflow: hidden; }
 }
 .shipping-option input:checked + .shipping-card {
     border-color: var(--primary);
-    background: rgba(255, 193, 7, 0.08);
+    background: rgba(94, 200, 216, 0.08);
 }
 .shipping-card-main strong { display: block; margin-bottom: 2px; font-size: 0.92rem; }
 .shipping-card-main small { color: var(--gray); font-size: 0.78rem; }
@@ -1637,7 +1799,7 @@ body.stf-feedback-open { overflow: hidden; }
     color: #bbb;
 }
 .shipping-option input:checked + .shipping-card .shipping-card-notice {
-    border-top-color: rgba(255, 193, 7, 0.25);
+    border-top-color: rgba(94, 200, 216, 0.25);
     color: #ccc;
 }
 .shipping-card-notice p { margin: 0; }
@@ -1647,11 +1809,11 @@ body.stf-feedback-open { overflow: hidden; }
     font-size: 0.76rem;
 }
 .shipping-card-notice--warn {
-    color: #ffc107;
-    border-top-color: rgba(255, 193, 7, 0.35);
+    color: #5EC8D8;
+    border-top-color: rgba(94, 200, 216, 0.35);
 }
 .shipping-option input:checked + .shipping-card .shipping-card-notice--warn {
-    color: #ffd54f;
+    color: var(--primary);
 }
 .payment-status {
     padding: 12px 16px;
@@ -1661,7 +1823,7 @@ body.stf-feedback-open { overflow: hidden; }
     font-size: 0.9rem;
 }
 .payment-status.waiting {
-    background: rgba(255, 193, 7, 0.12);
+    background: rgba(94, 200, 216, 0.12);
     color: var(--primary);
     border: 1px solid var(--primary);
 }
@@ -1719,6 +1881,258 @@ footer,
     margin-right: auto;
 }
 
+/* Cross-promo Sensor Tattoo Fix — lado direito do rodapé (espelho animado do banner no Tattoo Fix) */
+.footer-shell {
+    position: relative;
+    display: block;
+}
+.footer-main {
+    width: 100%;
+}
+.footer-tattoofix-promo {
+    --tattoo-gold: #E8B923;
+    --tattoo-gold-bright: #FFD54A;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--tattoo-gold);
+    max-width: 11rem;
+    margin: 28px auto 0;
+    padding: 4px 6px;
+    transition: color 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
+}
+.footer-tattoofix-tag {
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--tattoo-gold);
+    max-width: 11em;
+    animation: stf-tattoo-tag-glow 2.4s ease-in-out infinite;
+}
+.footer-tattoofix-see {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+    line-height: 1.2;
+    animation: stf-tattoo-see-flash 2.8s ease-in-out infinite;
+}
+.footer-tattoofix-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 168px;
+    height: 168px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #0a0a0a;
+    box-shadow:
+      0 0 18px rgba(232, 185, 35, 0.35),
+      0 0 36px rgba(232, 185, 35, 0.18);
+    line-height: 0;
+    position: relative;
+    animation: stf-tattoo-logo-bob 3.2s ease-in-out infinite;
+}
+.footer-tattoofix-logo::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232, 185, 35, 0.22) 0%, transparent 68%);
+    z-index: 0;
+    pointer-events: none;
+    animation: stf-tattoo-aura 2.2s ease-in-out infinite;
+}
+.footer-tattoofix-logo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid rgba(232, 185, 35, 0.8);
+    box-shadow:
+      0 0 10px rgba(232, 185, 35, 0.55),
+      inset 0 0 12px rgba(232, 185, 35, 0.15);
+    z-index: 2;
+    pointer-events: none;
+    animation: stf-tattoo-ring 2.6s linear infinite;
+}
+.footer-tattoofix-logo img {
+    width: 168px;
+    height: 168px;
+    max-width: none;
+    flex: 0 0 auto;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    margin: 0;
+    border-radius: 50%;
+    position: relative;
+    z-index: 1;
+    animation: stf-tattoo-logo-pulse 2.2s ease-in-out infinite;
+}
+@keyframes stf-tattoo-aura {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
+}
+@keyframes stf-tattoo-ring {
+    0% {
+      opacity: 0.85;
+      border-color: rgba(232, 185, 35, 0.7);
+      box-shadow:
+        0 0 8px rgba(232, 185, 35, 0.45),
+        inset 0 0 10px rgba(232, 185, 35, 0.12);
+    }
+    40% {
+      opacity: 1;
+      border-color: rgba(255, 213, 74, 0.95);
+      box-shadow:
+        0 0 16px rgba(255, 213, 74, 0.7),
+        inset 0 0 14px rgba(232, 185, 35, 0.22);
+    }
+    100% {
+      opacity: 0.75;
+      border-color: rgba(232, 185, 35, 0.55);
+      box-shadow:
+        0 0 8px rgba(232, 185, 35, 0.4),
+        inset 0 0 10px rgba(232, 185, 35, 0.12);
+    }
+}
+@keyframes stf-tattoo-logo-pulse {
+    0%, 100% {
+      filter: drop-shadow(0 0 6px rgba(232, 185, 35, 0.35));
+    }
+    50% {
+      filter: drop-shadow(0 0 18px rgba(232, 185, 35, 0.85))
+              drop-shadow(0 0 32px rgba(200, 150, 20, 0.45));
+    }
+}
+@keyframes stf-tattoo-logo-bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+@keyframes stf-tattoo-see-flash {
+    0%, 100% { color: rgba(255, 255, 255, 0.45); letter-spacing: 0.14em; }
+    45% { color: rgba(255, 255, 255, 0.95); letter-spacing: 0.2em; text-shadow: 0 0 10px rgba(232, 185, 35, 0.55); }
+    55% { color: rgba(232, 185, 35, 0.95); letter-spacing: 0.18em; }
+}
+@keyframes stf-tattoo-tag-glow {
+    0%, 100% {
+      color: var(--tattoo-gold);
+      text-shadow: 0 0 4px rgba(232, 185, 35, 0.25);
+      opacity: 0.85;
+    }
+    50% {
+      color: var(--tattoo-gold-bright);
+      text-shadow:
+        0 0 8px rgba(232, 185, 35, 0.85),
+        0 0 18px rgba(232, 185, 35, 0.45);
+      opacity: 1;
+    }
+}
+.footer-tattoofix-promo:hover,
+.footer-tattoofix-promo:focus-visible {
+    transform: translateY(-2px);
+    outline: none;
+}
+.footer-tattoofix-promo:hover .footer-tattoofix-see,
+.footer-tattoofix-promo:focus-visible .footer-tattoofix-see {
+    animation: none;
+    color: #fff;
+    text-shadow: 0 0 12px rgba(232, 185, 35, 0.7);
+}
+.footer-tattoofix-promo:hover .footer-tattoofix-logo,
+.footer-tattoofix-promo:focus-visible .footer-tattoofix-logo {
+    animation: none;
+    transform: translateY(-2px);
+}
+.footer-tattoofix-promo:hover .footer-tattoofix-logo img,
+.footer-tattoofix-promo:focus-visible .footer-tattoofix-logo img {
+    animation: none;
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 22px rgba(232, 185, 35, 0.95))
+            drop-shadow(0 0 40px rgba(200, 150, 20, 0.55));
+}
+.footer-tattoofix-promo:hover .footer-tattoofix-logo::before,
+.footer-tattoofix-promo:focus-visible .footer-tattoofix-logo::before {
+    opacity: 1;
+    transform: scale(1.12);
+    animation: none;
+}
+.footer-tattoofix-promo:hover .footer-tattoofix-tag,
+.footer-tattoofix-promo:focus-visible .footer-tattoofix-tag {
+    animation: none;
+    color: #ffe082;
+    text-shadow: 0 0 12px rgba(232, 185, 35, 0.9);
+}
+@media (prefers-reduced-motion: reduce) {
+    .footer-tattoofix-logo,
+    .footer-tattoofix-logo::before,
+    .footer-tattoofix-logo::after,
+    .footer-tattoofix-logo img,
+    .footer-tattoofix-see,
+    .footer-tattoofix-tag {
+        animation: none !important;
+    }
+    .footer-tattoofix-logo::before {
+        opacity: 0.55;
+        transform: none;
+    }
+    .footer-tattoofix-logo::after {
+        opacity: 0.6;
+        transform: none;
+    }
+    .footer-tattoofix-logo img {
+        filter: drop-shadow(0 0 10px rgba(232, 185, 35, 0.4));
+    }
+}
+@media (min-width: 900px) {
+    .site-footer > .container {
+        position: relative;
+    }
+    .footer-tattoofix-promo {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        margin: 0;
+        z-index: 1;
+        max-width: 10.5rem;
+    }
+    .footer-tattoofix-promo:hover,
+    .footer-tattoofix-promo:focus-visible {
+        transform: translateY(calc(-50% - 2px));
+    }
+    .footer-main {
+        padding-right: 11.5rem;
+        padding-left: 11.5rem;
+        box-sizing: border-box;
+    }
+}
+@media (max-width: 899px) {
+    .footer-tattoofix-promo {
+        margin-top: 24px;
+        padding-top: 18px;
+        border-top: 1px solid #1a1a1a;
+        max-width: none;
+    }
+    .footer-tattoofix-logo {
+        width: 148px;
+        height: 148px;
+    }
+    .footer-tattoofix-logo img {
+        width: 148px;
+        height: 148px;
+    }
+}
+
 /* RESPONSIVIDADE */
 @media (max-width: 1024px) {
     .hero h1 { font-size: 2.8rem; }
@@ -1743,7 +2157,11 @@ footer,
     .logo-tagline { font-size: 0.68rem; }
 
     /* Home mobile: marca no hero, header compacto + hambúrguer */
-    .home-page .logo-area .logo-lockup { display: none; }
+    .home-page .logo-area .logo-lockup,
+    .home-page .logo-area .logo-lockup--img { display: none; }
+    .home-page .logo-area:has(.logo-lockup--img) > .logo-img-link {
+        display: flex;
+    }
     .home-page .site-social { display: none; }
     .home-page .site-nav {
         justify-content: space-between;
@@ -1797,6 +2215,12 @@ footer,
         display: block;
         margin: 0 0 14px;
         text-align: center;
+    }
+    .home-page .hero-brand-mobile .hero-brand-lockup {
+        margin: 0 auto;
+        width: min(100%, 380px);
+        max-height: 140px;
+        object-position: center;
     }
     .home-page .hero-brand-mobile .logo-text {
         display: flex;
@@ -1932,14 +2356,15 @@ footer,
     .hero-btns > .store-official-bar.hero-store-bar .store-official-info strong { font-size: 0.95rem; }
     .hero-btns > .store-official-bar.hero-store-bar .store-official-price { font-size: 0.9rem; }
     .hero-btns > .store-official-bar.hero-store-bar .store-official-shipping { font-size: 0.7rem; }
-    .hero-btns > .btn-primary:not(.hero-cta-buy) {
+    .hero-btns > .btn-primary:not(.hero-cta-buy),
+    .hero-btns > .btn-outline {
         width: 100%;
         max-width: 100%;
         min-width: 0;
         box-sizing: border-box;
     }
-    .btn-primary { width: auto; min-width: unset; max-width: 220px; }
-    .btn-primary, .btn-secondary { margin-left: auto; margin-right: auto; }
+    .btn-primary, .btn-outline { width: auto; min-width: unset; max-width: 220px; }
+    .btn-primary, .btn-secondary, .btn-outline { margin-left: auto; margin-right: auto; }
     #produtos .product-solution-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
     #produtos .product-benefits-grid {
         display: grid !important;
@@ -1995,7 +2420,7 @@ overflow:hidden;
 cursor:pointer;
 padding:20px;
 font-weight:700;
-color:#ffc107;
+color:#5EC8D8;
 list-style:none;
 }
 
@@ -2147,8 +2572,8 @@ a.stf-tiktok-card:hover {
     line-height: 1.45;
     color: #e6c200;
     border-radius: 10px;
-    border: 1px dashed rgba(255, 193, 7, 0.4);
-    background: rgba(255, 193, 7, 0.06);
+    border: 1px dashed rgba(94, 200, 216, 0.4);
+    background: rgba(94, 200, 216, 0.06);
 }
 .summary-row.total.is-self-test strong { color: #e6c200; }
 .self-test-pay-sidebar {
@@ -2157,8 +2582,8 @@ a.stf-tiktok-card:hover {
     margin-top: 12px;
     padding: 14px;
     border-radius: 14px;
-    border: 1px dashed rgba(255, 193, 7, 0.45);
-    background: rgba(255, 193, 7, 0.06);
+    border: 1px dashed rgba(94, 200, 216, 0.45);
+    background: rgba(94, 200, 216, 0.06);
 }
 .btn-skip-test-pay {
     width: 100%;
@@ -2403,8 +2828,8 @@ a.stf-tiktok-card:hover {
     padding: 16px 18px;
     border: 2px solid var(--primary);
     border-radius: 12px;
-    background: rgba(255, 193, 7, 0.1);
-    box-shadow: 0 0 0 1px rgba(255, 193, 7, 0.12) inset;
+    background: rgba(94, 200, 216, 0.1);
+    box-shadow: 0 0 0 1px rgba(94, 200, 216, 0.12) inset;
 }
 .checkout-watch-block--error {
     border-color: var(--danger);
@@ -2431,7 +2856,7 @@ a.stf-tiktok-card:hover {
     width: 100%;
     padding: 14px 12px;
     background: #111;
-    border: 2px solid rgba(255, 193, 7, 0.45);
+    border: 2px solid rgba(94, 200, 216, 0.45);
     color: #fff;
     border-radius: 8px;
     font-size: 1rem;
@@ -2519,9 +2944,9 @@ a.stf-tiktok-card:hover {
     opacity: 1;
 }
 .checkout-account-block input:focus {
-    outline: 2px solid rgba(255, 193, 7, 0.35);
+    outline: 2px solid rgba(94, 200, 216, 0.35);
     outline-offset: 1px;
-    border-color: rgba(255, 193, 7, 0.55);
+    border-color: rgba(94, 200, 216, 0.55);
 }
 .checkout-password-wrap {
     position: relative;
@@ -2550,7 +2975,7 @@ a.stf-tiktok-card:hover {
 .checkout-password-toggle:hover,
 .checkout-password-toggle:focus-visible {
     color: var(--primary);
-    background: rgba(255, 193, 7, 0.08);
+    background: rgba(94, 200, 216, 0.08);
 }
 .checkout-account-title {
     margin: 0 0 12px;
@@ -2712,7 +3137,7 @@ a.stf-tiktok-card:hover {
 }
 .payment-option input:checked + .payment-card {
     border-color: var(--primary);
-    background: rgba(255, 193, 7, 0.08);
+    background: rgba(94, 200, 216, 0.08);
 }
 .payment-card i { font-size: 1.8rem; color: var(--primary); }
 .payment-card strong { display: block; margin-bottom: 4px; }
@@ -2721,8 +3146,8 @@ a.stf-tiktok-card:hover {
     display: flex;
     gap: 12px;
     align-items: flex-start;
-    background: rgba(255, 193, 7, 0.08);
-    border: 1px solid rgba(255, 193, 7, 0.35);
+    background: rgba(94, 200, 216, 0.08);
+    border: 1px solid rgba(94, 200, 216, 0.35);
     border-radius: 12px;
     padding: 14px 16px;
     margin: 16px 0 4px;
@@ -2746,14 +3171,14 @@ a.stf-tiktok-card:hover {
 .checkout-intl-notice #intl-notice-body p.intl-notice-foot {
     margin-top: 12px;
     padding-top: 12px;
-    border-top: 1px solid rgba(255, 193, 7, 0.2);
+    border-top: 1px solid rgba(94, 200, 216, 0.2);
     color: #ccc;
     font-size: 0.85rem;
 }
 .checkout-intl-document {
     margin-top: 10px !important;
     padding-top: 10px;
-    border-top: 1px solid rgba(255, 193, 7, 0.2);
+    border-top: 1px solid rgba(94, 200, 216, 0.2);
     color: #ccc;
 }
 
@@ -2938,7 +3363,8 @@ a.stf-tiktok-card:hover {
         width: 100%;
         max-width: 100%;
     }
-    .home-page .hero-btns > .btn-primary:not(.hero-cta-buy) {
+    .home-page .hero-btns > .btn-primary:not(.hero-cta-buy),
+    .home-page .hero-btns > .btn-outline {
         max-width: 100%;
         width: 100%;
         min-width: 0;
@@ -2968,12 +3394,12 @@ a.stf-tiktok-card:hover {
     margin-top: 20px;
     padding: 14px 12px calc(14px + env(safe-area-inset-bottom, 0px));
     background: linear-gradient(180deg, rgba(10, 10, 10, 0.72), #111 35%);
-    border-top: 1px solid rgba(255, 193, 7, 0.28);
+    border-top: 1px solid rgba(94, 200, 216, 0.28);
     box-shadow: 0 -10px 28px rgba(0, 0, 0, 0.35);
 }
 .checkout-actions.checkout-actions--sticky .btn-checkout-next {
     min-width: min(100%, 280px);
-    box-shadow: 0 0 0 1px rgba(255, 193, 7, 0.35);
+    box-shadow: 0 0 0 1px rgba(94, 200, 216, 0.35);
 }
 .btn-checkout-next,
 .btn-checkout-pay,
@@ -3092,7 +3518,7 @@ a.stf-tiktok-card:hover {
     font-weight: 600;
 }
 .status-banner.success { background: rgba(37, 211, 102, 0.15); color: #25d366; border: 1px solid #25d366; }
-.status-banner.warning { background: rgba(255, 193, 7, 0.15); color: var(--primary); border: 1px solid var(--primary); }
+.status-banner.warning { background: rgba(94, 200, 216, 0.15); color: var(--primary); border: 1px solid var(--primary); }
 .status-banner.error { background: rgba(255, 68, 68, 0.15); color: var(--danger); border: 1px solid var(--danger); }
 
 @media (max-width: 900px) {
@@ -3449,9 +3875,9 @@ body.admin-page.pedidos-login-only #pedidos-login {
     gap: 10px;
     margin: 0 0 12px;
     padding: 12px;
-    border: 1px solid rgba(255, 193, 7, 0.35);
+    border: 1px solid rgba(94, 200, 216, 0.35);
     border-radius: 12px;
-    background: rgba(255, 193, 7, 0.06);
+    background: rgba(94, 200, 216, 0.06);
 }
 .forum-admin-inline-edit[hidden] {
     display: none !important;
@@ -3695,7 +4121,7 @@ body.admin-page.pedidos-login-only #pedidos-login {
     margin-top: 0;
 }
 .admin-status.success { background: rgba(37, 211, 102, 0.12); color: #25d366; border: 1px solid #25d366; }
-.admin-status.warning { background: rgba(255, 193, 7, 0.12); color: var(--primary); border: 1px solid var(--primary); }
+.admin-status.warning { background: rgba(94, 200, 216, 0.12); color: var(--primary); border: 1px solid var(--primary); }
 .admin-status.error { background: rgba(255, 68, 68, 0.12); color: var(--danger); border: 1px solid var(--danger); }
 .admin-tabs {
     display: flex;
@@ -3730,7 +4156,7 @@ body.admin-page.pedidos-login-only #pedidos-login {
     color: #fff;
 }
 .admin-tab.active {
-    background: rgba(255, 193, 7, 0.1);
+    background: rgba(94, 200, 216, 0.1);
     border-color: var(--primary);
     color: var(--primary);
 }
@@ -3767,8 +4193,8 @@ body.admin-page.pedidos-login-only #pedidos-login {
 }
 .clicks-kv--ok i { color: #3dd68c; }
 .clicks-kv--warn {
-    background: rgba(255, 193, 7, 0.1);
-    border-color: rgba(255, 193, 7, 0.45);
+    background: rgba(94, 200, 216, 0.1);
+    border-color: rgba(94, 200, 216, 0.45);
 }
 .clicks-kv--warn i { color: var(--primary); }
 .clicks-kv--full {
@@ -4133,7 +4559,7 @@ body.admin-page.pedidos-login-only #pedidos-login {
     width: fit-content;
     padding: 4px 10px;
     border-radius: 999px;
-    background: rgba(255, 193, 7, 0.12);
+    background: rgba(94, 200, 216, 0.12);
     color: var(--primary);
     font-size: 0.82rem;
     font-weight: 600;
@@ -4345,7 +4771,7 @@ body.admin-page.pedidos-login-only #pedidos-login {
 .clicks-origem--whatsapp { background: rgba(37, 211, 102, 0.15); color: #69f0ae; }
 .clicks-origem--twitter { background: rgba(255, 255, 255, 0.08); color: #ccc; }
 .clicks-origem--bing_ads { background: rgba(0, 164, 239, 0.15); color: #4fc3f7; }
-.clicks-origem--referral { background: rgba(255, 193, 7, 0.12); color: #ffd54f; }
+.clicks-origem--referral { background: rgba(94, 200, 216, 0.12); color: var(--primary); }
 .clicks-origem--outro { background: rgba(255, 255, 255, 0.08); color: #bbb; }
 .clicks-origem--direto { background: rgba(255, 255, 255, 0.06); color: #999; }
 .clicks-origem--site { background: rgba(255, 107, 53, 0.15); color: var(--primary); }
@@ -4400,8 +4826,8 @@ body.admin-page.pedidos-login-only #pedidos-login {
 }
 .admin-frete-subtab.active,
 .admin-vendas-subtab.active {
-    background: rgba(255, 193, 7, 0.08);
-    border-color: rgba(255, 193, 7, 0.55);
+    background: rgba(94, 200, 216, 0.08);
+    border-color: rgba(94, 200, 216, 0.55);
     color: var(--primary);
 }
 .admin-frete-subtab.active i,
@@ -4510,7 +4936,7 @@ body.admin-page.pedidos-login-only #pedidos-login {
     color: #ffe082;
 }
 .vendas-consol-flex-card.is-current .vendas-consol-mtd-net {
-    color: #ffd54f;
+    color: var(--primary);
 }
 .vendas-consol-mtd {
     border: 1px solid #2a2a2a;
@@ -4699,7 +5125,7 @@ body.admin-page.pedidos-login-only #pedidos-login {
 
 .vendas-consol-card--week .vendas-consol-card-kicker { color: #ffe082; }
 .vendas-consol-card--week .vendas-consol-card-net {
-    color: #ffd54f;
+    color: var(--primary);
     text-shadow: 0 0 18px rgba(255, 213, 79, 0.28);
 }
 .vendas-consol-card--week .vendas-consol-rank.is-top .vendas-consol-rank-n,
@@ -5244,7 +5670,7 @@ body.admin-page.pedidos-login-only #pedidos-login {
     letter-spacing: 0.5px;
 }
 .admin-mode-badge.online { background: rgba(37, 211, 102, 0.15); color: #25d366; }
-.admin-mode-badge.offline { background: rgba(255, 193, 7, 0.15); color: var(--primary); }
+.admin-mode-badge.offline { background: rgba(94, 200, 216, 0.15); color: var(--primary); }
 .admin-orders-section {
     border: 1px solid #2a2a2a;
     border-radius: 16px;
@@ -5409,7 +5835,7 @@ body.admin-page.pedidos-login-only #pedidos-login {
 .status-badge.status-paid,
 .status-badge.paid { background: rgba(37,211,102,0.15); color: #25d366; }
 .status-badge.status-pending,
-.status-badge.pending_payment { background: rgba(255,193,7,0.15); color: var(--primary); }
+.status-badge.pending_payment { background: rgba(94,200,216,0.15); color: var(--primary); }
 .status-badge i { font-size: 0.62rem; }
 .pedidos-page .admin-panel-actions {
     display: flex;
@@ -5698,7 +6124,7 @@ body.admin-page.pedidos-login-only #pedidos-login {
   align-items: flex-end;
 }
 .pedidos-detail-section--manual {
-  border-color: rgba(255, 193, 7, 0.35);
+  border-color: rgba(94, 200, 216, 0.35);
 }
 .pedidos-shipping-field {
   display: flex;
@@ -5736,7 +6162,7 @@ body.admin-page.pedidos-login-only #pedidos-login {
   padding: 8px 14px;
   border-radius: 8px;
   border: none;
-  background: #ffc107;
+  background: #5EC8D8;
   color: #111;
   font-weight: 700;
   cursor: pointer;
@@ -6222,9 +6648,9 @@ body.stf-lightbox-open { overflow: hidden; }
     font-weight: 600;
     margin-bottom: 16px;
 }
-.loja-card img { width: 100%; aspect-ratio: 1 / 1; object-fit: contain; background: #111; }
+.loja-card img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; background: #111; }
 .loja-card .stf-album { width: 100%; aspect-ratio: 1 / 1; background: #111; overflow: hidden; }
-.loja-card .stf-album img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: contain; object-position: center; background: #111; display: block; }
+.loja-card .stf-album img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; object-position: center; background: #111; display: block; }
 
 /* Product photo album — faint arrows on the image */
 .stf-album {
@@ -6304,7 +6730,7 @@ body.stf-lightbox-open { overflow: hidden; }
   display: block;
   width: 100%;
 }
-/* Home product album: square, shrink to fit — never crop */
+/* Home product album: square, fill the frame */
 .product-image-wrap .stf-album {
   width: 100%;
   height: 100%;
@@ -6323,6 +6749,7 @@ body.stf-lightbox-open { overflow: hidden; }
   object-position: center;
   display: block;
   margin: 0;
+  background: #111;
 }
 .kit-box-media .stf-album img {
   max-width: 320px;
@@ -6333,7 +6760,7 @@ body.stf-lightbox-open { overflow: hidden; }
   display: block;
   margin: 0 auto;
 }
-/* Loja: square card, full image visible (shrink, don't crop) */
+/* Loja: square card, fill entire space */
 .loja-card .stf-album {
   aspect-ratio: 1 / 1;
   background: #111;
@@ -6343,7 +6770,7 @@ body.stf-lightbox-open { overflow: hidden; }
   width: 100%;
   height: 100%;
   aspect-ratio: auto;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
 }
 .loja-card-body { padding: 16px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
@@ -6401,7 +6828,7 @@ a.conta-forgot-link { display: inline-block; }
 .conta-order-head { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 8px; }
 .conta-order-status { font-size: 0.8rem; font-weight: 700; padding: 4px 8px; border-radius: 6px; }
 .conta-order-status.status-paid { background: rgba(37,211,102,.15); color: #25d366; }
-.conta-order-status.status-pending_payment { background: rgba(255,193,7,.15); color: var(--primary); }
+.conta-order-status.status-pending_payment { background: rgba(94,200,216,.15); color: var(--primary); }
 .conta-order-status.status-cancelled_by_user,
 .conta-order-status.status-cancelled { background: rgba(244,67,54,.12); color: #ef9a9a; }
 .conta-order-meta { font-size: 0.85rem; color: var(--gray); margin: 0; }
@@ -7081,7 +7508,7 @@ a.conta-forgot-link { display: inline-block; }
 .forum-dev-banner {
   display:inline-flex; align-items:center; gap:.4rem;
   margin:0; padding:.35rem .7rem; border-radius:6px;
-  background:rgba(255,193,7,.15); color:var(--text, #222); font-size:.85rem; font-weight:600;
+  background:rgba(94,200,216,.15); color:var(--text, #222); font-size:.85rem; font-weight:600;
 }
 .forum-gate { text-align:center; padding:2rem 1.25rem; }
 .forum-thread-card { margin:0 0 .85rem; }
@@ -7106,7 +7533,7 @@ a.conta-forgot-link { display: inline-block; }
 .forum-badge-tester {
   display:inline-block; margin-left:.35rem; padding:.05rem .35rem;
   font-size:.65rem; text-transform:uppercase; letter-spacing:.03em;
-  background:#111; color:#ffc107; border-radius:4px; vertical-align:middle;
+  background:#111; color:#5EC8D8; border-radius:4px; vertical-align:middle;
 }
 .forum-compose, .forum-profile-setup, .forum-thread-detail { margin-bottom:1.25rem; }
 .forum-avatar-grid { display:flex; flex-wrap:wrap; gap:.5rem; margin:.5rem 0 1rem; }
@@ -7114,7 +7541,7 @@ a.conta-forgot-link { display: inline-block; }
   width:2.75rem; height:2.75rem; border-radius:10px; border:2px solid transparent;
   background:#f5f5f5; font-size:1.35rem; cursor:pointer;
 }
-.forum-avatar-pick.is-selected, .forum-avatar-pick:hover { border-color:#ffc107; background:#fff8e1; }
+.forum-avatar-pick.is-selected, .forum-avatar-pick:hover { border-color:#5EC8D8; background:#0f2a2e; }
 .forum-body { margin:1rem 0; line-height:1.55; white-space:normal; color:#1f1f1f !important; }
 .forum-reply {
   border:1px solid rgba(0,0,0,.08); border-radius:12px;
@@ -7295,7 +7722,7 @@ a.conta-forgot-link { display: inline-block; }
   padding: .9rem 1rem;
   border: 1px solid rgba(0,0,0,.12);
   border-radius: 12px;
-  background: rgba(255, 193, 7, .08);
+  background: rgba(94, 200, 216, .08);
 }
 .forum-related-prompt p { margin: 0 0 .5rem; }
 .forum-related-list { list-style: none; margin: .75rem 0 0; padding: 0; display: grid; gap: .5rem; }
@@ -7316,3 +7743,53 @@ a.conta-forgot-link { display: inline-block; }
 .forum-related-pick span { color: #555; font-size: .88rem; }
 .forum-related-pick small { color: #888; }
 .forum-related-actions { margin-top: .85rem; display: flex; flex-wrap: wrap; gap: .5rem; }
+
+
+/* Temporariamente oculto: paliativos, patentes, comunidade */
+#paliativos,
+section#paliativos,
+.nav-links a[href="#paliativos"],
+.nav-main a[href="#paliativos"],
+a[href="comunidade.html"],
+a[href="../comunidade.html"],
+a[href*="comunidade.html"],
+footer a[href*="comunidade"],
+.footer-links a[href*="comunidade"],
+.hide-patent,
+[data-hide-patent] {
+    display: none !important;
+}
+
+
+/* Patentes ainda não existem — ocultar bloco e textos */
+.about-patents,
+.about-patent,
+.about-story-heading:has(+ .about-body + .about-patents),
+h3.about-story-heading + .about-body:has(+ .about-patents) {
+    display: none !important;
+}
+/* Admin Crash: marketplaces gerenciados no Tattoo — ocultar UI */
+.admin-vendas-subtabs,
+.admin-vendas-subtab[data-vendas-subtab="mercadolivre"],
+.admin-vendas-subtab[data-vendas-subtab="shopee"],
+.admin-vendas-subtab[data-vendas-subtab="amazon"],
+.admin-vendas-subtab[data-vendas-subtab="consolidado"],
+#admin-vendas-mercadolivre,
+#admin-vendas-shopee,
+#admin-vendas-amazon,
+#admin-vendas-consolidado {
+    display: none !important;
+}
+#admin-vendas-loja {
+    display: block !important;
+}
+
+/* Admin: Vendas, Saldos e Comunidade ocultos */
+.admin-tab[data-admin-tab="vendas"],
+.admin-tab[data-admin-tab="saldos"],
+.admin-tab[data-admin-tab="comunidade"],
+#admin-tab-vendas,
+#admin-tab-saldos,
+#admin-tab-comunidade {
+    display: none !important;
+}

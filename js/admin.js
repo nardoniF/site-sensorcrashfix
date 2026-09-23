@@ -3,14 +3,14 @@
   const bootstrap = window.CONFIG_BOOTSTRAP || {};
 
   const DEFAULT_EMAILS = {
-    from: 'Sensor Crash Fix <pedidos@sensorcrashfix.com.br>',
+    from: 'Sensor CrashFix <pedidos@sensorcrashfix.com.br>',
     shopPaidSubject: 'PAGO — {orderId}',
-    customerOrderSubject: 'Pedido {orderId} registrado — Sensor Crash Fix',
-    customerPixSubject: 'PIX do pedido {orderId} — Sensor Crash Fix',
+    customerOrderSubject: 'Pedido {orderId} registrado — Sensor CrashFix',
+    customerPixSubject: 'PIX do pedido {orderId} — Sensor CrashFix',
     customerPaidSubject: 'Pagamento confirmado — {orderId}',
     motoboySubject: 'Entrega motoboy — {orderId}',
-    couponSubject: 'Você vendeu com seu cupom — comissão {amount} — Sensor Crash Fix',
-    testSubject: 'Teste — Sensor Crash Fix',
+    couponSubject: 'Você vendeu com seu cupom — comissão {amount} — Sensor CrashFix',
+    testSubject: 'Teste — Sensor CrashFix',
     testTo: '',
     pendingPaypal: 'Finalize o pagamento no PayPal. Você receberá outro e-mail quando o pagamento for confirmado.',
     pendingCard: 'Finalize o pagamento no link enviado. Você receberá outro e-mail quando o pagamento for confirmado.',
@@ -26,7 +26,7 @@
     abandonedSubject: 'Seu pedido {orderId} ainda está reservado — finalize quando quiser',
     abandonedWeeklySubject: 'Lembrete semanal — pedido {orderId} aguardando pagamento',
     abandonedIntro: 'Notamos que seu pedido ficou pendente. Seus itens ainda estão reservados — finalize o pagamento pelo link abaixo.',
-    abandonedWeeklyIntro: 'Passou uma semana e seu pedido ainda aguarda pagamento. Se ainda quiser o Sensor Crash Fix, é só concluir pelo link.',
+    abandonedWeeklyIntro: 'Passou uma semana e seu pedido ainda aguarda pagamento. Se ainda quiser o Sensor CrashFix, é só concluir pelo link.',
     abandonedCta: 'Finalizar meu pedido',
     pixGreeting: 'Olá, {nome}!',
     pixIntro: 'Seu pedido {orderId} foi registrado. Para concluir a compra, pague o PIX abaixo:',
@@ -2721,7 +2721,10 @@ ${worksheets}
   function showVendasSubtab(subtabId) {
     const container = document.getElementById('admin-tab-vendas');
     if (!container) return;
-    const id = subtabId || 'mercadolivre';
+    // Crash: só loja oficial (marketplaces no Tattoo).
+    const allowed = new Set(['loja']);
+    let id = subtabId || 'loja';
+    if (!allowed.has(id)) id = 'loja';
     container.querySelectorAll('[data-vendas-subtab]').forEach((tab) => {
       const active = tab.dataset.vendasSubtab === id;
       tab.classList.toggle('active', active);
@@ -2732,10 +2735,6 @@ ${worksheets}
     });
     try { localStorage.setItem('stf_admin_vendas_subtab', id); } catch (e) { /* ignore */ }
     if (id === 'loja') loadLojaSales();
-    if (id === 'mercadolivre') loadMlSales();
-    if (id === 'amazon') loadAmzSales();
-    if (id === 'shopee') loadShopeeSales();
-    if (id === 'consolidado') loadConsolidatedSales();
   }
 
   let vendasSubtabsWired = false;
@@ -2764,9 +2763,9 @@ ${worksheets}
     document.getElementById('btn-vendas-goto-pedidos')?.addEventListener('click', () => {
       document.querySelector('.admin-tab[data-admin-tab="pedidos"]')?.click();
     });
-    let saved = 'mercadolivre';
-    try { saved = localStorage.getItem('stf_admin_vendas_subtab') || 'mercadolivre'; } catch (e) { /* ignore */ }
-    if (!container.querySelector('#admin-vendas-' + saved)) saved = 'mercadolivre';
+    let saved = 'loja';
+    try { saved = localStorage.getItem('stf_admin_vendas_subtab') || 'loja'; } catch (e) { /* ignore */ }
+    if (saved !== 'loja' || !container.querySelector('#admin-vendas-' + saved)) saved = 'loja';
     showVendasSubtab(saved);
   }
 
@@ -3164,13 +3163,22 @@ ${worksheets}
     const checkedEl = document.getElementById('api-integrations-checked-at');
     if (!tbody) return;
 
-    if (!integrations?.length) {
+    // Crash: marketplaces ficam no Admin Tattoo (mesma conta de anúncios).
+    const HIDDEN_INTEGRATION_IDS = new Set(['mercadolivre', 'amazon', 'shopee']);
+    const HIDDEN_LABEL_RE = /mercado\s*livre|amazon|shopee/i;
+    const visible = (integrations || []).filter((row) => {
+      if (HIDDEN_INTEGRATION_IDS.has(row.id)) return false;
+      if (HIDDEN_LABEL_RE.test(String(row.label || ''))) return false;
+      return true;
+    });
+
+    if (!visible.length) {
       tbody.innerHTML = '<tr><td colspan="3" class="admin-meta">Nenhuma integração retornada.</td></tr>';
       if (checkedEl) checkedEl.hidden = true;
       return;
     }
 
-    tbody.innerHTML = integrations.map((row) => {
+    tbody.innerHTML = visible.map((row) => {
       return `<tr>
         <td><strong>${escAttr(row.label)}</strong></td>
         <td>${escAttr(row.description)}</td>
@@ -3205,7 +3213,8 @@ ${worksheets}
 
   const CLICKS_SNAPSHOT_KEY = 'stf_admin_clicks_snapshot_v1';
   const BALANCES_SNAPSHOT_KEY = 'stf_admin_balances_snapshot_v2';
-  const ADMIN_TAB_IDS = new Set(['vendas', 'pedidos', 'cliques', 'saldos', 'api', 'clientes', 'pesquisa', 'comunidade', 'documentacao']);
+  const ADMIN_TAB_IDS = new Set(['pedidos', 'cliques', 'api', 'clientes', 'pesquisa', 'documentacao']);
+  const ADMIN_HIDDEN_TABS = new Set(['vendas', 'saldos', 'comunidade']);
   let lastBalancesSnapshot = null;
 
   function resolveDefaultAdminTab() {
@@ -5921,7 +5930,7 @@ ${worksheets}
           ...intlMain.map((p) => ({ ...p, markets: ['INT'], aggregated: false }))
         ];
         renderProducts(rebuilt.length ? rebuilt : [{
-          id: 'kit-sensor-crashfix', slug: 'kit-sensor-crashfix', name: 'Kit Sensor Crash Fix',
+          id: 'kit-sensor-crashfix', slug: 'kit-sensor-crashfix', name: 'Kit Sensor CrashFix',
           description: '', price: 62.9, image: '/images/brand/sensorcrashfix.jpg', active: true,
           requiresSmartwatch: true, weightGrams: 3, sensorMm: 25, markets: ['BR']
         }]);
@@ -6240,6 +6249,13 @@ ${worksheets}
     facebook: 'https://www.facebook.com/profile.php?id=61588858629597'
   };
 
+  const CHANNEL_STORE_DEFAULTS = {
+    mercadolivre: 'https://produto.mercadolivre.com.br/MLB-6831525504-smartwatch-x-rachadura-sensor-nao-funciona-lentes-reparadoras-_JM',
+    shopee: 'https://shopee.com.br/product/479290797/58218461804/',
+    tiktok_shop: 'https://vt.tiktok.com/ZS9juMxSmKGjN-mns6O/',
+    amazon: 'https://www.amazon.com.br/dp/B0GYVBRGZS'
+  };
+
   function fillChannelsForm(channels) {
     const f = els.configForm;
     if (!f) return;
@@ -6266,11 +6282,13 @@ ${worksheets}
     set('channelStoreShopee', stores.shopee?.enabled, true);
     set('channelStoreTiktokShop', stores.tiktok_shop?.enabled, true);
     set('channelStoreAmazon', stores.amazon?.enabled, true);
+    setUrl('channelStoreMercadolivreUrl', stores.mercadolivre?.url, CHANNEL_STORE_DEFAULTS.mercadolivre);
+    setUrl('channelStoreShopeeUrl', stores.shopee?.url, CHANNEL_STORE_DEFAULTS.shopee);
+    setUrl('channelStoreTiktokShopUrl', stores.tiktok_shop?.url, CHANNEL_STORE_DEFAULTS.tiktok_shop);
+    setUrl('channelStoreAmazonUrl', stores.amazon?.url, CHANNEL_STORE_DEFAULTS.amazon);
   }
 
   function collectChannelsForm(f, current) {
-    const prev = current?.channels || {};
-    const prevStore = prev.stores || {};
     const social = (id, checked, urlField, fallbackUrl) => {
       const typed = String(f[urlField]?.value || '').trim();
       const url = typed || fallbackUrl || '';
@@ -6279,9 +6297,11 @@ ${worksheets}
         ...(url ? { url } : {})
       };
     };
-    const store = (id, checked, fallbackUrl) => {
+    const store = (id, checked, urlField, fallbackUrl) => {
       const out = { enabled: !!checked };
-      const url = String(prevStore[id]?.url || fallbackUrl || '').trim();
+      if (!urlField) return out;
+      const typed = String(f[urlField]?.value || '').trim();
+      const url = typed || fallbackUrl || '';
       if (url) out.url = url;
       return out;
     };
@@ -6294,10 +6314,10 @@ ${worksheets}
       },
       stores: {
         oficial: store('oficial', f.channelStoreOficial?.checked),
-        mercadolivre: store('mercadolivre', f.channelStoreMercadolivre?.checked, 'https://produto.mercadolivre.com.br/MLB-6831525504-smartwatch-x-rachadura-sensor-nao-funciona-lentes-reparadoras-_JM'),
-        shopee: store('shopee', f.channelStoreShopee?.checked, 'https://shopee.com.br/product/479290797/58259628035/'),
-        tiktok_shop: store('tiktok_shop', f.channelStoreTiktokShop?.checked, 'https://vt.tiktok.com/ZS9juMxSmKGjN-mns6O/'),
-        amazon: store('amazon', f.channelStoreAmazon?.checked, 'https://www.amazon.com.br/dp/B0GYVBRGZS')
+        mercadolivre: store('mercadolivre', f.channelStoreMercadolivre?.checked, 'channelStoreMercadolivreUrl', CHANNEL_STORE_DEFAULTS.mercadolivre),
+        shopee: store('shopee', f.channelStoreShopee?.checked, 'channelStoreShopeeUrl', CHANNEL_STORE_DEFAULTS.shopee),
+        tiktok_shop: store('tiktok_shop', f.channelStoreTiktokShop?.checked, 'channelStoreTiktokShopUrl', CHANNEL_STORE_DEFAULTS.tiktok_shop),
+        amazon: store('amazon', f.channelStoreAmazon?.checked, 'channelStoreAmazonUrl', CHANNEL_STORE_DEFAULTS.amazon)
       }
     };
   }
@@ -7629,6 +7649,7 @@ ${worksheets}
 
     function showTab(tabId) {
       let id = tabId || resolveDefaultAdminTab();
+      if (ADMIN_HIDDEN_TABS.has(id)) id = 'pedidos';
       const legacyCadastros = {
         produtos: 'produtos',
         smartwatches: 'smartwatches',
@@ -8054,7 +8075,7 @@ ${worksheets}
     all.push({
       id: 'lente-br-' + Date.now(),
       slug: 'lente-br-' + Date.now(),
-      name: 'Nova lente Sensor Crash Fix',
+      name: 'Nova lente Sensor CrashFix',
       description: '',
       price: 62.9,
       image: '/images/brand/sensorcrashfix.jpg',

@@ -1,12 +1,12 @@
 /**
- * Navegação entre mercados + seletor compacto de idiomas (PT, EN, IT, DE, ES, PL, SL).
- * .com = EN (/) + IT/DE/ES/PL/SL (/it/, /de/, /es/, /pl/, /sl/)  |  .com.br = PT + /en/ + /it/ + /de/ + /es/ + /pl/ + /sl/
+ * Navegação entre mercados + seletor compacto de idiomas (PT, EN, IT, DE, ES, PL, SL, FR, NO, SV, NL).
+ * .com = EN (/) + IT/DE/ES/PL/SL (/it/, /de/, /es/, /pl/, /sl/, /fr/, /no/, /sv/, /nl/)  |  .com.br = PT + /en/ + /it/ + /de/ + /es/ + /pl/ + /sl/
  */
 (function () {
   const BR = 'https://www.sensorcrashfix.com.br';
   const COM = 'https://www.sensorcrashfix.com';
-  const INTL_LANGS = ['it', 'de', 'es', 'pl', 'sl'];
-  const ALL_LANGS = ['pt', 'en', 'it', 'de', 'es', 'pl', 'sl'];
+  const INTL_LANGS = ['it', 'de', 'es', 'pl', 'sl', 'fr', 'no', 'sv', 'nl'];
+  const ALL_LANGS = ['pt', 'en', 'it', 'de', 'es', 'pl', 'sl', 'fr', 'no', 'sv', 'nl'];
 
   const LANG_META = {
     pt: { code: 'PT', flag: 'br', label: 'Português (Brasil)' },
@@ -16,6 +16,10 @@
     es: { code: 'ES', flag: 'es', label: 'Español' },
     pl: { code: 'PL', flag: 'pl', label: 'Polski' },
     sl: { code: 'SL', flag: 'si', label: 'Slovenščina' },
+    fr: { code: 'FR', flag: 'fr', label: 'Français' },
+    no: { code: 'NO', flag: 'no', label: 'Norsk' },
+    sv: { code: 'SV', flag: 'se', label: 'Svenska' },
+    nl: { code: 'NL', flag: 'nl', label: 'Nederlands' },
   };
 
   function host() {
@@ -70,10 +74,34 @@
     return f === 'index.html' ? `${BR}/${lang}/` : `${BR}/${lang}/${f}`;
   }
 
+  function withStfLang(url, lang) {
+    try {
+      const u = new URL(url, location.href);
+      u.searchParams.set('stf_lang', lang);
+      return u.toString();
+    } catch (e) {
+      return url;
+    }
+  }
+
   function langUrl(lang) {
-    if (lang === 'pt') return brPtUrl();
-    if (lang === 'en') return comEnUrl();
-    return isCom() ? comLangUrl(lang) : brLangUrl(lang);
+    let url;
+    if (lang === 'pt') url = brPtUrl();
+    else if (lang === 'en') url = comEnUrl();
+    else url = isCom() ? comLangUrl(lang) : brLangUrl(lang);
+
+    // Cookie não atravessa .com ↔ .com.br — pin stf_lang no destino
+    const toBr = lang === 'pt';
+    const fromCom = isCom();
+    const fromBr = isBr();
+    if ((fromCom && toBr) || (fromBr && !toBr && (lang === 'en' || ALL_LANGS.includes(lang)))) {
+      // From BR, EN goes to .com; from BR, intl ideally .com — brLangUrl stays on BR then client-redirects
+      if (fromBr && lang !== 'en' && lang !== 'pt') {
+        url = comLangUrl(lang);
+      }
+      return withStfLang(url, lang);
+    }
+    return url;
   }
 
   function persistPref(lang) {
@@ -91,17 +119,17 @@
       }
       return 'en';
     }
-    const m = path.match(/^\/(en|it|de|es|pl|sl)(\/|$)/);
+    const m = path.match(/^\/(en|it|de|es|pl|sl|fr|no|sv|nl)(\/|$)/);
     return m ? m[1] : 'pt';
   }
 
   function redirectBrIntlToCom() {
     if (!isBr()) return;
     const path = location.pathname;
-    const m = path.match(/^\/(en|it|de|es|pl|sl)(\/|$)/);
+    const m = path.match(/^\/(en|it|de|es|pl|sl|fr|no|sv|nl)(\/|$)/);
     if (!m) return;
     const lang = m[1];
-    const rest = path.replace(/^\/(en|it|de|es|pl|sl)/, '') || '/';
+    const rest = path.replace(/^\/(en|it|de|es|pl|sl|fr|no|sv|nl)/, '') || '/';
     let target;
     if (lang === 'en') {
       target = rest === '/' || rest === '/index.html' ? COM + '/' : COM + rest;

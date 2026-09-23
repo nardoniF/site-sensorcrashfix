@@ -185,12 +185,12 @@ test('STF_PELICULA: /es/ usa nameEn em vez de name PT', () => {
     i18n: { isEs: () => true, isIt: () => false, isEn: () => false, isDe: () => false, isPl: () => false, isLocalized: () => true }
   });
   const product = {
-    name: 'Kit Sensor Crash Fix',
-    nameEn: 'Sensor Crash Fix Lens',
+    name: 'Kit Sensor CrashFix',
+    nameEn: 'Sensor CrashFix Lens',
     description: 'Descrição em português',
     descriptionEn: 'English product description'
   };
-  assert.equal(p.productLabel(product), 'Sensor Crash Fix Lens');
+  assert.equal(p.productLabel(product), 'Sensor CrashFix Lens');
   assert.equal(p.productDescription(product), 'English product description');
 });
 

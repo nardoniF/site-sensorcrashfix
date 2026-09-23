@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Admin — Sensor Crash Fix</title>
-    <link rel="stylesheet" href="style.css?v=3.25">
+    <title>Admin — Sensor CrashFix</title>
+    <link rel="stylesheet" href="style.css?v=3.28-crash">
     <style>
       .clicks-device-badge{display:inline-block;padding:2px 7px;border-radius:999px;font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
       .clicks-device--mobile{background:rgba(76,175,80,.14);color:#81c784}
@@ -18,7 +18,7 @@
     <header class="admin-header">
         <nav class="container admin-nav">
             <div class="logo-area">
-                <a href="index.html" class="logo-img-link admin-logo-link"><img src="images/brand/logo.jpg" alt="Logo" class="main-logo-img"></a>
+                <a href="index.html" class="logo-img-link admin-logo-link"><img src="images/brand/logo.jpg?v=crash6" alt="Logo" class="main-logo-img"></a>
                 <div class="logo-text">ADMIN<span>PANEL</span></div>
             </div>
             <ul class="nav-links checkout-nav admin-toolbar">
@@ -37,9 +37,9 @@
                         <i class="fas fa-circle-question" aria-hidden="true"></i>
                     </button>
                 </div>
-                <p class="admin-intro admin-intro-compact">Cockpit da loja: pedidos, clientes, cliques, saldos, produtos, pagamento, frete, cupons, contato, API e documentação.</p>
+                <p class="admin-intro admin-intro-compact">Cockpit da loja: pedidos, clientes, cliques, produtos, pagamento, frete, cupons, contato, API e documentação.</p>
                 <div id="admin-login-help" class="admin-help-panel" hidden>
-                    <p class="admin-help-lead">Cockpit de gestão da loja Sensor Crash Fix — por prioridade:</p>
+                    <p class="admin-help-lead">Cockpit de gestão da loja Sensor CrashFix — por prioridade:</p>
                     <ul class="admin-help-list">
                         <li><strong>Pedidos</strong> — lista, etiquetas, PIX e exportação na aba <strong>Pedidos</strong>.</li>
                         <li><strong>Vendas</strong> — faturamento por canal (loja, Mercado Livre…).</li>
@@ -72,7 +72,7 @@
                 <div class="admin-panel-header">
                     <div>
                         <h1>Painel de gestão</h1>
-                        <p class="admin-meta admin-panel-subtitle">Sensor Crash Fix · 3N20</p>
+                        <p class="admin-meta admin-panel-subtitle">Sensor CrashFix · 3N20</p>
                         <p id="config-updated-at" class="admin-meta"></p>
                     </div>
                     <div class="admin-panel-actions">
@@ -83,14 +83,14 @@
                 <p id="admin-status-top" class="admin-status form-status" hidden></p>
 
                 <nav class="admin-tabs" role="tablist" aria-label="Seções do painel">
-                    <button type="button" role="tab" class="admin-tab" data-admin-tab="vendas" aria-selected="false" aria-controls="admin-tab-vendas"><i class="fas fa-chart-line"></i> Vendas</button>
+                    <button type="button" role="tab" class="admin-tab" data-admin-tab="vendas" aria-selected="false" aria-controls="admin-tab-vendas" hidden><i class="fas fa-chart-line"></i> Vendas</button>
                     <button type="button" role="tab" class="admin-tab active" data-admin-tab="pedidos" aria-selected="true" aria-controls="admin-tab-pedidos"><i class="fas fa-list"></i> Pedidos</button>
                     <button type="button" role="tab" class="admin-tab" data-admin-tab="cliques" aria-selected="false" aria-controls="admin-tab-cliques"><i class="fas fa-mouse-pointer"></i> Cliques</button>
-                    <button type="button" role="tab" class="admin-tab" data-admin-tab="saldos" aria-selected="false" aria-controls="admin-tab-saldos"><i class="fas fa-wallet"></i> Saldos</button>
+                    <button type="button" role="tab" class="admin-tab" data-admin-tab="saldos" aria-selected="false" aria-controls="admin-tab-saldos" hidden><i class="fas fa-wallet"></i> Saldos</button>
                     <button type="button" role="tab" class="admin-tab" data-admin-tab="api" aria-selected="false" aria-controls="admin-tab-api"><i class="fas fa-server"></i> API</button>
                     <button type="button" role="tab" class="admin-tab" data-admin-tab="clientes" aria-selected="false" aria-controls="admin-tab-clientes"><i class="fas fa-folder-open"></i> Cadastros</button>
                     <button type="button" role="tab" class="admin-tab" data-admin-tab="pesquisa" aria-selected="false" aria-controls="admin-tab-pesquisa"><i class="fas fa-comment-dots"></i> Pesquisa</button>
-                    <button type="button" role="tab" class="admin-tab" data-admin-tab="comunidade" aria-selected="false" aria-controls="admin-tab-comunidade"><i class="fas fa-comments"></i> Comunidade</button>
+                    <button type="button" role="tab" class="admin-tab" data-admin-tab="comunidade" aria-selected="false" aria-controls="admin-tab-comunidade" hidden><i class="fas fa-comments"></i> Comunidade</button>
                     <button type="button" role="tab" class="admin-tab" data-admin-tab="documentacao" aria-selected="false" aria-controls="admin-tab-documentacao"><i class="fas fa-book"></i> Documentação</button>
                 </nav>
 
@@ -256,7 +256,7 @@
                         </div>
                         <div class="form-grid">
                             <label>Nome na etiqueta
-                                <input type="text" name="shippingSenderBrand" placeholder="Sensor Crash Fix">
+                                <input type="text" name="shippingSenderBrand" placeholder="Sensor CrashFix">
                             </label>
                             <label>Razão social
                                 <input type="text" name="shippingSenderCompany" placeholder="3N20 Soluções Tecnológicas LTDA">
@@ -542,7 +542,7 @@
                                 <input type="email" name="formsubmitEmail" required>
                             </label>
                             <label class="full">Remetente dos e-mails (Resend)
-                                <input type="text" name="emailFrom" placeholder="Sensor Crash Fix &lt;pedidos@sensorcrashfix.com.br&gt;">
+                                <input type="text" name="emailFrom" placeholder="Sensor CrashFix &lt;pedidos@sensorcrashfix.com.br&gt;">
                             </label>
                         </div>
                     </fieldset>
@@ -552,6 +552,7 @@
                         <div id="help-channels" class="admin-help-panel admin-help-panel--fieldset" hidden>
                             <p>Liga ou desliga ícones de redes (header/footer) e cards de marketplace (onde comprar / loja). Itens desligados somem do layout sem deixar buraco.</p>
                             <p>Em cada rede, cadastre a URL oficial — o site (header, footer e schema) usa o link salvo aqui. Se trocar o canal do YouTube, atualize só este campo e salve.</p>
+                            <p>Em cada marketplace, cole a URL do <strong>anúncio</strong> (produto na Shopee, ML, Amazon, TikTok Shop). O site (loja, onde comprar e home) passa a abrir esse link. Se trocar o anúncio, atualize o campo e salve — não precisa editar HTML.</p>
                         </div>
                         <p class="admin-meta" style="margin:0 0 10px">Redes sociais</p>
                         <div class="admin-channels-list">
@@ -572,13 +573,28 @@
                                 <input type="url" name="channelSocialFacebookUrl" placeholder="https://www.facebook.com/…" autocomplete="off" spellcheck="false">
                             </div>
                         </div>
-                        <p class="admin-meta" style="margin:16px 0 10px">Lojas / marketplaces</p>
-                        <div class="admin-channels-grid">
-                            <label class="label-check"><input type="checkbox" name="channelStoreOficial" checked><span>Loja oficial</span></label>
-                            <label class="label-check"><input type="checkbox" name="channelStoreMercadolivre" checked><span>Mercado Livre</span></label>
-                            <label class="label-check"><input type="checkbox" name="channelStoreShopee" checked><span>Shopee</span></label>
-                            <label class="label-check"><input type="checkbox" name="channelStoreTiktokShop" checked><span>TikTok Shop</span></label>
-                            <label class="label-check"><input type="checkbox" name="channelStoreAmazon" checked><span>Amazon</span></label>
+                        <p class="admin-meta" style="margin:16px 0 10px">Lojas / marketplaces — URL do anúncio</p>
+                        <div class="admin-channels-list">
+                            <div class="admin-channel-row">
+                                <label class="label-check"><input type="checkbox" name="channelStoreOficial" checked><span>Loja oficial</span></label>
+                                <span class="admin-meta" style="align-self:center">Abre a loja do site (sem URL externa)</span>
+                            </div>
+                            <div class="admin-channel-row">
+                                <label class="label-check"><input type="checkbox" name="channelStoreMercadolivre" checked><span>Mercado Livre</span></label>
+                                <input type="url" name="channelStoreMercadolivreUrl" placeholder="https://produto.mercadolivre.com.br/… ou /p/MLB…" autocomplete="off" spellcheck="false" aria-label="URL do anúncio Mercado Livre">
+                            </div>
+                            <div class="admin-channel-row">
+                                <label class="label-check"><input type="checkbox" name="channelStoreShopee" checked><span>Shopee</span></label>
+                                <input type="url" name="channelStoreShopeeUrl" placeholder="https://shopee.com.br/product/…/…" autocomplete="off" spellcheck="false" aria-label="URL do anúncio Shopee">
+                            </div>
+                            <div class="admin-channel-row">
+                                <label class="label-check"><input type="checkbox" name="channelStoreTiktokShop" checked><span>TikTok Shop</span></label>
+                                <input type="url" name="channelStoreTiktokShopUrl" placeholder="https://vt.tiktok.com/… ou link do produto" autocomplete="off" spellcheck="false" aria-label="URL do anúncio TikTok Shop">
+                            </div>
+                            <div class="admin-channel-row">
+                                <label class="label-check"><input type="checkbox" name="channelStoreAmazon" checked><span>Amazon</span></label>
+                                <input type="url" name="channelStoreAmazonUrl" placeholder="https://www.amazon.com.br/dp/…" autocomplete="off" spellcheck="false" aria-label="URL do anúncio Amazon">
+                            </div>
                         </div>
                     </fieldset>
 
@@ -868,13 +884,13 @@
                             <p>Também em <a href="documentacao.html" target="_blank" rel="noopener">documentacao.html</a> (nova aba).</p>
                         </div>
                         <div class="admin-form-actions admin-doc-manuals">
-                            <a href="docs/manuais/manual-instalacao-sensor-cracks-fix-lote.html" target="_blank" rel="noopener" class="btn-secondary"><i class="fas fa-print"></i> Manual envio</a>
+                            <a href="docs/manuais/manual-instalacao-sensor-crash-fix-lote.html" target="_blank" rel="noopener" class="btn-secondary"><i class="fas fa-print"></i> Manual envio</a>
                             <a href="docs/cupons/cupons-meukit10-a4.pdf" target="_blank" rel="noopener" class="btn-secondary"><i class="fas fa-ticket-alt"></i> Cupons MEUKIT10</a>
-                            <a href="docs/manuais/manual-instalacao-sensor-cracks-fix.html" target="_blank" rel="noopener" class="btn-secondary"><i class="fas fa-book-open"></i> Manual cliente</a>
+                            <a href="docs/manuais/manual-instalacao-sensor-crash-fix.html" target="_blank" rel="noopener" class="btn-secondary"><i class="fas fa-book-open"></i> Manual cliente</a>
                             <a href="docs/cartas/carta-agradecimento-intl.html" target="_blank" rel="noopener" class="btn-secondary"><i class="fas fa-envelope-open-text"></i> Carta thank-you (intl)</a>
                             <a href="docs/marketplace/msg-marketplace-medida-lente.html" target="_blank" rel="noopener" class="btn-secondary"><i class="fas fa-comments"></i> Msg marketplace (medida)</a>
                         </div>
-                        <iframe id="admin-doc-frame" title="Documentação Sensor Crash Fix"></iframe>
+                        <iframe id="admin-doc-frame" title="Documentação Sensor CrashFix"></iframe>
                     </div>
 
                     <div id="admin-tab-pedidos" class="admin-tab-panel active" role="tabpanel">
@@ -934,21 +950,20 @@
 
                     <div id="admin-tab-vendas" class="admin-tab-panel" role="tabpanel" hidden>
                     <fieldset>
-                        <legend class="admin-legend-row"><span><i class="fas fa-chart-line"></i> Vendas por canal</span><button type="button" class="admin-help-btn admin-help-btn-inline" data-admin-help aria-controls="help-vendas" aria-expanded="false" title="Ajuda"><i class="fas fa-circle-question" aria-hidden="true"></i></button></legend>
+                        <legend class="admin-legend-row"><span><i class="fas fa-chart-line"></i> Vendas da loja</span><button type="button" class="admin-help-btn admin-help-btn-inline" data-admin-help aria-controls="help-vendas" aria-expanded="false" title="Ajuda"><i class="fas fa-circle-question" aria-hidden="true"></i></button></legend>
                         <div id="help-vendas" class="admin-help-panel admin-help-panel--fieldset" hidden>
-                            <p>Cada venda mostra só os valores: <strong>Preço</strong> → <strong>−Tarifa</strong> → <strong>−Frete</strong> → <strong>−Kit</strong> → <strong>= Líquido</strong>. O nome (Tarifa ML, Tarifa Shopee, Tarifa Amazon) aparece ao passar o mouse. O kit vem do BOM em Produtos.</p>
-                            <p><strong>Atualizar ML / Shopee / Amazon</strong> busca pedidos na loja: inclui os novos e regrava os que mudaram (status, valor, tarifa, frete). Recarregar só relê o que já está gravado. Mini Envios é o Correios da loja oficial, não o nome do frete do Mercado Livre (lá o recibo chama de Envios / Flex). <strong>Consolidado</strong> junta tudo, exporta Excel, compara os 3 últimos meses até o mesmo dia, tem o fold <strong>Dias com venda</strong> (mês cheio nos anteriores) e mostra <strong>Flex a pagar</strong> por mês (o que você deve à empresa de Flex, pela lista em Produtos — o bônus do ML não entra nessa fatura).</p>
+                            <p>Vendas da <strong>loja oficial</strong> (pedidos pagos no site Crash). Marketplaces (ML, Shopee, Amazon) ficam no Admin do Sensor TattooFix — mesma conta de anúncios.</p>
                         </div>
-                        <nav class="admin-vendas-subtabs" role="tablist" aria-label="Canais de vendas">
-                            <button type="button" role="tab" class="admin-vendas-subtab" data-vendas-subtab="loja" aria-selected="false" aria-controls="admin-vendas-loja"><i class="fas fa-store"></i> Loja oficial</button>
-                            <button type="button" role="tab" class="admin-vendas-subtab active" data-vendas-subtab="mercadolivre" aria-selected="true" aria-controls="admin-vendas-mercadolivre"><i class="fas fa-shopping-bag"></i> Mercado Livre</button>
-                            <button type="button" role="tab" class="admin-vendas-subtab" data-vendas-subtab="shopee" aria-selected="false" aria-controls="admin-vendas-shopee"><i class="fas fa-store"></i> Shopee</button>
-                            <button type="button" role="tab" class="admin-vendas-subtab" data-vendas-subtab="amazon" aria-selected="false" aria-controls="admin-vendas-amazon"><i class="fas fa-box"></i> Amazon</button>
-                            <button type="button" role="tab" class="admin-vendas-subtab" data-vendas-subtab="consolidado" aria-selected="false" aria-controls="admin-vendas-consolidado"><i class="fas fa-layer-group"></i> Consolidado</button>
+                        <nav class="admin-vendas-subtabs" role="tablist" aria-label="Canais de vendas" hidden>
+                            <button type="button" role="tab" class="admin-vendas-subtab active" data-vendas-subtab="loja" aria-selected="true" aria-controls="admin-vendas-loja"><i class="fas fa-store"></i> Loja oficial</button>
+                            <button type="button" role="tab" class="admin-vendas-subtab" data-vendas-subtab="mercadolivre" aria-selected="false" aria-controls="admin-vendas-mercadolivre" hidden><i class="fas fa-shopping-bag"></i> Mercado Livre</button>
+                            <button type="button" role="tab" class="admin-vendas-subtab" data-vendas-subtab="shopee" aria-selected="false" aria-controls="admin-vendas-shopee" hidden><i class="fas fa-store"></i> Shopee</button>
+                            <button type="button" role="tab" class="admin-vendas-subtab" data-vendas-subtab="amazon" aria-selected="false" aria-controls="admin-vendas-amazon" hidden><i class="fas fa-box"></i> Amazon</button>
+                            <button type="button" role="tab" class="admin-vendas-subtab" data-vendas-subtab="consolidado" aria-selected="false" aria-controls="admin-vendas-consolidado" hidden><i class="fas fa-layer-group"></i> Consolidado</button>
                         </nav>
                         <p id="admin-status-vendas" class="admin-status form-status" hidden></p>
 
-                        <div id="admin-vendas-loja" class="admin-vendas-subpanel" role="tabpanel" hidden>
+                        <div id="admin-vendas-loja" class="admin-vendas-subpanel" role="tabpanel">
                             <div id="vendas-loja-stats" class="admin-clicks-stats admin-meta"></div>
                             <div class="admin-clicks-toolbar admin-toolbar-split">
                                 <div class="admin-toolbar-main">
@@ -958,12 +973,12 @@
                             </div>
                             <p id="vendas-loja-checked-at" class="admin-meta" hidden></p>
                             <div id="vendas-loja-tree-root" class="clicks-tree-root">
-                                <p class="admin-meta">Abra esta subaba para carregar as vendas da loja oficial.</p>
+                                <p class="admin-meta">Carregando vendas da loja oficial…</p>
                             </div>
-                            <p class="admin-meta">Somente pedidos <strong>pagos</strong> (não cancelados). Líquido real = marketplace − custo do kit.</p>
+                            <p class="admin-meta">Somente pedidos <strong>pagos</strong> (não cancelados). Marketplaces: Admin Sensor TattooFix.</p>
                         </div>
 
-                        <div id="admin-vendas-mercadolivre" class="admin-vendas-subpanel" role="tabpanel">
+                        <div id="admin-vendas-mercadolivre" class="admin-vendas-subpanel" role="tabpanel" hidden>
                             <div id="vendas-ml-stats" class="admin-clicks-stats admin-meta"></div>
                             <div class="admin-clicks-toolbar admin-toolbar-split">
                                 <div class="admin-toolbar-main">
@@ -1352,6 +1367,6 @@
     })();
     </script>
     <script type="module" src="js/sales-money.mjs?v=6"></script>
-    <script defer src="js/admin.js?v=223"></script>
+    <script defer src="js/admin.js?v=226"></script>
 </body>
 </html>

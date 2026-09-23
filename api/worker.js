@@ -1,5 +1,5 @@
 /**
- * API Sensor Crash Fix — Cloudflare Worker
+ * API Sensor CrashFix — Cloudflare Worker
  * PIX (Mercado Pago) + Cartão (Asaas) + PayPal (intl) · WhatsApp · Correios · Uber Direct · Pedidos
  */
 
@@ -105,7 +105,7 @@ const ALLOWED_ORIGINS = [
 ];
 const CONFIG_KEY = 'store-config';
 /** Pin igual ao cloudflare/scf-com-proxy.js — catálogo GitHub servido direto ao Worker (evita cache do proxy). */
-const SITE_CATALOG_COMMIT = '3299494b66c054c868ae927cc36d63658d342a46';
+const SITE_CATALOG_COMMIT = 'defa1aeacac11520d2bf473726d0de69441cfa45';
 const SITE_CATALOG_URLS = [
   'https://cdn.jsdelivr.net/gh/nardoniF/site-sensorcrashfix@' + SITE_CATALOG_COMMIT + '/data/store-config.json',
   'https://raw.githubusercontent.com/nardoniF/site-sensorcrashfix/' + SITE_CATALOG_COMMIT + '/data/store-config.json',
@@ -129,9 +129,9 @@ const CUSTOMER_SESSION_TTL = 2592000; // 30 dias
 
 const DEFAULT_CONFIG = {
   product: {
-    name: 'Kit Sensor Crash Fix',
-    nameEn: 'Sensor Crash Fix Lens',
-    nameIt: 'Lente Sensor Crash Fix',
+    name: 'Kit Sensor CrashFix',
+    nameEn: 'Sensor CrashFix Lens',
+    nameIt: 'Lente Sensor CrashFix',
     description: 'Lente ótica para smartwatch em pele danificado — kit completo',
     descriptionEn: 'Optical lens for smartwatches on cracked sensor',
     descriptionIt: 'Lente ottica per smartwatch su sensore incrinato',
@@ -142,14 +142,20 @@ const DEFAULT_CONFIG = {
     {
       id: 'kit-sensor-crashfix',
       slug: 'kit-sensor-crashfix',
-      name: 'Kit Sensor Crash Fix',
+      name: 'Kit Sensor CrashFix',
       nameEn: 'SensorCrashFix Optical Lens',
       nameIt: 'Lente ottica SensorCrashFix',
       description: 'Lente ótica para smartwatch em pele danificado — kit completo',
       descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
       descriptionIt: 'Progettata per i sensori ottici degli smartwatch su sensore incrinato.',
       price: 62.9,
-      image: 'https://www.sensorcrashfix.com.br/images/brand/sensorcrashfix.jpg',
+      image: '/images/kit-gallery/kit-01-embalagem.jpg',
+      images: [
+        '/images/kit-gallery/kit-01-embalagem.jpg',
+        '/images/kit-gallery/kit-03-aplicacao.jpg',
+        '/images/kit-gallery/kit-02-conteudo.jpg',
+        '/images/kit-gallery/kit-06-antes-depois.jpg'
+      ],
       active: true,
       requiresSmartwatch: true,
       deviceType: 'smartwatch',
@@ -159,9 +165,9 @@ const DEFAULT_CONFIG = {
     {
       id: 'kit-smartband-crashfix',
       slug: 'kit-smartband-crashfix',
-      name: 'Kit Smartband Crash Fix',
-      nameEn: 'Kit Smartband Crash Fix',
-      nameIt: 'Kit Smartband Crash Fix',
+      name: 'Kit Smartband Sensor CrashFix',
+      nameEn: 'Kit Smartband Sensor CrashFix',
+      nameIt: 'Kit Smartband Sensor CrashFix',
       deviceType: 'smartband',
       description: 'Lente ótica para smartband em pele danificado — kit completo',
       descriptionEn: 'Optical lens for smartbands on cracked sensor — full kit',
@@ -173,13 +179,36 @@ const DEFAULT_CONFIG = {
         '/images/smartband/kit-br/02-conteudo.jpg',
         '/images/smartband/kit-br/03-aplicacao.jpg',
         '/images/smartband/kit-br/04-antes-depois.jpg',
-        '/images/smartband/kit-br/05-lente.jpg'
       ],
       active: true,
       requiresSmartwatch: true,
       weightGrams: 3,
       sensorMm: 25,
       markets: ['BR']
+    },
+    {
+      id: 'optical-lens-intl',
+      slug: 'optical-lens-intl',
+      name: 'SensorCrashFix Optical Lens',
+      nameEn: 'SensorCrashFix Optical Lens',
+      nameIt: 'Lente ottica SensorCrashFix',
+      description: 'Lente de correção óptica para smartwatch em pele danificado.',
+      descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
+      descriptionIt: 'Progettata per i sensori ottici degli smartwatch su sensore incrinato.',
+      price: 62.9,
+      image: '/images/kit-gallery/en/kit-01-embalagem.jpg',
+      images: [
+        '/images/kit-gallery/en/kit-01-embalagem.jpg',
+        '/images/kit-gallery/en/kit-03-aplicacao.jpg',
+        '/images/kit-gallery/en/kit-02-conteudo.jpg',
+        '/images/kit-gallery/en/kit-06-antes-depois.jpg'
+      ],
+      active: true,
+      requiresSmartwatch: true,
+      deviceType: 'smartwatch',
+      weightGrams: 3,
+      sensorMm: 25,
+      markets: ['INT']
     },
     {
       id: 'optical-lens-smartband-intl',
@@ -208,31 +237,6 @@ const DEFAULT_CONFIG = {
       markets: ['INT'],
       aggregated: false
     },
-    {
-      id: 'optical-lens-intl',
-      slug: 'optical-lens-intl',
-      name: 'SensorCrashFix Optical Lens',
-      nameEn: 'SensorCrashFix Optical Lens',
-      nameIt: 'Lente ottica SensorCrashFix',
-      description: 'Lente de correção óptica para smartwatch em pele danificado.',
-      descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
-      descriptionIt: 'Progettata per i sensori ottici degli smartwatch su sensore incrinato.',
-      price: 62.9,
-      image: '/images/lens-gallery/01-optical-correction-lens.png',
-      images: [
-        '/images/lens-gallery/01-optical-correction-lens.png',
-        '/images/lens-gallery/02-ultra-thin.png',
-        '/images/lens-gallery/03-high-optical-transparency.png',
-        '/images/lens-gallery/04-engineered-refraction.png',
-        '/images/lens-gallery/05-whats-included.png'
-      ],
-      active: true,
-      requiresSmartwatch: true,
-      deviceType: 'smartwatch',
-      weightGrams: 3,
-      sensorMm: 25,
-      markets: ['INT']
-    }
   ],
   pix: { key: '29321223000132', keyType: 'cnpj', merchantName: '3N20 SOLUCOES TEC', merchantCity: 'SAO PAULO' },
   shipping: {
@@ -245,7 +249,7 @@ const DEFAULT_CONFIG = {
     intlServiceCode: '45128',
     serviceName: 'Mini Envios',
     sender: {
-      brand: 'Sensor Crash Fix',
+      brand: 'Sensor CrashFix',
       company: '3N20 Soluções Tecnológicas LTDA',
       cnpj: '29.321.223/0001-32',
       rua: 'Rua Engenheiro Roberto Dabus Buazar',
@@ -374,20 +378,20 @@ const DEFAULT_CONFIG = {
     'Polar Pacer / Ignite',
     'Outro modelo (informar nas observações)'
   ],
-  formsubmit: { email: 'contato@sensorcrashfix.com.br', subject: 'Novo pedido — Loja Oficial Sensor Crash Fix' },
+  formsubmit: { email: 'contato@sensorcrashfix.com.br', subject: 'Novo pedido — Loja Oficial Sensor CrashFix' },
   emails: {
-    from: 'Sensor Crash Fix <pedidos@sensorcrashfix.com.br>',
+    from: 'Sensor CrashFix <pedidos@sensorcrashfix.com.br>',
     shopPaidSubject: 'PAGO — {orderId}',
-    customerOrderSubject: 'Pedido {orderId} registrado — Sensor Crash Fix',
-    customerPixSubject: 'PIX do pedido {orderId} — Sensor Crash Fix',
+    customerOrderSubject: 'Pedido {orderId} registrado — Sensor CrashFix',
+    customerPixSubject: 'PIX do pedido {orderId} — Sensor CrashFix',
     customerPaidSubject: 'Pagamento confirmado — {orderId}',
     motoboySubject: 'Entrega motoboy — {orderId}',
-    couponSubject: 'Você vendeu com seu cupom — comissão {amount} — Sensor Crash Fix',
-    commissionerWelcomeSubject: 'Seu cupom {code} está ativo — divulgue Sensor Crash Fix',
-    testSubject: 'Teste — Sensor Crash Fix',
+    couponSubject: 'Você vendeu com seu cupom — comissão {amount} — Sensor CrashFix',
+    commissionerWelcomeSubject: 'Seu cupom {code} está ativo — divulgue Sensor CrashFix',
+    testSubject: 'Teste — Sensor CrashFix',
     testTo: '',
-    monthlyReportSubject: 'Relatório de cliques — {month}/{year} — Sensor Crash Fix',
-    monthlySalesReportSubject: 'Relatório de vendas — {month}/{year} — Sensor Crash Fix',
+    monthlyReportSubject: 'Relatório de cliques — {month}/{year} — Sensor CrashFix',
+    monthlySalesReportSubject: 'Relatório de vendas — {month}/{year} — Sensor CrashFix',
     monthlyReportTo: '',
     pendingPaypal: 'Finalize o pagamento no PayPal. Você receberá outro e-mail quando o pagamento for confirmado.',
     pendingCard: 'Finalize o pagamento no link enviado. Você receberá outro e-mail quando o pagamento for confirmado.',
@@ -403,7 +407,7 @@ const DEFAULT_CONFIG = {
     abandonedSubject: 'Seu pedido {orderId} ainda está reservado — finalize quando quiser',
     abandonedWeeklySubject: 'Lembrete semanal — pedido {orderId} aguardando pagamento',
     abandonedIntro: 'Notamos que seu pedido ficou pendente. Seus itens ainda estão reservados — finalize o pagamento pelo link abaixo.',
-    abandonedWeeklyIntro: 'Passou uma semana e seu pedido ainda aguarda pagamento. Se ainda quiser o Sensor Crash Fix, é só concluir pelo link.',
+    abandonedWeeklyIntro: 'Passou uma semana e seu pedido ainda aguarda pagamento. Se ainda quiser o Sensor CrashFix, é só concluir pelo link.',
     abandonedCta: 'Finalizar meu pedido',
     pixGreeting: 'Olá, {nome}!',
     pixIntro: 'Seu pedido {orderId} foi registrado. Para concluir a compra, pague o PIX abaixo:',
@@ -426,7 +430,7 @@ const DEFAULT_CONFIG = {
         enabled: true,
         url: 'https://produto.mercadolivre.com.br/MLB-6831525504-smartwatch-x-rachadura-sensor-nao-funciona-lentes-reparadoras-_JM'
       },
-      shopee: { enabled: true, url: 'https://shopee.com.br/product/479290797/58259628035/' },
+      shopee: { enabled: true, url: 'https://shopee.com.br/product/479290797/58218461804/' },
       tiktok_shop: { enabled: true, url: 'https://vt.tiktok.com/ZS9juMxSmKGjN-mns6O/' },
       amazon: { enabled: true, url: 'https://www.amazon.com.br/dp/B0GYVBRGZS' }
     }
@@ -971,7 +975,7 @@ function commissionerWelcomeHtml(config, coupon, name, attachmentCount) {
     : '<p>A arte deve estar em anexo neste e-mail.</p>';
   return `<div style="font-family:Arial,sans-serif;max-width:600px;color:#111;line-height:1.5">
     <p>Olá, <strong>${esc(name)}</strong>!</p>
-    <p>Seu cupom de comissionado está ativo. Divulgue o Sensor Crash Fix e ganhe comissão a cada venda.</p>
+    <p>Seu cupom de comissionado está ativo. Divulgue o Sensor CrashFix e ganhe comissão a cada venda.</p>
     <p style="font-size:22px;font-weight:800;letter-spacing:1px;color:#c9a227">Seu cupom: ${esc(code)}</p>
     <ul>
       <li><strong>10% de desconto</strong> para quem comprar com seu cupom</li>
@@ -981,7 +985,7 @@ function commissionerWelcomeHtml(config, coupon, name, attachmentCount) {
     </ul>
     <p><strong>Link para seus clientes:</strong><br><a href="${esc(buyUrl)}">${esc(buyUrl)}</a></p>
     ${storiesNote}
-    <p style="color:#666;font-size:13px">Dúvidas: contato@sensorcrashfix.com.br · Sensor Crash Fix — sensorcrashfix.com.br</p>
+    <p style="color:#666;font-size:13px">Dúvidas: contato@sensorcrashfix.com.br · Sensor CrashFix — sensorcrashfix.com.br</p>
   </div>`;
 }
 
@@ -1302,6 +1306,13 @@ function supplementKitFromSite(kvProduct, siteProduct) {
   if (siteProduct?.image && isLegacyBrokenKitImage(kvProduct?.image)) {
     merged.image = siteProduct.image;
   }
+  // Galeria do git manda — evita Ultra/slides 404 presos no KV.
+  if (Array.isArray(siteProduct?.images) && siteProduct.images.length) {
+    merged.images = siteProduct.images.slice();
+  }
+  if (siteProduct?.image) {
+    merged.image = siteProduct.image;
+  }
   ['nameEn', 'nameIt', 'descriptionEn', 'descriptionIt'].forEach((field) => {
     if (!merged[field] && siteProduct?.[field]) merged[field] = siteProduct[field];
   });
@@ -1404,15 +1415,12 @@ function mergeSiteCatalog(config, site) {
     config.smartwatchCatalog,
     site.smartwatchCatalog
   );
+  // FAQ/reviews: catálogo do site (git) manda — evita FAQ Tattoo antiga presa no KV.
   if (Array.isArray(site.homeFaq) && site.homeFaq.length) {
-    next.homeFaq = Array.isArray(config.homeFaq) && config.homeFaq.length
-      ? config.homeFaq
-      : site.homeFaq;
+    next.homeFaq = site.homeFaq;
   }
-  if (Array.isArray(site.homeReviews) && site.homeReviews.length) {
-    next.homeReviews = Array.isArray(config.homeReviews) && config.homeReviews.length
-      ? config.homeReviews
-      : site.homeReviews;
+  if (Array.isArray(site.homeReviews)) {
+    next.homeReviews = site.homeReviews;
   }
   if (site.products?.length) {
     next.products = mergeSiteCatalogProducts(config.products, site.products);
@@ -3237,17 +3245,17 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
   if (loc === 'en') {
     const subject = watch
       ? `Everything OK with your ${watch}${first ? `, ${first}` : ''}?`
-      : `Need any help with your Sensor Crash Fix order${first ? `, ${first}` : ''}?`;
+      : `Need any help with your Sensor CrashFix order${first ? `, ${first}` : ''}?`;
     const paymentLine = paymentKind === 'pix'
-      ? 'We noticed you started checkout for the Sensor Crash Fix® optical lens, but payment was not completed.'
+      ? 'We noticed you started checkout for the Sensor CrashFix® optical lens, but payment was not completed.'
       : paymentKind === 'paypal'
-        ? 'We noticed you started checkout for the Sensor Crash Fix® optical lens, but PayPal payment was not completed.'
-        : 'We noticed you started checkout for the Sensor Crash Fix® optical lens, but card payment was not completed.';
+        ? 'We noticed you started checkout for the Sensor CrashFix® optical lens, but PayPal payment was not completed.'
+        : 'We noticed you started checkout for the Sensor CrashFix® optical lens, but card payment was not completed.';
     return {
       subject,
       greeting: first ? `Hi, ${first}!` : 'Hi!',
       intro: watch
-        ? `I saw in our system that you were securing the Sensor Crash Fix® optical lens for your ${watch}, but payment was not completed.`
+        ? `I saw in our system that you were securing the Sensor CrashFix® optical lens for your ${watch}, but payment was not completed.`
         : paymentLine,
       help: 'Every watch model has a specific sensor size — if you have any doubt about the ideal lens size or how to apply it, I am happy to help.',
       offer: paymentKind === 'pix'
@@ -3258,7 +3266,7 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
       emailLabel: 'Email',
       whatsappLabel: 'WhatsApp',
       signOff: 'Warm regards,',
-      signer: 'Fabio | Sensor Crash Fix®',
+      signer: 'Fabio | Sensor CrashFix®',
       watchLine: fullWatch && fullWatch !== 'N/A' ? `Watch model: ${fullWatch}` : '',
       supportEmail,
       waUrl,
@@ -3271,13 +3279,13 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
   if (loc === 'it') {
     const subject = watch
       ? `Tutto ok con il tuo ${watch}${first ? `, ${first}` : ''}?`
-      : `Serve un aiuto con il tuo ordine Sensor Crash Fix${first ? `, ${first}` : ''}?`;
+      : `Serve un aiuto con il tuo ordine Sensor CrashFix${first ? `, ${first}` : ''}?`;
     return {
       subject,
       greeting: first ? `Ciao, ${first}!` : 'Ciao!',
       intro: watch
-        ? `Ho visto nel sistema che stavi assicurando la lente ottica Sensor Crash Fix® per il tuo ${watch}, ma il pagamento non è stato completato.`
-        : 'Ho visto che hai iniziato il checkout per la lente ottica Sensor Crash Fix®, ma il pagamento non è stato completato.',
+        ? `Ho visto nel sistema che stavi assicurando la lente ottica Sensor CrashFix® per il tuo ${watch}, ma il pagamento non è stato completato.`
+        : 'Ho visto che hai iniziato il checkout per la lente ottica Sensor CrashFix®, ma il pagamento non è stato completato.',
       help: 'Ogni modello di orologio ha un diametro del sensore specifico — se hai dubbi sulla misura ideale della lente o sull’applicazione, sono a disposizione.',
       offer: paymentKind === 'pix'
         ? 'Se ti serve un nuovo codice PIX, un altro metodo di pagamento o conferma della misura esatta, rispondi a questa email o scrivici su WhatsApp.'
@@ -3287,7 +3295,7 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
       emailLabel: 'Email',
       whatsappLabel: 'WhatsApp',
       signOff: 'Un saluto,',
-      signer: 'Fabio | Sensor Crash Fix®',
+      signer: 'Fabio | Sensor CrashFix®',
       watchLine: fullWatch && fullWatch !== 'N/A' ? `Modello orologio: ${fullWatch}` : '',
       supportEmail,
       waUrl,
@@ -3300,17 +3308,17 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
   if (loc === 'de') {
     const subject = watch
       ? `Alles in Ordnung mit Ihrer ${watch}${first ? `, ${first}` : ''}?`
-      : `Brauchen Sie Hilfe bei Ihrer Sensor Crash Fix Bestellung${first ? `, ${first}` : ''}?`;
+      : `Brauchen Sie Hilfe bei Ihrer Sensor CrashFix Bestellung${first ? `, ${first}` : ''}?`;
     const paymentLine = paymentKind === 'paypal'
-      ? 'Wir haben gesehen, dass Sie den Checkout für die Sensor Crash Fix® Linse gestartet haben, aber die PayPal-Zahlung nicht abgeschlossen wurde.'
+      ? 'Wir haben gesehen, dass Sie den Checkout für die Sensor CrashFix® Linse gestartet haben, aber die PayPal-Zahlung nicht abgeschlossen wurde.'
       : paymentKind === 'pix'
-        ? 'Wir haben gesehen, dass Sie den Checkout für die Sensor Crash Fix® Linse gestartet haben, aber die Zahlung nicht abgeschlossen wurde.'
-        : 'Wir haben gesehen, dass Sie den Checkout für die Sensor Crash Fix® Linse gestartet haben, aber die Kartenzahlung nicht abgeschlossen wurde.';
+        ? 'Wir haben gesehen, dass Sie den Checkout für die Sensor CrashFix® Linse gestartet haben, aber die Zahlung nicht abgeschlossen wurde.'
+        : 'Wir haben gesehen, dass Sie den Checkout für die Sensor CrashFix® Linse gestartet haben, aber die Kartenzahlung nicht abgeschlossen wurde.';
     return {
       subject,
       greeting: first ? `Hallo, ${first}!` : 'Hallo!',
       intro: watch
-        ? `Ich habe gesehen, dass Sie die Sensor Crash Fix® Linse für Ihre ${watch} sichern wollten, aber die Zahlung nicht abgeschlossen wurde.`
+        ? `Ich habe gesehen, dass Sie die Sensor CrashFix® Linse für Ihre ${watch} sichern wollten, aber die Zahlung nicht abgeschlossen wurde.`
         : paymentLine,
       help: 'Jedes Uhrmodell hat eine bestimmte Sensorgröße — bei Fragen zur idealen Linsengröße oder zur Anwendung helfe ich gerne.',
       offer: 'Wenn Sie einen neuen Zahlungslink, eine andere Zahlungsmethode oder Hilfe bei der genauen Messung brauchen, antworten Sie hier oder schreiben Sie uns auf WhatsApp.',
@@ -3319,7 +3327,7 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
       emailLabel: 'E-Mail',
       whatsappLabel: 'WhatsApp',
       signOff: 'Herzliche Grüße,',
-      signer: 'Fabio | Sensor Crash Fix®',
+      signer: 'Fabio | Sensor CrashFix®',
       watchLine: fullWatch && fullWatch !== 'N/A' ? `Uhrmodell: ${fullWatch}` : '',
       supportEmail,
       waUrl,
@@ -3332,15 +3340,15 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
   if (loc === 'es') {
     const subject = watch
       ? `¿Todo bien con tu ${watch}${first ? `, ${first}` : ''}?`
-      : `¿Necesitas ayuda con tu pedido Sensor Crash Fix${first ? `, ${first}` : ''}?`;
+      : `¿Necesitas ayuda con tu pedido Sensor CrashFix${first ? `, ${first}` : ''}?`;
     const paymentLine = paymentKind === 'paypal'
-      ? 'Vimos que iniciaste el checkout de la lente Sensor Crash Fix®, pero el pago con PayPal no se completó.'
-      : 'Vimos que iniciaste el checkout de la lente Sensor Crash Fix®, pero el pago no se completó.';
+      ? 'Vimos que iniciaste el checkout de la lente Sensor CrashFix®, pero el pago con PayPal no se completó.'
+      : 'Vimos que iniciaste el checkout de la lente Sensor CrashFix®, pero el pago no se completó.';
     return {
       subject,
       greeting: first ? `Hola, ${first}!` : '¡Hola!',
       intro: watch
-        ? `Vi que estabas asegurando la lente Sensor Crash Fix® para tu ${watch}, pero el pago no se completó.`
+        ? `Vi que estabas asegurando la lente Sensor CrashFix® para tu ${watch}, pero el pago no se completó.`
         : paymentLine,
       help: 'Cada modelo de reloj tiene un tamaño de sensor específico — si tienes dudas sobre la medida ideal o la aplicación, encantado de ayudar.',
       offer: 'Si necesitas un nuevo enlace de pago, otro método o ayuda para confirmar la medida exacta, responde aquí o escríbenos por WhatsApp.',
@@ -3349,7 +3357,7 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
       emailLabel: 'Email',
       whatsappLabel: 'WhatsApp',
       signOff: 'Un saludo,',
-      signer: 'Fabio | Sensor Crash Fix®',
+      signer: 'Fabio | Sensor CrashFix®',
       watchLine: fullWatch && fullWatch !== 'N/A' ? `Modelo de reloj: ${fullWatch}` : '',
       supportEmail,
       waUrl,
@@ -3362,15 +3370,15 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
   if (loc === 'pl') {
     const subject = watch
       ? `Wszystko w porządku z Twoim ${watch}${first ? `, ${first}` : ''}?`
-      : `Potrzebujesz pomocy z zamówieniem Sensor Crash Fix${first ? `, ${first}` : ''}?`;
+      : `Potrzebujesz pomocy z zamówieniem Sensor CrashFix${first ? `, ${first}` : ''}?`;
     const paymentLine = paymentKind === 'paypal'
-      ? 'Widzimy, że rozpocząłeś/aś checkout soczewki Sensor Crash Fix®, ale płatność PayPal nie została zakończona.'
-      : 'Widzimy, że rozpocząłeś/aś checkout soczewki Sensor Crash Fix®, ale płatność nie została zakończona.';
+      ? 'Widzimy, że rozpocząłeś/aś checkout soczewki Sensor CrashFix®, ale płatność PayPal nie została zakończona.'
+      : 'Widzimy, że rozpocząłeś/aś checkout soczewki Sensor CrashFix®, ale płatność nie została zakończona.';
     return {
       subject,
       greeting: first ? `Cześć, ${first}!` : 'Cześć!',
       intro: watch
-        ? `Widzę, że chciałeś/aś zamówić soczewkę Sensor Crash Fix® dla ${watch}, ale płatność nie została zakończona.`
+        ? `Widzę, że chciałeś/aś zamówić soczewkę Sensor CrashFix® dla ${watch}, ale płatność nie została zakończona.`
         : paymentLine,
       help: 'Każdy model zegarka ma określony rozmiar czujnika — chętnie pomogę przy doborze rozmiaru lub aplikacji.',
       offer: 'Jeśli potrzebujesz nowego linku płatności, innej metody lub pomocy przy pomiarze, odpowiedz tutaj lub napisz na WhatsApp.',
@@ -3379,7 +3387,7 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
       emailLabel: 'E-mail',
       whatsappLabel: 'WhatsApp',
       signOff: 'Pozdrawiam,',
-      signer: 'Fabio | Sensor Crash Fix®',
+      signer: 'Fabio | Sensor CrashFix®',
       watchLine: fullWatch && fullWatch !== 'N/A' ? `Model zegarka: ${fullWatch}` : '',
       supportEmail,
       waUrl,
@@ -3392,15 +3400,15 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
   if (loc === 'sl') {
     const subject = watch
       ? `Je vse v redu z vašo ${watch}${first ? `, ${first}` : ''}?`
-      : `Potrebujete pomoč pri naročilu Sensor Crash Fix${first ? `, ${first}` : ''}?`;
+      : `Potrebujete pomoč pri naročilu Sensor CrashFix${first ? `, ${first}` : ''}?`;
     const paymentLine = paymentKind === 'paypal'
-      ? 'Opazili smo, da ste začeli blagajno za lečo Sensor Crash Fix®, vendar plačilo PayPal ni bilo zaključeno.'
-      : 'Opazili smo, da ste začeli blagajno za lečo Sensor Crash Fix®, vendar plačilo ni bilo zaključeno.';
+      ? 'Opazili smo, da ste začeli blagajno za lečo Sensor CrashFix®, vendar plačilo PayPal ni bilo zaključeno.'
+      : 'Opazili smo, da ste začeli blagajno za lečo Sensor CrashFix®, vendar plačilo ni bilo zaključeno.';
     return {
       subject,
       greeting: first ? `Pozdravljeni, ${first}!` : 'Pozdravljeni!',
       intro: watch
-        ? `V sistemu vidim, da ste želeli naročiti lečo Sensor Crash Fix® za vašo ${watch}, vendar plačilo ni bilo zaključeno.`
+        ? `V sistemu vidim, da ste želeli naročiti lečo Sensor CrashFix® za vašo ${watch}, vendar plačilo ni bilo zaključeno.`
         : paymentLine,
       help: 'Vsak model ure ima specifično velikost senzorja — z veseljem pomagam pri izbiri velikosti leče ali namestitvi.',
       offer: 'Če potrebujete novo povezavo za plačilo, drug način plačila ali pomoč pri merjenju, odgovorite tukaj ali pišite na WhatsApp.',
@@ -3409,7 +3417,7 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
       emailLabel: 'E-pošta',
       whatsappLabel: 'WhatsApp',
       signOff: 'Lep pozdrav,',
-      signer: 'Fabio | Sensor Crash Fix®',
+      signer: 'Fabio | Sensor CrashFix®',
       watchLine: fullWatch && fullWatch !== 'N/A' ? `Model ure: ${fullWatch}` : '',
       supportEmail,
       waUrl,
@@ -3421,13 +3429,13 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
 
   const subject = watch
     ? `Tudo certo com o seu ${watch}${first ? `, ${first}` : ''}?`
-    : `Dúvida sobre a lente Sensor Crash Fix${first ? ` — ${first}` : ''}`;
+    : `Dúvida sobre a lente Sensor CrashFix${first ? ` — ${first}` : ''}`;
   return {
     subject,
     greeting: first ? `Olá, ${first}! Tudo bem?` : 'Olá! Tudo bem?',
     intro: watch
-      ? `Vi aqui no nosso sistema que você tentou garantir a sua Lente Óptica Sensor Crash Fix® para o seu ${watch}, mas o pagamento acabou não sendo concluído.`
-      : 'Vi aqui no nosso sistema que você iniciou a compra da Lente Óptica Sensor Crash Fix®, mas o pagamento acabou não sendo concluído.',
+      ? `Vi aqui no nosso sistema que você tentou garantir a sua Lente Óptica Sensor CrashFix® para o seu ${watch}, mas o pagamento acabou não sendo concluído.`
+      : 'Vi aqui no nosso sistema que você iniciou a compra da Lente Óptica Sensor CrashFix®, mas o pagamento acabou não sendo concluído.',
     help: 'Como cada modelo tem um diâmetro de sensor específico, queria saber se você ficou com alguma dúvida sobre o tamanho ideal da lente ou sobre a aplicação no seu relógio.',
     offer: paymentKind === 'pix'
       ? 'Se precisar de ajuda para confirmar a medida exata do seu modelo, quiser um novo código PIX ou preferir outro meio de pagamento, estou à disposição por aqui ou direto pelo WhatsApp.'
@@ -3437,7 +3445,7 @@ function pendingRecoveryCopy(order, config, env, { paymentKind = 'pix' } = {}) {
     emailLabel: 'E-mail',
     whatsappLabel: 'WhatsApp',
     signOff: 'Um abraço,',
-    signer: 'Fabio | Sensor Crash Fix®',
+    signer: 'Fabio | Sensor CrashFix®',
     watchLine: fullWatch && fullWatch !== 'N/A' ? `Modelo do relógio: ${fullWatch}` : '',
     supportEmail,
     waUrl,
@@ -3482,7 +3490,7 @@ function buildPendingConsultativeEmail(order, config, env, {
     <p>${escapeHtml(copy.help)}</p>
     <p>${escapeHtml(copy.offer)}</p>
     ${pixBlock}
-    <p style="margin-top:20px"><a href="${escapeHtml(copy.resumeUrl)}" style="display:inline-block;background:#ffc107;color:#000;text-decoration:none;font-weight:700;padding:12px 20px;border-radius:8px">${escapeHtml(copy.ctaPay)}</a></p>
+    <p style="margin-top:20px"><a href="${escapeHtml(copy.resumeUrl)}" style="display:inline-block;background:#5EC8D8;color:#000;text-decoration:none;font-weight:700;padding:12px 20px;border-radius:8px">${escapeHtml(copy.ctaPay)}</a></p>
     <p style="margin-top:24px"><strong>${escapeHtml(copy.contactsTitle)}</strong></p>
     <ul style="padding-left:18px;margin:8px 0 0">${contacts}</ul>
     <p style="margin-top:24px">${escapeHtml(copy.signOff)}<br>${escapeHtml(copy.signer)}</p>
@@ -3818,7 +3826,7 @@ function fieldsToHtmlLocalized(fields, footerSite) {
     .map(([k, v]) => `<tr><td style="padding:8px;border:1px solid #ddd;font-weight:600">${k}</td><td style="padding:8px;border:1px solid #ddd">${String(v ?? '').replace(/</g, '&lt;')}</td></tr>`)
     .join('');
   const site = footerSite || 'sensorcrashfix.com.br';
-  return `<div style="font-family:Arial,sans-serif;max-width:560px"><table style="border-collapse:collapse;width:100%">${rows}</table><p style="color:#666;font-size:12px;margin-top:16px">Sensor Crash Fix — ${site}</p></div>`;
+  return `<div style="font-family:Arial,sans-serif;max-width:560px"><table style="border-collapse:collapse;width:100%">${rows}</table><p style="color:#666;font-size:12px;margin-top:16px">Sensor CrashFix — ${site}</p></div>`;
 }
 
 const ABANDONED_CHECKOUT_DELAY_MS = 15 * 60 * 1000;
@@ -3838,7 +3846,7 @@ function orderPendingBillingType(order) {
 function buildAbandonedCartEmail(order, config, env, { weekly = false } = {}) {
   const loc = orderCheckoutLocale(order);
   const resumeUrl = resumeOrderUrl(config, order);
-  const product = order.produto || 'Sensor Crash Fix';
+  const product = order.produto || 'Sensor CrashFix';
   const total = formatOrderCharge(order, order.total);
   const nome = String(order.nome || '').trim().split(/\s+/)[0] || (isWesternIntlEmailLocale(loc) ? 'there' : loc === 'it' ? '' : '');
   let subject;
@@ -3852,60 +3860,60 @@ function buildAbandonedCartEmail(order, config, env, { weekly = false } = {}) {
       : `Your order ${order.orderId} is still reserved — finish when you're ready`;
     greeting = nome ? `Hi ${nome},` : 'Hi,';
     intro = weekly
-      ? 'A week has passed and your order is still unpaid. If you still want Sensor Crash Fix, finish checkout with the link below.'
+      ? 'A week has passed and your order is still unpaid. If you still want Sensor CrashFix, finish checkout with the link below.'
       : 'We noticed your order is still pending. Your items are reserved — complete payment with the link below.';
     cta = 'Complete my order';
-    footer = 'Sensor Crash Fix — sensorcrashfix.com';
+    footer = 'Sensor CrashFix — sensorcrashfix.com';
   } else if (loc === 'it') {
     subject = weekly
       ? `Promemoria settimanale — ordine ${order.orderId} in attesa di pagamento`
       : `Il tuo ordine ${order.orderId} è ancora riservato — completa quando vuoi`;
     greeting = nome ? `Ciao ${nome},` : 'Ciao,';
     intro = weekly
-      ? 'È passata una settimana e il tuo ordine è ancora in attesa di pagamento. Se vuoi ancora Sensor Crash Fix, completa dal link qui sotto.'
+      ? 'È passata una settimana e il tuo ordine è ancora in attesa di pagamento. Se vuoi ancora Sensor CrashFix, completa dal link qui sotto.'
       : 'Abbiamo notato che il tuo ordine è ancora in sospeso. Gli articoli sono riservati — completa il pagamento dal link qui sotto.';
     cta = 'Completa il mio ordine';
-    footer = 'Sensor Crash Fix — sensorcrashfix.com';
+    footer = 'Sensor CrashFix — sensorcrashfix.com';
   } else if (loc === 'de') {
     subject = weekly
       ? `Wöchentliche Erinnerung — Bestellung ${order.orderId} wartet auf Zahlung`
       : `Ihre Bestellung ${order.orderId} ist noch reserviert — schließen Sie ab, wenn Sie bereit sind`;
     greeting = nome && nome !== 'there' ? `Hallo ${nome},` : 'Hallo,';
     intro = weekly
-      ? 'Eine Woche ist vergangen und Ihre Bestellung ist noch unbezahlt. Wenn Sie Sensor Crash Fix noch möchten, schließen Sie den Checkout über den Link unten ab.'
+      ? 'Eine Woche ist vergangen und Ihre Bestellung ist noch unbezahlt. Wenn Sie Sensor CrashFix noch möchten, schließen Sie den Checkout über den Link unten ab.'
       : 'Ihre Bestellung ist noch ausstehend. Die Artikel sind reserviert — schließen Sie die Zahlung über den Link unten ab.';
     cta = 'Meine Bestellung abschließen';
-    footer = 'Sensor Crash Fix — sensorcrashfix.com';
+    footer = 'Sensor CrashFix — sensorcrashfix.com';
   } else if (loc === 'es') {
     subject = weekly
       ? `Recordatorio semanal — pedido ${order.orderId} pendiente de pago`
       : `Tu pedido ${order.orderId} sigue reservado — finaliza cuando quieras`;
     greeting = nome && nome !== 'there' ? `Hola ${nome},` : 'Hola,';
     intro = weekly
-      ? 'Ha pasado una semana y tu pedido sigue sin pagar. Si aún quieres Sensor Crash Fix, completa el checkout con el enlace de abajo.'
+      ? 'Ha pasado una semana y tu pedido sigue sin pagar. Si aún quieres Sensor CrashFix, completa el checkout con el enlace de abajo.'
       : 'Tu pedido sigue pendiente. Los artículos están reservados — completa el pago con el enlace de abajo.';
     cta = 'Completar mi pedido';
-    footer = 'Sensor Crash Fix — sensorcrashfix.com';
+    footer = 'Sensor CrashFix — sensorcrashfix.com';
   } else if (loc === 'pl') {
     subject = weekly
       ? `Cotygodniowe przypomnienie — zamówienie ${order.orderId} oczekuje na płatność`
       : `Twoje zamówienie ${order.orderId} jest nadal zarezerwowane — dokończ, gdy będziesz gotowy/a`;
     greeting = nome && nome !== 'there' ? `Cześć ${nome},` : 'Cześć,';
     intro = weekly
-      ? 'Minął tydzień, a zamówienie nadal nie jest opłacone. Jeśli nadal chcesz Sensor Crash Fix, dokończ checkout linkiem poniżej.'
+      ? 'Minął tydzień, a zamówienie nadal nie jest opłacone. Jeśli nadal chcesz Sensor CrashFix, dokończ checkout linkiem poniżej.'
       : 'Twoje zamówienie jest nadal oczekujące. Produkty są zarezerwowane — dokończ płatność linkiem poniżej.';
     cta = 'Dokończ moje zamówienie';
-    footer = 'Sensor Crash Fix — sensorcrashfix.com';
+    footer = 'Sensor CrashFix — sensorcrashfix.com';
   } else if (loc === 'sl') {
     subject = weekly
       ? `Tedenski opomnik — naročilo ${order.orderId} čaka na plačilo`
       : `Vaše naročilo ${order.orderId} je še vedno rezervirano — dokončajte, ko ste pripravljeni`;
     greeting = nome && nome !== 'there' ? `Pozdravljeni ${nome},` : 'Pozdravljeni,';
     intro = weekly
-      ? 'Minil je teden in naročilo še ni plačano. Če še vedno želite Sensor Crash Fix, dokončajte blagajno s spodnjo povezavo.'
+      ? 'Minil je teden in naročilo še ni plačano. Če še vedno želite Sensor CrashFix, dokončajte blagajno s spodnjo povezavo.'
       : 'Vaše naročilo je še vedno odprto. Izdelki so rezervirani — dokončajte plačilo s spodnjo povezavo.';
     cta = 'Dokončaj moje naročilo';
-    footer = 'Sensor Crash Fix — sensorcrashfix.com';
+    footer = 'Sensor CrashFix — sensorcrashfix.com';
   } else {
     subject = emailSubject(config, weekly ? 'abandonedWeeklySubject' : 'abandonedSubject', {
       orderId: order.orderId
@@ -3915,7 +3923,7 @@ function buildAbandonedCartEmail(order, config, env, { weekly = false } = {}) {
       ? emailMessage(config, 'abandonedWeeklyIntro')
       : emailMessage(config, 'abandonedIntro');
     cta = emailMessage(config, 'abandonedCta') || 'Finalizar meu pedido';
-    footer = 'Sensor Crash Fix — sensorcrashfix.com.br';
+    footer = 'Sensor CrashFix — sensorcrashfix.com.br';
   }
 
   const support = customerSupportEmail(order, config);
@@ -3957,7 +3965,7 @@ function buildAbandonedCartEmail(order, config, env, { weekly = false } = {}) {
             : 'Precisa de ajuda?';
 
   const html = `<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#1a1a1a;line-height:1.55;background:#faf8f5;padding:28px 24px;border-radius:4px">
-    <p style="font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#8a6a3a;margin:0 0 8px">Sensor Crash Fix</p>
+    <p style="font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#8a6a3a;margin:0 0 8px">Sensor CrashFix</p>
     <h1 style="font-size:22px;font-weight:600;margin:0 0 16px;line-height:1.3">${escapeHtml(weekly ? h1Weekly : h1Pending)}</h1>
     <p style="margin:0 0 12px">${escapeHtml(greeting)}</p>
     <p style="margin:0 0 16px">${escapeHtml(intro)}</p>
@@ -4511,7 +4519,7 @@ function mlOAuthHtmlPage({ title, ok, detail, code }) {
   <h1 style="font-size:1.25rem;margin:0 0 8px;color:${color}">${title}</h1>
   <p style="margin:0;color:#3f3f46">${detail}</p>
   ${codeBlock}
-  <p style="margin:1.5rem 0 0;font-size:13px;color:#71717a">Sensor Crash Fix · Mercado Livre (pedidos)</p>
+  <p style="margin:1.5rem 0 0;font-size:13px;color:#71717a">Sensor CrashFix · Mercado Livre (pedidos)</p>
 </body></html>`;
 }
 
@@ -6310,7 +6318,7 @@ function shopeeOAuthHtmlPage({ title, ok, detail }) {
 <body style="font-family:system-ui,-apple-system,sans-serif;max-width:520px;margin:48px auto;padding:0 20px;color:#18181b;line-height:1.5">
   <h1 style="font-size:1.25rem;margin:0 0 8px;color:${color}">${title}</h1>
   <p style="margin:0;color:#3f3f46">${detail}</p>
-  <p style="margin:1.5rem 0 0;font-size:13px;color:#71717a">Sensor Crash Fix · Shopee (pedidos)</p>
+  <p style="margin:1.5rem 0 0;font-size:13px;color:#71717a">Sensor CrashFix · Shopee (pedidos)</p>
 </body></html>`;
 }
 
@@ -7129,11 +7137,11 @@ function pixCustomerHint(order, shopPhone) {
 async function notifyWhatsApp(env, config, order, type) {
   const shopPhone = config.whatsapp || env.SHOP_WHATSAPP;
   const msgs = {
-    order_customer: `✅ *Sensor Crash Fix*\n\nOlá ${order.nome}!\n\nPedido: *${order.orderId}*\n${watchWhatsAppBlock(order)}\nTotal: ${formatBRL(order.total)}\nPagamento: ${order.pagamento}\n\n${pixCustomerHint(order, shopPhone)}\n\nObrigado!`,
+    order_customer: `✅ *Sensor CrashFix*\n\nOlá ${order.nome}!\n\nPedido: *${order.orderId}*\n${watchWhatsAppBlock(order)}\nTotal: ${formatBRL(order.total)}\nPagamento: ${order.pagamento}\n\n${pixCustomerHint(order, shopPhone)}\n\nObrigado!`,
     order_shop: `🛒 *NOVO PEDIDO*\n\n${order.orderId}\n${order.nome}\n📱 ${order.telefone}\n${watchWhatsAppBlock(order)}\n🌍 ${order.pais}\n💰 ${formatBRL(order.total)}\n📦 ${order.shippingService}\n📍 ${order.endereco}`,
     paid_customer: shouldDispatchUberDelivery(order)
-      ? `✅ *Pagamento confirmado!*\n\nPedido *${order.orderId}* pago.\n\n🚗 Entrega Uber solicitada. Você receberá o link de rastreio por e-mail em instantes.\n\nSensor Crash Fix`
-      : `✅ *Pagamento confirmado!*\n\nPedido *${order.orderId}* pago com sucesso.\n\nSeu kit será postado em até 2 dias úteis. Você receberá o rastreio por e-mail.\n\nSensor Crash Fix`,
+      ? `✅ *Pagamento confirmado!*\n\nPedido *${order.orderId}* pago.\n\n🚗 Entrega Uber solicitada. Você receberá o link de rastreio por e-mail em instantes.\n\nSensor CrashFix`
+      : `✅ *Pagamento confirmado!*\n\nPedido *${order.orderId}* pago com sucesso.\n\nSeu kit será postado em até 2 dias úteis. Você receberá o rastreio por e-mail.\n\nSensor CrashFix`,
     paid_shop: shouldDispatchUberDelivery(order)
       ? `💰 *PAGAMENTO CONFIRMADO*\n\n${order.orderId}\nCliente: ${order.nome}\nValor: ${formatBRL(order.total)}\n${watchWhatsAppBlock(order)}\n\n🚗 Uber Direct — ${order.shippingService}\n📍 ${order.endereco}${order.uberTrackingUrl ? `\n🔗 ${order.uberTrackingUrl}` : ''}`
       : `💰 *PAGAMENTO CONFIRMADO*\n\n${order.orderId}\nCliente: ${order.nome}\nValor: ${formatBRL(order.total)}\n${watchWhatsAppBlock(order)}\n\n📮 Postar via ${order.shippingService}\n📍 ${order.endereco}`
@@ -7432,7 +7440,7 @@ async function quoteUberShippingOptions(env, config, addressParams, opts = {}) {
 function buildUberManifest(order, config) {
   const items = order.items?.length
     ? order.items
-    : [{ name: config.product?.name || 'Kit Sensor Crash Fix', qty: 1, price: order.valorProduto || config.product?.price || 62.9 }];
+    : [{ name: config.product?.name || 'Kit Sensor CrashFix', qty: 1, price: order.valorProduto || config.product?.price || 62.9 }];
   return items.map((item) => ({
     name: String(item.name || 'Produto').slice(0, 100),
     quantity: Math.max(1, Number(item.qty) || 1),
@@ -7465,7 +7473,7 @@ async function createUberDeliveryForOrder(env, config, order) {
 
   const deliveryBody = {
     quote_id: quoteId,
-    pickup_name: sender.brand || sender.company || 'Sensor Crash Fix',
+    pickup_name: sender.brand || sender.company || 'Sensor CrashFix',
     pickup_address: pickupAddress,
     pickup_phone_number: pickupPhone,
     dropoff_name: order.nome,
@@ -8395,7 +8403,7 @@ function buildPrePostagemPayload(order, config, env) {
       })
     },
     itensDeclaracaoConteudo: [{
-      conteudo: String(order.produto || 'Produto Sensor Crash Fix').slice(0, 80),
+      conteudo: String(order.produto || 'Produto Sensor CrashFix').slice(0, 80),
       quantidade: '1',
       valor: declaredValue.toFixed(2)
     }]
@@ -12832,7 +12840,7 @@ async function createPayPalCheckout(env, order, config, request, opts) {
   if (!(Number(amountValue) > 0)) {
     throw new Error('PayPal amount must be greater than zero.');
   }
-  const description = `Sensor Crash Fix — ${order.orderId}`.slice(0, 127);
+  const description = `Sensor CrashFix — ${order.orderId}`.slice(0, 127);
   const payload = {
     intent: 'CAPTURE',
     purchase_units: [{
@@ -12848,7 +12856,7 @@ async function createPayPalCheckout(env, order, config, request, opts) {
   if (!options.embedded) {
     const { return_url, cancel_url } = paypalReturnUrls(config, order, env, request);
     payload.application_context = {
-      brand_name: 'Sensor Crash Fix',
+      brand_name: 'Sensor CrashFix',
       locale,
       landing_page: 'NO_PREFERENCE',
       user_action: 'PAY_NOW',
@@ -12857,7 +12865,7 @@ async function createPayPalCheckout(env, order, config, request, opts) {
     };
   } else {
     payload.application_context = {
-      brand_name: 'Sensor Crash Fix',
+      brand_name: 'Sensor CrashFix',
       locale,
       landing_page: 'NO_PREFERENCE',
       user_action: 'PAY_NOW'
@@ -12956,7 +12964,7 @@ async function createMercadoPagoPixPayment(env, order, config) {
   const notificationUrl = (env.MP_WEBHOOK_URL || '').trim() || undefined;
   const body = {
     transaction_amount: Number(order.total.toFixed(2)),
-    description: `${config.product?.name || 'Kit Sensor Crash Fix'} — ${order.orderId}`.slice(0, 200),
+    description: `${config.product?.name || 'Kit Sensor CrashFix'} — ${order.orderId}`.slice(0, 200),
     payment_method_id: 'pix',
     external_reference: order.orderId,
     payer
@@ -13007,7 +13015,7 @@ async function createMercadoPagoCheckoutPro(env, order, config, request) {
 
   const body = {
     items: [{
-      title: String(order.produto || config.product?.name || 'Sensor Crash Fix').slice(0, 256),
+      title: String(order.produto || config.product?.name || 'Sensor CrashFix').slice(0, 256),
       quantity: 1,
       unit_price: Number(order.total.toFixed(2)),
       currency_id: 'BRL'
@@ -13023,7 +13031,7 @@ async function createMercadoPagoCheckoutPro(env, order, config, request) {
       pending: `${base}/comprar.html?${pendingParams}`
     },
     auto_return: 'approved',
-    statement_descriptor: 'SENSOR CRASH FIX',
+    statement_descriptor: 'SENSOR CRASHFIX',
     payment_methods: {
       excluded_payment_types: [{ id: 'ticket' }, { id: 'atm' }]
     }
@@ -13122,7 +13130,7 @@ function fieldsToHtml(fields) {
   const rows = Object.entries(fields)
     .map(([k, v]) => `<tr><td style="padding:8px;border:1px solid #ddd;font-weight:600">${k}</td><td style="padding:8px;border:1px solid #ddd">${String(v ?? '').replace(/</g, '&lt;')}</td></tr>`)
     .join('');
-  return `<div style="font-family:Arial,sans-serif;max-width:560px"><table style="border-collapse:collapse;width:100%">${rows}</table><p style="color:#666;font-size:12px;margin-top:16px">Sensor Crash Fix — sensorcrashfix.com.br</p></div>`;
+  return `<div style="font-family:Arial,sans-serif;max-width:560px"><table style="border-collapse:collapse;width:100%">${rows}</table><p style="color:#666;font-size:12px;margin-top:16px">Sensor CrashFix — sensorcrashfix.com.br</p></div>`;
 }
 
 function fieldsToText(fields) {
@@ -13480,53 +13488,53 @@ function passwordResetUrl(locale, config, token) {
 function passwordResetEmailCopy(locale, resetUrl) {
   if (locale === 'en') {
     return {
-      subject: 'Reset your Sensor Crash Fix password',
+      subject: 'Reset your Sensor CrashFix password',
       html: `<div style="font-family:Arial,sans-serif;max-width:560px;line-height:1.5;color:#222">
         <h2 style="margin:0 0 12px">Password reset</h2>
-        <p>We received a request to reset your Sensor Crash Fix account password.</p>
-        <p><a href="${resetUrl}" style="display:inline-block;background:#ffc107;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Choose a new password</a></p>
+        <p>We received a request to reset your Sensor CrashFix account password.</p>
+        <p><a href="${resetUrl}" style="display:inline-block;background:#5EC8D8;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Choose a new password</a></p>
         <p style="font-size:13px;color:#666">This link expires in 1 hour. If you didn’t ask for this, you can ignore this email.</p>
         <p style="font-size:12px;color:#888;word-break:break-all">${resetUrl}</p>
       </div>`,
-      text: `Reset your Sensor Crash Fix password:\n${resetUrl}\n\nThis link expires in 1 hour.`
+      text: `Reset your Sensor CrashFix password:\n${resetUrl}\n\nThis link expires in 1 hour.`
     };
   }
   if (locale === 'it') {
     return {
-      subject: 'Reimposta la password di Sensor Crash Fix',
+      subject: 'Reimposta la password di Sensor CrashFix',
       html: `<div style="font-family:Arial,sans-serif;max-width:560px;line-height:1.5;color:#222">
         <h2 style="margin:0 0 12px">Reimposta password</h2>
-        <p>Abbiamo ricevuto una richiesta per reimpostare la password del tuo account Sensor Crash Fix.</p>
-        <p><a href="${resetUrl}" style="display:inline-block;background:#ffc107;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Scegli una nuova password</a></p>
+        <p>Abbiamo ricevuto una richiesta per reimpostare la password del tuo account Sensor CrashFix.</p>
+        <p><a href="${resetUrl}" style="display:inline-block;background:#5EC8D8;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Scegli una nuova password</a></p>
         <p style="font-size:13px;color:#666">Il link scade tra 1 ora. Se non hai richiesto tu, ignora questa email.</p>
         <p style="font-size:12px;color:#888;word-break:break-all">${resetUrl}</p>
       </div>`,
-      text: `Reimposta la password di Sensor Crash Fix:\n${resetUrl}\n\nIl link scade tra 1 ora.`
+      text: `Reimposta la password di Sensor CrashFix:\n${resetUrl}\n\nIl link scade tra 1 ora.`
     };
   }
   if (locale === 'sl') {
     return {
-      subject: 'Ponastavitev gesla Sensor Crash Fix',
+      subject: 'Ponastavitev gesla Sensor CrashFix',
       html: `<div style="font-family:Arial,sans-serif;max-width:560px;line-height:1.5;color:#222">
         <h2 style="margin:0 0 12px">Ponastavitev gesla</h2>
-        <p>Prejeli smo zahtevo za ponastavitev gesla vašega računa Sensor Crash Fix.</p>
-        <p><a href="${resetUrl}" style="display:inline-block;background:#ffc107;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Izberite novo geslo</a></p>
+        <p>Prejeli smo zahtevo za ponastavitev gesla vašega računa Sensor CrashFix.</p>
+        <p><a href="${resetUrl}" style="display:inline-block;background:#5EC8D8;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Izberite novo geslo</a></p>
         <p style="font-size:13px;color:#666">Povezava poteče v 1 uri. Če tega niste zahtevali, prezrite to sporočilo.</p>
         <p style="font-size:12px;color:#888;word-break:break-all">${resetUrl}</p>
       </div>`,
-      text: `Ponastavitev gesla Sensor Crash Fix:\n${resetUrl}\n\nPovezava poteče v 1 uri.`
+      text: `Ponastavitev gesla Sensor CrashFix:\n${resetUrl}\n\nPovezava poteče v 1 uri.`
     };
   }
   return {
-    subject: 'Redefinir senha — Sensor Crash Fix',
+    subject: 'Redefinir senha — Sensor CrashFix',
     html: `<div style="font-family:Arial,sans-serif;max-width:560px;line-height:1.5;color:#222">
       <h2 style="margin:0 0 12px">Redefinir senha</h2>
-      <p>Recebemos um pedido para redefinir a senha da sua conta Sensor Crash Fix.</p>
-      <p><a href="${resetUrl}" style="display:inline-block;background:#ffc107;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Escolher nova senha</a></p>
+      <p>Recebemos um pedido para redefinir a senha da sua conta Sensor CrashFix.</p>
+      <p><a href="${resetUrl}" style="display:inline-block;background:#5EC8D8;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Escolher nova senha</a></p>
       <p style="font-size:13px;color:#666">Este link expira em 1 hora. Se você não pediu isso, ignore este e-mail.</p>
       <p style="font-size:12px;color:#888;word-break:break-all">${resetUrl}</p>
     </div>`,
-    text: `Redefina sua senha Sensor Crash Fix:\n${resetUrl}\n\nEste link expira em 1 hora.`
+    text: `Redefina sua senha Sensor CrashFix:\n${resetUrl}\n\nEste link expira em 1 hora.`
   };
 }
 
@@ -14598,10 +14606,10 @@ async function trackGa4Purchase(env, order, payment) {
   const apiSecret = (env.GA4_API_SECRET || '').trim();
   if (!apiSecret) return;
 
-  const measurementId = (env.GA4_MEASUREMENT_ID || 'G-TFLZHJG9RN').trim();
+  const measurementId = (env.GA4_MEASUREMENT_ID || 'G-L852DLJ9KV').trim();
   const value = Number(payment?.value ?? order.total) || 0;
   const paymentType = order.pagamento || payment?.billingType || 'unknown';
-  const itemName = order.produto || 'Kit Sensor Crash Fix';
+  const itemName = order.produto || 'Kit Sensor CrashFix';
 
   const p = String(paymentType).toLowerCase();
   const forma = p.includes('paypal') ? 'paypal'
@@ -15427,7 +15435,7 @@ async function handleStripePaymentIntent(request, env, origin, orderId) {
       customer: customerId,
       'automatic_payment_methods[enabled]': 'true',
       'metadata[orderId]': order.orderId,
-      description: `Sensor Crash Fix — ${order.orderId}`.slice(0, 500),
+      description: `Sensor CrashFix — ${order.orderId}`.slice(0, 500),
       receipt_email: String(order.email || '').slice(0, 500)
     });
     order.stripePaymentIntentId = pi.id;
@@ -15476,7 +15484,7 @@ async function handleStripeCheckoutSession(request, env, origin, orderId) {
   const productLabel = (
     (Array.isArray(order.items) && (order.items[0]?.name || order.items[0]?.nome))
     || order.produtoNome
-    || 'Sensor Crash Fix'
+    || 'Sensor CrashFix'
   ).toString().slice(0, 120);
   const localeRaw = String(body.locale || order.checkoutLocale || 'en').trim().toLowerCase();
   // .com never uses pt-BR for Stripe UI/receipts — account default is Brazilian.
@@ -15497,7 +15505,7 @@ async function handleStripeCheckoutSession(request, env, origin, orderId) {
       'line_items[0][price_data][product_data][name]': productLabel,
       'metadata[orderId]': order.orderId,
       'payment_intent_data[metadata][orderId]': order.orderId,
-      'payment_intent_data[description]': `Sensor Crash Fix — ${order.orderId}`.slice(0, 500)
+      'payment_intent_data[description]': `Sensor CrashFix — ${order.orderId}`.slice(0, 500)
     });
     order.stripeCheckoutSessionId = session.id;
     order.paymentProvider = 'stripe';
@@ -17370,7 +17378,7 @@ function buildTestOrder(config, to, overrides = {}) {
     email: to,
     telefone: overrides.telefone || (isIntl ? '+61 400 000 000' : '(11) 99999-9999'),
     smartwatch: overrides.smartwatch || 'Garmin Fenix',
-    produto: config.product?.name || 'Kit Sensor Crash Fix',
+    produto: config.product?.name || 'Kit Sensor CrashFix',
     total: price + (isIntl ? 40 : 11.9),
     valorProduto: price,
     frete: isIntl ? 40 : 11.9,
@@ -18202,14 +18210,14 @@ function buildMonthlyReportHtml(report) {
       ${paymentRows}
     </table>
 
-    <p style="color:#666;font-size:12px;margin:0">Sensor Crash Fix — sensorcrashfix.com.br · gerado automaticamente</p>
+    <p style="color:#666;font-size:12px;margin:0">Sensor CrashFix — sensorcrashfix.com.br · gerado automaticamente</p>
   </div>`;
 }
 
 function monthlyClicksReportSubject(config, monthName, year) {
   let subject = emailSubject(config, 'monthlyReportSubject', { month: monthName, year: String(year) });
   if (!/cliques/i.test(subject)) {
-    subject = `Relatório de cliques — ${monthName}/${year} — Sensor Crash Fix`;
+    subject = `Relatório de cliques — ${monthName}/${year} — Sensor CrashFix`;
   }
   return subject;
 }
@@ -18475,7 +18483,7 @@ function buildMonthlySalesReportHtml(report) {
     <h3 style="margin:24px 0 8px;font-size:16px">Consolidado</h3>
     <p style="margin:0 0 24px"><strong>${total.count}</strong> vendas · bruto <strong>${formatBRL(total.gross)}</strong> · líquido <strong>${formatBRL(total.net)}</strong></p>
 
-    <p style="color:#666;font-size:12px;margin:0">Sensor Crash Fix — sensorcrashfix.com.br · gerado automaticamente</p>
+    <p style="color:#666;font-size:12px;margin:0">Sensor CrashFix — sensorcrashfix.com.br · gerado automaticamente</p>
   </div>`;
 }
 

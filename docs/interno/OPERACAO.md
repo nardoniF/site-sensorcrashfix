@@ -1,4 +1,4 @@
-# Manual de operação — Sensor Crash Fix
+# Manual de operação — Sensor CrashFix
 
 Versão para o repositório (espelho de [documentacao.html](../documentacao.html)).
 

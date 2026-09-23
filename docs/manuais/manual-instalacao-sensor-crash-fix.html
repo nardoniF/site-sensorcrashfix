@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Instalação — Sensor CrashFix (cliente)</title>
+    <style>
+        @page { size: A4 portrait; margin: 12mm; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --header-bg: #0a0a0a;
+            --accent: #5EC8D8;
+            --kit-bg: #e8f8fb;
+            --kit-border: #5EC8D8;
+            --kit-title: #0e5a66;
+            --steps-bg: #eef6f8;
+            --steps-border: #7ecad6;
+            --steps-title: #0e5a66;
+            --steps-num: #12D18E;
+            --steps-strong: #0a4a54;
+            --important-bg: #ecfdf5;
+            --important-border: #12D18E;
+            --duvidas-bg: #f0f0f0;
+        }
+        body {
+            font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+            font-size: 9.5pt;
+            line-height: 1.35;
+            color: #111;
+            background: #e8e8e8;
+        }
+        .sheet {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 12px auto;
+            padding: 10mm 11mm 9mm;
+            background: #fff;
+            box-shadow: 0 2px 12px rgba(0,0,0,.12);
+        }
+        @media print {
+            body { background: #fff; }
+            .sheet { margin: 0; box-shadow: none; width: auto; min-height: auto; }
+            .no-print { display: none !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+        .no-print { text-align: center; padding: 12px; font-size: 13px; }
+        .no-print button {
+            font: inherit; padding: 10px 20px; border: none; border-radius: 8px;
+            background: #12D18E; color: #04120c; font-weight: 700; cursor: pointer;
+        }
+        header {
+            display: flex; align-items: center; gap: 10px;
+            background: var(--header-bg); border-radius: 8px;
+            padding: 10px 12px; margin-bottom: 10px;
+        }
+        header img {
+            width: 42px; height: 42px; border-radius: 50%;
+            object-fit: cover; border: 2px solid var(--accent);
+        }
+        header h1 { font-size: 15pt; line-height: 1.15; font-weight: 900; color: #fff; }
+        header h1 span { color: var(--accent); }
+        header p { font-size: 8pt; color: #b8f0f8; margin-top: 2px; }
+        .intro { font-size: 8.8pt; color: #333; margin-bottom: 10px; }
+        .grid {
+            display: grid; grid-template-columns: 1fr 1.15fr;
+            gap: 10px; align-items: start;
+        }
+        .panel { border-radius: 8px; padding: 8px 10px; }
+        .panel-kit { background: var(--kit-bg); border: 1.5px solid var(--kit-border); }
+        .panel-steps { background: var(--steps-bg); border: 1.5px solid var(--steps-border); }
+        h2 {
+            font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.04em;
+            font-weight: 800; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 2px solid;
+        }
+        .panel-kit h2 { color: var(--kit-title); border-color: var(--accent); }
+        .panel-steps h2 { color: var(--steps-title); border-color: var(--steps-border); }
+        .kit-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+        .kit-list li {
+            display: flex; gap: 6px; align-items: flex-start;
+            font-size: 8.8pt; padding: 4px 6px;
+            background: rgba(255,255,255,.7); border-radius: 6px;
+        }
+        .kit-num {
+            flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%;
+            background: var(--kit-title); color: #fff;
+            font-size: 8pt; font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .steps { list-style: none; counter-reset: step; }
+        .steps li {
+            counter-increment: step; position: relative;
+            padding-left: 24px; margin-bottom: 6px; font-size: 8.8pt;
+        }
+        .steps li::before {
+            content: counter(step);
+            position: absolute; left: 0; top: 1px;
+            width: 17px; height: 17px; border-radius: 50%;
+            background: var(--steps-num); color: #04120c;
+            font-size: 8pt; font-weight: 800;
+            text-align: center; line-height: 17px;
+        }
+        .steps li strong { color: var(--steps-strong); }
+        .sheet-foot { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
+        .importante {
+            background: var(--important-bg); border: 2px solid var(--important-border);
+            border-radius: 8px; padding: 8px 10px; font-size: 8.8pt;
+        }
+        .importante-title {
+            font-size: 9pt; font-weight: 900; color: #0e5a66;
+            text-transform: uppercase; margin-bottom: 5px;
+        }
+        .importante-list { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 20px; }
+        .importante-list li { position: relative; padding-left: 14px; }
+        .importante-list li::before {
+            content: "✓"; position: absolute; left: 0;
+            color: #0e9f6e; font-weight: 900;
+        }
+        .duvidas {
+            background: var(--duvidas-bg); border-radius: 8px;
+            padding: 8px 12px; font-size: 8.5pt;
+            display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px;
+        }
+        .duvidas a { color: #0e5a66; text-decoration: none; font-weight: 600; }
+        footer {
+            margin-top: 8px; padding-top: 6px; border-top: 1px solid #ddd;
+            font-size: 7.5pt; color: #666; text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <p class="no-print">
+        <button type="button" onclick="window.print()">Imprimir / Salvar PDF (A4)</button>
+        <br><span style="font-size:12px;color:#666;">Manual do cliente — 1 por folha. Papel A4, escala 100%, <strong>gráficos de fundo</strong> ativados.</span>
+    </p>
+
+    <article class="sheet">
+        <header>
+            <img src="../../images/brand/logo.jpg" alt="Sensor CrashFix">
+            <div>
+                <h1>SENSOR <span>CRASHFIX</span></h1>
+                <p>Manual de instalação · Restauração óptica e vedação · Tecnologia 3N20</p>
+            </div>
+        </header>
+
+        <p class="intro">
+            A lente Sensor CrashFix é <strong>maior</strong> que a cobertura do vidro do sensor: ela cobre o trinco e
+            <strong>restaura a vedação</strong>. Fixe no <strong>centro do sensor</strong> (face inferior do relógio).
+            Ambiente seco, mãos limpas e sem poeira.
+        </p>
+
+        <div class="grid">
+            <section class="panel panel-kit">
+                <h2>Conteúdo do kit</h2>
+                <ul class="kit-list">
+                    <li><span class="kit-num">1</span><div>Lenço com álcool isopropílico</div></li>
+                    <li><span class="kit-num">2</span><div>Lente Sensor CrashFix</div></li>
+                    <li><span class="kit-num">3</span><div>Vidro / gel potencializador</div></li>
+                    <li><span class="kit-num">4</span><div>Bastão aplicador</div></li>
+                    <li><span class="kit-num">5</span><div>Este manual</div></li>
+                </ul>
+            </section>
+
+            <section class="panel panel-steps">
+                <h2>Passo a passo</h2>
+                <ol class="steps">
+                    <li><strong>Limpe</strong> o sensor com o lenço de álcool e aguarde secar <strong>10 segundos</strong>.</li>
+                    <li><strong>Retire o liner</strong> da lente pela aba — não toque no adesivo.</li>
+                    <li>Passe uma <strong>camada fina</strong> de potencializador no sensor com o bastão.</li>
+                    <li><strong>Centralize</strong> a lente sobre o sensor (ela deve ultrapassar um pouco a borda do vidro).</li>
+                    <li>Faça <strong>pressão firme e uniforme</strong> por cerca de <strong>30 segundos</strong>.</li>
+                    <li><strong>Cura:</strong> <strong>48 h</strong> antes de treino intenso · <strong>72 h</strong> antes de molhar.</li>
+                </ol>
+            </section>
+        </div>
+
+        <div class="sheet-foot">
+            <div class="importante">
+                <p class="importante-title">Importante</p>
+                <ul class="importante-list">
+                    <li>Ative a detecção de pulso / leitura ótica</li>
+                    <li>Use sempre o carregador original</li>
+                    <li>Não remova a lente antes da cura completa</li>
+                </ul>
+            </div>
+            <div class="duvidas">
+                <strong>Dúvidas:</strong>
+                <a href="https://www.sensorcrashfix.com.br">www.sensorcrashfix.com.br</a>
+                <a href="mailto:contato@sensorcrashfix.com.br">contato@sensorcrashfix.com.br</a>
+            </div>
+        </div>
+
+        <footer>© 3N20 Soluções Tecnológicas · Sensor CrashFix</footer>
+    </article>
+</body>
+</html>
