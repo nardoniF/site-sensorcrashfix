@@ -502,7 +502,7 @@ export async function buildD1DailyBudget(env) {
     overFreeLimit: false,
     near: false,
     critical: false,
-    sources: 'configure CF_API_TOKEN + CF_D1_DATABASE_ID',
+    sources: 'medidor off — falta CF_API_TOKEN (Account Analytics Read); cliques no D1 seguem normais',
     ...resetFields()
   };
 }

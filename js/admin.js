@@ -3810,9 +3810,12 @@ ${worksheets}
         <span>D1 rows escritas hoje: ${wUsed.toLocaleString('pt-BR')} / ${wMax.toLocaleString('pt-BR')} (${wPct}%). Renova às ${escapeHtml(String(resetBr))}.</span>
       </div>`;
     } else {
+      const why = dw.cfError
+        ? `Falha ao ler Analytics (${escapeHtml(String(dw.cfError).slice(0, 120))}).`
+        : 'Falta o secret <code>CF_API_TOKEN</code> no Worker (só para ler o medidor).';
       outerHtml = `<div class="clicks-kv-flag clicks-kv--warn" role="status">
-        <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
-        <span>Cota D1 indisponível — configure CF_API_TOKEN. Renova às ${escapeHtml(String(resetBr))}.</span>
+        <i class="fas fa-info-circle" aria-hidden="true"></i>
+        <span><strong>Medidor de cota D1 desligado</strong> — isso <em>não</em> significa que a cota estourou. Os cliques continuam gravando no D1. ${why} Com o token, o Admin mostra o uso real (free: 100&nbsp;mil escritas/dia). Reset diário às ${escapeHtml(String(resetBr))}.</span>
       </div>`;
     }
 
@@ -3830,16 +3833,16 @@ ${worksheets}
       : '—';
     const note = fromCf
       ? `Fonte: <strong>Cloudflare D1 Analytics</strong> (dashboard D1 → Metrics). Free: 100 mil rows escritas/dia · 5 mi lidas/dia. Cache ~10 min.`
-      : `Cliques gravam em <strong>D1</strong> (não no KV). Sem token Analytics o % não aparece.${dw.cfError ? ` Erro: ${escapeHtml(String(dw.cfError))}` : ''}`;
+      : `Cliques gravam em <strong>D1</strong> normalmente. Este banner só lê o <em>medidor</em> via API Analytics — precisa do secret <code>CF_API_TOKEN</code> (Account Analytics Read).${dw.cfError ? ` Erro: ${escapeHtml(String(dw.cfError))}` : ''}`;
 
     el.innerHTML = `${outerHtml}
       <details class="clicks-stats-details">
       <summary class="clicks-stats-summary"><i class="fas fa-chevron-right clicks-stats-chevron" aria-hidden="true"></i> Resumo</summary>
       <dl class="clicks-stats-dl">
         <div class="clicks-stats-row"><dt>Hoje (eventos clique)</dt><dd>${data?.todayCount ?? 0}</dd></div>
-        <div class="clicks-stats-row"><dt>D1 rows escritas (UTC)</dt><dd>${wUsed.toLocaleString('pt-BR')} / ${wMax.toLocaleString('pt-BR')} (${wPct}%)</dd></div>
+        <div class="clicks-stats-row"><dt>D1 rows escritas (UTC)</dt><dd>${fromCf ? `${wUsed.toLocaleString('pt-BR')} / ${wMax.toLocaleString('pt-BR')} (${wPct}%)` : '— (medidor off)'}</dd></div>
         ${readsRow}
-        <div class="clicks-stats-row"><dt>Fonte da cota</dt><dd>D1 Analytics</dd></div>
+        <div class="clicks-stats-row"><dt>Fonte da cota</dt><dd>${fromCf ? 'D1 Analytics' : 'Indisponível (sem CF_API_TOKEN)'}</dd></div>
         <div class="clicks-stats-row"><dt>Atualizado</dt><dd>${escapeHtml(refreshed)}</dd></div>
         <div class="clicks-stats-row"><dt>Total no log cliques</dt><dd>${used.toLocaleString('pt-BR')} / ${max.toLocaleString('pt-BR')} · retenção ${escapeHtml(retentionLabel)}</dd></div>
         <div class="clicks-stats-row"><dt>Último gravado</dt><dd>${escapeHtml(ultimo)}</dd></div>
