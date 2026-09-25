@@ -1017,17 +1017,23 @@ window.STF_MONEY = window.STF_MONEY || (function () {
     const params = new URLSearchParams(location.search);
     let slug = params.get('produto');
     if (!slug) return false;
+    const replaceCart = params.get('comprar') === '1';
     // Em shell intl, SKUs BR (kit-sensor-crashfix) não têm priceUsd — remapeia para o lente INT.
     if (isIntlCheckoutShell()) {
       const raw = String(slug).toLowerCase();
       if (raw === 'kit-sensor-crashfix' || raw === 'kit' || raw === 'kit-smartband-crashfix') {
         slug = raw.includes('smartband') ? 'optical-lens-smartband-intl' : 'optical-lens-intl';
       }
+      // Remove kits BR que sobraram no carrinho (FX ~$16 sem markup).
+      ['kit-sensor-crashfix', 'kit', 'kit-smartband-crashfix'].forEach((id) => {
+        try { window.STF_CART?.remove?.(id); } catch (_) { /* ignore */ }
+      });
     }
     const p = products.find((x) => x.slug === slug || x.id === slug);
     if (!p || window.STF_PELICULA?.isAggregated(p)) return false;
-    // comprar=1 used to clear the cart and replace it with this SKU.
-    // If the shopper already has items (Adicionar mais produtos), only add.
+    if (replaceCart) {
+      try { window.STF_CART.clear(); } catch (_) { /* ignore */ }
+    }
     if (!window.STF_CART.hasProduct?.(p)) {
       window.STF_CART.add(p, 1);
     }
