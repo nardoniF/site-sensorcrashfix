@@ -105,7 +105,7 @@ const ALLOWED_ORIGINS = [
 ];
 const CONFIG_KEY = 'store-config';
 /** Pin igual ao cloudflare/scf-com-proxy.js — catálogo GitHub servido direto ao Worker (evita cache do proxy). */
-const SITE_CATALOG_COMMIT = '3299494b66c054c868ae927cc36d63658d342a46';
+const SITE_CATALOG_COMMIT = '2ed004e1a1ddf5f97b2f145c90da6ba8ca1c458b';
 const SITE_CATALOG_URLS = [
   'https://cdn.jsdelivr.net/gh/nardoniF/site-sensorcrashfix@' + SITE_CATALOG_COMMIT + '/data/store-config.json',
   'https://raw.githubusercontent.com/nardoniF/site-sensorcrashfix/' + SITE_CATALOG_COMMIT + '/data/store-config.json',
@@ -149,7 +149,13 @@ const DEFAULT_CONFIG = {
       descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
       descriptionIt: 'Progettata per i sensori ottici degli smartwatch su sensore incrinato.',
       price: 62.9,
-      image: 'https://www.sensorcrashfix.com.br/images/brand/sensorcrashfix.jpg',
+      image: '/images/kit-gallery/kit-01-embalagem.jpg',
+      images: [
+        '/images/kit-gallery/kit-01-embalagem.jpg',
+        '/images/kit-gallery/kit-03-aplicacao.jpg',
+        '/images/kit-gallery/kit-02-conteudo.jpg',
+        '/images/kit-gallery/kit-06-antes-depois.jpg'
+      ],
       active: true,
       requiresSmartwatch: true,
       deviceType: 'smartwatch',
@@ -173,13 +179,38 @@ const DEFAULT_CONFIG = {
         '/images/smartband/kit-br/02-conteudo.jpg',
         '/images/smartband/kit-br/03-aplicacao.jpg',
         '/images/smartband/kit-br/04-antes-depois.jpg',
-        '/images/smartband/kit-br/05-lente.jpg'
       ],
       active: true,
       requiresSmartwatch: true,
       weightGrams: 3,
       sensorMm: 25,
       markets: ['BR']
+    },
+    {
+      id: 'optical-lens-intl',
+      slug: 'optical-lens-intl',
+      name: 'SensorCrashFix Optical Lens',
+      nameEn: 'SensorCrashFix Optical Lens',
+      nameIt: 'Lente ottica SensorCrashFix',
+      description: 'Lente de correção óptica para smartwatch em pele danificado.',
+      descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
+      descriptionIt: 'Progettata per i sensori ottici degli smartwatch su sensore incrinato.',
+      price: 62.9,
+      priceUsd: 20.25,
+      priceEur: 17.42,
+      image: '/images/kit-gallery/en/kit-01-embalagem.jpg',
+      images: [
+        '/images/kit-gallery/en/kit-01-embalagem.jpg',
+        '/images/kit-gallery/en/kit-03-aplicacao.jpg',
+        '/images/kit-gallery/en/kit-02-conteudo.jpg',
+        '/images/kit-gallery/en/kit-06-antes-depois.jpg'
+      ],
+      active: true,
+      requiresSmartwatch: true,
+      deviceType: 'smartwatch',
+      weightGrams: 3,
+      sensorMm: 25,
+      markets: ['INT']
     },
     {
       id: 'optical-lens-smartband-intl',
@@ -192,8 +223,8 @@ const DEFAULT_CONFIG = {
       descriptionEn: 'Designed for smartband optical sensors on cracked sensor.',
       descriptionIt: 'Progettata per i sensori ottici degli smartband su sensore incrinato.',
       price: 62.9,
-      priceUsd: 12.99,
-      priceEur: 11.99,
+      priceUsd: 20.25,
+      priceEur: 17.42,
       image: '/images/smartband/lens-en/01-embalagem.jpg',
       images: [
         '/images/smartband/lens-en/01-embalagem.jpg',
@@ -208,31 +239,6 @@ const DEFAULT_CONFIG = {
       markets: ['INT'],
       aggregated: false
     },
-    {
-      id: 'optical-lens-intl',
-      slug: 'optical-lens-intl',
-      name: 'SensorCrashFix Optical Lens',
-      nameEn: 'SensorCrashFix Optical Lens',
-      nameIt: 'Lente ottica SensorCrashFix',
-      description: 'Lente de correção óptica para smartwatch em pele danificado.',
-      descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
-      descriptionIt: 'Progettata per i sensori ottici degli smartwatch su sensore incrinato.',
-      price: 62.9,
-      image: '/images/lens-gallery/01-optical-correction-lens.png',
-      images: [
-        '/images/lens-gallery/01-optical-correction-lens.png',
-        '/images/lens-gallery/02-ultra-thin.png',
-        '/images/lens-gallery/03-high-optical-transparency.png',
-        '/images/lens-gallery/04-engineered-refraction.png',
-        '/images/lens-gallery/05-whats-included.png'
-      ],
-      active: true,
-      requiresSmartwatch: true,
-      deviceType: 'smartwatch',
-      weightGrams: 3,
-      sensorMm: 25,
-      markets: ['INT']
-    }
   ],
   pix: { key: '29321223000132', keyType: 'cnpj', merchantName: '3N20 SOLUCOES TEC', merchantCity: 'SAO PAULO' },
   shipping: {
@@ -426,7 +432,7 @@ const DEFAULT_CONFIG = {
         enabled: true,
         url: 'https://produto.mercadolivre.com.br/MLB-6831525504-smartwatch-x-rachadura-sensor-nao-funciona-lentes-reparadoras-_JM'
       },
-      shopee: { enabled: true, url: 'https://shopee.com.br/product/479290797/58259628035/' },
+      shopee: { enabled: true, url: 'https://shopee.com.br/product/479290797/58218461804/' },
       tiktok_shop: { enabled: true, url: 'https://vt.tiktok.com/ZS9juMxSmKGjN-mns6O/' },
       amazon: { enabled: true, url: 'https://www.amazon.com.br/dp/B0GYVBRGZS' }
     }
@@ -441,8 +447,8 @@ const DEFAULT_CONFIG = {
       { id: 'shipping-bag-sticker', name: 'Adesivo da sacola / envelope', buyQty: 1000, buyPrice: 60, yieldQty: 1, useQty: 1, notes: '1 por sacola ou envelope (1 por lente)' },
       { id: 'kit-bag', name: 'Sacola zip do kit', buyQty: 100, buyPrice: 52, yieldQty: 1, useQty: 1, notes: 'Zip que vai dentro' },
       { id: 'kit-bag-sticker', name: 'Adesivo da sacola do kit', buyQty: 1000, buyPrice: 60, yieldQty: 1, useQty: 1, notes: '1 por sacola zip' },
-      { id: 'manual-sofit', name: 'Manual (sulfite)', buyQty: 1000, buyPrice: 59, yieldQty: 10, useQty: 1, notes: '10 manuais por folha sulfite' },
-      { id: 'promo-print', name: 'Impresso promocional (sulfite)', buyQty: 1000, buyPrice: 59, yieldQty: 10, useQty: 1, notes: '10 impressos por folha sulfite' },
+      { id: 'manual-sofit', name: 'Manual (sulfite)', buyQty: 1000, buyPrice: 59, yieldQty: 6, useQty: 1, notes: '6 manuais+cupom+WhatsApp por folha A4 (folha única)' },
+      { id: 'promo-print', name: 'Impresso promocional (sulfite)', buyQty: 1000, buyPrice: 59, yieldQty: 10, useQty: 0, notes: 'Banido — cupom e contato vão no manual (folha única)' },
       { id: 'applicator', name: 'Haste aplicadora', buyQty: 200, buyPrice: 26.35, yieldQty: 1, useQty: 0.5, notes: 'Meia haste por kit' },
       { id: 'potentiator', name: 'Potencializador (primer)', buyQty: 100, buyPrice: 188, yieldQty: 1, useQty: 0.2, notes: '1/5 ml por kit' },
       { id: 'potentiator-glass', name: 'Vidro do potencializador', buyQty: 100, buyPrice: 149.8, yieldQty: 1, useQty: 1, notes: 'Frasco 1 ml' },
@@ -1302,6 +1308,13 @@ function supplementKitFromSite(kvProduct, siteProduct) {
   if (siteProduct?.image && isLegacyBrokenKitImage(kvProduct?.image)) {
     merged.image = siteProduct.image;
   }
+  // Galeria do git manda — evita Ultra/slides 404 presos no KV.
+  if (Array.isArray(siteProduct?.images) && siteProduct.images.length) {
+    merged.images = siteProduct.images.slice();
+  }
+  if (siteProduct?.image) {
+    merged.image = siteProduct.image;
+  }
   ['nameEn', 'nameIt', 'descriptionEn', 'descriptionIt'].forEach((field) => {
     if (!merged[field] && siteProduct?.[field]) merged[field] = siteProduct[field];
   });
@@ -1404,15 +1417,12 @@ function mergeSiteCatalog(config, site) {
     config.smartwatchCatalog,
     site.smartwatchCatalog
   );
+  // FAQ/reviews: catálogo do site (git) manda — evita FAQ Tattoo antiga presa no KV.
   if (Array.isArray(site.homeFaq) && site.homeFaq.length) {
-    next.homeFaq = Array.isArray(config.homeFaq) && config.homeFaq.length
-      ? config.homeFaq
-      : site.homeFaq;
+    next.homeFaq = site.homeFaq;
   }
-  if (Array.isArray(site.homeReviews) && site.homeReviews.length) {
-    next.homeReviews = Array.isArray(config.homeReviews) && config.homeReviews.length
-      ? config.homeReviews
-      : site.homeReviews;
+  if (Array.isArray(site.homeReviews)) {
+    next.homeReviews = site.homeReviews;
   }
   if (site.products?.length) {
     next.products = mergeSiteCatalogProducts(config.products, site.products);
@@ -2480,13 +2490,17 @@ async function syncIntlProductPricesFromFx(env) {
     if (!isIntlMarketProductRow(p)) return;
     const brl = Number(p.price) || 0;
     if (!brl) return;
+    // Não sobrescreve USD/EUR já cadastrados (markup de poder de compra / Admin).
+    // Só preenche quando o campo está vazio.
+    const hasUsd = Number.isFinite(Number(p.priceUsd)) && Number(p.priceUsd) > 0;
+    const hasEur = Number.isFinite(Number(p.priceEur)) && Number(p.priceEur) > 0;
+    if (hasUsd && hasEur) return;
     const usd = Math.round(brl * fxUsd.rate * 100) / 100;
     const eur = Math.round(brl * fxEur.rate * 100) / 100;
-    if (p.priceUsd !== usd || p.priceEur !== eur) {
-      p.priceUsd = usd;
-      p.priceEur = eur;
-      updated += 1;
-    }
+    let changed = false;
+    if (!hasUsd) { p.priceUsd = usd; changed = true; }
+    if (!hasEur) { p.priceEur = eur; changed = true; }
+    if (changed) updated += 1;
   });
   if (updated) await saveConfig(env, { ...config, products });
   return { updated, usdRate: fxUsd.rate, eurRate: fxEur.rate };
@@ -3482,7 +3496,7 @@ function buildPendingConsultativeEmail(order, config, env, {
     <p>${escapeHtml(copy.help)}</p>
     <p>${escapeHtml(copy.offer)}</p>
     ${pixBlock}
-    <p style="margin-top:20px"><a href="${escapeHtml(copy.resumeUrl)}" style="display:inline-block;background:#ffc107;color:#000;text-decoration:none;font-weight:700;padding:12px 20px;border-radius:8px">${escapeHtml(copy.ctaPay)}</a></p>
+    <p style="margin-top:20px"><a href="${escapeHtml(copy.resumeUrl)}" style="display:inline-block;background:#5EC8D8;color:#000;text-decoration:none;font-weight:700;padding:12px 20px;border-radius:8px">${escapeHtml(copy.ctaPay)}</a></p>
     <p style="margin-top:24px"><strong>${escapeHtml(copy.contactsTitle)}</strong></p>
     <ul style="padding-left:18px;margin:8px 0 0">${contacts}</ul>
     <p style="margin-top:24px">${escapeHtml(copy.signOff)}<br>${escapeHtml(copy.signer)}</p>
@@ -13484,7 +13498,7 @@ function passwordResetEmailCopy(locale, resetUrl) {
       html: `<div style="font-family:Arial,sans-serif;max-width:560px;line-height:1.5;color:#222">
         <h2 style="margin:0 0 12px">Password reset</h2>
         <p>We received a request to reset your Sensor Crash Fix account password.</p>
-        <p><a href="${resetUrl}" style="display:inline-block;background:#ffc107;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Choose a new password</a></p>
+        <p><a href="${resetUrl}" style="display:inline-block;background:#5EC8D8;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Choose a new password</a></p>
         <p style="font-size:13px;color:#666">This link expires in 1 hour. If you didn’t ask for this, you can ignore this email.</p>
         <p style="font-size:12px;color:#888;word-break:break-all">${resetUrl}</p>
       </div>`,
@@ -13497,7 +13511,7 @@ function passwordResetEmailCopy(locale, resetUrl) {
       html: `<div style="font-family:Arial,sans-serif;max-width:560px;line-height:1.5;color:#222">
         <h2 style="margin:0 0 12px">Reimposta password</h2>
         <p>Abbiamo ricevuto una richiesta per reimpostare la password del tuo account Sensor Crash Fix.</p>
-        <p><a href="${resetUrl}" style="display:inline-block;background:#ffc107;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Scegli una nuova password</a></p>
+        <p><a href="${resetUrl}" style="display:inline-block;background:#5EC8D8;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Scegli una nuova password</a></p>
         <p style="font-size:13px;color:#666">Il link scade tra 1 ora. Se non hai richiesto tu, ignora questa email.</p>
         <p style="font-size:12px;color:#888;word-break:break-all">${resetUrl}</p>
       </div>`,
@@ -13510,7 +13524,7 @@ function passwordResetEmailCopy(locale, resetUrl) {
       html: `<div style="font-family:Arial,sans-serif;max-width:560px;line-height:1.5;color:#222">
         <h2 style="margin:0 0 12px">Ponastavitev gesla</h2>
         <p>Prejeli smo zahtevo za ponastavitev gesla vašega računa Sensor Crash Fix.</p>
-        <p><a href="${resetUrl}" style="display:inline-block;background:#ffc107;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Izberite novo geslo</a></p>
+        <p><a href="${resetUrl}" style="display:inline-block;background:#5EC8D8;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Izberite novo geslo</a></p>
         <p style="font-size:13px;color:#666">Povezava poteče v 1 uri. Če tega niste zahtevali, prezrite to sporočilo.</p>
         <p style="font-size:12px;color:#888;word-break:break-all">${resetUrl}</p>
       </div>`,
@@ -13522,7 +13536,7 @@ function passwordResetEmailCopy(locale, resetUrl) {
     html: `<div style="font-family:Arial,sans-serif;max-width:560px;line-height:1.5;color:#222">
       <h2 style="margin:0 0 12px">Redefinir senha</h2>
       <p>Recebemos um pedido para redefinir a senha da sua conta Sensor Crash Fix.</p>
-      <p><a href="${resetUrl}" style="display:inline-block;background:#ffc107;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Escolher nova senha</a></p>
+      <p><a href="${resetUrl}" style="display:inline-block;background:#5EC8D8;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Escolher nova senha</a></p>
       <p style="font-size:13px;color:#666">Este link expira em 1 hora. Se você não pediu isso, ignore este e-mail.</p>
       <p style="font-size:12px;color:#888;word-break:break-all">${resetUrl}</p>
     </div>`,
@@ -14598,7 +14612,7 @@ async function trackGa4Purchase(env, order, payment) {
   const apiSecret = (env.GA4_API_SECRET || '').trim();
   if (!apiSecret) return;
 
-  const measurementId = (env.GA4_MEASUREMENT_ID || 'G-TFLZHJG9RN').trim();
+  const measurementId = (env.GA4_MEASUREMENT_ID || 'G-L852DLJ9KV').trim();
   const value = Number(payment?.value ?? order.total) || 0;
   const paymentType = order.pagamento || payment?.billingType || 'unknown';
   const itemName = order.produto || 'Kit Sensor Crash Fix';

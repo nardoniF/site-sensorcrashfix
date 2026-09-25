@@ -113,7 +113,10 @@ window.STF_MONEY = (function () {
 
   function visitorDisplayCurrency(countryCode) {
     const country = String(countryCode || visitorCountry()).toUpperCase();
-    if (isIntlHost()) return country === 'IT' ? 'EUR' : 'USD';
+    // Cobrança intl (.com / paths localizados): só USD ou EUR (PayPal/Stripe).
+    if (isIntlHost() || isVisitorLocalized()) {
+      return currencyForCountry(country) === 'EUR' ? 'EUR' : 'USD';
+    }
     const cur = currencyForCountry(country);
     return cur === 'BRL' ? 'BRL' : cur;
   }

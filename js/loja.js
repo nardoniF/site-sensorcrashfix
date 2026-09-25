@@ -186,12 +186,26 @@
     });
   }
 
+  /** Smartwatch kits/lenses first, then smartband, then accessories. */
+  function sortStorefront(list) {
+    const rank = (p) => {
+      const t = String(p.deviceType || '').toLowerCase();
+      if (t === 'smartwatch') return 0;
+      if (t === 'smartband') return 1;
+      const id = String(p.id || p.slug || '');
+      if (/smartband/i.test(id)) return 1;
+      if (/optical-lens-intl|kit-sensor-crashfix|^kit$/i.test(id)) return 0;
+      return 2;
+    };
+    return (list || []).slice().sort((a, b) => rank(a) - rank(b));
+  }
+
   async function boot() {
     try {
       window.STF_I18N?.applyLojaDom?.();
       const cfg = await StoreConfig.load();
       const all = cfg.products?.length ? cfg.products : (cfg.product ? [cfg.product] : []);
-      products = filterStorefront(all);
+      products = sortStorefront(filterStorefront(all));
       window.STF_CART?.syncPrices?.(all);
       window.STF_CART?.initBadges();
       window.STF_STORE_PRICE?.apply(cfg);

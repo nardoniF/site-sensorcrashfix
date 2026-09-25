@@ -51,7 +51,7 @@ test('localeRedirectTarget .com home', () => {
   );
   assert.equal(
     localeRedirectTarget({ ...base, preferred: 'pt' }),
-    'https://www.sensorcrashfix.com.br/'
+    'https://www.sensorcrashfix.com.br/?stf_lang=pt'
   );
 });
 
@@ -66,6 +66,16 @@ test('localeRedirectTarget .com loja.html', () => {
     }),
     'https://www.sensorcrashfix.com/pl/loja.html'
   );
+  assert.equal(
+    localeRedirectTarget({
+      hostOrigin: 'https://www.sensorcrashfix.com',
+      pathname: '/loja.html',
+      search: '',
+      br: false,
+      preferred: 'pt'
+    }),
+    'https://www.sensorcrashfix.com.br/loja.html?stf_lang=pt'
+  );
   assert.equal(isComEnglishEntryPath('/loja.html'), true);
   assert.equal(isComEnglishEntryPath('/pl/loja.html'), false);
 });
@@ -79,7 +89,17 @@ test('localeRedirectTarget .com.br home intl', () => {
       br: true,
       preferred: 'pl'
     }),
-    'https://www.sensorcrashfix.com/pl/'
+    'https://www.sensorcrashfix.com/pl/?stf_lang=pl'
+  );
+  assert.equal(
+    localeRedirectTarget({
+      hostOrigin: 'https://www.sensorcrashfix.com.br',
+      pathname: '/',
+      search: '',
+      br: true,
+      preferred: 'en'
+    }),
+    'https://www.sensorcrashfix.com/?stf_lang=en'
   );
   assert.equal(
     localeRedirectTarget({
@@ -91,6 +111,29 @@ test('localeRedirectTarget .com.br home intl', () => {
     }),
     null
   );
+});
+
+test('cross-domain stf_lang breaks cookie bounce', () => {
+  // .com with pt pref → .br with stf_lang=pt (wins over leftover en cookie on .br)
+  const toBr = localeRedirectTarget({
+    hostOrigin: 'https://www.sensorcrashfix.com',
+    pathname: '/',
+    search: '',
+    br: false,
+    preferred: 'pt'
+  });
+  assert.ok(toBr.includes('stf_lang=pt'));
+  assert.ok(toBr.startsWith('https://www.sensorcrashfix.com.br/'));
+
+  // .br with en pref → .com with stf_lang=en
+  const toCom = localeRedirectTarget({
+    hostOrigin: 'https://www.sensorcrashfix.com.br',
+    pathname: '/',
+    search: '',
+    br: true,
+    preferred: 'en'
+  });
+  assert.equal(toCom, 'https://www.sensorcrashfix.com/?stf_lang=en');
 });
 
 test('bots skipped helper', () => {

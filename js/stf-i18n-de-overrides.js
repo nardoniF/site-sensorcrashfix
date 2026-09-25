@@ -1,6 +1,6 @@
 /** German overrides — merged onto STRINGS.en in stf-i18n.js */
 window.STF_I18N_DE = {
-  'brand.tagline': 'Harmonie zwischen Tinte und Silizium',
+  'brand.tagline': 'Optische Abschirmung. Wiederherstellung und Schutz.',
   'nav.cart': 'Warenkorb',
   'nav.back': 'Zurück',
   'nav.home': 'Startseite',

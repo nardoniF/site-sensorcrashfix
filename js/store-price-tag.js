@@ -59,11 +59,29 @@ window.STF_STORE_PRICE = (function () {
     return Number(n || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
+  function productMarkets(p) {
+    return Array.isArray(p?.markets)
+      ? p.markets.map((m) => String(m || '').toUpperCase()).filter(Boolean)
+      : [];
+  }
+
   function primaryProduct(config) {
-    if (config.products?.length) {
-      const active = config.products.find((p) => p.active !== false);
-      return active || config.products[0];
+    const list = Array.isArray(config.products) ? config.products : [];
+    const active = list.filter((p) => p && p.active !== false);
+    if (isLocalized()) {
+      const intl = active.find((p) => {
+        const m = productMarkets(p);
+        return m.includes('INT') && !m.includes('BR');
+      }) || active.find((p) => productMarkets(p).includes('INT'));
+      if (intl) return intl;
+    } else {
+      const br = active.find((p) => {
+        const m = productMarkets(p);
+        return !m.length || m.includes('BR');
+      });
+      if (br) return br;
     }
+    if (active.length) return active[0];
     return config.product || null;
   }
 
