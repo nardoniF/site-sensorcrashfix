@@ -5,7 +5,7 @@
 
 import { generateCommissionerStoryBanners } from './commissioner-banners.js';
 import { handleForumRoute } from './forum.js';
-import { refreshHomeContentI18n, mergePreservedI18n, homeContentI18nStatus } from './site-l10n.js';
+import { refreshHomeContentI18n, refreshProductsTextI18n, mergePreservedI18n, homeContentI18nStatus } from './site-l10n.js';
 import {
   bumpKvWriteCounter,
   buildKvDailyWriteBudget,
@@ -147,7 +147,7 @@ const DEFAULT_CONFIG = {
     name: 'Kit Sensor Crash Fix',
     nameEn: 'Sensor Crash Fix Lens',
     nameIt: 'Lente Sensor Crash Fix',
-    description: 'Lente ótica para smartwatch em pele danificado — kit completo',
+    description: 'Lente ótica para smartwatch com sensor danificado — kit completo',
     descriptionEn: 'Optical lens for smartwatches on cracked sensor',
     descriptionIt: 'Lente ottica per smartwatch su sensore incrinato',
     price: 62.9,
@@ -160,7 +160,7 @@ const DEFAULT_CONFIG = {
       name: 'Kit Sensor Crash Fix',
       nameEn: 'SensorCrashFix Optical Lens',
       nameIt: 'Lente ottica SensorCrashFix',
-      description: 'Lente ótica para smartwatch em pele danificado — kit completo',
+      description: 'Lente ótica para smartwatch com sensor danificado — kit completo',
       descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
       descriptionIt: 'Progettata per i sensori ottici degli smartwatch su sensore incrinato.',
       price: 62.9,
@@ -184,7 +184,7 @@ const DEFAULT_CONFIG = {
       nameEn: 'Kit Smartband Crash Fix',
       nameIt: 'Kit Smartband Crash Fix',
       deviceType: 'smartband',
-      description: 'Lente ótica para smartband em pele danificado — kit completo',
+      description: 'Lente ótica para smartband com sensor danificado — kit completo',
       descriptionEn: 'Optical lens for smartbands on cracked sensor — full kit',
       descriptionIt: 'Lente ottica per smartband su sensore incrinato — kit completo',
       price: 62.9,
@@ -207,7 +207,7 @@ const DEFAULT_CONFIG = {
       name: 'SensorCrashFix Optical Lens',
       nameEn: 'SensorCrashFix Optical Lens',
       nameIt: 'Lente ottica SensorCrashFix',
-      description: 'Lente de correção óptica para smartwatch em pele danificado.',
+      description: 'Lente de correção óptica para smartwatch com sensor danificado.',
       descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
       descriptionIt: 'Progettata per i sensori ottici degli smartwatch su sensore incrinato.',
       price: 72.9,
@@ -234,7 +234,7 @@ const DEFAULT_CONFIG = {
       nameEn: 'SensorCrashFix Smartband Lens',
       nameIt: 'Lente Smartband SensorCrashFix',
       deviceType: 'smartband',
-      description: 'Lente de correção óptica para smartband em pele danificado.',
+      description: 'Lente de correção óptica para smartband com sensor danificado.',
       descriptionEn: 'Designed for smartband optical sensors on cracked sensor.',
       descriptionIt: 'Progettata per i sensori ottici degli smartband su sensore incrinato.',
       price: 62.9,
@@ -17875,13 +17875,27 @@ async function handlePutConfig(request, env, origin, ctx) {
     const latest = await getConfig(env);
     await saveConfig(env, {
       ...latest,
-      homeFaq: partial.homeFaq,
-      homeReviews: partial.homeReviews
+      homeFaq: partial.homeFaq != null ? partial.homeFaq : latest.homeFaq,
+      homeReviews: partial.homeReviews != null ? partial.homeReviews : latest.homeReviews,
+      products: partial.products != null ? partial.products : latest.products
     });
   };
-  const runI18n = refreshHomeContentI18n(env, saved, { onProgress: persistI18nPartial })
-    .then((next) => persistI18nPartial(next))
-    .catch((err) => console.warn('home i18n:', err?.message || err));
+  // Textos GLOBAL (name/description PT): auto-traduz após save (EN/IT/DE/ES/PL/SL).
+  // MARKET-SPECIFIC (images, markets, price) NÃO passa por i18n.
+  const runI18n = (async () => {
+    const withHome = await refreshHomeContentI18n(env, saved, {
+      onProgress: (partial) => persistI18nPartial(partial)
+    });
+    await persistI18nPartial(withHome);
+    try {
+      const products = await refreshProductsTextI18n(env, withHome.products || saved.products || [], {
+        onProgress: (list) => persistI18nPartial({ products: list })
+      });
+      await persistI18nPartial({ products });
+    } catch (err) {
+      console.warn('product text i18n:', err?.message || err);
+    }
+  })().catch((err) => console.warn('content i18n:', err?.message || err));
   if (ctx && typeof ctx.waitUntil === 'function') ctx.waitUntil(runI18n);
   else await runI18n;
   return json(saved, 200, origin);

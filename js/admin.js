@@ -8567,7 +8567,7 @@ ${worksheets}
       name: 'SensorCrashFix Optical Lens',
       nameEn: 'SensorCrashFix Optical Lens',
       nameIt: 'Lente ottica SensorCrashFix',
-      description: 'Lente de correção óptica para smartwatch em pele danificado.',
+      description: 'Lente de correção óptica para smartwatch com sensor danificado.',
       descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
       descriptionIt: 'Progettata per i sensori ottici degli smartwatch su pelle danificado.',
       price: 72.9,
