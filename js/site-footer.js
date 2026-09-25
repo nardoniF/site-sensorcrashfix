@@ -183,7 +183,7 @@ window.STF_FOOTER = (function () {
     if (!enabled.length) {
       return `
       <div class="footer-social">
-        <div class="footer-faq-link"><a href="#faq">${s.faq}</a> · <a href="${prefix}comunidade.html"><i class="fas fa-comments" aria-hidden="true"></i> ${s.community}</a></div>
+        <div class="footer-faq-link"><a href="#faq">${s.faq}</a></div>
         <div class="footer-action-links">
           <button type="button" class="footer-action-btn footer-action-btn--feedback stf-feedback-trigger">
             <i class="fas fa-comment-dots" aria-hidden="true"></i>
@@ -206,7 +206,7 @@ window.STF_FOOTER = (function () {
       <div class="footer-social">
         <h4>${s.socialTitle}</h4>
         <div class="social-icons-footer">${links}</div>
-        <div class="footer-faq-link"><a href="#faq">${s.faq}</a> · <a href="${prefix}comunidade.html"><i class="fas fa-comments" aria-hidden="true"></i> ${s.community}</a></div>
+        <div class="footer-faq-link"><a href="#faq">${s.faq}</a></div>
         <div class="footer-action-links">
           <button type="button" class="footer-action-btn footer-action-btn--feedback stf-feedback-trigger">
             <i class="fas fa-comment-dots" aria-hidden="true"></i>

@@ -103,9 +103,24 @@ const ALLOWED_ORIGINS = [
   'http://localhost:8080',
   'http://127.0.0.1:5500'
 ];
+import {
+  DEFAULT_INTL_CURRENCIES,
+  DEFAULT_INTL_MARKUP_PERCENT,
+  normalizeIntlCurrencies,
+  activeIntlCurrencies,
+  applyMarkupFxToIntlProducts,
+  syncOpticalIntlBrlFromBrKit,
+  currencyForLocaleFromRegistry,
+  productListPriceFromRegistry,
+  intlPriceField,
+  intlPriceFieldNames,
+  intlBaseBrl,
+  normalizeMarkupPercent
+} from './intl-money.js';
+
 const CONFIG_KEY = 'store-config';
 /** Pin igual ao cloudflare/scf-com-proxy.js — catálogo GitHub servido direto ao Worker (evita cache do proxy). */
-const SITE_CATALOG_COMMIT = '3299494b66c054c868ae927cc36d63658d342a46';
+const SITE_CATALOG_COMMIT = '89d0dcfd50c8d24bc6020a409cb51440b9c51636';
 const SITE_CATALOG_URLS = [
   'https://cdn.jsdelivr.net/gh/nardoniF/site-sensorcrashfix@' + SITE_CATALOG_COMMIT + '/data/store-config.json',
   'https://raw.githubusercontent.com/nardoniF/site-sensorcrashfix/' + SITE_CATALOG_COMMIT + '/data/store-config.json',
@@ -149,7 +164,13 @@ const DEFAULT_CONFIG = {
       descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
       descriptionIt: 'Progettata per i sensori ottici degli smartwatch su sensore incrinato.',
       price: 62.9,
-      image: 'https://www.sensorcrashfix.com.br/images/brand/sensorcrashfix.jpg',
+      image: '/images/kit-gallery/kit-01-embalagem.jpg',
+      images: [
+        '/images/kit-gallery/kit-01-embalagem.jpg',
+        '/images/kit-gallery/kit-03-aplicacao.jpg',
+        '/images/kit-gallery/kit-02-conteudo.jpg',
+        '/images/kit-gallery/kit-06-antes-depois.jpg'
+      ],
       active: true,
       requiresSmartwatch: true,
       deviceType: 'smartwatch',
@@ -173,13 +194,38 @@ const DEFAULT_CONFIG = {
         '/images/smartband/kit-br/02-conteudo.jpg',
         '/images/smartband/kit-br/03-aplicacao.jpg',
         '/images/smartband/kit-br/04-antes-depois.jpg',
-        '/images/smartband/kit-br/05-lente.jpg'
       ],
       active: true,
       requiresSmartwatch: true,
       weightGrams: 3,
       sensorMm: 25,
       markets: ['BR']
+    },
+    {
+      id: 'optical-lens-intl',
+      slug: 'optical-lens-intl',
+      name: 'SensorCrashFix Optical Lens',
+      nameEn: 'SensorCrashFix Optical Lens',
+      nameIt: 'Lente ottica SensorCrashFix',
+      description: 'Lente de correção óptica para smartwatch em pele danificado.',
+      descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
+      descriptionIt: 'Progettata per i sensori ottici degli smartwatch su sensore incrinato.',
+      price: 72.9,
+      intlMarkupPercent: 78.5,
+      intlBaseBrl: 130.13,
+      image: '/images/kit-gallery/en/kit-01-embalagem.jpg',
+      images: [
+        '/images/kit-gallery/en/kit-01-embalagem.jpg',
+        '/images/kit-gallery/en/kit-03-aplicacao.jpg',
+        '/images/kit-gallery/en/kit-02-conteudo.jpg',
+        '/images/kit-gallery/en/kit-06-antes-depois.jpg'
+      ],
+      active: true,
+      requiresSmartwatch: true,
+      deviceType: 'smartwatch',
+      weightGrams: 3,
+      sensorMm: 25,
+      markets: ['INT']
     },
     {
       id: 'optical-lens-smartband-intl',
@@ -192,8 +238,8 @@ const DEFAULT_CONFIG = {
       descriptionEn: 'Designed for smartband optical sensors on cracked sensor.',
       descriptionIt: 'Progettata per i sensori ottici degli smartband su sensore incrinato.',
       price: 62.9,
-      priceUsd: 12.99,
-      priceEur: 11.99,
+      intlMarkupPercent: 78.5,
+      intlBaseBrl: 112.28,
       image: '/images/smartband/lens-en/01-embalagem.jpg',
       images: [
         '/images/smartband/lens-en/01-embalagem.jpg',
@@ -208,31 +254,6 @@ const DEFAULT_CONFIG = {
       markets: ['INT'],
       aggregated: false
     },
-    {
-      id: 'optical-lens-intl',
-      slug: 'optical-lens-intl',
-      name: 'SensorCrashFix Optical Lens',
-      nameEn: 'SensorCrashFix Optical Lens',
-      nameIt: 'Lente ottica SensorCrashFix',
-      description: 'Lente de correção óptica para smartwatch em pele danificado.',
-      descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
-      descriptionIt: 'Progettata per i sensori ottici degli smartwatch su sensore incrinato.',
-      price: 62.9,
-      image: '/images/lens-gallery/01-optical-correction-lens.png',
-      images: [
-        '/images/lens-gallery/01-optical-correction-lens.png',
-        '/images/lens-gallery/02-ultra-thin.png',
-        '/images/lens-gallery/03-high-optical-transparency.png',
-        '/images/lens-gallery/04-engineered-refraction.png',
-        '/images/lens-gallery/05-whats-included.png'
-      ],
-      active: true,
-      requiresSmartwatch: true,
-      deviceType: 'smartwatch',
-      weightGrams: 3,
-      sensorMm: 25,
-      markets: ['INT']
-    }
   ],
   pix: { key: '29321223000132', keyType: 'cnpj', merchantName: '3N20 SOLUCOES TEC', merchantCity: 'SAO PAULO' },
   shipping: {
@@ -296,6 +317,9 @@ const DEFAULT_CONFIG = {
   internationalSurcharge: 0,
   /** Multiplies Correios intl quote. 1 = sem markup (valor real da cotação). */
   internationalShippingMultiplier: 1,
+  intlCurrencies: DEFAULT_INTL_CURRENCIES,
+  intlCurrenciesAutoFx: true,
+  intlCurrenciesAutoPpp: true,
   internationalProduct: {
     title: 'Envio internacional',
     hint: '',
@@ -426,7 +450,7 @@ const DEFAULT_CONFIG = {
         enabled: true,
         url: 'https://produto.mercadolivre.com.br/MLB-6831525504-smartwatch-x-rachadura-sensor-nao-funciona-lentes-reparadoras-_JM'
       },
-      shopee: { enabled: true, url: 'https://shopee.com.br/product/479290797/58259628035/' },
+      shopee: { enabled: true, url: 'https://shopee.com.br/product/479290797/58218461804/' },
       tiktok_shop: { enabled: true, url: 'https://vt.tiktok.com/ZS9juMxSmKGjN-mns6O/' },
       amazon: { enabled: true, url: 'https://www.amazon.com.br/dp/B0GYVBRGZS' }
     }
@@ -441,8 +465,8 @@ const DEFAULT_CONFIG = {
       { id: 'shipping-bag-sticker', name: 'Adesivo da sacola / envelope', buyQty: 1000, buyPrice: 60, yieldQty: 1, useQty: 1, notes: '1 por sacola ou envelope (1 por lente)' },
       { id: 'kit-bag', name: 'Sacola zip do kit', buyQty: 100, buyPrice: 52, yieldQty: 1, useQty: 1, notes: 'Zip que vai dentro' },
       { id: 'kit-bag-sticker', name: 'Adesivo da sacola do kit', buyQty: 1000, buyPrice: 60, yieldQty: 1, useQty: 1, notes: '1 por sacola zip' },
-      { id: 'manual-sofit', name: 'Manual (sulfite)', buyQty: 1000, buyPrice: 59, yieldQty: 10, useQty: 1, notes: '10 manuais por folha sulfite' },
-      { id: 'promo-print', name: 'Impresso promocional (sulfite)', buyQty: 1000, buyPrice: 59, yieldQty: 10, useQty: 1, notes: '10 impressos por folha sulfite' },
+      { id: 'manual-sofit', name: 'Manual (sulfite)', buyQty: 1000, buyPrice: 59, yieldQty: 6, useQty: 1, notes: '6 manuais+cupom+WhatsApp por folha A4 (folha única)' },
+      { id: 'promo-print', name: 'Impresso promocional (sulfite)', buyQty: 1000, buyPrice: 59, yieldQty: 10, useQty: 0, notes: 'Banido — cupom e contato vão no manual (folha única)' },
       { id: 'applicator', name: 'Haste aplicadora', buyQty: 200, buyPrice: 26.35, yieldQty: 1, useQty: 0.5, notes: 'Meia haste por kit' },
       { id: 'potentiator', name: 'Potencializador (primer)', buyQty: 100, buyPrice: 188, yieldQty: 1, useQty: 0.2, notes: '1/5 ml por kit' },
       { id: 'potentiator-glass', name: 'Vidro do potencializador', buyQty: 100, buyPrice: 149.8, yieldQty: 1, useQty: 1, notes: 'Frasco 1 ml' },
@@ -1302,6 +1326,13 @@ function supplementKitFromSite(kvProduct, siteProduct) {
   if (siteProduct?.image && isLegacyBrokenKitImage(kvProduct?.image)) {
     merged.image = siteProduct.image;
   }
+  // Galeria do git manda — evita Ultra/slides 404 presos no KV.
+  if (Array.isArray(siteProduct?.images) && siteProduct.images.length) {
+    merged.images = siteProduct.images.slice();
+  }
+  if (siteProduct?.image) {
+    merged.image = siteProduct.image;
+  }
   ['nameEn', 'nameIt', 'descriptionEn', 'descriptionIt'].forEach((field) => {
     if (!merged[field] && siteProduct?.[field]) merged[field] = siteProduct[field];
   });
@@ -1330,7 +1361,13 @@ function supplementAggregatedFromSite(kvProduct, siteProduct) {
     'markets',
     'images',
     'priceUsd',
-    'priceEur'
+    'priceEur',
+    'priceGbp',
+    'pricePln',
+    'priceSek',
+    'priceNok',
+    'intlMarkupPercent',
+    'intlBaseBrl'
   ];
   catalogFields.forEach((field) => {
     if (!isEmptyCatalogValue(merged[field])) return;
@@ -1404,15 +1441,12 @@ function mergeSiteCatalog(config, site) {
     config.smartwatchCatalog,
     site.smartwatchCatalog
   );
+  // FAQ/reviews: catálogo do site (git) manda — evita FAQ Tattoo antiga presa no KV.
   if (Array.isArray(site.homeFaq) && site.homeFaq.length) {
-    next.homeFaq = Array.isArray(config.homeFaq) && config.homeFaq.length
-      ? config.homeFaq
-      : site.homeFaq;
+    next.homeFaq = site.homeFaq;
   }
-  if (Array.isArray(site.homeReviews) && site.homeReviews.length) {
-    next.homeReviews = Array.isArray(config.homeReviews) && config.homeReviews.length
-      ? config.homeReviews
-      : site.homeReviews;
+  if (Array.isArray(site.homeReviews)) {
+    next.homeReviews = site.homeReviews;
   }
   if (site.products?.length) {
     next.products = mergeSiteCatalogProducts(config.products, site.products);
@@ -1560,6 +1594,17 @@ function withConfigDefaults(stored) {
     internationalShippingMultiplier: Number.isFinite(Number(stored.internationalShippingMultiplier))
       ? Math.max(1, Number(stored.internationalShippingMultiplier))
       : base.internationalShippingMultiplier,
+    intlCurrencies: normalizeIntlCurrencies(stored.intlCurrencies),
+    intlCurrenciesAutoFx: stored.intlCurrenciesAutoFx != null
+      ? stored.intlCurrenciesAutoFx !== false
+      : (stored.intlCurrenciesAutoPpp != null
+        ? stored.intlCurrenciesAutoPpp !== false
+        : base.intlCurrenciesAutoFx !== false),
+    intlCurrenciesAutoPpp: stored.intlCurrenciesAutoFx != null
+      ? stored.intlCurrenciesAutoFx !== false
+      : (stored.intlCurrenciesAutoPpp != null
+        ? stored.intlCurrenciesAutoPpp !== false
+        : base.intlCurrenciesAutoPpp !== false),
     internationalProduct: { ...base.internationalProduct, ...(stored.internationalProduct || {}) },
     payments: {
       ...base.payments,
@@ -2158,6 +2203,16 @@ function publicProductFields(p, config) {
   if (Array.isArray(p.images) && p.images.length) row.images = p.images;
   if (p.priceUsd != null) row.priceUsd = Number(p.priceUsd);
   if (p.priceEur != null) row.priceEur = Number(p.priceEur);
+  if (p.priceGbp != null) row.priceGbp = Number(p.priceGbp);
+  if (p.pricePln != null) row.pricePln = Number(p.pricePln);
+  if (p.priceSek != null) row.priceSek = Number(p.priceSek);
+  if (p.priceNok != null) row.priceNok = Number(p.priceNok);
+  if (p.intlMarkupPercent != null && Number.isFinite(Number(p.intlMarkupPercent))) {
+    row.intlMarkupPercent = Number(p.intlMarkupPercent);
+  }
+  if (p.intlBaseBrl != null && Number.isFinite(Number(p.intlBaseBrl))) {
+    row.intlBaseBrl = Number(p.intlBaseBrl);
+  }
   const stock = productStockQty(p);
   row.inStock = productInStock(p, 1);
   if (stock != null) row.stock = stock;
@@ -2191,6 +2246,9 @@ function publicConfigView(config, env) {
     internationalCountries: publicIntlCountriesList(config.internationalShipping || {}),
     internationalSurcharge: getIntlSurcharge(config),
     internationalShippingMultiplier: getIntlShippingMultiplier(config),
+    intlCurrencies: activeIntlCurrencies(config),
+    intlCurrenciesAutoFx: config.intlCurrenciesAutoFx !== false && config.intlCurrenciesAutoPpp !== false,
+    intlCurrenciesAutoPpp: config.intlCurrenciesAutoFx !== false && config.intlCurrenciesAutoPpp !== false,
     internationalProduct: config.internationalProduct || DEFAULT_CONFIG.internationalProduct,
     payments: {
       intlEmbedded: true,
@@ -2464,32 +2522,68 @@ function productIntlEur(product) {
   return Number.isFinite(v) && v > 0 ? v : null;
 }
 
+function productIntlListPrice(product, currency, config) {
+  const fromRegistry = productListPriceFromRegistry(
+    product,
+    currency,
+    config?.intlCurrencies || DEFAULT_INTL_CURRENCIES
+  );
+  if (fromRegistry != null) return fromRegistry;
+  const cur = String(currency || 'USD').toUpperCase();
+  if (cur === 'EUR') return productIntlEur(product);
+  return productIntlUsd(product);
+}
+
 function isIntlMarketProductRow(p) {
   const m = Array.isArray(p?.markets) ? p.markets.map((x) => String(x).toUpperCase()) : [];
   return m.includes('INT') && !m.includes('BR');
 }
 
-async function syncIntlProductPricesFromFx(env) {
+async function fetchFxRatesMap(env, currencyCodes) {
+  const codes = [...new Set((currencyCodes || []).map((c) => String(c || '').toUpperCase()).filter((c) => c && c !== 'BRL'))];
+  const out = {};
+  await Promise.all(codes.map(async (code) => {
+    try {
+      const row = await fetchFxRate(env, code);
+      if (row?.rate > 0) out[code] = Number(row.rate);
+    } catch { /* skip missing */ }
+  }));
+  return out;
+}
+
+function autoFxEnabled(config) {
+  if (config?.intlCurrenciesAutoFx === false) return false;
+  if (config?.intlCurrenciesAutoPpp === false) return false;
+  return true;
+}
+
+/** Recompute INT foreign list prices: (R$ × markup%) × FX. */
+async function syncIntlProductPricesFromMarkupFx(env, { force = false } = {}) {
   const config = await getConfig(env);
-  const products = config.products || [];
-  if (!products.length) return { updated: 0 };
-  const fxUsd = await fetchFxRate(env, 'USD');
-  const fxEur = await fetchFxRate(env, 'EUR');
-  let updated = 0;
-  products.forEach((p) => {
-    if (!isIntlMarketProductRow(p)) return;
-    const brl = Number(p.price) || 0;
-    if (!brl) return;
-    const usd = Math.round(brl * fxUsd.rate * 100) / 100;
-    const eur = Math.round(brl * fxEur.rate * 100) / 100;
-    if (p.priceUsd !== usd || p.priceEur !== eur) {
-      p.priceUsd = usd;
-      p.priceEur = eur;
-      updated += 1;
-    }
-  });
-  if (updated) await saveConfig(env, { ...config, products });
-  return { updated, usdRate: fxUsd.rate, eurRate: fxEur.rate };
+  if (!force && !autoFxEnabled(config)) return { updated: 0, skipped: true };
+  const currencies = normalizeIntlCurrencies(config.intlCurrencies);
+  const synced = syncOpticalIntlBrlFromBrKit(config.products || []);
+  const fxRates = await fetchFxRatesMap(env, currencies.map((c) => c.code));
+  const { products, updated } = applyMarkupFxToIntlProducts(synced.products, currencies, fxRates);
+  const changed = updated || synced.synced;
+  if (changed) {
+    await saveConfig(env, {
+      ...config,
+      products,
+      intlCurrencies: currencies,
+      intlCurrenciesAutoFx: true,
+      intlCurrenciesAutoPpp: true
+    });
+  }
+  return { updated: updated + (synced.synced ? 1 : 0), currencies: currencies.map((c) => c.code), fxRates };
+}
+
+async function syncIntlProductPricesFromPpp(env, opts) {
+  return syncIntlProductPricesFromMarkupFx(env, opts);
+}
+
+async function syncIntlProductPricesFromFx(env) {
+  return syncIntlProductPricesFromMarkupFx(env);
 }
 
 async function intlForeignCharge(order, env, config, items, currency) {
@@ -2501,7 +2595,7 @@ async function intlForeignCharge(order, env, config, items, currency) {
   let allConfigured = itemList.length > 0;
   for (const item of itemList) {
     const p = products.find((x) => x.id === item.productId || x.slug === item.productId);
-    const price = p ? (cur === 'EUR' ? productIntlEur(p) : productIntlUsd(p)) : null;
+    const price = p ? productIntlListPrice(p, cur, config) : null;
     if (price == null) { allConfigured = false; break; }
     productForeign += price * (Number(item.qty) || 1);
   }
@@ -3482,7 +3576,7 @@ function buildPendingConsultativeEmail(order, config, env, {
     <p>${escapeHtml(copy.help)}</p>
     <p>${escapeHtml(copy.offer)}</p>
     ${pixBlock}
-    <p style="margin-top:20px"><a href="${escapeHtml(copy.resumeUrl)}" style="display:inline-block;background:#ffc107;color:#000;text-decoration:none;font-weight:700;padding:12px 20px;border-radius:8px">${escapeHtml(copy.ctaPay)}</a></p>
+    <p style="margin-top:20px"><a href="${escapeHtml(copy.resumeUrl)}" style="display:inline-block;background:#5EC8D8;color:#000;text-decoration:none;font-weight:700;padding:12px 20px;border-radius:8px">${escapeHtml(copy.ctaPay)}</a></p>
     <p style="margin-top:24px"><strong>${escapeHtml(copy.contactsTitle)}</strong></p>
     <ul style="padding-left:18px;margin:8px 0 0">${contacts}</ul>
     <p style="margin-top:24px">${escapeHtml(copy.signOff)}<br>${escapeHtml(copy.signer)}</p>
@@ -10463,6 +10557,71 @@ async function handleFxRate(request, env, origin) {
   }
 }
 
+async function handleFxRates(request, env, origin) {
+  const raw = new URL(request.url).searchParams.get('to') || 'USD,EUR,GBP,PLN,SEK,NOK';
+  const codes = raw.split(/[\s,;]+/).map((s) => s.toUpperCase().trim()).filter(Boolean);
+  try {
+    const rates = await fetchFxRatesMap(env, codes);
+    return json({ base: 'BRL', rates, fetchedAt: new Date().toISOString() }, 200, origin);
+  } catch (err) {
+    return json({ error: err.message || 'Câmbio indisponível.' }, 502, origin);
+  }
+}
+
+async function handleAdminApplyIntlMarkupFx(request, env, origin) {
+  if (!(await isValidSession(env, bearerToken(request)))) {
+    return json({ error: 'Não autorizado.' }, 401, origin);
+  }
+  let body = {};
+  try {
+    body = await request.json();
+  } catch {
+    body = {};
+  }
+  const current = await getConfig(env);
+  const currencies = body.intlCurrencies != null
+    ? normalizeIntlCurrencies(body.intlCurrencies)
+    : normalizeIntlCurrencies(current.intlCurrencies);
+  const auto = body.intlCurrenciesAutoFx != null
+    ? body.intlCurrenciesAutoFx !== false
+    : (body.intlCurrenciesAutoPpp != null
+      ? body.intlCurrenciesAutoPpp !== false
+      : autoFxEnabled(current));
+  const synced = syncOpticalIntlBrlFromBrKit(current.products || []);
+  const fxRates = await fetchFxRatesMap(env, currencies.map((c) => c.code));
+  const { products, updated } = applyMarkupFxToIntlProducts(synced.products, currencies, fxRates);
+  const saved = await saveConfig(env, {
+    ...current,
+    products,
+    intlCurrencies: currencies,
+    intlCurrenciesAutoFx: auto,
+    intlCurrenciesAutoPpp: auto
+  });
+  return json({
+    ok: true,
+    updated: updated + (synced.synced ? 1 : 0),
+    syncedOpticalBrl: synced.synced,
+    fxRates,
+    currencies: currencies.map((c) => ({ code: c.code, decimals: c.decimals })),
+    products: (saved.products || []).filter(isIntlMarketProductRow).map((p) => ({
+      id: p.id,
+      price: p.price,
+      intlMarkupPercent: p.intlMarkupPercent,
+      intlBaseBrl: p.intlBaseBrl,
+      priceUsd: p.priceUsd,
+      priceEur: p.priceEur,
+      priceSek: p.priceSek,
+      priceNok: p.priceNok,
+      pricePln: p.pricePln,
+      priceGbp: p.priceGbp
+    }))
+  }, 200, origin);
+}
+
+async function handleAdminApplyIntlPpp(request, env, origin) {
+  return handleAdminApplyIntlMarkupFx(request, env, origin);
+}
+
 function quoteInternational(config, countryCode) {
   const zones = config.internationalShipping || DEFAULT_CONFIG.internationalShipping;
   const code = String(countryCode || '').toUpperCase();
@@ -13484,7 +13643,7 @@ function passwordResetEmailCopy(locale, resetUrl) {
       html: `<div style="font-family:Arial,sans-serif;max-width:560px;line-height:1.5;color:#222">
         <h2 style="margin:0 0 12px">Password reset</h2>
         <p>We received a request to reset your Sensor Crash Fix account password.</p>
-        <p><a href="${resetUrl}" style="display:inline-block;background:#ffc107;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Choose a new password</a></p>
+        <p><a href="${resetUrl}" style="display:inline-block;background:#5EC8D8;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Choose a new password</a></p>
         <p style="font-size:13px;color:#666">This link expires in 1 hour. If you didn’t ask for this, you can ignore this email.</p>
         <p style="font-size:12px;color:#888;word-break:break-all">${resetUrl}</p>
       </div>`,
@@ -13497,7 +13656,7 @@ function passwordResetEmailCopy(locale, resetUrl) {
       html: `<div style="font-family:Arial,sans-serif;max-width:560px;line-height:1.5;color:#222">
         <h2 style="margin:0 0 12px">Reimposta password</h2>
         <p>Abbiamo ricevuto una richiesta per reimpostare la password del tuo account Sensor Crash Fix.</p>
-        <p><a href="${resetUrl}" style="display:inline-block;background:#ffc107;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Scegli una nuova password</a></p>
+        <p><a href="${resetUrl}" style="display:inline-block;background:#5EC8D8;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Scegli una nuova password</a></p>
         <p style="font-size:13px;color:#666">Il link scade tra 1 ora. Se non hai richiesto tu, ignora questa email.</p>
         <p style="font-size:12px;color:#888;word-break:break-all">${resetUrl}</p>
       </div>`,
@@ -13510,7 +13669,7 @@ function passwordResetEmailCopy(locale, resetUrl) {
       html: `<div style="font-family:Arial,sans-serif;max-width:560px;line-height:1.5;color:#222">
         <h2 style="margin:0 0 12px">Ponastavitev gesla</h2>
         <p>Prejeli smo zahtevo za ponastavitev gesla vašega računa Sensor Crash Fix.</p>
-        <p><a href="${resetUrl}" style="display:inline-block;background:#ffc107;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Izberite novo geslo</a></p>
+        <p><a href="${resetUrl}" style="display:inline-block;background:#5EC8D8;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Izberite novo geslo</a></p>
         <p style="font-size:13px;color:#666">Povezava poteče v 1 uri. Če tega niste zahtevali, prezrite to sporočilo.</p>
         <p style="font-size:12px;color:#888;word-break:break-all">${resetUrl}</p>
       </div>`,
@@ -13522,7 +13681,7 @@ function passwordResetEmailCopy(locale, resetUrl) {
     html: `<div style="font-family:Arial,sans-serif;max-width:560px;line-height:1.5;color:#222">
       <h2 style="margin:0 0 12px">Redefinir senha</h2>
       <p>Recebemos um pedido para redefinir a senha da sua conta Sensor Crash Fix.</p>
-      <p><a href="${resetUrl}" style="display:inline-block;background:#ffc107;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Escolher nova senha</a></p>
+      <p><a href="${resetUrl}" style="display:inline-block;background:#5EC8D8;color:#111;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Escolher nova senha</a></p>
       <p style="font-size:13px;color:#666">Este link expira em 1 hora. Se você não pediu isso, ignore este e-mail.</p>
       <p style="font-size:12px;color:#888;word-break:break-all">${resetUrl}</p>
     </div>`,
@@ -14598,7 +14757,7 @@ async function trackGa4Purchase(env, order, payment) {
   const apiSecret = (env.GA4_API_SECRET || '').trim();
   if (!apiSecret) return;
 
-  const measurementId = (env.GA4_MEASUREMENT_ID || 'G-TFLZHJG9RN').trim();
+  const measurementId = (env.GA4_MEASUREMENT_ID || 'G-L852DLJ9KV').trim();
   const value = Number(payment?.value ?? order.total) || 0;
   const paymentType = order.pagamento || payment?.billingType || 'unknown';
   const itemName = order.produto || 'Kit Sensor Crash Fix';
@@ -17682,8 +17841,27 @@ async function handlePutConfig(request, env, origin, ctx) {
       : (current.homeFaq || []),
     homeReviews: body.homeReviews != null
       ? mergePreservedI18n(Array.isArray(body.homeReviews) ? body.homeReviews : current.homeReviews || [], current.homeReviews || [])
-      : (current.homeReviews || [])
+      : (current.homeReviews || []),
+    intlCurrencies: body.intlCurrencies != null
+      ? normalizeIntlCurrencies(body.intlCurrencies)
+      : normalizeIntlCurrencies(current.intlCurrencies),
+    intlCurrenciesAutoFx: body.intlCurrenciesAutoFx != null
+      ? body.intlCurrenciesAutoFx !== false
+      : (body.intlCurrenciesAutoPpp != null
+        ? body.intlCurrenciesAutoPpp !== false
+        : autoFxEnabled(current)),
+    intlCurrenciesAutoPpp: body.intlCurrenciesAutoFx != null
+      ? body.intlCurrenciesAutoFx !== false
+      : (body.intlCurrenciesAutoPpp != null
+        ? body.intlCurrenciesAutoPpp !== false
+        : autoFxEnabled(current))
   };
+  if (autoFxEnabled(merged)) {
+    const synced = syncOpticalIntlBrlFromBrKit(merged.products || []);
+    const fxRates = await fetchFxRatesMap(env, (merged.intlCurrencies || []).map((c) => c.code));
+    const applied = applyMarkupFxToIntlProducts(synced.products, merged.intlCurrencies, fxRates);
+    merged.products = applied.products;
+  }
   if (merged.products?.[0]) {
     merged.product = {
       name: merged.products[0].name,
@@ -18901,6 +19079,15 @@ export default {
       }
       if (path === '/fx/rate' && request.method === 'GET') {
         return handleFxRate(request, env, origin);
+      }
+      if (path === '/fx/rates' && request.method === 'GET') {
+        return handleFxRates(request, env, origin);
+      }
+      if (path === '/admin/intl-money/apply-markup-fx' && request.method === 'POST') {
+        return handleAdminApplyIntlMarkupFx(request, env, origin);
+      }
+      if (path === '/admin/intl-money/apply-ppp' && request.method === 'POST') {
+        return handleAdminApplyIntlPpp(request, env, origin);
       }
       if (path === '/shipping/quote' && request.method === 'GET') {
         return handleShippingQuote(request, env, origin, ctx);

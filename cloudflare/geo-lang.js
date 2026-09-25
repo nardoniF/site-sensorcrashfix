@@ -128,6 +128,23 @@ export function isBrHomePath(pathname) {
 }
 
 /**
+ * Cross-domain (.com ↔ .com.br) redirects must carry stf_lang so the destination
+ * sets the cookie on the *correct* host. Without it, leftover cookies on each
+ * domain bounce forever (ERR_TOO_MANY_REDIRECTS).
+ */
+export function withStfLang(absoluteUrl, lang) {
+  const l = normalizeSiteLang(lang);
+  if (!l) return absoluteUrl;
+  try {
+    const u = new URL(absoluteUrl);
+    u.searchParams.set('stf_lang', l);
+    return u.toString();
+  } catch {
+    return absoluteUrl;
+  }
+}
+
+/**
  * @returns {string|null} absolute URL to redirect to, or null
  */
 export function localeRedirectTarget({ hostOrigin, pathname, search, br, preferred }) {
@@ -140,9 +157,9 @@ export function localeRedirectTarget({ hostOrigin, pathname, search, br, preferr
   if (br) {
     if (!isBrHomePath(path)) return null;
     if (lang === 'pt') return null;
-    // Visitante intl na home BR → mercado .com no idioma certo
-    if (lang === 'en') return q ? `${COM}/${q}` : `${COM}/`;
-    return q ? `${COM}/${lang}/${q}` : `${COM}/${lang}/`;
+    // Visitante intl na home BR → mercado .com no idioma certo (+ stf_lang anti-loop)
+    if (lang === 'en') return withStfLang(q ? `${COM}/${q}` : `${COM}/`, 'en');
+    return withStfLang(q ? `${COM}/${lang}/${q}` : `${COM}/${lang}/`, lang);
   }
 
   if (!isComEnglishEntryPath(path)) return null;
@@ -153,9 +170,11 @@ export function localeRedirectTarget({ hostOrigin, pathname, search, br, preferr
   const base = String(hostOrigin || COM).replace(/\/$/, '');
 
   if (lang === 'pt') {
-    if (isHome) return q ? `${BR}/${q}` : `${BR}/`;
-    return `${BR}/${file}${q}`;
+    // Cross-domain → always pin stf_lang=pt on .com.br
+    if (isHome) return withStfLang(q ? `${BR}/${q}` : `${BR}/`, 'pt');
+    return withStfLang(`${BR}/${file}${q}`, 'pt');
   }
+  // Same-host locale prefix (/pl/, /de/, …) — cookie already works on this domain
   if (isHome) return q ? `${base}/${lang}/${q}` : `${base}/${lang}/`;
   return `${base}/${lang}/${file}${q}`;
 }

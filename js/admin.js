@@ -79,8 +79,8 @@
     { id: 'shipping-bag-sticker', name: 'Adesivo da sacola / envelope', buyQty: 1000, buyPrice: 60, yieldQty: 1, useQty: 1, notes: '1 por sacola ou envelope (1 por lente)' },
     { id: 'kit-bag', name: 'Sacola zip do kit', buyQty: 100, buyPrice: 52, yieldQty: 1, useQty: 1, notes: 'Zip que vai dentro' },
     { id: 'kit-bag-sticker', name: 'Adesivo da sacola do kit', buyQty: 1000, buyPrice: 60, yieldQty: 1, useQty: 1, notes: '1 por sacola zip' },
-    { id: 'manual-sofit', name: 'Manual (sulfite)', buyQty: 1000, buyPrice: 59, yieldQty: 10, useQty: 1, notes: '10 manuais por folha sulfite' },
-    { id: 'promo-print', name: 'Impresso promocional (sulfite)', buyQty: 1000, buyPrice: 59, yieldQty: 10, useQty: 1, notes: '10 impressos por folha sulfite' },
+    { id: 'manual-sofit', name: 'Manual (sulfite)', buyQty: 1000, buyPrice: 59, yieldQty: 6, useQty: 1, notes: '6 manuais+cupom+WhatsApp por folha A4 (folha única)' },
+    { id: 'promo-print', name: 'Impresso promocional (sulfite)', buyQty: 1000, buyPrice: 59, yieldQty: 10, useQty: 0, notes: 'Banido — cupom e contato vão no manual (folha única)' },
     { id: 'applicator', name: 'Haste aplicadora', buyQty: 200, buyPrice: 26.35, yieldQty: 1, useQty: 0.5, notes: 'Meia haste por kit' },
     { id: 'potentiator', name: 'Potencializador (primer)', buyQty: 100, buyPrice: 188, yieldQty: 1, useQty: 0.2, notes: '1/5 ml por kit' },
     { id: 'potentiator-glass', name: 'Vidro do potencializador', buyQty: 100, buyPrice: 149.8, yieldQty: 1, useQty: 1, notes: 'Frasco 1 ml' },
@@ -2721,7 +2721,10 @@ ${worksheets}
   function showVendasSubtab(subtabId) {
     const container = document.getElementById('admin-tab-vendas');
     if (!container) return;
-    const id = subtabId || 'mercadolivre';
+    // Crash: só loja oficial (marketplaces no Tattoo).
+    const allowed = new Set(['loja']);
+    let id = subtabId || 'loja';
+    if (!allowed.has(id)) id = 'loja';
     container.querySelectorAll('[data-vendas-subtab]').forEach((tab) => {
       const active = tab.dataset.vendasSubtab === id;
       tab.classList.toggle('active', active);
@@ -2732,10 +2735,6 @@ ${worksheets}
     });
     try { localStorage.setItem('stf_admin_vendas_subtab', id); } catch (e) { /* ignore */ }
     if (id === 'loja') loadLojaSales();
-    if (id === 'mercadolivre') loadMlSales();
-    if (id === 'amazon') loadAmzSales();
-    if (id === 'shopee') loadShopeeSales();
-    if (id === 'consolidado') loadConsolidatedSales();
   }
 
   let vendasSubtabsWired = false;
@@ -2764,9 +2763,9 @@ ${worksheets}
     document.getElementById('btn-vendas-goto-pedidos')?.addEventListener('click', () => {
       document.querySelector('.admin-tab[data-admin-tab="pedidos"]')?.click();
     });
-    let saved = 'mercadolivre';
-    try { saved = localStorage.getItem('stf_admin_vendas_subtab') || 'mercadolivre'; } catch (e) { /* ignore */ }
-    if (!container.querySelector('#admin-vendas-' + saved)) saved = 'mercadolivre';
+    let saved = 'loja';
+    try { saved = localStorage.getItem('stf_admin_vendas_subtab') || 'loja'; } catch (e) { /* ignore */ }
+    if (saved !== 'loja' || !container.querySelector('#admin-vendas-' + saved)) saved = 'loja';
     showVendasSubtab(saved);
   }
 
@@ -3164,13 +3163,22 @@ ${worksheets}
     const checkedEl = document.getElementById('api-integrations-checked-at');
     if (!tbody) return;
 
-    if (!integrations?.length) {
+    // Crash: marketplaces ficam no Admin Tattoo (mesma conta de anúncios).
+    const HIDDEN_INTEGRATION_IDS = new Set(['mercadolivre', 'amazon', 'shopee']);
+    const HIDDEN_LABEL_RE = /mercado\s*livre|amazon|shopee/i;
+    const visible = (integrations || []).filter((row) => {
+      if (HIDDEN_INTEGRATION_IDS.has(row.id)) return false;
+      if (HIDDEN_LABEL_RE.test(String(row.label || ''))) return false;
+      return true;
+    });
+
+    if (!visible.length) {
       tbody.innerHTML = '<tr><td colspan="3" class="admin-meta">Nenhuma integração retornada.</td></tr>';
       if (checkedEl) checkedEl.hidden = true;
       return;
     }
 
-    tbody.innerHTML = integrations.map((row) => {
+    tbody.innerHTML = visible.map((row) => {
       return `<tr>
         <td><strong>${escAttr(row.label)}</strong></td>
         <td>${escAttr(row.description)}</td>
@@ -3205,7 +3213,8 @@ ${worksheets}
 
   const CLICKS_SNAPSHOT_KEY = 'stf_admin_clicks_snapshot_v1';
   const BALANCES_SNAPSHOT_KEY = 'stf_admin_balances_snapshot_v2';
-  const ADMIN_TAB_IDS = new Set(['vendas', 'pedidos', 'cliques', 'saldos', 'api', 'clientes', 'pesquisa', 'comunidade', 'documentacao']);
+  const ADMIN_TAB_IDS = new Set(['pedidos', 'cliques', 'api', 'clientes', 'pesquisa', 'documentacao']);
+  const ADMIN_HIDDEN_TABS = new Set(['vendas', 'saldos', 'comunidade']);
   let lastBalancesSnapshot = null;
 
   function resolveDefaultAdminTab() {
@@ -5769,6 +5778,379 @@ ${worksheets}
     return ['BR', 'INT'];
   }
 
+  const DEFAULT_INTL_MARKUP_PERCENT = 65;
+
+  const DEFAULT_INTL_CURRENCIES = [
+    { code: 'USD', label: 'Dólar (USD)', langs: ['en'], countries: ['US', 'CA', 'AU', 'NZ', 'SG', 'HK'], decimals: 2, active: true },
+    { code: 'GBP', label: 'Libra (GBP)', langs: [], countries: ['GB'], decimals: 2, active: true },
+    { code: 'EUR', label: 'Euro (EUR)', langs: ['it', 'de', 'es', 'sl', 'fr', 'nl', 'fi'], countries: ['IT', 'DE', 'ES', 'SI', 'FR', 'NL', 'FI', 'AT', 'BE', 'PT', 'IE'], decimals: 2, active: true },
+    { code: 'PLN', label: 'Złoty (PLN)', langs: ['pl'], countries: ['PL'], decimals: 2, active: true },
+    { code: 'SEK', label: 'Coroa sueca (SEK)', langs: ['sv'], countries: ['SE'], decimals: 0, active: true },
+    { code: 'NOK', label: 'Coroa norueguesa (NOK)', langs: ['no'], countries: ['NO'], decimals: 0, active: true }
+  ];
+
+  let adminFxRatesCache = { rates: null, at: 0 };
+
+  async function loadAdminFxRates() {
+    if (adminFxRatesCache.rates && Date.now() - adminFxRatesCache.at < 300000) {
+      return adminFxRatesCache.rates;
+    }
+    const base = (window.CONFIG_BOOTSTRAP?.configApiUrl || currentConfig?.api?.baseUrl || '').replace(/\/$/, '');
+    if (!base) return {};
+    try {
+      const res = await fetch(`${base}/fx/rates?to=USD,EUR,GBP,PLN,SEK,NOK`, { cache: 'no-store' });
+      if (!res.ok) return adminFxRatesCache.rates || {};
+      const data = await res.json();
+      adminFxRatesCache = { rates: data.rates || {}, at: Date.now() };
+      return adminFxRatesCache.rates;
+    } catch {
+      return adminFxRatesCache.rates || {};
+    }
+  }
+
+  function intlBaseFromInputs(price, markup) {
+    const brl = Math.max(0, Number(price) || 0);
+    const m = Number(markup);
+    const pct = Number.isFinite(m) && m >= 0 ? m : DEFAULT_INTL_MARKUP_PERCENT;
+    return Math.round(brl * (1 + pct / 100) * 100) / 100;
+  }
+
+  function formatAdminBrl(n) {
+    return Number(n || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+
+  function applyFxAmountAdmin(amountBrl, rate, decimals) {
+    const amount = Math.max(0, Number(amountBrl) || 0) * Math.max(0, Number(rate) || 0);
+    const d = Number.isFinite(Number(decimals)) ? Math.max(0, Math.min(4, Math.floor(Number(decimals)))) : 2;
+    const factor = 10 ** d;
+    return Math.round(amount * factor) / factor;
+  }
+
+  function intlPriceFieldName(code) {
+    const c = String(code || '').toUpperCase();
+    if (!/^[A-Z]{3}$/.test(c)) return null;
+    return 'price' + c[0] + c.slice(1).toLowerCase();
+  }
+
+  function normalizeAdminIntlCurrency(row, fallback) {
+    const base = fallback && typeof fallback === 'object' ? fallback : {};
+    const code = String(row?.code || base.code || '').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 3);
+    if (code.length !== 3) return null;
+    const langs = String(row?.langsText != null ? row.langsText : (Array.isArray(row?.langs) ? row.langs.join(', ') : (base.langs || []).join(', ')))
+      .split(/[\s,;]+/).map((s) => s.toLowerCase().trim()).filter(Boolean);
+    const countries = String(row?.countriesText != null ? row.countriesText : (Array.isArray(row?.countries) ? row.countries.join(', ') : (base.countries || []).join(', ')))
+      .split(/[\s,;]+/).map((s) => s.toUpperCase().trim()).filter(Boolean);
+    const decimals = Number.isFinite(Number(row?.decimals != null ? row.decimals : base.decimals))
+      ? Math.max(0, Math.min(4, Math.floor(Number(row?.decimals != null ? row.decimals : base.decimals))))
+      : 2;
+    return {
+      code,
+      label: String(row?.label || base.label || code).trim() || code,
+      langs,
+      countries,
+      decimals,
+      active: row?.active != null ? row.active !== false : base.active !== false
+    };
+  }
+
+  function getAdminIntlCurrencies(config) {
+    const byCode = new Map(DEFAULT_INTL_CURRENCIES.map((c) => [c.code, { ...c, langs: c.langs.slice(), countries: c.countries.slice() }]));
+    (Array.isArray(config?.intlCurrencies) ? config.intlCurrencies : []).forEach((row) => {
+      const n = normalizeAdminIntlCurrency(row, byCode.get(String(row?.code || '').toUpperCase()) || { code: row?.code });
+      if (n) byCode.set(n.code, n);
+    });
+    return Array.from(byCode.values());
+  }
+
+  function applyMarkupFxToProductsAdmin(products, currencies, fxRates) {
+    const list = (currencies || []).filter((c) => c.active !== false);
+    const rates = fxRates || {};
+    return (products || []).map((p) => {
+      if (!isIntlMarketProduct(p)) {
+        const cleaned = { ...p };
+        delete cleaned.intlMarkupPercent;
+        delete cleaned.intlBaseBrl;
+        return cleaned;
+      }
+      const brl = Number(p.price) || 0;
+      if (!(brl > 0)) return p;
+      const markup = Number(p.intlMarkupPercent);
+      const pct = Number.isFinite(markup) && markup >= 0 ? markup : DEFAULT_INTL_MARKUP_PERCENT;
+      const base = intlBaseFromInputs(brl, pct);
+      const next = { ...p, intlMarkupPercent: pct, intlBaseBrl: base };
+      list.forEach((cur) => {
+        const field = intlPriceFieldName(cur.code);
+        const rate = Number(rates[cur.code]);
+        if (field && rate > 0) next[field] = applyFxAmountAdmin(base, rate, cur.decimals);
+      });
+      return next;
+    });
+  }
+
+
+  function renderIntlCurrencies(list) {
+    const root = document.getElementById('admin-intl-currencies');
+    if (!root) return;
+    const rows = (list && list.length) ? list : DEFAULT_INTL_CURRENCIES;
+    root.innerHTML = rows.map((c, i) => `
+      <div class="admin-product-row admin-intl-currency-row" data-currency-index="${i}">
+        <h4>${escAttr(c.label || c.code)} <span class="admin-meta">(${escAttr(c.code)})</span></h4>
+        <div class="form-grid">
+          <label>Código ISO<input type="text" data-cur-field="code" maxlength="3" value="${escAttr(c.code || '')}" placeholder="USD"></label>
+          <label>Nome<input type="text" data-cur-field="label" value="${escAttr(c.label || '')}" placeholder="Dólar (USD)"></label>
+          <label>Casas decimais<input type="number" data-cur-field="decimals" min="0" max="4" step="1" value="${c.decimals != null ? c.decimals : 2}"></label>
+          <label class="full">Línguas do site (códigos)<input type="text" data-cur-field="langs" value="${escAttr((c.langs || []).join(', '))}" placeholder="en"></label>
+          <label class="full">Países (ISO)<input type="text" data-cur-field="countries" value="${escAttr((c.countries || []).join(', '))}" placeholder="US, CA, AU"></label>
+          <label class="label-check"><input type="checkbox" data-cur-field="active" ${c.active !== false ? 'checked' : ''}><span>Ativa</span></label>
+        </div>
+        <button type="button" class="btn-secondary btn-remove-intl-currency" data-index="${i}" style="margin-top:8px"><i class="fas fa-trash"></i> Remover</button>
+      </div>
+    `).join('');
+    root.querySelectorAll('.btn-remove-intl-currency').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const all = collectIntlCurrencies();
+        all.splice(Number(btn.getAttribute('data-index')), 1);
+        renderIntlCurrencies(all.length ? all : DEFAULT_INTL_CURRENCIES);
+      });
+    });
+  }
+
+  function collectIntlCurrencies() {
+    const root = document.getElementById('admin-intl-currencies');
+    if (!root) return getAdminIntlCurrencies(currentConfig);
+    const out = [];
+    root.querySelectorAll('.admin-intl-currency-row').forEach((row) => {
+      const val = (name) => row.querySelector(`[data-cur-field="${name}"]`)?.value?.trim() || '';
+      const active = row.querySelector('[data-cur-field="active"]')?.checked !== false;
+      const n = normalizeAdminIntlCurrency({
+        code: val('code'),
+        label: val('label'),
+        decimals: val('decimals'),
+        langsText: val('langs'),
+        countriesText: val('countries'),
+        active
+      });
+      if (n) out.push(n);
+    });
+    return out.length ? out : DEFAULT_INTL_CURRENCIES.slice();
+  }
+
+  function isIntlMarketProduct(p) {
+    const m = productMarketsOf(p);
+    return m.includes('INT') && !m.includes('BR');
+  }
+
+  function renderProductRow(p, i, opts) {
+    const isAggregated = !!opts?.aggregated;
+    const market = opts?.market || 'BR';
+    const badge = isAggregated
+      ? '<span class="admin-badge-aggregated">Agregado BR</span> '
+      : (market === 'INT'
+        ? '<span class="admin-badge-main">.com</span> '
+        : '<span class="admin-badge-main">Brasil</span> ');
+    const title = p.name ? `${badge}Produto ${i + 1}: ${escAttr(p.name)}` : `${badge}Produto ${i + 1}`;
+    const sensorField = !isAggregated ? `
+          <label>Diâmetro (mm)
+            <span class="stf-help-tip" tabindex="0" aria-label="Como medir o diâmetro">
+              <i class="fas fa-circle-question"></i>
+              <span class="stf-help-tip-pop">
+                <img src="images/home/relogio_sensor.jpg" alt="Medir o sensor com régua no relógio">
+                <small>Diâmetro do círculo do sensor / da lente (mm), de ponta a ponta.</small>
+              </span>
+            </span>
+            <input type="number" data-field="sensorMm" step="0.5" min="0" value="${p.sensorMm != null ? p.sensorMm : ''}" placeholder="ex.: 25">
+          </label>
+          <label>Espessura (mm)
+            <input type="number" data-field="thicknessMm" step="0.01" min="0" value="${p.thicknessMm != null ? p.thicknessMm : ''}" placeholder="ex.: 0.2">
+          </label>` : '';
+    const aggregatedFields = isAggregated ? `
+          <label class="full">Nome EN <small class="admin-field-hint">título na loja intl / upsell</small>
+            <input type="text" data-field="nameEn" value="${escAttr(p.nameEn || '')}" placeholder="Screen protector — Amazfit Bip 2">
+          </label>
+          <label class="full">Nome DE
+            <input type="text" data-field="nameDe" value="${escAttr(p.nameDe || '')}" placeholder="Schutzfolie — Amazfit Bip 2">
+          </label>
+          <label class="full">Nome ES
+            <input type="text" data-field="nameEs" value="${escAttr(p.nameEs || '')}" placeholder="Protector de pantalla — Amazfit Bip 2">
+          </label>
+          <label class="full">Nome PL
+            <input type="text" data-field="namePl" value="${escAttr(p.namePl || '')}" placeholder="Folia ochronna — Amazfit Bip 2">
+          </label>
+          <label class="full">Descrição EN<textarea data-field="descriptionEn" rows="2">${escTextarea(p.descriptionEn || '')}</textarea></label>
+          <label class="full">Descrição DE<textarea data-field="descriptionDe" rows="2">${escTextarea(p.descriptionDe || '')}</textarea></label>
+          <label class="full">Descrição ES<textarea data-field="descriptionEs" rows="2">${escTextarea(p.descriptionEs || '')}</textarea></label>
+          <label class="full">Descrição PL<textarea data-field="descriptionPl" rows="2">${escTextarea(p.descriptionPl || '')}</textarea></label>
+          <label class="full">Modelos compatíveis <small class="admin-field-hint">um por linha — mesmos nomes do select do checkout</small>
+            <textarea data-field="compatibleWatchModels" rows="4" placeholder="Apple Watch Series 9 (45mm)">${escTextarea((p.compatibleWatchModels || []).join('\n'))}</textarea>
+          </label>
+          <label>Tipo da película (PT) <small class="admin-field-hint">ex.: cerâmica, membrana flexível</small>
+            <input type="text" data-field="filmType" value="${escAttr(p.filmType || '')}" placeholder="cerâmica">
+          </label>
+          <label>Tipo da película (EN) <small class="admin-field-hint">ex.: ceramic, flexible membrane</small>
+            <input type="text" data-field="filmTypeEn" value="${escAttr(p.filmTypeEn || '')}" placeholder="ceramic">
+          </label>
+          <label>Tipo da película (DE)
+            <input type="text" data-field="filmTypeDe" value="${escAttr(p.filmTypeDe || '')}" placeholder="flexible Membran">
+          </label>
+          <label>Tipo da película (ES)
+            <input type="text" data-field="filmTypeEs" value="${escAttr(p.filmTypeEs || '')}" placeholder="membrana flexible">
+          </label>
+          <label>Tipo da película (PL)
+            <input type="text" data-field="filmTypePl" value="${escAttr(p.filmTypePl || '')}" placeholder="elastyczna membrana">
+          </label>
+          <label>Tipo da película (SL)
+            <input type="text" data-field="filmTypeSl" value="${escAttr(p.filmTypeSl || '')}" placeholder="prožna membrana">
+          </label>
+          <p class="admin-meta admin-aggregated-compat-hint"><i class="fas fa-link"></i> <strong>Regra do upsell:</strong> o produto só aparece se o modelo escolhido pelo cliente estiver nesta lista (1 agregado → vários modelos).</p>` : '';
+    const i18nFields = !isAggregated ? `
+          <label class="full">Nome EN <small class="admin-field-hint">título na loja .com / EN</small>
+            <input type="text" data-field="nameEn" value="${escAttr(p.nameEn || '')}" placeholder="SensorTattooFix Optical Lens">
+          </label>
+          <label class="full">Nome IT
+            <input type="text" data-field="nameIt" value="${escAttr(p.nameIt || '')}" placeholder="Lente ottica SensorTattooFix">
+          </label>
+          <label class="full">Nome DE
+            <input type="text" data-field="nameDe" value="${escAttr(p.nameDe || '')}" placeholder="SensorTattooFix Optische Linse">
+          </label>
+          <label class="full">Nome ES
+            <input type="text" data-field="nameEs" value="${escAttr(p.nameEs || '')}" placeholder="Lente óptica SensorTattooFix">
+          </label>
+          <label class="full">Nome PL
+            <input type="text" data-field="namePl" value="${escAttr(p.namePl || '')}" placeholder="Soczewka optyczna SensorTattooFix">
+          </label>
+          <label class="full">Nome SL
+            <input type="text" data-field="nameSl" value="${escAttr(p.nameSl || '')}" placeholder="Optična leča SensorTattooFix">
+          </label>
+          <label class="full">Descrição EN<textarea data-field="descriptionEn" rows="2">${escTextarea(p.descriptionEn || '')}</textarea></label>
+          <label class="full">Descrição IT<textarea data-field="descriptionIt" rows="2">${escTextarea(p.descriptionIt || '')}</textarea></label>
+          <label class="full">Descrição DE<textarea data-field="descriptionDe" rows="2">${escTextarea(p.descriptionDe || '')}</textarea></label>
+          <label class="full">Descrição ES<textarea data-field="descriptionEs" rows="2">${escTextarea(p.descriptionEs || '')}</textarea></label>
+          <label class="full">Descrição PL<textarea data-field="descriptionPl" rows="2">${escTextarea(p.descriptionPl || '')}</textarea></label>
+          <label class="full">Descrição SL<textarea data-field="descriptionSl" rows="2">${escTextarea(p.descriptionSl || '')}</textarea></label>
+          <label class="full">Álbum de fotos <small class="admin-field-hint">uma URL por linha — ordem do carrossel na loja</small>
+            <textarea data-field="images" rows="5" placeholder="/images/lens-gallery/01-….png">${escTextarea((Array.isArray(p.images) ? p.images : []).join('\n'))}</textarea>
+          </label>` : '';
+    return `
+      <div class="admin-product-row${isAggregated ? ' admin-product-row--aggregated' : ' admin-product-row--main'}" data-product-index="${i}" data-aggregated="${isAggregated ? '1' : '0'}" data-market="${escAttr(market)}">
+        <h4>${title}</h4>
+        <div class="form-grid">
+          <label class="full">Nome (PT / cadastro)<input type="text" data-field="name" value="${escAttr(p.name)}" required></label>
+          <label class="full">Descrição (PT)<textarea data-field="description" rows="2">${escTextarea(p.description)}</textarea></label>
+          ${i18nFields}
+          ${aggregatedFields}
+          <label>Preço (R$)<input type="number" data-field="price" step="0.01" min="0" value="${p.price ?? 0}" ${market === 'INT' && !isAggregated ? 'data-intl-brl="1"' : ''}></label>
+          ${market === 'INT' && !isAggregated ? (() => {
+            const markup = p.intlMarkupPercent != null ? p.intlMarkupPercent : DEFAULT_INTL_MARKUP_PERCENT;
+            const baseBrl = p.intlBaseBrl != null ? p.intlBaseBrl : intlBaseFromInputs(p.price, markup);
+            const currencies = collectIntlCurrencies().filter((c) => c.active !== false);
+            const fields = currencies.map((cur) => {
+              const field = intlPriceFieldName(cur.code);
+              const step = cur.decimals === 0 ? '1' : (cur.decimals === 1 ? '0.1' : '0.01');
+              const langs = (cur.langs || []).map((l) => String(l).toUpperCase()).join('/');
+              const val = p[field] != null ? p[field] : '';
+              return `<label class="admin-intl-price-ro">Preço ${escAttr(cur.code)}${langs ? ` (.com ${escAttr(langs)})` : ''}
+                <input type="number" data-field="${escAttr(field)}" data-intl-price="1" step="${step}" min="0" value="${val}" readonly tabindex="-1">
+                <small class="admin-intl-base-brl" data-intl-base-label>≈ ${formatAdminBrl(baseBrl)}</small>
+              </label>`;
+            }).join('\n          ');
+            return `<label>Markup internacional (%)
+              <input type="number" data-field="intlMarkupPercent" data-intl-markup="1" step="0.1" min="0" value="${markup}">
+            </label>
+            <p class="admin-meta admin-field-hint full" data-intl-base-summary>Base internacional = R$ × (1 + markup) = <strong>${formatAdminBrl(baseBrl)}</strong> — depois convertida pela cotação. Moedas abaixo são calculadas (não editáveis). Capa .com = optical-lens-intl (smartwatch).</p>
+          ${fields}`;
+          })() : ''}
+          <label>Estoque <small class="admin-field-hint">vazio = ilimitado · 0 = esgotado (some da loja)</small>
+            <input type="number" data-field="stock" min="0" step="1" value="${p.stock != null ? p.stock : ''}" placeholder="ilimitado">
+          </label>
+          <label>Slug (URL)<input type="text" data-field="slug" value="${p.slug || p.id || ''}" placeholder="${market === 'INT' ? 'optical-lens-intl' : 'kit-sensor-tattoofix'}"></label>
+          <label class="full">URL da imagem principal<input type="text" data-field="image" value="${escAttr(p.image || '')}" placeholder="/images/lens-gallery/01-optical-correction-lens.png" spellcheck="false" autocomplete="off"></label>
+          ${sensorField}
+          <label>Peso (g)<input type="number" data-field="weightGrams" min="0.1" step="0.1" value="${p.weightGrams ?? 3}"></label>
+          <div class="admin-product-flags">
+            <label class="label-check"><input type="checkbox" data-field="active" ${p.active !== false ? 'checked' : ''}><span>Ativo</span></label>
+            <label class="label-check"><input type="checkbox" data-field="requiresSmartwatch" ${p.requiresSmartwatch !== false ? 'checked' : ''}><span>Pede modelo do relógio</span></label>
+          </div>
+        </div>
+        <button type="button" class="btn-secondary btn-remove-product" data-index="${i}" data-aggregated="${isAggregated ? '1' : '0'}" data-market="${escAttr(market)}" style="margin-top:8px"><i class="fas fa-trash"></i> Remover</button>
+      </div>`;
+  }
+
+  function renderProductList(products, listId, opts) {
+    const list = document.getElementById(listId);
+    if (!list) return;
+    const isAggregated = !!opts?.aggregated;
+    const market = opts?.market || 'BR';
+    list.innerHTML = products.length
+      ? products.map((p, i) => renderProductRow(p, i, { aggregated: isAggregated, market })).join('')
+      : `<p class="admin-meta">${isAggregated ? 'Nenhum agregado BR cadastrado.' : (market === 'INT' ? 'Nenhum produto .com cadastrado.' : 'Nenhum produto BR cadastrado.')}</p>`;
+
+    list.querySelectorAll('.btn-remove-product').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const idx = Number(btn.getAttribute('data-index'));
+        const agg = btn.getAttribute('data-aggregated') === '1';
+        const mkt = btn.getAttribute('data-market') || 'BR';
+        const all = collectProductsFromDom();
+        const next = all.filter((p, i) => {
+          // rebuild by collecting again after splice of matching bucket
+          return true;
+        });
+        const brMain = all.filter((p) => !p.aggregated && productMarketsOf(p).includes('BR') && !isIntlMarketProduct(p));
+        const brAgg = all.filter((p) => p.aggregated);
+        const intlMain = all.filter((p) => !p.aggregated && isIntlMarketProduct(p));
+        if (agg) brAgg.splice(idx, 1);
+        else if (mkt === 'INT') intlMain.splice(idx, 1);
+        else brMain.splice(idx, 1);
+        const rebuilt = [
+          ...brMain.map((p) => ({ ...p, markets: ['BR'], aggregated: false })),
+          ...brAgg.map((p) => ({ ...p, markets: ['BR'], aggregated: true })),
+          ...intlMain.map((p) => ({ ...p, markets: ['INT'], aggregated: false }))
+        ];
+        renderProducts(rebuilt.length ? rebuilt : [{
+          id: 'kit-sensor-tattoofix', slug: 'kit-sensor-tattoofix', name: 'Kit Sensor Tattoo Fix',
+          description: '', price: 62.9, image: '/images/brand/sensortattoofix.jpg', active: true,
+          requiresSmartwatch: true, weightGrams: 3, sensorMm: 25, markets: ['BR']
+        }]);
+      });
+    });
+  }
+
+  function refreshIntlPriceRow(row, rates) {
+    if (!row || row.getAttribute('data-market') !== 'INT') return;
+    const priceEl = row.querySelector('[data-field="price"]');
+    const markupEl = row.querySelector('[data-field="intlMarkupPercent"]');
+    const brl = Number(priceEl?.value) || 0;
+    const markup = Number(markupEl?.value);
+    const pct = Number.isFinite(markup) && markup >= 0 ? markup : DEFAULT_INTL_MARKUP_PERCENT;
+    const base = intlBaseFromInputs(brl, pct);
+    const summary = row.querySelector('[data-intl-base-summary]');
+    if (summary) {
+      summary.innerHTML = `Base internacional = R$ × (1 + markup) = <strong>${formatAdminBrl(base)}</strong> — depois convertida pela cotação. Moedas abaixo são calculadas (não editáveis). Capa .com = optical-lens-intl (smartwatch).`;
+    }
+    row.querySelectorAll('[data-intl-base-label]').forEach((el) => {
+      el.textContent = `≈ ${formatAdminBrl(base)}`;
+    });
+    const currencies = collectIntlCurrencies().filter((c) => c.active !== false);
+    currencies.forEach((cur) => {
+      const field = intlPriceFieldName(cur.code);
+      const input = field ? row.querySelector(`[data-field="${field}"]`) : null;
+      const rate = Number(rates?.[cur.code]);
+      if (input && rate > 0) input.value = String(applyFxAmountAdmin(base, rate, cur.decimals));
+    });
+  }
+
+  async function bindIntlMarkupRecalc(listEl) {
+    if (!listEl) return;
+    const rates = await loadAdminFxRates();
+    listEl.querySelectorAll('.admin-product-row[data-market="INT"]').forEach((row) => {
+      const onChange = () => refreshIntlPriceRow(row, rates);
+      row.querySelector('[data-field="price"]')?.addEventListener('input', onChange);
+      row.querySelector('[data-field="intlMarkupPercent"]')?.addEventListener('input', onChange);
+      refreshIntlPriceRow(row, rates);
+    });
+  }
+
+
+
   function isIntlMarketProduct(p) {
     const m = productMarketsOf(p);
     return m.includes('INT') && !m.includes('BR');
@@ -5869,11 +6251,27 @@ ${worksheets}
           <label class="full">Descrição (PT)<textarea data-field="description" rows="2">${escTextarea(p.description)}</textarea></label>
           ${i18nFields}
           ${aggregatedFields}
-          <label>Preço (R$)<input type="number" data-field="price" step="0.01" min="0" value="${p.price ?? 0}"></label>
-          ${market === 'INT' && !isAggregated ? `
-          <label>Preço USD (.com EN)<input type="number" data-field="priceUsd" step="0.01" min="0" value="${p.priceUsd != null ? p.priceUsd : ''}" placeholder="ex.: 12.99"></label>
-          <label>Preço EUR (.com IT)<input type="number" data-field="priceEur" step="0.01" min="0" value="${p.priceEur != null ? p.priceEur : ''}" placeholder="ex.: 11.99"></label>
-          <p class="admin-meta admin-field-hint full">Referência em R$ acima. USD/EUR são exibidos no .com (cobrança em USD). Atualizados automaticamente todo dia; você pode ajustar manualmente.</p>` : ''}
+          <label>Preço (R$)<input type="number" data-field="price" step="0.01" min="0" value="${p.price ?? 0}" ${market === 'INT' && !isAggregated ? 'data-intl-brl="1"' : ''}></label>
+          ${market === 'INT' && !isAggregated ? (() => {
+            const markup = p.intlMarkupPercent != null ? p.intlMarkupPercent : DEFAULT_INTL_MARKUP_PERCENT;
+            const baseBrl = p.intlBaseBrl != null ? p.intlBaseBrl : intlBaseFromInputs(p.price, markup);
+            const currencies = collectIntlCurrencies().filter((c) => c.active !== false);
+            const fields = currencies.map((cur) => {
+              const field = intlPriceFieldName(cur.code);
+              const step = cur.decimals === 0 ? '1' : (cur.decimals === 1 ? '0.1' : '0.01');
+              const langs = (cur.langs || []).map((l) => String(l).toUpperCase()).join('/');
+              const val = p[field] != null ? p[field] : '';
+              return `<label class="admin-intl-price-ro">Preço ${escAttr(cur.code)}${langs ? ` (.com ${escAttr(langs)})` : ''}
+                <input type="number" data-field="${escAttr(field)}" data-intl-price="1" step="${step}" min="0" value="${val}" readonly tabindex="-1">
+                <small class="admin-intl-base-brl" data-intl-base-label>≈ ${formatAdminBrl(baseBrl)}</small>
+              </label>`;
+            }).join('\n          ');
+            return `<label>Markup internacional (%)
+              <input type="number" data-field="intlMarkupPercent" data-intl-markup="1" step="0.1" min="0" value="${markup}">
+            </label>
+            <p class="admin-meta admin-field-hint full" data-intl-base-summary>Base internacional = R$ × (1 + markup) = <strong>${formatAdminBrl(baseBrl)}</strong> — depois convertida pela cotação. Moedas abaixo são calculadas (não editáveis). Capa .com = optical-lens-intl (smartwatch).</p>
+          ${fields}`;
+          })() : ''}
           <label>Estoque <small class="admin-field-hint">vazio = ilimitado · 0 = esgotado (some da loja)</small>
             <input type="number" data-field="stock" min="0" step="1" value="${p.stock != null ? p.stock : ''}" placeholder="ilimitado">
           </label>
@@ -5942,6 +6340,7 @@ ${worksheets}
     renderProductList(brMain, 'admin-products-br-main', { market: 'BR', aggregated: false });
     renderProductList(brAgg, 'admin-products-br-aggregated', { market: 'BR', aggregated: true });
     renderProductList(intlMain, 'admin-products-intl-main', { market: 'INT', aggregated: false });
+    bindIntlMarkupRecalc(document.getElementById('admin-products-intl-main'));
   }
 
   function collectFromList(listEl, isAggregated, market) {
@@ -6000,13 +6399,30 @@ ${worksheets}
         if (descriptionPl) product.descriptionPl = descriptionPl; else delete product.descriptionPl;
         if (descriptionSl) product.descriptionSl = descriptionSl; else delete product.descriptionSl;
         if (market === 'INT') {
-          const usd = val('priceUsd');
-          const eur = val('priceEur');
-          if (usd) product.priceUsd = Number(usd); else delete product.priceUsd;
-          if (eur) product.priceEur = Number(eur); else delete product.priceEur;
+          const currencies = collectIntlCurrencies();
+          const knownFields = new Set(currencies.map((c) => intlPriceFieldName(c.code)).filter(Boolean));
+          ['priceUsd', 'priceEur', 'priceSek', 'priceNok', 'pricePln', 'priceGbp', ...knownFields].forEach((field) => {
+            if (!field) return;
+            delete product[field];
+          });
+          const markupRaw = val('intlMarkupPercent');
+          const markupNum = Number(markupRaw);
+          product.intlMarkupPercent = Number.isFinite(markupNum) && markupNum >= 0
+            ? markupNum
+            : DEFAULT_INTL_MARKUP_PERCENT;
+          product.intlBaseBrl = intlBaseFromInputs(product.price, product.intlMarkupPercent);
+          row.querySelectorAll('[data-intl-price="1"]').forEach((input) => {
+            const field = input.getAttribute('data-field');
+            if (!field) return;
+            const raw = String(input.value || '').trim();
+            if (raw) product[field] = Number(raw);
+          });
         } else {
-          delete product.priceUsd;
-          delete product.priceEur;
+          ['priceUsd', 'priceEur', 'priceSek', 'priceNok', 'pricePln', 'priceGbp', 'intlMarkupPercent', 'intlBaseBrl'].forEach((field) => { delete product[field]; });
+          collectIntlCurrencies().forEach((c) => {
+            const field = intlPriceFieldName(c.code);
+            if (field) delete product[field];
+          });
         }
         const imagesEl = row.querySelector('[data-field="images"]');
         if (imagesEl) {
@@ -6240,6 +6656,13 @@ ${worksheets}
     facebook: 'https://www.facebook.com/profile.php?id=61588858629597'
   };
 
+  const CHANNEL_STORE_DEFAULTS = {
+    mercadolivre: 'https://produto.mercadolivre.com.br/MLB-6831525504-smartwatch-x-rachadura-sensor-nao-funciona-lentes-reparadoras-_JM',
+    shopee: 'https://shopee.com.br/product/479290797/58218461804/',
+    tiktok_shop: 'https://vt.tiktok.com/ZS9juMxSmKGjN-mns6O/',
+    amazon: 'https://www.amazon.com.br/dp/B0GYVBRGZS'
+  };
+
   function fillChannelsForm(channels) {
     const f = els.configForm;
     if (!f) return;
@@ -6266,11 +6689,13 @@ ${worksheets}
     set('channelStoreShopee', stores.shopee?.enabled, true);
     set('channelStoreTiktokShop', stores.tiktok_shop?.enabled, true);
     set('channelStoreAmazon', stores.amazon?.enabled, true);
+    setUrl('channelStoreMercadolivreUrl', stores.mercadolivre?.url, CHANNEL_STORE_DEFAULTS.mercadolivre);
+    setUrl('channelStoreShopeeUrl', stores.shopee?.url, CHANNEL_STORE_DEFAULTS.shopee);
+    setUrl('channelStoreTiktokShopUrl', stores.tiktok_shop?.url, CHANNEL_STORE_DEFAULTS.tiktok_shop);
+    setUrl('channelStoreAmazonUrl', stores.amazon?.url, CHANNEL_STORE_DEFAULTS.amazon);
   }
 
   function collectChannelsForm(f, current) {
-    const prev = current?.channels || {};
-    const prevStore = prev.stores || {};
     const social = (id, checked, urlField, fallbackUrl) => {
       const typed = String(f[urlField]?.value || '').trim();
       const url = typed || fallbackUrl || '';
@@ -6279,9 +6704,11 @@ ${worksheets}
         ...(url ? { url } : {})
       };
     };
-    const store = (id, checked, fallbackUrl) => {
+    const store = (id, checked, urlField, fallbackUrl) => {
       const out = { enabled: !!checked };
-      const url = String(prevStore[id]?.url || fallbackUrl || '').trim();
+      if (!urlField) return out;
+      const typed = String(f[urlField]?.value || '').trim();
+      const url = typed || fallbackUrl || '';
       if (url) out.url = url;
       return out;
     };
@@ -6294,10 +6721,10 @@ ${worksheets}
       },
       stores: {
         oficial: store('oficial', f.channelStoreOficial?.checked),
-        mercadolivre: store('mercadolivre', f.channelStoreMercadolivre?.checked, 'https://produto.mercadolivre.com.br/MLB-6831525504-smartwatch-x-rachadura-sensor-nao-funciona-lentes-reparadoras-_JM'),
-        shopee: store('shopee', f.channelStoreShopee?.checked, 'https://shopee.com.br/product/479290797/58259628035/'),
-        tiktok_shop: store('tiktok_shop', f.channelStoreTiktokShop?.checked, 'https://vt.tiktok.com/ZS9juMxSmKGjN-mns6O/'),
-        amazon: store('amazon', f.channelStoreAmazon?.checked, 'https://www.amazon.com.br/dp/B0GYVBRGZS')
+        mercadolivre: store('mercadolivre', f.channelStoreMercadolivre?.checked, 'channelStoreMercadolivreUrl', CHANNEL_STORE_DEFAULTS.mercadolivre),
+        shopee: store('shopee', f.channelStoreShopee?.checked, 'channelStoreShopeeUrl', CHANNEL_STORE_DEFAULTS.shopee),
+        tiktok_shop: store('tiktok_shop', f.channelStoreTiktokShop?.checked, 'channelStoreTiktokShopUrl', CHANNEL_STORE_DEFAULTS.tiktok_shop),
+        amazon: store('amazon', f.channelStoreAmazon?.checked, 'channelStoreAmazonUrl', CHANNEL_STORE_DEFAULTS.amazon)
       }
     };
   }
@@ -6307,6 +6734,9 @@ ${worksheets}
     if (!f || !config) return;
     renderProducts(getProductsFromConfig(config));
     renderKitCost(config);
+    renderIntlCurrencies(config.intlCurrencies || DEFAULT_INTL_CURRENCIES);
+    const autoFx = document.getElementById('admin-intl-auto-ppp');
+    if (autoFx) autoFx.checked = config.intlCurrenciesAutoFx !== false && config.intlCurrenciesAutoPpp !== false;
     if (f.mlFlexShippingCost) {
       f.mlFlexShippingCost.value = Number(config.mlFlexShippingCost) > 0
         ? Number(config.mlFlexShippingCost).toFixed(2)
@@ -6601,6 +7031,9 @@ ${worksheets}
       internationalShipping: collectIntlShipping(),
       internationalSurcharge: Math.max(0, parseFloat(f.intlSurcharge?.value) || 0),
       internationalShippingMultiplier: Math.max(1, parseFloat(f.intlShippingMultiplier?.value) || 1),
+      intlCurrencies: collectIntlCurrencies(),
+      intlCurrenciesAutoFx: document.getElementById('admin-intl-auto-ppp')?.checked !== false,
+      intlCurrenciesAutoPpp: document.getElementById('admin-intl-auto-ppp')?.checked !== false,
       internationalProduct: {
         title: f.intlProductTitle?.value.trim() || 'Envio internacional',
         hint: f.intlProductHint?.value.trim() || '',
@@ -6620,8 +7053,8 @@ ${worksheets}
     };
   }
 
-  const ADMIN_SAVE_TABS = new Set(['produtos', 'frete', 'pagamento', 'contato', 'cupons', 'api', 'smartwatches', 'clientes', 'faq', 'elogios']);
-  const CADASTROS_SECTIONS = new Set(['pessoas', 'produtos', 'smartwatches', 'kit', 'pagamento', 'frete', 'cupons', 'faq', 'elogios', 'contato']);
+  const ADMIN_SAVE_TABS = new Set(['produtos', 'frete', 'pagamento', 'contato', 'cupons', 'api', 'smartwatches', 'clientes', 'faq', 'elogios', 'moedas']);
+  const CADASTROS_SECTIONS = new Set(['pessoas', 'produtos', 'smartwatches', 'kit', 'pagamento', 'frete', 'cupons', 'faq', 'elogios', 'contato', 'moedas']);
   const CADASTROS_PANEL_BY_SECTION = {
     pessoas: 'clientes',
     produtos: 'produtos',
@@ -6632,7 +7065,8 @@ ${worksheets}
     cupons: 'cupons',
     faq: 'faq',
     elogios: 'elogios',
-    contato: 'contato'
+    contato: 'contato',
+    moedas: 'moedas'
   };
   const OUTRO_MODELO_LABEL = 'Outro modelo (informar nas observações)';
   const SW_SMARTBAND_RE = /\b((smart\s*)?band|mi\s*band|honor\s*band|huawei\s*band|amazfit\s*band|galaxy\s*fit|vivosmart|v[ií]vofit|fitbit\s*(charge|inspire|ace|luxe|air))\b/i;
@@ -7629,6 +8063,7 @@ ${worksheets}
 
     function showTab(tabId) {
       let id = tabId || resolveDefaultAdminTab();
+      if (ADMIN_HIDDEN_TABS.has(id)) id = 'pedidos';
       const legacyCadastros = {
         produtos: 'produtos',
         smartwatches: 'smartwatches',
@@ -8135,9 +8570,8 @@ ${worksheets}
       description: 'Lente de correção óptica para smartwatch em pele danificado.',
       descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
       descriptionIt: 'Progettata per i sensori ottici degli smartwatch su pelle danificado.',
-      price: 62.9,
-      priceUsd: 12.99,
-      priceEur: 11.99,
+      price: 72.9,
+      intlMarkupPercent: DEFAULT_INTL_MARKUP_PERCENT,
       image: LENS_INTL_IMAGES[0],
       images: LENS_INTL_IMAGES.slice(),
       active: true,
@@ -8155,6 +8589,71 @@ ${worksheets}
 
   document.getElementById('btn-refresh-payment-balances')?.addEventListener('click', () => loadPaymentBalances(true));
   document.getElementById('btn-mp-release-audit')?.addEventListener('click', () => runMpReleaseAudit());
+
+  document.getElementById('btn-add-intl-currency')?.addEventListener('click', () => {
+    const all = collectIntlCurrencies();
+    all.push({
+      code: '',
+      label: 'Nova moeda',
+      langs: [],
+      countries: [],
+      decimals: 2,
+      active: true
+    });
+    renderIntlCurrencies(all);
+  });
+
+  document.getElementById('btn-apply-intl-ppp')?.addEventListener('click', async () => {
+    const status = document.getElementById('admin-intl-ppp-status');
+    const currencies = collectIntlCurrencies();
+    const auto = document.getElementById('admin-intl-auto-ppp')?.checked !== false;
+    const rates = await loadAdminFxRates();
+    const products = applyMarkupFxToProductsAdmin(collectProductsFromDom(), currencies, rates);
+    renderProducts(products);
+    if (status) {
+      status.hidden = false;
+      status.textContent = 'Recalculando moedas (R$ + markup + FX)…';
+    }
+    const token = sessionStorage.getItem(SESSION_KEY);
+    const baseUrl = apiBase();
+    if (token && baseUrl) {
+      try {
+        const res = await fetch(baseUrl.replace(/\/$/, '') + '/admin/intl-money/apply-markup-fx', {
+          method: 'POST',
+          headers: {
+            Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ intlCurrencies: currencies, intlCurrenciesAutoFx: auto, intlCurrenciesAutoPpp: auto })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || 'Falha ao recalcular moedas.');
+        if (data.products) {
+          const byId = new Map(data.products.map((p) => [p.id, p]));
+          const merged = collectProductsFromDom().map((p) => {
+            const live = byId.get(p.id);
+            return live ? { ...p, ...live } : p;
+          });
+          renderProducts(merged);
+        }
+        if (currentConfig) {
+          currentConfig.intlCurrencies = currencies;
+          currentConfig.intlCurrenciesAutoFx = auto;
+          currentConfig.intlCurrenciesAutoPpp = auto;
+        }
+        showStatus(`Moedas recalculadas em ${data.updated ?? 0} produto(s) .com.`, 'success', 'save');
+        if (status) status.textContent = `Atualizado: ${data.updated ?? 0} produto(s).`;
+        return;
+      } catch (err) {
+        showStatus(err.message || 'Recálculo só na tela — salve para gravar.', 'warning', 'save');
+        if (status) status.textContent = 'Recálculo na tela; salve para gravar no servidor.';
+        return;
+      }
+    }
+    if (status) status.textContent = 'Recálculo na tela; salve para gravar no servidor.';
+  });
+
+
 
   document.addEventListener('DOMContentLoaded', async () => {
     await waitSalesMoney();
