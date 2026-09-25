@@ -6366,7 +6366,7 @@ ${worksheets}
     renderHomeReviews(config.homeReviews || []);
     renderIntlShipping(config.internationalShipping || {});
     if (f.intlSurcharge) f.intlSurcharge.value = config.internationalSurcharge ?? 40;
-    if (f.intlShippingMultiplier) f.intlShippingMultiplier.value = config.internationalShippingMultiplier ?? 1;
+    if (f.intlShippingMultiplier) f.intlShippingMultiplier.value = config.internationalShippingMultiplier ?? 2;
     const intlProd = config.internationalProduct || {};
     if (f.intlProductTitle) f.intlProductTitle.value = intlProd.title || '';
     if (f.intlProductHint) f.intlProductHint.value = intlProd.hint || intlProd.notice || '';

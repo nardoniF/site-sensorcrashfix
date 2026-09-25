@@ -297,9 +297,9 @@ const DEFAULT_CONFIG = {
     AE: { label: 'Emirados Árabes Unidos', price: 99.9, days: 18, currency: 'BRL' },
     OTHER: { label: 'Outro país', price: 158.7, days: 18, currency: 'BRL' }
   },
-  internationalSurcharge: 0,
-  /** Multiplies Correios intl quote. 1 = sem markup (valor real da cotação). */
-  internationalShippingMultiplier: 1,
+  internationalSurcharge: 40,
+  /** Multiplies Correios intl quote. 2 = dobro (trabalho de postagem + poder de compra). */
+  internationalShippingMultiplier: 2,
   internationalProduct: {
     title: 'Envio internacional',
     hint: '',
@@ -2488,13 +2488,17 @@ async function syncIntlProductPricesFromFx(env) {
     if (!isIntlMarketProductRow(p)) return;
     const brl = Number(p.price) || 0;
     if (!brl) return;
+    // Não sobrescreve USD/EUR já cadastrados (markup de poder de compra / Admin).
+    // Só preenche quando o campo está vazio.
+    const hasUsd = Number.isFinite(Number(p.priceUsd)) && Number(p.priceUsd) > 0;
+    const hasEur = Number.isFinite(Number(p.priceEur)) && Number(p.priceEur) > 0;
+    if (hasUsd && hasEur) return;
     const usd = Math.round(brl * fxUsd.rate * 100) / 100;
     const eur = Math.round(brl * fxEur.rate * 100) / 100;
-    if (p.priceUsd !== usd || p.priceEur !== eur) {
-      p.priceUsd = usd;
-      p.priceEur = eur;
-      updated += 1;
-    }
+    let changed = false;
+    if (!hasUsd) { p.priceUsd = usd; changed = true; }
+    if (!hasEur) { p.priceEur = eur; changed = true; }
+    if (changed) updated += 1;
   });
   if (updated) await saveConfig(env, { ...config, products });
   return { updated, usdRate: fxUsd.rate, eurRate: fxEur.rate };
