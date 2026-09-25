@@ -103,6 +103,21 @@ const ALLOWED_ORIGINS = [
   'http://localhost:8080',
   'http://127.0.0.1:5500'
 ];
+import {
+  DEFAULT_INTL_CURRENCIES,
+  DEFAULT_INTL_MARKUP_PERCENT,
+  normalizeIntlCurrencies,
+  activeIntlCurrencies,
+  applyMarkupFxToIntlProducts,
+  syncOpticalIntlBrlFromBrKit,
+  currencyForLocaleFromRegistry,
+  productListPriceFromRegistry,
+  intlPriceField,
+  intlPriceFieldNames,
+  intlBaseBrl,
+  normalizeMarkupPercent
+} from './intl-money.js';
+
 const CONFIG_KEY = 'store-config';
 /** Pin igual ao cloudflare/scf-com-proxy.js — catálogo GitHub servido direto ao Worker (evita cache do proxy). */
 const SITE_CATALOG_COMMIT = '2ed004e1a1ddf5f97b2f145c90da6ba8ca1c458b';
@@ -195,9 +210,9 @@ const DEFAULT_CONFIG = {
       description: 'Lente de correção óptica para smartwatch em pele danificado.',
       descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
       descriptionIt: 'Progettata per i sensori ottici degli smartwatch su sensore incrinato.',
-      price: 62.9,
-      priceUsd: 20.25,
-      priceEur: 17.42,
+      price: 72.9,
+      intlMarkupPercent: 78.5,
+      intlBaseBrl: 130.13,
       image: '/images/kit-gallery/en/kit-01-embalagem.jpg',
       images: [
         '/images/kit-gallery/en/kit-01-embalagem.jpg',
@@ -223,8 +238,8 @@ const DEFAULT_CONFIG = {
       descriptionEn: 'Designed for smartband optical sensors on cracked sensor.',
       descriptionIt: 'Progettata per i sensori ottici degli smartband su sensore incrinato.',
       price: 62.9,
-      priceUsd: 20.25,
-      priceEur: 17.42,
+      intlMarkupPercent: 78.5,
+      intlBaseBrl: 112.28,
       image: '/images/smartband/lens-en/01-embalagem.jpg',
       images: [
         '/images/smartband/lens-en/01-embalagem.jpg',
@@ -302,6 +317,9 @@ const DEFAULT_CONFIG = {
   internationalSurcharge: 0,
   /** Multiplies Correios intl quote. 1 = sem markup (valor real da cotação). */
   internationalShippingMultiplier: 1,
+  intlCurrencies: DEFAULT_INTL_CURRENCIES,
+  intlCurrenciesAutoFx: true,
+  intlCurrenciesAutoPpp: true,
   internationalProduct: {
     title: 'Envio internacional',
     hint: '',
@@ -1343,7 +1361,13 @@ function supplementAggregatedFromSite(kvProduct, siteProduct) {
     'markets',
     'images',
     'priceUsd',
-    'priceEur'
+    'priceEur',
+    'priceGbp',
+    'pricePln',
+    'priceSek',
+    'priceNok',
+    'intlMarkupPercent',
+    'intlBaseBrl'
   ];
   catalogFields.forEach((field) => {
     if (!isEmptyCatalogValue(merged[field])) return;
@@ -1570,6 +1594,17 @@ function withConfigDefaults(stored) {
     internationalShippingMultiplier: Number.isFinite(Number(stored.internationalShippingMultiplier))
       ? Math.max(1, Number(stored.internationalShippingMultiplier))
       : base.internationalShippingMultiplier,
+    intlCurrencies: normalizeIntlCurrencies(stored.intlCurrencies),
+    intlCurrenciesAutoFx: stored.intlCurrenciesAutoFx != null
+      ? stored.intlCurrenciesAutoFx !== false
+      : (stored.intlCurrenciesAutoPpp != null
+        ? stored.intlCurrenciesAutoPpp !== false
+        : base.intlCurrenciesAutoFx !== false),
+    intlCurrenciesAutoPpp: stored.intlCurrenciesAutoFx != null
+      ? stored.intlCurrenciesAutoFx !== false
+      : (stored.intlCurrenciesAutoPpp != null
+        ? stored.intlCurrenciesAutoPpp !== false
+        : base.intlCurrenciesAutoPpp !== false),
     internationalProduct: { ...base.internationalProduct, ...(stored.internationalProduct || {}) },
     payments: {
       ...base.payments,
@@ -2168,6 +2203,16 @@ function publicProductFields(p, config) {
   if (Array.isArray(p.images) && p.images.length) row.images = p.images;
   if (p.priceUsd != null) row.priceUsd = Number(p.priceUsd);
   if (p.priceEur != null) row.priceEur = Number(p.priceEur);
+  if (p.priceGbp != null) row.priceGbp = Number(p.priceGbp);
+  if (p.pricePln != null) row.pricePln = Number(p.pricePln);
+  if (p.priceSek != null) row.priceSek = Number(p.priceSek);
+  if (p.priceNok != null) row.priceNok = Number(p.priceNok);
+  if (p.intlMarkupPercent != null && Number.isFinite(Number(p.intlMarkupPercent))) {
+    row.intlMarkupPercent = Number(p.intlMarkupPercent);
+  }
+  if (p.intlBaseBrl != null && Number.isFinite(Number(p.intlBaseBrl))) {
+    row.intlBaseBrl = Number(p.intlBaseBrl);
+  }
   const stock = productStockQty(p);
   row.inStock = productInStock(p, 1);
   if (stock != null) row.stock = stock;
@@ -2201,6 +2246,9 @@ function publicConfigView(config, env) {
     internationalCountries: publicIntlCountriesList(config.internationalShipping || {}),
     internationalSurcharge: getIntlSurcharge(config),
     internationalShippingMultiplier: getIntlShippingMultiplier(config),
+    intlCurrencies: activeIntlCurrencies(config),
+    intlCurrenciesAutoFx: config.intlCurrenciesAutoFx !== false && config.intlCurrenciesAutoPpp !== false,
+    intlCurrenciesAutoPpp: config.intlCurrenciesAutoFx !== false && config.intlCurrenciesAutoPpp !== false,
     internationalProduct: config.internationalProduct || DEFAULT_CONFIG.internationalProduct,
     payments: {
       intlEmbedded: true,
@@ -2474,36 +2522,68 @@ function productIntlEur(product) {
   return Number.isFinite(v) && v > 0 ? v : null;
 }
 
+function productIntlListPrice(product, currency, config) {
+  const fromRegistry = productListPriceFromRegistry(
+    product,
+    currency,
+    config?.intlCurrencies || DEFAULT_INTL_CURRENCIES
+  );
+  if (fromRegistry != null) return fromRegistry;
+  const cur = String(currency || 'USD').toUpperCase();
+  if (cur === 'EUR') return productIntlEur(product);
+  return productIntlUsd(product);
+}
+
 function isIntlMarketProductRow(p) {
   const m = Array.isArray(p?.markets) ? p.markets.map((x) => String(x).toUpperCase()) : [];
   return m.includes('INT') && !m.includes('BR');
 }
 
-async function syncIntlProductPricesFromFx(env) {
+async function fetchFxRatesMap(env, currencyCodes) {
+  const codes = [...new Set((currencyCodes || []).map((c) => String(c || '').toUpperCase()).filter((c) => c && c !== 'BRL'))];
+  const out = {};
+  await Promise.all(codes.map(async (code) => {
+    try {
+      const row = await fetchFxRate(env, code);
+      if (row?.rate > 0) out[code] = Number(row.rate);
+    } catch { /* skip missing */ }
+  }));
+  return out;
+}
+
+function autoFxEnabled(config) {
+  if (config?.intlCurrenciesAutoFx === false) return false;
+  if (config?.intlCurrenciesAutoPpp === false) return false;
+  return true;
+}
+
+/** Recompute INT foreign list prices: (R$ × markup%) × FX. */
+async function syncIntlProductPricesFromMarkupFx(env, { force = false } = {}) {
   const config = await getConfig(env);
-  const products = config.products || [];
-  if (!products.length) return { updated: 0 };
-  const fxUsd = await fetchFxRate(env, 'USD');
-  const fxEur = await fetchFxRate(env, 'EUR');
-  let updated = 0;
-  products.forEach((p) => {
-    if (!isIntlMarketProductRow(p)) return;
-    const brl = Number(p.price) || 0;
-    if (!brl) return;
-    // Não sobrescreve USD/EUR já cadastrados (markup de poder de compra / Admin).
-    // Só preenche quando o campo está vazio.
-    const hasUsd = Number.isFinite(Number(p.priceUsd)) && Number(p.priceUsd) > 0;
-    const hasEur = Number.isFinite(Number(p.priceEur)) && Number(p.priceEur) > 0;
-    if (hasUsd && hasEur) return;
-    const usd = Math.round(brl * fxUsd.rate * 100) / 100;
-    const eur = Math.round(brl * fxEur.rate * 100) / 100;
-    let changed = false;
-    if (!hasUsd) { p.priceUsd = usd; changed = true; }
-    if (!hasEur) { p.priceEur = eur; changed = true; }
-    if (changed) updated += 1;
-  });
-  if (updated) await saveConfig(env, { ...config, products });
-  return { updated, usdRate: fxUsd.rate, eurRate: fxEur.rate };
+  if (!force && !autoFxEnabled(config)) return { updated: 0, skipped: true };
+  const currencies = normalizeIntlCurrencies(config.intlCurrencies);
+  const synced = syncOpticalIntlBrlFromBrKit(config.products || []);
+  const fxRates = await fetchFxRatesMap(env, currencies.map((c) => c.code));
+  const { products, updated } = applyMarkupFxToIntlProducts(synced.products, currencies, fxRates);
+  const changed = updated || synced.synced;
+  if (changed) {
+    await saveConfig(env, {
+      ...config,
+      products,
+      intlCurrencies: currencies,
+      intlCurrenciesAutoFx: true,
+      intlCurrenciesAutoPpp: true
+    });
+  }
+  return { updated: updated + (synced.synced ? 1 : 0), currencies: currencies.map((c) => c.code), fxRates };
+}
+
+async function syncIntlProductPricesFromPpp(env, opts) {
+  return syncIntlProductPricesFromMarkupFx(env, opts);
+}
+
+async function syncIntlProductPricesFromFx(env) {
+  return syncIntlProductPricesFromMarkupFx(env);
 }
 
 async function intlForeignCharge(order, env, config, items, currency) {
@@ -2515,7 +2595,7 @@ async function intlForeignCharge(order, env, config, items, currency) {
   let allConfigured = itemList.length > 0;
   for (const item of itemList) {
     const p = products.find((x) => x.id === item.productId || x.slug === item.productId);
-    const price = p ? (cur === 'EUR' ? productIntlEur(p) : productIntlUsd(p)) : null;
+    const price = p ? productIntlListPrice(p, cur, config) : null;
     if (price == null) { allConfigured = false; break; }
     productForeign += price * (Number(item.qty) || 1);
   }
@@ -10477,6 +10557,71 @@ async function handleFxRate(request, env, origin) {
   }
 }
 
+async function handleFxRates(request, env, origin) {
+  const raw = new URL(request.url).searchParams.get('to') || 'USD,EUR,GBP,PLN,SEK,NOK';
+  const codes = raw.split(/[\s,;]+/).map((s) => s.toUpperCase().trim()).filter(Boolean);
+  try {
+    const rates = await fetchFxRatesMap(env, codes);
+    return json({ base: 'BRL', rates, fetchedAt: new Date().toISOString() }, 200, origin);
+  } catch (err) {
+    return json({ error: err.message || 'Câmbio indisponível.' }, 502, origin);
+  }
+}
+
+async function handleAdminApplyIntlMarkupFx(request, env, origin) {
+  if (!(await isValidSession(env, bearerToken(request)))) {
+    return json({ error: 'Não autorizado.' }, 401, origin);
+  }
+  let body = {};
+  try {
+    body = await request.json();
+  } catch {
+    body = {};
+  }
+  const current = await getConfig(env);
+  const currencies = body.intlCurrencies != null
+    ? normalizeIntlCurrencies(body.intlCurrencies)
+    : normalizeIntlCurrencies(current.intlCurrencies);
+  const auto = body.intlCurrenciesAutoFx != null
+    ? body.intlCurrenciesAutoFx !== false
+    : (body.intlCurrenciesAutoPpp != null
+      ? body.intlCurrenciesAutoPpp !== false
+      : autoFxEnabled(current));
+  const synced = syncOpticalIntlBrlFromBrKit(current.products || []);
+  const fxRates = await fetchFxRatesMap(env, currencies.map((c) => c.code));
+  const { products, updated } = applyMarkupFxToIntlProducts(synced.products, currencies, fxRates);
+  const saved = await saveConfig(env, {
+    ...current,
+    products,
+    intlCurrencies: currencies,
+    intlCurrenciesAutoFx: auto,
+    intlCurrenciesAutoPpp: auto
+  });
+  return json({
+    ok: true,
+    updated: updated + (synced.synced ? 1 : 0),
+    syncedOpticalBrl: synced.synced,
+    fxRates,
+    currencies: currencies.map((c) => ({ code: c.code, decimals: c.decimals })),
+    products: (saved.products || []).filter(isIntlMarketProductRow).map((p) => ({
+      id: p.id,
+      price: p.price,
+      intlMarkupPercent: p.intlMarkupPercent,
+      intlBaseBrl: p.intlBaseBrl,
+      priceUsd: p.priceUsd,
+      priceEur: p.priceEur,
+      priceSek: p.priceSek,
+      priceNok: p.priceNok,
+      pricePln: p.pricePln,
+      priceGbp: p.priceGbp
+    }))
+  }, 200, origin);
+}
+
+async function handleAdminApplyIntlPpp(request, env, origin) {
+  return handleAdminApplyIntlMarkupFx(request, env, origin);
+}
+
 function quoteInternational(config, countryCode) {
   const zones = config.internationalShipping || DEFAULT_CONFIG.internationalShipping;
   const code = String(countryCode || '').toUpperCase();
@@ -17696,8 +17841,27 @@ async function handlePutConfig(request, env, origin, ctx) {
       : (current.homeFaq || []),
     homeReviews: body.homeReviews != null
       ? mergePreservedI18n(Array.isArray(body.homeReviews) ? body.homeReviews : current.homeReviews || [], current.homeReviews || [])
-      : (current.homeReviews || [])
+      : (current.homeReviews || []),
+    intlCurrencies: body.intlCurrencies != null
+      ? normalizeIntlCurrencies(body.intlCurrencies)
+      : normalizeIntlCurrencies(current.intlCurrencies),
+    intlCurrenciesAutoFx: body.intlCurrenciesAutoFx != null
+      ? body.intlCurrenciesAutoFx !== false
+      : (body.intlCurrenciesAutoPpp != null
+        ? body.intlCurrenciesAutoPpp !== false
+        : autoFxEnabled(current)),
+    intlCurrenciesAutoPpp: body.intlCurrenciesAutoFx != null
+      ? body.intlCurrenciesAutoFx !== false
+      : (body.intlCurrenciesAutoPpp != null
+        ? body.intlCurrenciesAutoPpp !== false
+        : autoFxEnabled(current))
   };
+  if (autoFxEnabled(merged)) {
+    const synced = syncOpticalIntlBrlFromBrKit(merged.products || []);
+    const fxRates = await fetchFxRatesMap(env, (merged.intlCurrencies || []).map((c) => c.code));
+    const applied = applyMarkupFxToIntlProducts(synced.products, merged.intlCurrencies, fxRates);
+    merged.products = applied.products;
+  }
   if (merged.products?.[0]) {
     merged.product = {
       name: merged.products[0].name,
@@ -18915,6 +19079,15 @@ export default {
       }
       if (path === '/fx/rate' && request.method === 'GET') {
         return handleFxRate(request, env, origin);
+      }
+      if (path === '/fx/rates' && request.method === 'GET') {
+        return handleFxRates(request, env, origin);
+      }
+      if (path === '/admin/intl-money/apply-markup-fx' && request.method === 'POST') {
+        return handleAdminApplyIntlMarkupFx(request, env, origin);
+      }
+      if (path === '/admin/intl-money/apply-ppp' && request.method === 'POST') {
+        return handleAdminApplyIntlPpp(request, env, origin);
       }
       if (path === '/shipping/quote' && request.method === 'GET') {
         return handleShippingQuote(request, env, origin, ctx);
