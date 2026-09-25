@@ -8,66 +8,48 @@
   const SMARTBAND_IDS = new Set(['kit-smartband-crashfix', 'optical-lens-smartband-intl']);
 
   const PT_GALLERY = [
-    '/images/kit-gallery/kit-03-aplicacao.jpg',
     '/images/kit-gallery/kit-01-embalagem.jpg',
+    '/images/kit-gallery/kit-03-aplicacao.jpg',
     '/images/kit-gallery/kit-02-conteudo.jpg',
-    '/images/kit-gallery/kit-05-acompanha.jpg',
-    '/images/kit-gallery/kit-06-antes-depois.jpg',
-    '/images/kit-gallery/kit-07-beneficios.jpg'
+    '/images/kit-gallery/kit-06-antes-depois.jpg'
   ];
 
-  /** Shared photo (little/no copy) reused across locales. */
-  const SHARED_APLICACAO = '/images/kit-gallery/kit-03-aplicacao.jpg';
-
   const EN_KIT_GALLERY = [
-    '/images/kit-gallery/en/kit-03-aplicacao.jpg',
     '/images/kit-gallery/en/kit-01-embalagem.jpg',
+    '/images/kit-gallery/en/kit-03-aplicacao.jpg',
     '/images/kit-gallery/en/kit-02-conteudo.jpg',
-    '/images/kit-gallery/en/kit-05-acompanha.jpg',
-    '/images/kit-gallery/en/kit-06-antes-depois.jpg',
-    '/images/kit-gallery/en/kit-07-beneficios.jpg'
+    '/images/kit-gallery/en/kit-06-antes-depois.jpg'
   ];
 
   const IT_KIT_GALLERY = [
-    SHARED_APLICACAO,
     '/images/kit-gallery/it/kit-01-embalagem.jpg',
+    '/images/kit-gallery/it/kit-03-aplicacao.jpg',
     '/images/kit-gallery/it/kit-02-conteudo.jpg',
-    '/images/kit-gallery/it/kit-05-acompanha.jpg',
-    '/images/kit-gallery/it/kit-06-antes-depois.jpg',
-    '/images/kit-gallery/it/kit-07-beneficios.jpg'
+    '/images/kit-gallery/it/kit-06-antes-depois.jpg'
   ];
 
   /**
    * .com / EN / IT — mesmo álbum na home, loja e checkout:
-   * 5 fotos da lente + aplicação + antes/depois.
+   * embalagem, aplicação, conteúdo, antes/depois.
    */
   const LENS_GALLERY_EN = [
-    '/images/lens-gallery/01-optical-correction-lens.png',
-    '/images/lens-gallery/02-ultra-thin.png',
-    '/images/lens-gallery/03-high-optical-transparency.png',
-    '/images/lens-gallery/04-engineered-refraction.png',
-    '/images/lens-gallery/05-whats-included.png',
+    '/images/kit-gallery/en/kit-01-embalagem.jpg',
     '/images/kit-gallery/en/kit-03-aplicacao.jpg',
+    '/images/kit-gallery/en/kit-02-conteudo.jpg',
     '/images/kit-gallery/en/kit-06-antes-depois.jpg'
   ];
 
   const LENS_GALLERY_IT = [
-    '/images/lens-gallery/it/01-optical-correction-lens.png',
-    '/images/lens-gallery/it/02-ultra-thin.png',
-    '/images/lens-gallery/it/03-high-optical-transparency.png',
-    '/images/lens-gallery/it/04-engineered-refraction.png',
-    '/images/lens-gallery/it/05-whats-included.png',
-    SHARED_APLICACAO,
+    '/images/kit-gallery/it/kit-01-embalagem.jpg',
+    '/images/kit-gallery/it/kit-03-aplicacao.jpg',
+    '/images/kit-gallery/it/kit-02-conteudo.jpg',
     '/images/kit-gallery/it/kit-06-antes-depois.jpg'
   ];
 
   const LENS_GALLERY_SHARED = [
-    '/images/lens-gallery/01-optical-correction-lens.png',
-    '/images/lens-gallery/02-ultra-thin.png',
-    '/images/lens-gallery/03-high-optical-transparency.png',
-    '/images/lens-gallery/04-engineered-refraction.png',
-    '/images/lens-gallery/05-whats-included.png',
-    SHARED_APLICACAO,
+    '/images/kit-gallery/kit-01-embalagem.jpg',
+    '/images/kit-gallery/kit-03-aplicacao.jpg',
+    '/images/kit-gallery/kit-02-conteudo.jpg',
     '/images/kit-gallery/kit-06-antes-depois.jpg'
   ];
 
@@ -150,8 +132,7 @@
     '/images/smartband/kit-br/01-embalagem.jpg',
     '/images/smartband/kit-br/02-conteudo.jpg',
     '/images/smartband/kit-br/03-aplicacao.jpg',
-    '/images/smartband/kit-br/04-antes-depois.jpg',
-    '/images/smartband/kit-br/05-lente.jpg'
+    '/images/smartband/kit-br/04-antes-depois.jpg'
   ];
 
   const SMARTBAND_GALLERY_EN = [
@@ -203,22 +184,31 @@
     });
   }
 
+  /** Slides removidos / 404 — Ultra (hero) e arquivos mortos não entram na galeria. */
+  function isDroppedGalleryUrl(url) {
+    const n = normalizeUrl(url).toLowerCase();
+    return /kit-05-acompanha|kit-07-beneficios|\/05-lente\.jpg(\?|$)|sensor-rachado-dedo/i.test(n);
+  }
+
   function resolveImages(product) {
+    const lang = detectLang();
+    // Kit + smartband: álbum canônico (não misturar com images velhas do KV).
+    if (isSmartbandProduct(product)) {
+      return smartbandAlbum(lang);
+    }
+    if (isKitProduct(product)) {
+      return kitAlbum(lang);
+    }
     const fromAlbum = Array.isArray(product?.images) ? product.images : [];
     const primary = product?.image || '';
-    let list = uniqueUrls([primary, ...fromAlbum].filter((u) => u && !isLegacyKitHero(u)));
-    const lang = detectLang();
-    // Smartband: serve própria galeria por idioma/market
-    if (isSmartbandProduct(product)) {
-      return uniqueUrls([...list, ...smartbandAlbum(lang)]);
-    }
-    // .com / EN / IT: álbum completo por idioma (IT usa fotos em italiano)
-    if (isLensOnlyMarket() && (isKitProduct(product) || !list.length)) {
-      return uniqueUrls(localizeLensUrls([...list, ...lensAlbum(lang)], lang));
+    let list = uniqueUrls(
+      [primary, ...fromAlbum].filter((u) => u && !isLegacyKitHero(u) && !isDroppedGalleryUrl(u))
+    );
+    if (isLensOnlyMarket() && !list.length) {
+      return uniqueUrls(localizeLensUrls(lensAlbum(lang), lang));
     }
     if (list.length) return list;
-    if (isKitProduct(product)) return kitAlbum();
-    return kitAlbum();
+    return kitAlbum(lang);
   }
 
   function renderMarkup(images, alt, extraClass) {
@@ -257,6 +247,11 @@
     album.setAttribute('data-index', String(i));
     const img = album.querySelector('img');
     if (img) {
+      const fallback = images.find((u) => !isDroppedGalleryUrl(u)) || images[0];
+      img.onerror = function () {
+        this.onerror = null;
+        if (this.src !== fallback) this.src = fallback;
+      };
       img.src = images[i];
     }
   }
