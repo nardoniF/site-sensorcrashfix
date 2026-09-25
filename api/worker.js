@@ -120,7 +120,7 @@ import {
 
 const CONFIG_KEY = 'store-config';
 /** Pin igual ao cloudflare/scf-com-proxy.js — catálogo GitHub servido direto ao Worker (evita cache do proxy). */
-const SITE_CATALOG_COMMIT = '4e9247a7bbc3f7bf6626970e1e64cb0dffeb09a6';
+const SITE_CATALOG_COMMIT = 'ff85f06cc76d14852f7d97b5e8fc8b8f663a43d4';
 const SITE_CATALOG_URLS = [
   'https://cdn.jsdelivr.net/gh/nardoniF/site-sensorcrashfix@' + SITE_CATALOG_COMMIT + '/data/store-config.json',
   'https://raw.githubusercontent.com/nardoniF/site-sensorcrashfix/' + SITE_CATALOG_COMMIT + '/data/store-config.json',
@@ -2189,8 +2189,16 @@ function publicProductFields(p, config) {
   };
   if (p.nameEn) row.nameEn = p.nameEn;
   if (p.nameIt) row.nameIt = p.nameIt;
+  if (p.nameDe) row.nameDe = p.nameDe;
+  if (p.nameEs) row.nameEs = p.nameEs;
+  if (p.namePl) row.namePl = p.namePl;
+  if (p.nameSl) row.nameSl = p.nameSl;
   if (p.descriptionEn) row.descriptionEn = p.descriptionEn;
   if (p.descriptionIt) row.descriptionIt = p.descriptionIt;
+  if (p.descriptionDe) row.descriptionDe = p.descriptionDe;
+  if (p.descriptionEs) row.descriptionEs = p.descriptionEs;
+  if (p.descriptionPl) row.descriptionPl = p.descriptionPl;
+  if (p.descriptionSl) row.descriptionSl = p.descriptionSl;
   if (p.packaging) row.packaging = p.packaging;
   if (p.compatibility) row.compatibility = p.compatibility;
   if (p.compatibleWatchModels?.length) row.compatibleWatchModels = p.compatibleWatchModels;
