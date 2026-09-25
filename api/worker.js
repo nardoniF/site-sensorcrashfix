@@ -196,6 +196,8 @@ const DEFAULT_CONFIG = {
       descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
       descriptionIt: 'Progettata per i sensori ottici degli smartwatch su sensore incrinato.',
       price: 62.9,
+      priceUsd: 20.25,
+      priceEur: 17.42,
       image: '/images/kit-gallery/en/kit-01-embalagem.jpg',
       images: [
         '/images/kit-gallery/en/kit-01-embalagem.jpg',
@@ -221,8 +223,8 @@ const DEFAULT_CONFIG = {
       descriptionEn: 'Designed for smartband optical sensors on cracked sensor.',
       descriptionIt: 'Progettata per i sensori ottici degli smartband su sensore incrinato.',
       price: 62.9,
-      priceUsd: 12.99,
-      priceEur: 11.99,
+      priceUsd: 20.25,
+      priceEur: 17.42,
       image: '/images/smartband/lens-en/01-embalagem.jpg',
       images: [
         '/images/smartband/lens-en/01-embalagem.jpg',
@@ -445,8 +447,8 @@ const DEFAULT_CONFIG = {
       { id: 'shipping-bag-sticker', name: 'Adesivo da sacola / envelope', buyQty: 1000, buyPrice: 60, yieldQty: 1, useQty: 1, notes: '1 por sacola ou envelope (1 por lente)' },
       { id: 'kit-bag', name: 'Sacola zip do kit', buyQty: 100, buyPrice: 52, yieldQty: 1, useQty: 1, notes: 'Zip que vai dentro' },
       { id: 'kit-bag-sticker', name: 'Adesivo da sacola do kit', buyQty: 1000, buyPrice: 60, yieldQty: 1, useQty: 1, notes: '1 por sacola zip' },
-      { id: 'manual-sofit', name: 'Manual (sulfite)', buyQty: 1000, buyPrice: 59, yieldQty: 10, useQty: 1, notes: '10 manuais por folha sulfite' },
-      { id: 'promo-print', name: 'Impresso promocional (sulfite)', buyQty: 1000, buyPrice: 59, yieldQty: 10, useQty: 1, notes: '10 impressos por folha sulfite' },
+      { id: 'manual-sofit', name: 'Manual (sulfite)', buyQty: 1000, buyPrice: 59, yieldQty: 6, useQty: 1, notes: '6 manuais+cupom+WhatsApp por folha A4 (folha única)' },
+      { id: 'promo-print', name: 'Impresso promocional (sulfite)', buyQty: 1000, buyPrice: 59, yieldQty: 10, useQty: 0, notes: 'Banido — cupom e contato vão no manual (folha única)' },
       { id: 'applicator', name: 'Haste aplicadora', buyQty: 200, buyPrice: 26.35, yieldQty: 1, useQty: 0.5, notes: 'Meia haste por kit' },
       { id: 'potentiator', name: 'Potencializador (primer)', buyQty: 100, buyPrice: 188, yieldQty: 1, useQty: 0.2, notes: '1/5 ml por kit' },
       { id: 'potentiator-glass', name: 'Vidro do potencializador', buyQty: 100, buyPrice: 149.8, yieldQty: 1, useQty: 1, notes: 'Frasco 1 ml' },
@@ -2488,13 +2490,17 @@ async function syncIntlProductPricesFromFx(env) {
     if (!isIntlMarketProductRow(p)) return;
     const brl = Number(p.price) || 0;
     if (!brl) return;
+    // Não sobrescreve USD/EUR já cadastrados (markup de poder de compra / Admin).
+    // Só preenche quando o campo está vazio.
+    const hasUsd = Number.isFinite(Number(p.priceUsd)) && Number(p.priceUsd) > 0;
+    const hasEur = Number.isFinite(Number(p.priceEur)) && Number(p.priceEur) > 0;
+    if (hasUsd && hasEur) return;
     const usd = Math.round(brl * fxUsd.rate * 100) / 100;
     const eur = Math.round(brl * fxEur.rate * 100) / 100;
-    if (p.priceUsd !== usd || p.priceEur !== eur) {
-      p.priceUsd = usd;
-      p.priceEur = eur;
-      updated += 1;
-    }
+    let changed = false;
+    if (!hasUsd) { p.priceUsd = usd; changed = true; }
+    if (!hasEur) { p.priceEur = eur; changed = true; }
+    if (changed) updated += 1;
   });
   if (updated) await saveConfig(env, { ...config, products });
   return { updated, usdRate: fxUsd.rate, eurRate: fxEur.rate };
