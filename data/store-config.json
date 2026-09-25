@@ -61,8 +61,8 @@
       "descriptionEs": "Lente de cobertura para sensor óptico de smartwatch agrietado.",
       "descriptionPl": "Soczewka ochronna na pęknięty czujnik optyczny smartwatcha.",
       "price": 62.9,
-      "priceUsd": 12.99,
-      "priceEur": 11.99,
+      "priceUsd": 20.25,
+      "priceEur": 17.42,
       "image": "/images/kit-gallery/en/kit-01-embalagem.jpg",
       "images": [
         "/images/kit-gallery/en/kit-01-embalagem.jpg",
@@ -133,8 +133,8 @@
       "descriptionEs": "Lente de cobertura para sensor óptico de smartband agrietado.",
       "descriptionPl": "Soczewka ochronna na pęknięty czujnik optyczny opaski.",
       "price": 62.9,
-      "priceUsd": 12.99,
-      "priceEur": 11.99,
+      "priceUsd": 20.25,
+      "priceEur": 17.42,
       "image": "/images/smartband/lens-en/01-embalagem.jpg",
       "images": [
         "/images/smartband/lens-en/01-embalagem.jpg",
@@ -1631,8 +1631,8 @@
     "deliveryHours": 24,
     "couriers": []
   },
-  "internationalSurcharge": 0,
-  "internationalShippingMultiplier": 1,
+  "internationalSurcharge": 40,
+  "internationalShippingMultiplier": 2,
   "internationalProduct": {
     "title": "Envio internacional",
     "hint": "",
