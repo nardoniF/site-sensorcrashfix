@@ -11,7 +11,8 @@ import crypto from 'node:crypto';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..', '..');
-const NS = '4184c034aab941e58ce5cc1e3abaecdc';
+// STORE_KV do Worker Crash (api/wrangler.toml) — NÃO usar o KV do Tattoo.
+const NS = 'c28d9f1e89dd41348ad7080b02d63054';
 const ACCOUNT = '80ab4f6ff1553d2ee530c0880edce594';
 const MODEL = '@cf/meta/llama-3.1-8b-instruct';
 const SITE_LANGS = ['pt', 'en', 'it', 'de', 'es', 'pl', 'sl'];
@@ -46,10 +47,19 @@ function wranglerKvPut(key, filePath) {
 }
 
 function oauthToken() {
-  const toml = fs.readFileSync(path.join(process.env.HOME, '.wrangler/config/default.toml'), 'utf8');
-  const m = toml.match(/oauth_token\s*=\s*"([^"]+)"/);
-  if (!m) throw new Error('wrangler oauth_token missing');
-  return m[1];
+  const fromEnv = String(process.env.CLOUDFLARE_API_TOKEN || process.env.CF_API_TOKEN || '').trim();
+  if (fromEnv) return fromEnv;
+  const candidates = [
+    path.join(process.env.HOME || '', '.wrangler/config/default.toml'),
+    path.join(process.env.HOME || '', '.config/.wrangler/config/default.toml')
+  ];
+  for (const file of candidates) {
+    if (!fs.existsSync(file)) continue;
+    const toml = fs.readFileSync(file, 'utf8');
+    const m = toml.match(/oauth_token\s*=\s*"([^"]+)"/);
+    if (m) return m[1];
+  }
+  throw new Error('CLOUDFLARE_API_TOKEN / wrangler oauth_token missing');
 }
 
 function parseModelJson(raw) {
