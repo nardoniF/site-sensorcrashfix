@@ -373,6 +373,16 @@ export default {
       });
     }
 
+    // account.html → minha-conta.html (links legados / Tattoo / bookmarks)
+    {
+      const acc = url.pathname.match(/^(?:\/(en|it|de|es|pl|sl))?\/account\.html$/i);
+      if (acc) {
+        const prefix = acc[1] ? `/${acc[1].toLowerCase()}` : '';
+        const dest = new URL(`${prefix}/minha-conta.html${url.search}`, url.origin);
+        return Response.redirect(dest.toString(), 301);
+      }
+    }
+
     let originPath = br ? mapPathBr(url.pathname) : mapPathCom(url.pathname);
     originPath = rewriteLegacyImagePath(originPath);
     let res = await fetchOrigin(originPath, url.search);

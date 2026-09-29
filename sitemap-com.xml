@@ -289,4 +289,24 @@
     <changefreq>daily</changefreq>
     <priority>0.75</priority>
   </url>
+  <url>
+    <loc>https://www.sensorcrashfix.com/cracked-sensor.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.sensorcrashfix.com/de/sensor-gerissen.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.sensorcrashfix.com/es/sensor-roto.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.sensorcrashfix.com/it/sensore-incrinato.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
