@@ -70,10 +70,34 @@
     return f === 'index.html' ? `${BR}/${lang}/` : `${BR}/${lang}/${f}`;
   }
 
+  function withStfLang(url, lang) {
+    try {
+      const u = new URL(url, location.href);
+      u.searchParams.set('stf_lang', lang);
+      return u.toString();
+    } catch (e) {
+      return url;
+    }
+  }
+
   function langUrl(lang) {
-    if (lang === 'pt') return brPtUrl();
-    if (lang === 'en') return comEnUrl();
-    return isCom() ? comLangUrl(lang) : brLangUrl(lang);
+    let url;
+    if (lang === 'pt') url = brPtUrl();
+    else if (lang === 'en') url = comEnUrl();
+    else url = isCom() ? comLangUrl(lang) : brLangUrl(lang);
+
+    // Cookie não atravessa .com ↔ .com.br — pin stf_lang no destino
+    const toBr = lang === 'pt';
+    const fromCom = isCom();
+    const fromBr = isBr();
+    if ((fromCom && toBr) || (fromBr && !toBr && (lang === 'en' || ALL_LANGS.includes(lang)))) {
+      // From BR, EN goes to .com; from BR, intl ideally .com — brLangUrl stays on BR then client-redirects
+      if (fromBr && lang !== 'en' && lang !== 'pt') {
+        url = comLangUrl(lang);
+      }
+      return withStfLang(url, lang);
+    }
+    return url;
   }
 
   function persistPref(lang) {

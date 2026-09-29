@@ -20,6 +20,9 @@ Preferir **default seguro + nota no final** em vez de parar no meio.
 
 ## Git e deploy — limites
 
+- **Pin do site (proxy):** seguir `.cursor/rules/live-pin-canon.mdc`. Nunca pinar um SHA sem markup (`api/intl-money.js` + `foreignUnitPrice`) e lockups de logo. Basear no tip ao vivo (`x-stf-commit`), não em `main` velho.
+- Deploy proxy: `cd cloudflare && npx wrangler deploy` após atualizar `COMMIT`.
+
 - Nunca commitar `.env`, secrets ou arquivos claramente temporários (`.DS_Store`, `tmp-*`, etc.).
 - Nunca `git push --force` em `main`/`master`.
 - Nunca amend de commit já pushado, salvo pedido explícito.

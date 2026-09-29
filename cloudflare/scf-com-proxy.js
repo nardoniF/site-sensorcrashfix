@@ -13,7 +13,7 @@ import {
   isBotUserAgent
 } from './geo-lang.js';
 
-const COMMIT = '9c08b61bc131d305900955f35b999c3e7407505b';
+const COMMIT = '4d7e95bc9ec1ff04918892d26723cddb9997237d';
 const ORIGINS = [
   'https://cdn.jsdelivr.net/gh/nardoniF/site-sensorcrashfix@' + COMMIT,
   'https://raw.githubusercontent.com/nardoniF/site-sensorcrashfix/' + COMMIT,
@@ -77,6 +77,8 @@ function isStaticAsset(pathname) {
 const COM_SHARED_ROOT_PAGES = new Set([
   '/rastreio.html',
   '/google7b1cb2c1f70b0fda.html',
+  // Landing PT no root — sem isto o .com mapeava para /en/sensor-trincado.html (404).
+  '/sensor-trincado.html',
 ]);
 
 const INTL_LANGS = ['it', 'de', 'es', 'pl', 'sl'];
@@ -178,7 +180,7 @@ function patchHtml(html, originPath, br) {
     html = html.replace(/<head([^>]*)>/i, `<head$1><base href="${baseHref}">`);
   }
   if (!/stf-lang-nav\.js/i.test(html)) {
-    html = html.replace(/<head([^>]*)>/i, `<head$1><script src="/js/stf-lang-nav.js?v=6"></script>`);
+    html = html.replace(/<head([^>]*)>/i, `<head$1><script src="/js/stf-lang-nav.js?v=7"></script>`);
   }
   return html;
 }
@@ -312,6 +314,7 @@ export default {
 
     // First-hit locale: Polônia → /pl/, Alemanha → /de/, etc. (não aplica a bots)
     if (!isBotUserAgent(request.headers.get('user-agent'))) {
+      const hadStfLang = url.searchParams.has('stf_lang');
       const force = String(url.searchParams.get('stf_lang') || '').toLowerCase();
       const forcedLang = ['pt', 'en', 'it', 'de', 'es', 'pl', 'sl'].includes(force) ? force : null;
       if (forcedLang) url.searchParams.delete('stf_lang');
@@ -330,7 +333,7 @@ export default {
       });
       if (dest) {
         const destUrl = new URL(dest);
-        if (destUrl.pathname !== url.pathname || destUrl.origin !== url.origin) {
+        if (destUrl.pathname !== url.pathname || destUrl.origin !== url.origin || destUrl.search !== url.search) {
           return new Response(null, {
             status: 302,
             headers: {
@@ -340,9 +343,17 @@ export default {
             }
           });
         }
-      } else if (forcedLang) {
-        // Stay on current URL but persist explicit preference (e.g. ?stf_lang=en on /)
-        // fall through after cookie set via HTML response below when possible
+      } else if (forcedLang && hadStfLang) {
+        // Cross-domain handoff landed correctly — strip ?stf_lang and persist cookie here
+        const clean = url.pathname + (url.search || '') + (url.hash || '');
+        return new Response(null, {
+          status: 302,
+          headers: {
+            Location: clean || '/',
+            'Set-Cookie': prefCookieHeader(forcedLang),
+            'Cache-Control': 'no-store'
+          }
+        });
       }
     }
 
@@ -362,6 +373,16 @@ export default {
       return new Response(STF_COM_HOST_JS, {
         headers: { 'content-type': 'application/javascript; charset=utf-8', 'cache-control': 'no-store' },
       });
+    }
+
+    // account.html → minha-conta.html (links legados / Tattoo / bookmarks)
+    {
+      const acc = url.pathname.match(/^(?:\/(en|it|de|es|pl|sl))?\/account\.html$/i);
+      if (acc) {
+        const prefix = acc[1] ? `/${acc[1].toLowerCase()}` : '';
+        const dest = new URL(`${prefix}/minha-conta.html${url.search}`, url.origin);
+        return Response.redirect(dest.toString(), 301);
+      }
     }
 
     let originPath = br ? mapPathBr(url.pathname) : mapPathCom(url.pathname);

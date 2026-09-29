@@ -113,20 +113,29 @@ window.STF_MONEY = (function () {
 
   function visitorDisplayCurrency(countryCode) {
     const country = String(countryCode || visitorCountry()).toUpperCase();
-    if (isIntlHost()) return country === 'IT' ? 'EUR' : 'USD';
+    // Cobrança intl (.com / paths localizados): só USD ou EUR (PayPal/Stripe).
+    if (isIntlHost() || isVisitorLocalized()) {
+      return currencyForCountry(country) === 'EUR' ? 'EUR' : 'USD';
+    }
     const cur = currencyForCountry(country);
     return cur === 'BRL' ? 'BRL' : cur;
+  }
+
+  function intlPriceField(code) {
+    const c = String(code || '').toUpperCase();
+    if (!/^[A-Z]{3}$/.test(c)) return null;
+    return 'price' + c[0] + c.slice(1).toLowerCase();
   }
 
   function configuredForeignPrice(product, currency) {
     if (!product) return null;
     const cur = String(currency || 'USD').toUpperCase();
-    if (cur === 'EUR') {
-      const e = Number(product.priceEur);
-      return Number.isFinite(e) && e > 0 ? e : null;
+    const field = intlPriceField(cur);
+    if (field) {
+      const v = Number(product[field]);
+      if (Number.isFinite(v) && v > 0) return v;
     }
-    const u = Number(product.priceUsd);
-    return Number.isFinite(u) && u > 0 ? u : null;
+    return null;
   }
 
   async function formatProductForVisitor(product, config, countryCode) {

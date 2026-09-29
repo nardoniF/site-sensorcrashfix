@@ -1,0 +1,44 @@
+# Pin ao vivo (scf-com-proxy) — tip canônico
+
+O site em `.com` / `.com.br` **não** segue `main`. Serve o SHA em `cloudflare/scf-com-proxy.js` → `const COMMIT`.
+
+## Por que coisas “voltam”
+
+Cada `wrangler deploy` do proxy publica **um snapshot inteiro**. Se o tip pinado foi cortado de uma base velha (ex.: `main` em `slogan-menor`), some markup, lockup de logo, etc. que só existiam em outra branch.
+
+## Antes de mudar o COMMIT
+
+Checklist obrigatório no SHA que será pinado:
+
+1. `api/intl-money.js` existe
+2. `api/worker.js` contém `applyMarkupFxToIntlProducts`
+3. `js/checkout.js` contém `foreignUnitPrice`
+4. `images/brand/logo-lockup-pt.webp` (ou `logo-lockup.webp`) e `logo-icon-lockup.png` existem
+5. HTML público usa `logo-lockup--img` (não só `logo.jpg` + texto)
+6. Manual lote Crash: `docs/manuais/manual-instalacao-sensor-crash-fix-lote.html`
+7. Galeria smartwatch **sem** `kit-02-conteudo` / `kit-05-acompanha` / `kit-07-beneficios`
+8. Checkout EN usa `priceUsd` marcado (não BRL×FX cru ~$14)
+9. Landings SEO: `sensor-trincado.html` + `en/cracked-sensor.html` (+ IT/DE/ES)
+10. `account.html` redireciona para `minha-conta.html`
+
+Se faltar qualquer item: **não pinar**. Rebase/cherry-pick no tip canônico atual e só então atualizar `COMMIT`.
+
+## Remoções que não podem voltar
+
+- Slide conteúdo/acompanha do kit smartwatch (`kit-02-conteudo`, `kit-05-acompanha`)
+- Slide benefícios da galeria (`kit-07-beneficios`)
+- Foto Ultra de aplicação na loja (Ultra só no hero)
+- Cross-promo Tattoo Fix no rodapé (se removido no tip ao vivo)
+
+## Fluxo seguro
+
+1. Basear trabalho novo no tip que está ao vivo (`x-stf-commit` no response header), não em `main` antigo.
+2. Mudança pequena → commit no tip canônico (ou branch dele) → atualizar `COMMIT` para o SHA **deste** tip → deploy proxy.
+3. Se `api/worker.js` ou `api/intl-money.js` mudou → `npx wrangler deploy` em `api/` também.
+4. Validar: `curl -sI https://www.sensorcrashfix.com/ | grep x-stf-commit` e checkout EN com `priceUsd` marcado (não BRL×FX cru).
+
+## Proibido
+
+- Pinar um SHA que não contenha markup + lockups só porque a feature da branch “passou no teste local”.
+- Resetar o pin para uma branch antiga inteira para “restaurar logo/markup”.
+- Assumir que `main` = produção.

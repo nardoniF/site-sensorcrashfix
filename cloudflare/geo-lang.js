@@ -114,10 +114,26 @@ export function prefCookieHeader(lang, maxAgeSec = 60 * 60 * 24 * 365) {
 }
 
 /** Paths on .com that are the English default (no /de|/pl|… prefix). */
+/** Landings SEO com URL própria por idioma — não prefixar /es/cracked-sensor.html (404). */
+export const SEO_LANDING_BY_LANG = {
+  pt: '/sensor-trincado.html',
+  en: '/cracked-sensor.html',
+  it: '/it/sensore-incrinato.html',
+  de: '/de/sensor-gerissen.html',
+  es: '/es/sensor-roto.html'
+};
+
+const SEO_LANDING_FILES = new Set(
+  Object.values(SEO_LANDING_BY_LANG).map((p) => p.split('/').pop())
+);
+
 export function isComEnglishEntryPath(pathname) {
   const p = String(pathname || '');
   if (p === '/' || p === '' || p === '/index.html') return true;
   if (/^\/(en|it|de|es|pl|sl)(\/|$)/i.test(p)) return false;
+  // Root SEO files: só EN fica no root; outros idiomas usam SEO_LANDING_BY_LANG
+  const file = p.replace(/^\//, '');
+  if (SEO_LANDING_FILES.has(file)) return true;
   if (/^\/[a-z0-9_-]+\.html$/i.test(p)) return true;
   return false;
 }
@@ -125,6 +141,23 @@ export function isComEnglishEntryPath(pathname) {
 export function isBrHomePath(pathname) {
   const p = String(pathname || '');
   return p === '/' || p === '' || p === '/index.html';
+}
+
+/**
+ * Cross-domain (.com ↔ .com.br) redirects must carry stf_lang so the destination
+ * sets the cookie on the *correct* host. Without it, leftover cookies on each
+ * domain bounce forever (ERR_TOO_MANY_REDIRECTS).
+ */
+export function withStfLang(absoluteUrl, lang) {
+  const l = normalizeSiteLang(lang);
+  if (!l) return absoluteUrl;
+  try {
+    const u = new URL(absoluteUrl);
+    u.searchParams.set('stf_lang', l);
+    return u.toString();
+  } catch {
+    return absoluteUrl;
+  }
 }
 
 /**
@@ -140,9 +173,9 @@ export function localeRedirectTarget({ hostOrigin, pathname, search, br, preferr
   if (br) {
     if (!isBrHomePath(path)) return null;
     if (lang === 'pt') return null;
-    // Visitante intl na home BR → mercado .com no idioma certo
-    if (lang === 'en') return q ? `${COM}/${q}` : `${COM}/`;
-    return q ? `${COM}/${lang}/${q}` : `${COM}/${lang}/`;
+    // Visitante intl na home BR → mercado .com no idioma certo (+ stf_lang anti-loop)
+    if (lang === 'en') return withStfLang(q ? `${COM}/${q}` : `${COM}/`, 'en');
+    return withStfLang(q ? `${COM}/${lang}/${q}` : `${COM}/${lang}/`, lang);
   }
 
   if (!isComEnglishEntryPath(path)) return null;
@@ -152,10 +185,19 @@ export function localeRedirectTarget({ hostOrigin, pathname, search, br, preferr
   const file = isHome ? '' : path.replace(/^\//, '');
   const base = String(hostOrigin || COM).replace(/\/$/, '');
 
-  if (lang === 'pt') {
-    if (isHome) return q ? `${BR}/${q}` : `${BR}/`;
-    return `${BR}/${file}${q}`;
+  // Landings SEO: manda para a URL canônica do idioma (nunca /es/cracked-sensor.html)
+  if (file && SEO_LANDING_FILES.has(file)) {
+    if (lang === 'pt') return withStfLang(`${BR}${SEO_LANDING_BY_LANG.pt}${q}`, 'pt');
+    const destPath = SEO_LANDING_BY_LANG[lang] || SEO_LANDING_BY_LANG.en;
+    return `${base}${destPath}${q}`;
   }
+
+  if (lang === 'pt') {
+    // Cross-domain → always pin stf_lang=pt on .com.br
+    if (isHome) return withStfLang(q ? `${BR}/${q}` : `${BR}/`, 'pt');
+    return withStfLang(`${BR}/${file}${q}`, 'pt');
+  }
+  // Same-host locale prefix (/pl/, /de/, …) — cookie already works on this domain
   if (isHome) return q ? `${base}/${lang}/${q}` : `${base}/${lang}/`;
   return `${base}/${lang}/${file}${q}`;
 }

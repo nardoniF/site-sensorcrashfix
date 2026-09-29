@@ -13,7 +13,7 @@
     <header class="admin-header" id="doc-header">
         <nav class="container admin-nav">
             <div class="logo-area">
-                <a href="index.html" class="logo-img-link admin-logo-link"><img src="images/brand/logo.jpg" alt="Logo" class="main-logo-img"></a>
+                <a href="index.html" class="logo-img-link admin-logo-link"><img src="images/brand/logo.jpg?v=crash6" alt="Logo" class="main-logo-img"></a>
                 <div class="logo-text">DOCS</div>
             </div>
             <ul class="nav-links checkout-nav admin-toolbar">
@@ -49,7 +49,7 @@
                     <a href="#cupons">Cupons e comissionados</a>
                     <a href="#vendas-marketplace">Vendas dos marketplaces</a>
                     <a href="#flex">Flex ML — a pagar</a>
-                    <a href="#comunidade">Comunidade (fórum)</a>
+                    <!-- comunidade oculta -->
                     <a href="#testes">Testes unitários</a>
                     <a href="#frete">Frete</a>
                     <a href="#correios">Correios (passo a passo)</a>
@@ -86,7 +86,7 @@
                             <tr><td>Home</td><td><code>index.html</code></td><td><code>en/</code>, <code>it/</code></td><td><code>de/</code>, <code>es/</code>, <code>pl/</code> — FAQ/elogios em <code>data/home-content-l10n.json</code></td></tr>
                             <tr><td>Loja / checkout</td><td><code>loja.html</code>, <code>comprar.html</code></td><td><code>?lang=en|it</code></td><td><code>de|es|pl/loja.html</code> — overrides em <code>js/stf-i18n-{de,es,pl}-overrides.js</code></td></tr>
                             <tr><td>Footer / feedback</td><td>PT nativo</td><td><code>site-footer.js</code>, <code>site-feedback.js</code></td><td>mesmos scripts (objetos <code>de</code>/<code>es</code>/<code>pl</code>)</td></tr>
-                            <tr><td>Comunidade</td><td><code>comunidade.html</code></td><td>EN/IT em <code>forum.js</code></td><td><code>data/forum-l10n.json</code></td></tr>
+                            <!-- Comunidade oculta -->
                             <tr><td>Onde comprar / Minha conta</td><td><code>onde-comprar.html</code>, <code>minha-conta.html</code></td><td>EN/IT estático + <code>stf-i18n.js</code></td><td><code>applyOndeComprarDom</code> / <code>applyContaDom</code> (incl. forgot/reset e endereço intl)</td></tr>
                             <tr><td>Seletor de idioma</td><td colspan="3"><code>js/stf-lang-nav.js</code> — menu compacto nas 6 línguas</td></tr>
                             <tr><td>Detecção de mercado</td><td colspan="3"><code>catalogMarket()</code> em <code>js/stf-site.js</code> — <code>/en|it|de|es|pl/</code> → catálogo internacional</td></tr>
@@ -146,6 +146,12 @@
                 </section>
 
                 <section id="secrets" class="admin-doc-section">
+                    <div class="admin-status warning" style="margin:12px 0">
+                        <strong>Crash Fix — dados isolados:</strong> Worker <code>sensorcrashfix-payments</code> usa KV <code>scf-store</code> e D1 <code>scf-data</code> (não compartilhar com Tattoo).
+                        Secrets de pagamento/frete devem ser <em>copiados</em> do Worker Tattoo (mesmos provedores, Worker separado).
+                        Sem secrets, a aba API mostra “Não configurado”.
+                    </div>
+
                     <h2>Secrets no Cloudflare Worker</h2>
                     <p>Configurar na pasta <code>api/</code> com <code>npx wrangler secret put NOME</code> ou no Dashboard Cloudflare.</p>
                     <table class="admin-doc-table">
@@ -170,22 +176,22 @@
                             <tr><td><code>ZAPI_TOKEN</code></td><td>z-api.io → token da instância</td></tr>
                             <tr><td><code>ZAPI_CLIENT_TOKEN</code></td><td>Opcional, se a instância exigir</td></tr>
                             <tr><td><code>GA4_API_SECRET</code></td><td>GA4 → Measurement Protocol</td></tr>
-                            <tr><td><code>GA4_MEASUREMENT_ID</code></td><td>Opcional (padrão no código: G-TFLZHJG9RN)</td></tr>
+                            <tr><td><code>GA4_MEASUREMENT_ID</code></td><td>Opcional (padrão no código: G-L852DLJ9KV)</td></tr>
                             <tr><td><code>STRIPE_SECRET_KEY</code></td><td>Stripe Dashboard → Developers → API keys → <code>sk_live_…</code></td></tr>
                             <tr><td><code>STRIPE_PUBLISHABLE_KEY</code></td><td>Stripe Dashboard → Developers → API keys → <code>pk_live_…</code></td></tr>
                             <tr><td><code>STRIPE_WEBHOOK_SECRET</code></td><td>Stripe → Webhooks → endpoint → Signing secret</td></tr>
-                            <tr><td><code>ML_APP_ID</code></td><td>Mercado Livre → Meus aplicativos → App ID</td></tr>
-                            <tr><td><code>ML_SECRET</code></td><td>Mercado Livre → Meus aplicativos → Client Secret</td></tr>
+                            <tr><td><code>ML_CLIENT_ID</code></td><td>Mercado Livre → Meus aplicativos → App ID</td></tr>
+                            <tr><td><code>ML_CLIENT_SECRET</code></td><td>Mercado Livre → Meus aplicativos → Client Secret</td></tr>
                             <tr><td><code>ML_REFRESH_TOKEN</code></td><td>Obtido via OAuth ML — renova automaticamente</td></tr>
-                            <tr><td><code>AMZ_CLIENT_ID</code></td><td>Amazon SP-API → Apps &amp; Services → LWA Client ID</td></tr>
-                            <tr><td><code>AMZ_CLIENT_SECRET</code></td><td>Amazon SP-API → LWA Client Secret</td></tr>
-                            <tr><td><code>AMZ_REFRESH_TOKEN</code></td><td>Obtido via fluxo OAuth SP-API</td></tr>
+                            <tr><td><code>AMZ_LWA_CLIENT_ID</code></td><td>Amazon SP-API → Apps &amp; Services → LWA Client ID</td></tr>
+                            <tr><td><code>AMZ_LWA_CLIENT_SECRET</code></td><td>Amazon SP-API → LWA Client Secret</td></tr>
+                            <tr><td><code>AMZ_LWA_REFRESH_TOKEN</code></td><td>Obtido via fluxo OAuth SP-API</td></tr>
                             <tr><td><code>AMZ_SELLER_ID</code></td><td>Seller Central → Account Info → Merchant Token</td></tr>
                             <tr><td><code>AMZ_MARKETPLACE_ID</code></td><td>Ex.: <code>A2Q3Y263D00KWC</code> (BR). Lista em docs SP-API</td></tr>
                             <tr><td><code>SHOPEE_PARTNER_ID</code></td><td>Shopee Open Platform → App info → Partner ID</td></tr>
                             <tr><td><code>SHOPEE_PARTNER_KEY</code></td><td>Shopee Open Platform → App info → Partner Key</td></tr>
                             <tr><td><code>SHOPEE_SHOP_ID</code></td><td>ID da loja — obtido no callback OAuth Shopee</td></tr>
-                            <tr><td><code>SHOPEE_ACCESS_TOKEN</code></td><td>Token OAuth Shopee — renova automaticamente</td></tr>
+                            <tr><td><code>SHOPEE_SHOP_ID</code> (opc.)</td><td>Shop ID — token OAuth fica no KV (<code>shopee:token</code>), não como secret</td></tr>
                             <tr><td><code>SUPERFRETE_TOKEN</code></td><td>web.superfrete.com → Integrações → Token</td></tr>
                         </tbody>
                     </table>
@@ -341,9 +347,9 @@
                     <table class="admin-doc-table">
                         <thead><tr><th>Marketplace</th><th>Secrets</th></tr></thead>
                         <tbody>
-                            <tr><td>Mercado Livre</td><td><code>ML_APP_ID</code>, <code>ML_SECRET</code>, <code>ML_REFRESH_TOKEN</code></td></tr>
-                            <tr><td>Amazon SP-API</td><td><code>AMZ_CLIENT_ID</code>, <code>AMZ_CLIENT_SECRET</code>, <code>AMZ_REFRESH_TOKEN</code>, <code>AMZ_SELLER_ID</code>, <code>AMZ_MARKETPLACE_ID</code></td></tr>
-                            <tr><td>Shopee</td><td><code>SHOPEE_PARTNER_ID</code>, <code>SHOPEE_PARTNER_KEY</code>, <code>SHOPEE_SHOP_ID</code>, <code>SHOPEE_ACCESS_TOKEN</code></td></tr>
+                            <tr><td>Mercado Livre</td><td><code>ML_CLIENT_ID</code>, <code>ML_CLIENT_SECRET</code>, <code>ML_REFRESH_TOKEN</code></td></tr>
+                            <tr><td>Amazon SP-API</td><td><code>AMZ_LWA_CLIENT_ID</code>, <code>AMZ_LWA_CLIENT_SECRET</code>, <code>AMZ_LWA_REFRESH_TOKEN</code>, <code>AMZ_SELLER_ID</code>, <code>AMZ_MARKETPLACE_ID</code></td></tr>
+                            <tr><td>Shopee</td><td><code>SHOPEE_PARTNER_ID</code> (vars), <code>SHOPEE_PARTNER_KEY</code>; token OAuth no KV</td></tr>
                         </tbody>
                     </table>
                     <h3>Consolidado — comparação anual (YoY)</h3>
@@ -377,7 +383,7 @@
                     </ol>
                 </section>
 
-                <section id="comunidade" class="admin-doc-section">
+                <section id="comunidade" class="admin-doc-section" hidden><!-- oculta: comunidade desligada -->
                     <h2>Comunidade (fórum)</h2>
                     <p>Espaço onde clientes e usuários discutem dúvidas, dicas e experiências com o produto. Disponível em <a href="comunidade.html" target="_blank" rel="noopener">comunidade.html</a>.</p>
                     <h3>Controle de acesso</h3>

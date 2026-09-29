@@ -1,9 +1,8 @@
 name = "sensorcrashfix-payments"
 # Domínio/Worker públicos = Crash Fix.
-# Infra de ops: reutilizar a MESMA conta Cloudflare e os MESMOS secrets
-# (Mercado Pago, Asaas, Correios, PayPal/Stripe, Z-API, Resend, etc.) do Tattoo.
-# KV/D1 abaixo apontam para os namespaces da conta (pode ser os mesmos do Tattoo
-# se quiser um único Admin/pedidos; ou crie scf-* novos se preferir separar dados).
+# Secrets de pagamento/frete: mesmos PROVEDORES do Tattoo (valores copiados no Worker Crash).
+# DADOS: KV + D1 DEVEM ser exclusivos do Crash — NÃO reutilizar IDs do Tattoo.
+# Se o Admin Crash listar pedidos do Tattoo, rode: npm run isolate-store
 main = "worker.js"
 compatibility_date = "2024-01-01"
 compatibility_flags = ["nodejs_compat"]
@@ -11,12 +10,12 @@ workers_dev = true
 
 [[kv_namespaces]]
 binding = "STORE_KV"
-id = "4184c034aab941e58ce5cc1e3abaecdc"
+id = "c28d9f1e89dd41348ad7080b02d63054"
 
 [[d1_databases]]
 binding = "CLICKS_DB"
-database_name = "scf-clicks"
-database_id = "94ffffbb-dd85-41f1-8301-521f19b75f75"
+database_name = "scf-data"
+database_id = "0f7efbc1-6786-4f01-9388-e2ccf336fabb"
 
 [[routes]]
 pattern = "api.sensorcrashfix.com.br/*"
@@ -29,14 +28,16 @@ binding = "AI"
 ADMIN_USERNAME = "admin"
 # Conta Cloudflare (dashboard URL) — uso real de KV no Admin via GraphQL Analytics
 CF_ACCOUNT_ID = "80ab4f6ff1553d2ee530c0880edce594"
-# D1 scf-clicks — cota de rows no banner Admin → Cliques
-CF_D1_DATABASE_ID = "94ffffbb-dd85-41f1-8301-521f19b75f75"
+# D1 scf-data — exclusivo Crash (pedidos + cliques + marketplace)
+CF_D1_DATABASE_ID = "0f7efbc1-6786-4f01-9388-e2ccf336fabb"
 # Shopee Open Platform — app SensorCrashFix Pedidos (Live Partner ID)
 SHOPEE_PARTNER_ID = "2041463"
 
 [triggers]
-# 59 2 * * * = 23:59 America/Sao_Paulo (UTC−3) — relatórios mensais no último dia do mês
-crons = ["0 */4 * * *", "0 3,15 * * *", "30 2 * * *", "59 2 * * *"]
+# Conta Free = máx. 5 cron triggers no TOTAL (Tattoo já consome a cota).
+# Deixe vazio no Crash até Workers Paid ou até liberar slots no Tattoo.
+# crons = ["0 */4 * * *", "0 3,15 * * *", "30 2 * * *", "59 2 * * *"]
+crons = []
 
 # Secrets (wrangler secret put NOME):
 # CF_API_TOKEN         — Account Analytics Read (banner KV real no Admin)

@@ -203,9 +203,11 @@ window.STF_PRODUCT_MERGE = (function () {
     }
     supplementI18nFields(merged, localProduct);
     if (isEmptyValue(merged.markets) && localProduct?.markets) merged.markets = localProduct.markets;
-    if (isEmptyValue(merged.images) && Array.isArray(localProduct?.images) && localProduct.images.length) {
-      merged.images = localProduct.images;
+    // Galeria do store-config.json local manda sobre KV antigo.
+    if (Array.isArray(localProduct?.images) && localProduct.images.length) {
+      merged.images = localProduct.images.slice();
     }
+    if (localProduct?.image) merged.image = localProduct.image;
     if (isEmptyValue(merged.deviceType) && localProduct?.deviceType) merged.deviceType = localProduct.deviceType;
     if (isEmptyValue(merged.watchKind) && localProduct?.watchKind) merged.watchKind = localProduct.watchKind;
     return merged;
