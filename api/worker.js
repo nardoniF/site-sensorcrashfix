@@ -2172,6 +2172,12 @@ function resolvePixConfig(pix, fallback = DEFAULT_CONFIG.pix) {
   return isPixConfigValid(merged) ? merged : { ...fb };
 }
 
+/** Slides que o usuário removeu — nunca reaparecem no config público (mesmo se o KV ainda tiver). */
+function isDroppedPublicGalleryUrl(url) {
+  const n = String(url || '').toLowerCase();
+  return /kit-02-conteudo|kit-05-acompanha|kit-07-beneficios|\/05-lente\.jpg(\?|$)|sensor-rachado-dedo/i.test(n);
+}
+
 function publicProductFields(p, config) {
   const row = {
     id: p.id,
@@ -2206,7 +2212,9 @@ function publicProductFields(p, config) {
   if (p.color) row.color = p.color;
   if (p.colorEn) row.colorEn = p.colorEn;
   if (Array.isArray(p.markets) && p.markets.length) row.markets = p.markets;
-  if (Array.isArray(p.images) && p.images.length) row.images = p.images;
+  if (Array.isArray(p.images) && p.images.length) {
+    row.images = p.images.filter((u) => !isDroppedPublicGalleryUrl(u));
+  }
   if (p.priceUsd != null) row.priceUsd = Number(p.priceUsd);
   if (p.priceEur != null) row.priceEur = Number(p.priceEur);
   if (p.priceGbp != null) row.priceGbp = Number(p.priceGbp);
