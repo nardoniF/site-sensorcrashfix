@@ -8,48 +8,42 @@
   const SMARTBAND_IDS = new Set(['kit-smartband-crashfix', 'optical-lens-smartband-intl']);
 
   const PT_GALLERY = [
-    '/images/kit-gallery/kit-01-embalagem.jpg',
     '/images/kit-gallery/kit-03-aplicacao.jpg',
-    '/images/kit-gallery/kit-02-conteudo.jpg',
+    '/images/kit-gallery/kit-01-embalagem.jpg',
     '/images/kit-gallery/kit-06-antes-depois.jpg'
   ];
 
   const EN_KIT_GALLERY = [
-    '/images/kit-gallery/en/kit-01-embalagem.jpg',
     '/images/kit-gallery/en/kit-03-aplicacao.jpg',
-    '/images/kit-gallery/en/kit-02-conteudo.jpg',
+    '/images/kit-gallery/en/kit-01-embalagem.jpg',
     '/images/kit-gallery/en/kit-06-antes-depois.jpg'
   ];
 
   const IT_KIT_GALLERY = [
-    '/images/kit-gallery/it/kit-01-embalagem.jpg',
     '/images/kit-gallery/it/kit-03-aplicacao.jpg',
-    '/images/kit-gallery/it/kit-02-conteudo.jpg',
+    '/images/kit-gallery/it/kit-01-embalagem.jpg',
     '/images/kit-gallery/it/kit-06-antes-depois.jpg'
   ];
 
   /**
    * .com / EN / IT — mesmo álbum na home, loja e checkout:
-   * embalagem, aplicação, conteúdo, antes/depois.
+   * embalagem, aplicação, antes/depois (sem conteúdo/acompanha).
    */
   const LENS_GALLERY_EN = [
     '/images/kit-gallery/en/kit-01-embalagem.jpg',
     '/images/kit-gallery/en/kit-03-aplicacao.jpg',
-    '/images/kit-gallery/en/kit-02-conteudo.jpg',
     '/images/kit-gallery/en/kit-06-antes-depois.jpg'
   ];
 
   const LENS_GALLERY_IT = [
     '/images/kit-gallery/it/kit-01-embalagem.jpg',
     '/images/kit-gallery/it/kit-03-aplicacao.jpg',
-    '/images/kit-gallery/it/kit-02-conteudo.jpg',
     '/images/kit-gallery/it/kit-06-antes-depois.jpg'
   ];
 
   const LENS_GALLERY_SHARED = [
     '/images/kit-gallery/kit-01-embalagem.jpg',
     '/images/kit-gallery/kit-03-aplicacao.jpg',
-    '/images/kit-gallery/kit-02-conteudo.jpg',
     '/images/kit-gallery/kit-06-antes-depois.jpg'
   ];
 
@@ -184,20 +178,20 @@
     });
   }
 
-  /** Slides removidos / 404 — Ultra (hero) e arquivos mortos não entram na galeria. */
+  /** Slides removidos / 404 — conteúdo, acompanha, benefícios e Ultra hero não voltam. */
   function isDroppedGalleryUrl(url) {
     const n = normalizeUrl(url).toLowerCase();
-    return /kit-05-acompanha|kit-07-beneficios|\/05-lente\.jpg(\?|$)|sensor-rachado-dedo/i.test(n);
+    return /kit-02-conteudo|kit-05-acompanha|kit-07-beneficios|\/05-lente\.jpg(\?|$)|sensor-rachado-dedo/i.test(n);
   }
 
   function resolveImages(product) {
     const lang = detectLang();
     // Kit + smartband: álbum canônico (não misturar com images velhas do KV).
     if (isSmartbandProduct(product)) {
-      return smartbandAlbum(lang);
+      return smartbandAlbum(lang).filter((u) => !isDroppedGalleryUrl(u));
     }
     if (isKitProduct(product)) {
-      return kitAlbum(lang);
+      return kitAlbum(lang).filter((u) => !isDroppedGalleryUrl(u));
     }
     const fromAlbum = Array.isArray(product?.images) ? product.images : [];
     const primary = product?.image || '';
