@@ -96,6 +96,24 @@ nav,
     gap: 3px;
     min-width: 0;
 }
+.logo-lockup--img {
+    text-decoration: none;
+    align-self: center;
+    line-height: 0;
+}
+/* Lockup já traz o emblema — some o círculo separado no desktop */
+.logo-area:has(.logo-lockup--img) > .logo-img-link {
+    display: none;
+}
+.logo-lockup-img {
+    display: block;
+    /* Lockup maior para slogan/marca bem legíveis no header */
+    height: 112px;
+    width: auto;
+    max-width: min(400px, 38vw);
+    object-fit: contain;
+    object-position: left center;
+}
 .logo-tagline {
     margin: 0;
     font-size: 0.82rem;
@@ -320,6 +338,7 @@ nav,
     .nav-main { gap: 3px 7px; }
     .logo-text { font-size: 1.2rem; }
     .logo-img-link { width: 76px; height: 76px; }
+    .logo-lockup-img { height: 96px; max-width: min(340px, 36vw); }
     .site-social { min-width: 96px; padding: 0 12px; }
 }
 
@@ -1876,7 +1895,11 @@ footer,
     .logo-tagline { font-size: 0.68rem; }
 
     /* Home mobile: marca no hero, header compacto + hambúrguer */
-    .home-page .logo-area .logo-lockup { display: none; }
+    .home-page .logo-area .logo-lockup,
+    .home-page .logo-area .logo-lockup--img { display: none; }
+    .home-page .logo-area:has(.logo-lockup--img) > .logo-img-link {
+        display: flex;
+    }
     .home-page .site-social { display: none; }
     .home-page .site-nav {
         justify-content: space-between;
