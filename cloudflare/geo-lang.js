@@ -114,10 +114,26 @@ export function prefCookieHeader(lang, maxAgeSec = 60 * 60 * 24 * 365) {
 }
 
 /** Paths on .com that are the English default (no /de|/pl|… prefix). */
+/** Landings SEO com URL própria por idioma — não prefixar /es/cracked-sensor.html (404). */
+export const SEO_LANDING_BY_LANG = {
+  pt: '/sensor-trincado.html',
+  en: '/cracked-sensor.html',
+  it: '/it/sensore-incrinato.html',
+  de: '/de/sensor-gerissen.html',
+  es: '/es/sensor-roto.html'
+};
+
+const SEO_LANDING_FILES = new Set(
+  Object.values(SEO_LANDING_BY_LANG).map((p) => p.split('/').pop())
+);
+
 export function isComEnglishEntryPath(pathname) {
   const p = String(pathname || '');
   if (p === '/' || p === '' || p === '/index.html') return true;
   if (/^\/(en|it|de|es|pl|sl)(\/|$)/i.test(p)) return false;
+  // Root SEO files: só EN fica no root; outros idiomas usam SEO_LANDING_BY_LANG
+  const file = p.replace(/^\//, '');
+  if (SEO_LANDING_FILES.has(file)) return true;
   if (/^\/[a-z0-9_-]+\.html$/i.test(p)) return true;
   return false;
 }
@@ -168,6 +184,13 @@ export function localeRedirectTarget({ hostOrigin, pathname, search, br, preferr
   const isHome = path === '/' || path === '' || path === '/index.html';
   const file = isHome ? '' : path.replace(/^\//, '');
   const base = String(hostOrigin || COM).replace(/\/$/, '');
+
+  // Landings SEO: manda para a URL canônica do idioma (nunca /es/cracked-sensor.html)
+  if (file && SEO_LANDING_FILES.has(file)) {
+    if (lang === 'pt') return withStfLang(`${BR}${SEO_LANDING_BY_LANG.pt}${q}`, 'pt');
+    const destPath = SEO_LANDING_BY_LANG[lang] || SEO_LANDING_BY_LANG.en;
+    return `${base}${destPath}${q}`;
+  }
 
   if (lang === 'pt') {
     // Cross-domain → always pin stf_lang=pt on .com.br

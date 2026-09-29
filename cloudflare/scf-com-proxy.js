@@ -77,14 +77,8 @@ function isStaticAsset(pathname) {
 const COM_SHARED_ROOT_PAGES = new Set([
   '/rastreio.html',
   '/google7b1cb2c1f70b0fda.html',
-  '/sensor-trincado.html', // landing PT também acessível no .com (hreflang / bookmarks)
-  '/cracked-sensor.html',
-  '/account.html',
-  '/minha-conta.html',
-  '/comprar.html',
-  '/loja.html',
-  '/comunidade.html',
-  '/onde-comprar.html',
+  // Landing PT no root — sem isto o .com mapeava para /en/sensor-trincado.html (404).
+  '/sensor-trincado.html',
 ]);
 
 const INTL_LANGS = ['it', 'de', 'es', 'pl', 'sl'];

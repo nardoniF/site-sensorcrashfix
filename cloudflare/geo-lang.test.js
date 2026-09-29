@@ -148,3 +148,25 @@ test('proxy importa geo-lang', async () => {
   assert.match(src, /localeRedirectTarget/);
   assert.match(src, /CF-IPCountry/);
 });
+
+test('localeRedirectTarget cracked-sensor SEO per lang', () => {
+  const base = {
+    hostOrigin: 'https://www.sensorcrashfix.com',
+    pathname: '/cracked-sensor.html',
+    search: '',
+    br: false
+  };
+  assert.equal(localeRedirectTarget({ ...base, preferred: 'en' }), null);
+  assert.equal(
+    localeRedirectTarget({ ...base, preferred: 'es' }),
+    'https://www.sensorcrashfix.com/es/sensor-roto.html'
+  );
+  assert.equal(
+    localeRedirectTarget({ ...base, preferred: 'de' }),
+    'https://www.sensorcrashfix.com/de/sensor-gerissen.html'
+  );
+  assert.match(
+    localeRedirectTarget({ ...base, preferred: 'pt' }) || '',
+    /sensorcrashfix\.com\.br\/sensor-trincado\.html/
+  );
+});
