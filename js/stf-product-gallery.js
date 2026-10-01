@@ -293,35 +293,27 @@
     });
   }
 
-  /** Square album = height of the benefit icons grid (contain, never crop). */
+  /**
+   * TattooFix: quadro fixo via CSS (min(100%, 380px) + aspect-ratio 1/1).
+   * Não forçar altura/largura por JS — isso inflava a galeria no Crash.
+   */
   function syncProductAlbumToBenefits() {
-    const benefits = document.querySelector('#produtos .product-benefits-grid');
     const wraps = document.querySelectorAll('#produtos .product-image-wrap');
-    if (!benefits || !wraps.length) return;
-    const mediaCol = document.querySelector('#produtos .product-solution-media');
-    const mediaW = mediaCol ? mediaCol.getBoundingClientRect().width : 0;
-    const h = Math.round(benefits.getBoundingClientRect().height);
-    if (h < 120) return;
-    const side = Math.min(h, mediaW > 40 ? Math.floor(mediaW) : h);
     wraps.forEach((wrap) => {
-      wrap.style.width = side + 'px';
-      wrap.style.height = side + 'px';
-      wrap.style.maxWidth = '100%';
-      wrap.style.aspectRatio = '1 / 1';
+      wrap.style.width = '';
+      wrap.style.height = '';
+      wrap.style.maxWidth = '';
+      wrap.style.aspectRatio = '';
     });
+    const cta = document.querySelector('#produtos .btn-product-cta');
+    if (cta) {
+      cta.style.width = '';
+      cta.style.maxWidth = '';
+    }
   }
 
   function watchProductAlbumSize() {
     syncProductAlbumToBenefits();
-    const benefits = document.querySelector('#produtos .product-benefits-grid');
-    if (!benefits || typeof ResizeObserver === 'undefined') {
-      window.addEventListener('resize', syncProductAlbumToBenefits);
-      return;
-    }
-    const ro = new ResizeObserver(() => syncProductAlbumToBenefits());
-    ro.observe(benefits);
-    const media = document.querySelector('#produtos .product-solution-media');
-    if (media) ro.observe(media);
   }
 
   /** Hide kit packaging block on lens-only markets. */
