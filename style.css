@@ -822,20 +822,24 @@ html[lang="it"] .nav-actions { gap: 6px; }
 .card i, .benefit-card i { font-size: 2.25rem; color: var(--primary); margin-bottom: 18px; }
 .card h3, .benefit-card h3 { margin-bottom: 10px; font-size: 1.25rem; }
 
-/* Problema: centralizado na viewport (espaço igual em cima/baixo), sem vazar #produtos.
-   Mesmo molde do #contato. NÃO altera #produtos (congelado). */
+/* Problema: conteúdo no alto (logo abaixo do menu), seção preenche a viewport
+   para não vazar o título de #produtos. NÃO altera #produtos (congelado). */
 #problema.content-section {
     min-height: calc(100svh - 70px);
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding-top: 60px;
-    padding-bottom: 0;
+    align-items: stretch;
+    justify-content: flex-start;
+    /* scroll-pad 70 + 80 ≈ limpa header ~130 e deixa ~20px de ar */
+    padding-top: 80px;
+    padding-bottom: 64px;
 }
 #problema.content-section > .container {
     width: 100%;
+    /* .container { margin:auto } no flex column centraliza na vertical — anula */
+    margin-top: 0;
+    margin-bottom: 0;
 }
 #problema {
     scroll-margin-top: 70px;
