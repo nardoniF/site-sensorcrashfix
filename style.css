@@ -822,17 +822,17 @@ html[lang="it"] .nav-actions { gap: 6px; }
 .card i, .benefit-card i { font-size: 2.25rem; color: var(--primary); margin-bottom: 18px; }
 .card h3, .benefit-card h3 { margin-bottom: 10px; font-size: 1.25rem; }
 
-/* Problema: preenche a viewport + margem inferior (como respiro do Tattoo c/ paliativos).
-   #paliativos está oculto no Crash — sem isso o título de #produtos vazava na tela.
-   NÃO altera #produtos (layout congelado). Conteúdo no topo — sem centralizar. */
+/* Problema: centralizado na viewport (espaço igual em cima/baixo), sem vazar #produtos.
+   Mesmo molde do #contato. NÃO altera #produtos (congelado). */
 #problema.content-section {
-    padding: 72px 0 120px;
-    min-height: 100svh;
+    min-height: calc(100svh - 70px);
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-start;
+    align-items: center;
+    justify-content: center;
+    padding-top: 60px;
+    padding-bottom: 0;
 }
 #problema.content-section > .container {
     width: 100%;
