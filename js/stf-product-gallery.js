@@ -293,7 +293,10 @@
     });
   }
 
-  /** Square album = height of the benefit icons grid (contain, never crop). */
+  /**
+   * Quadro da galeria = mesma altura do grid 3×2 de ícones (molde Tattoo).
+   * Largura preenche a coluna da mídia; setas ficam nas faixas laterais via CSS.
+   */
   function syncProductAlbumToBenefits() {
     const benefits = document.querySelector('#produtos .product-benefits-grid');
     const wraps = document.querySelectorAll('#produtos .product-image-wrap');
@@ -302,13 +305,19 @@
     const mediaW = mediaCol ? mediaCol.getBoundingClientRect().width : 0;
     const h = Math.round(benefits.getBoundingClientRect().height);
     if (h < 120) return;
-    const side = Math.min(h, mediaW > 40 ? Math.floor(mediaW) : h);
+    const width = mediaW > 40 ? Math.floor(mediaW) : h;
+    const height = h;
     wraps.forEach((wrap) => {
-      wrap.style.width = side + 'px';
-      wrap.style.height = side + 'px';
+      wrap.style.width = width + 'px';
+      wrap.style.height = height + 'px';
       wrap.style.maxWidth = '100%';
-      wrap.style.aspectRatio = '1 / 1';
+      wrap.style.aspectRatio = 'auto';
     });
+    const cta = mediaCol && mediaCol.querySelector('.btn-product-cta');
+    if (cta) {
+      cta.style.width = width + 'px';
+      cta.style.maxWidth = '100%';
+    }
   }
 
   function watchProductAlbumSize() {
