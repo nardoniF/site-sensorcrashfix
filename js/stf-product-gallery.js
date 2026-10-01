@@ -294,8 +294,9 @@
   }
 
   /**
-   * TattooFix: quadro fixo via CSS (min(100%, 380px) + aspect-ratio 1/1).
-   * Não forçar altura/largura por JS — isso inflava a galeria no Crash.
+   * FROZEN #produtos (2026-10-01): TattooFix usa CSS fixo min(100%,380px)+1/1.
+   * PROIBIDO setar width/height/aspectRatio em px aqui — isso inflava a galeria.
+   * Só limpa estilos inline residuais. Ver .cursor/rules/produtos-layout-freeze.mdc
    */
   function syncProductAlbumToBenefits() {
     const wraps = document.querySelectorAll('#produtos .product-image-wrap');

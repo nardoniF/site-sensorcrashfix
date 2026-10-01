@@ -20,6 +20,10 @@ Checklist obrigatório no SHA que será pinado:
 8. Checkout EN usa `priceUsd` marcado (não BRL×FX cru ~$14)
 9. Landings SEO: `sensor-trincado.html` + `en/cracked-sensor.html` (+ IT/DE/ES)
 10. `account.html` redireciona para `minha-conta.html`
+11. `#produtos` congelado (TattooFix): `style.css` tem `width: min(100%, 380px)` em `#produtos .product-image-wrap`
+12. `js/stf-product-gallery.js` **não** seta `wrap.style.width` / `height` para dimensionar a galeria
+13. Homes **sem** `product-image-wrap--lg`; CTA `.btn-product-cta` compacto (`inline-block`, não faixa 100%)
+14. `bash scripts/check-produtos-layout-freeze.sh` passa (OK)
 
 Se faltar qualquer item: **não pinar**. Rebase/cherry-pick no tip canônico atual e só então atualizar `COMMIT`.
 
@@ -29,6 +33,7 @@ Se faltar qualquer item: **não pinar**. Rebase/cherry-pick no tip canônico atu
 - Slide benefícios da galeria (`kit-07-beneficios`)
 - Foto Ultra de aplicação na loja (Ultra só no hero)
 - Cross-promo Tattoo Fix no rodapé (se removido no tip ao vivo)
+- Layout antigo de `#produtos` (galeria full-width / sync JS que inflava / CTA faixa larga) — ver `.cursor/rules/produtos-layout-freeze.mdc`
 
 ## Fluxo seguro
 
@@ -42,3 +47,4 @@ Se faltar qualquer item: **não pinar**. Rebase/cherry-pick no tip canônico atu
 - Pinar um SHA que não contenha markup + lockups só porque a feature da branch “passou no teste local”.
 - Resetar o pin para uma branch antiga inteira para “restaurar logo/markup”.
 - Assumir que `main` = produção.
+- Pinar tip que tenha revertido o layout `#produtos` congelado (quadro 380px TattooFix).
