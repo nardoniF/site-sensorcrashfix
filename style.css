@@ -837,6 +837,9 @@ html[lang="it"] .nav-actions { gap: 6px; }
 }
 #problema.content-section > .container {
     width: 100%;
+    /* .container { margin:auto } no flex column centraliza na vertical — anula */
+    margin-top: 0;
+    margin-bottom: 0;
 }
 #problema {
     scroll-margin-top: 70px;
