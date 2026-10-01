@@ -453,7 +453,9 @@ html[lang="it"] .nav-actions { gap: 6px; }
   display: block;
   margin: 0 auto 15px;
 }
-/* #produtos: CSS espelhado do Sensor TattooFix (só esta seção) */
+/* FROZEN #produtos — NÃO ALTERAR layout (pedido dono 2026-10-01).
+   Molde TattooFix: quadro min(100%,380px) + aspect-ratio 1/1 + CTA inline-block.
+   Ver .cursor/rules/produtos-layout-freeze.mdc */
 
 .kit-box {
   background: #0a0a0a;
@@ -504,7 +506,7 @@ html[lang="it"] .nav-actions { gap: 6px; }
 }
 
 
-/* Produtos: CSS copiado do Sensor TattooFix (só #produtos) — acento Crash cyan */
+/* FROZEN: métricas TattooFix — não “melhorar”, não full-width, não cover */
 #produtos .product-solution-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
