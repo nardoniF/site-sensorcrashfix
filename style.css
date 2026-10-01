@@ -831,7 +831,8 @@ html[lang="it"] .nav-actions { gap: 6px; }
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
-    padding-top: 28px;
+    /* scroll-pad 70 + 80 ≈ limpa header ~130 e deixa ~20px de ar */
+    padding-top: 80px;
     padding-bottom: 64px;
 }
 #problema.content-section > .container {
