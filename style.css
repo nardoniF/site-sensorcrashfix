@@ -821,8 +821,20 @@ html[lang="it"] .nav-actions { gap: 6px; }
 .card i, .benefit-card i { font-size: 2.25rem; color: var(--primary); margin-bottom: 18px; }
 .card h3, .benefit-card h3 { margin-bottom: 10px; font-size: 1.25rem; }
 
-/* Problema: cards compactos, mas com o mesmo respiro do menu das outras seções */
-#problema.content-section { padding: 72px 0 28px; }
+/* Problema: cards compactos; seção preenche a viewport p/ não vazar o título de #produtos.
+   NÃO altera #produtos (layout congelado). Conteúdo fica no topo — sem centralizar. */
+#problema.content-section {
+    padding: 72px 0 96px;
+    min-height: calc(100svh - 70px);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+#problema.content-section > .container {
+    width: 100%;
+}
 #problema .section-title { margin-bottom: 8px; }
 #problema .problem-intro {
     margin-bottom: 12px;
