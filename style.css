@@ -367,7 +367,8 @@ html[lang="it"] .nav-actions { gap: 6px; }
     align-items: center;
     padding-top: 32px;
     padding-bottom: 48px;
-    scroll-margin-top: 0;
+    /* Logo → #top: cancelar scroll-padding 70px vs header ~130px, senão o hero sobe sob o menu */
+    scroll-margin-top: 60px;
 }
 .home-page .hero > .container { width: 100%; max-width: 100%; }
 .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 55px; align-items: center; min-width: 0; }
