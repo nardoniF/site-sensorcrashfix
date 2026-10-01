@@ -911,6 +911,23 @@ body.stf-lens-only .kit-box { display: none !important; }
 /* CONTATO */
 .contact-box { background: var(--card); padding: 28px; border-radius: 30px; border: 1px solid #222; text-align: center; max-width: 700px; margin: auto; }
 .contact-box p { color: var(--gray); margin-bottom: 18px; }
+
+/* Contato: caixa centralizada na viewport (espaço igual em cima e embaixo).
+   Só #contato — não altera #produtos (congelado) nem #problema. */
+#contato.content-section {
+    min-height: calc(100svh - 70px);
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 72px 0;
+}
+#contato {
+    scroll-margin-top: 70px;
+}
+#contato > .container {
+    width: 100%;
+}
 .contact-email { margin-bottom: 22px !important; }
 .contact-email a { color: var(--gold); text-decoration: none; font-weight: 600; }
 .contact-email a:hover { text-decoration: underline; }
