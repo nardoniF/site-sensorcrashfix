@@ -294,43 +294,26 @@
   }
 
   /**
-   * Quadro da galeria = mesma altura do grid 3×2 de ícones (molde Tattoo).
-   * Largura preenche a coluna da mídia; setas ficam nas faixas laterais via CSS.
+   * TattooFix: quadro fixo via CSS (min(100%, 380px) + aspect-ratio 1/1).
+   * Não forçar altura/largura por JS — isso inflava a galeria no Crash.
    */
   function syncProductAlbumToBenefits() {
-    const benefits = document.querySelector('#produtos .product-benefits-grid');
     const wraps = document.querySelectorAll('#produtos .product-image-wrap');
-    if (!benefits || !wraps.length) return;
-    const mediaCol = document.querySelector('#produtos .product-solution-media');
-    const mediaW = mediaCol ? mediaCol.getBoundingClientRect().width : 0;
-    const h = Math.round(benefits.getBoundingClientRect().height);
-    if (h < 120) return;
-    const width = mediaW > 40 ? Math.floor(mediaW) : h;
-    const height = h;
     wraps.forEach((wrap) => {
-      wrap.style.width = width + 'px';
-      wrap.style.height = height + 'px';
-      wrap.style.maxWidth = '100%';
-      wrap.style.aspectRatio = 'auto';
+      wrap.style.width = '';
+      wrap.style.height = '';
+      wrap.style.maxWidth = '';
+      wrap.style.aspectRatio = '';
     });
-    const cta = mediaCol && mediaCol.querySelector('.btn-product-cta');
+    const cta = document.querySelector('#produtos .btn-product-cta');
     if (cta) {
-      cta.style.width = width + 'px';
-      cta.style.maxWidth = '100%';
+      cta.style.width = '';
+      cta.style.maxWidth = '';
     }
   }
 
   function watchProductAlbumSize() {
     syncProductAlbumToBenefits();
-    const benefits = document.querySelector('#produtos .product-benefits-grid');
-    if (!benefits || typeof ResizeObserver === 'undefined') {
-      window.addEventListener('resize', syncProductAlbumToBenefits);
-      return;
-    }
-    const ro = new ResizeObserver(() => syncProductAlbumToBenefits());
-    ro.observe(benefits);
-    const media = document.querySelector('#produtos .product-solution-media');
-    if (media) ro.observe(media);
   }
 
   /** Hide kit packaging block on lens-only markets. */

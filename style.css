@@ -448,12 +448,12 @@ html[lang="it"] .nav-actions { gap: 6px; }
   transform: rotate(-38deg);
 }
 .icon-cracked-sphere--benefit {
-  width: 2.4rem;
-  height: 2.4rem;
+  width: 2rem;
+  height: 2rem;
   display: block;
   margin: 0 auto 15px;
 }
-/* product-image-wrap--lg: regras em #produtos .product-solution-* (layout Tattoo) */
+/* #produtos: CSS espelhado do Sensor TattooFix (só esta seção) */
 
 .kit-box {
   background: #0a0a0a;
@@ -504,7 +504,7 @@ html[lang="it"] .nav-actions { gap: 6px; }
 }
 
 
-/* Produtos: 6 ícones (3×2) + galeria na mesma altura (molde Tattoo) */
+/* Produtos: CSS copiado do Sensor TattooFix (só #produtos) — acento Crash cyan */
 #produtos .product-solution-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -513,50 +513,42 @@ html[lang="it"] .nav-actions { gap: 6px; }
 }
 #produtos .product-benefits-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     min-width: 0;
 }
 #produtos .product-solution-media {
     display: flex;
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     justify-content: flex-start;
-    gap: 16px;
+    gap: 0;
     min-width: 0;
-    width: 100%;
 }
 #produtos .product-image-wrap {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0;
+    padding: 8px;
     border-radius: 12px;
     border: 1px solid #333;
     background: #1a1a1a;
-    width: 100%;
+    width: min(100%, 380px);
     max-width: 100%;
     aspect-ratio: 1 / 1;
     height: auto;
-    margin: 0;
+    margin: 0 auto;
     box-sizing: border-box;
     overflow: hidden;
-}
-#produtos .product-image-wrap--lg {
-    width: 100%;
-    max-width: none;
-    background: #111;
-    border-color: #333;
 }
 #produtos .product-image-wrap img {
     width: 100%;
     height: 100%;
     max-width: none;
-    border-radius: 0;
-    object-fit: cover;
+    border-radius: 12px;
+    object-fit: contain;
     background: #111;
 }
-/* Setas nas faixas laterais do quadro (como Tattoo) */
 #produtos .product-image-wrap .stf-album {
     position: relative;
     width: 100%;
@@ -568,42 +560,23 @@ html[lang="it"] .nav-actions { gap: 6px; }
 #produtos .product-image-wrap .stf-album img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     object-position: center;
     display: block;
 }
-#produtos .product-image-wrap .stf-album-btn {
-    width: 44px;
-    height: 100%;
-    top: 0;
-    transform: none;
-    border-radius: 0;
-    background: rgba(0, 0, 0, 0.42);
-    font-size: 1.6rem;
-    opacity: 1;
-    box-shadow: none;
-}
-#produtos .product-image-wrap .stf-album-btn:hover,
-#produtos .product-image-wrap .stf-album-btn:focus-visible {
-    background: rgba(0, 0, 0, 0.62);
-}
-#produtos .product-image-wrap .stf-album-prev { left: 0; }
-#produtos .product-image-wrap .stf-album-next { right: 0; }
 #produtos .btn-product-cta {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 14px 20px;
+    display: inline-block;
+    margin-top: 20px;
     background: var(--primary);
     color: #000;
     text-decoration: none;
     font-weight: 800;
-    font-size: 1.05rem;
+    padding: 12px 28px;
     border-radius: 10px;
     text-align: center;
+    width: auto;
+    max-width: none;
+    box-sizing: border-box;
 }
 #produtos .btn-product-cta:hover {
     filter: brightness(1.05);
@@ -611,7 +584,7 @@ html[lang="it"] .nav-actions { gap: 6px; }
 #produtos .product-benefits-grid .benefit-card {
     width: 100%;
     min-width: 0;
-    padding: 16px 12px;
+    padding: 16px 14px;
     text-align: center;
     background: #1a1a1a;
     border-radius: 12px;
