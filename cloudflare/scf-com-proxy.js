@@ -20,8 +20,10 @@ const ORIGINS = [
 ];
 const COM_ORIGIN = 'https://www.sensorcrashfix.com';
 const BR_ORIGIN = 'https://www.sensorcrashfix.com.br';
-// Domínio custom (DNS estável). NÃO usar *.sensorcrashfix.workers.dev — não resolve.
-const API_ORIGIN = 'https://api.sensorcrashfix.com.br';
+// Subrequest Worker→API: usar *.sensortattoofix.workers.dev (conta real).
+// api.sensorcrashfix.com.br na mesma zona .com.br causa loop 522 no /stf-log.
+// NÃO usar *.sensorcrashfix.workers.dev — hostname não existe (DNS 1016).
+const API_ORIGIN = 'https://sensorcrashfix-payments.sensortattoofix.workers.dev';
 const STF_COM_HOST_JS =
   "(function(){if(location.hostname==='sensorcrashfix.com'){location.replace('https://www.sensorcrashfix.com'+location.pathname+location.search+location.hash);}})();";
 
