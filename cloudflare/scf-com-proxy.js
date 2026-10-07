@@ -13,14 +13,17 @@ import {
   isBotUserAgent
 } from './geo-lang.js';
 
-const COMMIT = '13be33ba0d61e7143358b98cb6bb259de262b658';
+const COMMIT = '121948021a1068b605671ed95d84f1e212ff0781';
 const ORIGINS = [
   'https://cdn.jsdelivr.net/gh/nardoniF/site-sensorcrashfix@' + COMMIT,
   'https://raw.githubusercontent.com/nardoniF/site-sensorcrashfix/' + COMMIT,
 ];
 const COM_ORIGIN = 'https://www.sensorcrashfix.com';
 const BR_ORIGIN = 'https://www.sensorcrashfix.com.br';
-const API_ORIGIN = 'https://sensorcrashfix-payments.sensorcrashfix.workers.dev';
+// Subrequest Worker→API: usar *.sensortattoofix.workers.dev (conta real).
+// api.sensorcrashfix.com.br na mesma zona .com.br causa loop 522 no /stf-log.
+// NÃO usar *.sensorcrashfix.workers.dev — hostname não existe (DNS 1016).
+const API_ORIGIN = 'https://sensorcrashfix-payments.sensortattoofix.workers.dev';
 const STF_COM_HOST_JS =
   "(function(){if(location.hostname==='sensorcrashfix.com'){location.replace('https://www.sensorcrashfix.com'+location.pathname+location.search+location.hash);}})();";
 

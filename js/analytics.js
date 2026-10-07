@@ -445,22 +445,22 @@
 
   function logClickEndpoints() {
     const urls = [];
-    const base = apiBaseUrl();
-    if (base) urls.push(base + '/analytics/click');
-    // Same-origin beacon (.com and .com.br) — more reliable on fast Buy/PayPal exits
+    // Same-origin primeiro: adblockers costumam bloquear */analytics/click
     if (isStfPublicHost()) {
       urls.push(sameOriginBase() + '/stf-log');
     }
+    const base = apiBaseUrl();
+    if (base) urls.push(base + '/analytics/click');
     return urls;
   }
 
   function logPixelEndpoints() {
     const urls = [];
-    const base = apiBaseUrl();
-    if (base) urls.push(base + '/analytics/pixel.gif');
     if (isStfPublicHost()) {
       urls.push(sameOriginBase() + '/stf-log/pixel.gif');
     }
+    const base = apiBaseUrl();
+    if (base) urls.push(base + '/analytics/pixel.gif');
     return urls;
   }
 
