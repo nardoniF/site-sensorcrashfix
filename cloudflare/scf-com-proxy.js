@@ -20,7 +20,8 @@ const ORIGINS = [
 ];
 const COM_ORIGIN = 'https://www.sensorcrashfix.com';
 const BR_ORIGIN = 'https://www.sensorcrashfix.com.br';
-const API_ORIGIN = 'https://sensorcrashfix-payments.sensorcrashfix.workers.dev';
+// Domínio custom (DNS estável). NÃO usar *.sensorcrashfix.workers.dev — não resolve.
+const API_ORIGIN = 'https://api.sensorcrashfix.com.br';
 const STF_COM_HOST_JS =
   "(function(){if(location.hostname==='sensorcrashfix.com'){location.replace('https://www.sensorcrashfix.com'+location.pathname+location.search+location.hash);}})();";
 
