@@ -99,6 +99,8 @@ function mapPathCom(pathname) {
   if (pathname === '/' || pathname === '') return '/en/index.html';
   if (pathname.endsWith('/') && pathname.length > 1) return '/en' + pathname + 'index.html';
   if (/^\/[^/]+\.html$/.test(pathname)) return '/en' + pathname;
+  // Extensionless (/loja → /en/loja.html) — evita 404 no .com vs .com.br
+  if (!pathname.includes('.') && !pathname.endsWith('/')) return '/en' + pathname + '.html';
   return '/en' + pathname;
 }
 
@@ -294,27 +296,48 @@ export default {
     if (br) {
       const m = url.pathname.match(/^\/(de|es|pl|sl|it)(\/.*)?$/i);
       if (m) {
-        const dest = new URL(`https://www.sensorcrashfix.com/${m[1].toLowerCase()}${m[2] || '/'}`);
+        let rest = m[2] || '/';
+        if (rest === '/index.html') rest = '/';
+        const dest = new URL(`https://www.sensorcrashfix.com/${m[1].toLowerCase()}${rest}`);
         dest.search = url.search;
         return Response.redirect(dest.toString(), 301);
       }
       if (url.pathname === '/en' || url.pathname.startsWith('/en/')) {
-        const rest = url.pathname.replace(/^\/en/, '') || '/';
+        let rest = url.pathname.replace(/^\/en/, '') || '/';
+        if (rest === '/index.html') rest = '/';
         const dest = new URL(`https://www.sensorcrashfix.com${rest}`);
         dest.search = url.search;
         return Response.redirect(dest.toString(), 301);
       }
     }
 
-    // Se só normalizamos apex→www, redireciona
+    // /index.html → / (e /{lang}/index.html → /{lang}/) — evita duplicata canônica
+    if (url.pathname === '/index.html') {
+      url.pathname = '/';
+    } else {
+      const langIndex = url.pathname.match(/^\/(it|de|es|pl|sl)\/index\.html$/i);
+      if (langIndex) {
+        url.pathname = `/${langIndex[1].toLowerCase()}/`;
+      }
+    }
+
+    // Se só normalizamos apex→www ou index.html, redireciona
     if (url.href !== request.url) {
       return Response.redirect(url.toString(), 301);
     }
 
     const siteOrigin = url.origin;
+    const isBot = isBotUserAgent(request.headers.get('user-agent'));
+
+    // Bots: limpar ?stf_lang= (handoff só para humanos) → URL canônica limpa
+    if (isBot && url.searchParams.has('stf_lang')) {
+      url.searchParams.delete('stf_lang');
+      const clean = url.pathname + (url.search || '') + (url.hash || '');
+      return Response.redirect(new URL(clean || '/', url.origin).toString(), 301);
+    }
 
     // First-hit locale: Polônia → /pl/, Alemanha → /de/, etc. (não aplica a bots)
-    if (!isBotUserAgent(request.headers.get('user-agent'))) {
+    if (!isBot) {
       const hadStfLang = url.searchParams.has('stf_lang');
       const force = String(url.searchParams.get('stf_lang') || '').toLowerCase();
       const forcedLang = ['pt', 'en', 'it', 'de', 'es', 'pl', 'sl'].includes(force) ? force : null;
@@ -366,7 +389,8 @@ export default {
     }
 
     if (!br && (url.pathname.startsWith('/en/') || url.pathname === '/en')) {
-      const stripped = url.pathname.replace(/^\/en/, '') || '/';
+      let stripped = url.pathname.replace(/^\/en/, '') || '/';
+      if (stripped === '/index.html') stripped = '/';
       return Response.redirect(new URL(stripped + url.search, url.origin).toString(), 301);
     }
 

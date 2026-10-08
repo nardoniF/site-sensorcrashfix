@@ -45,7 +45,12 @@ export const COUNTRY_LANG = {
   CA: 'en'
 };
 
-const BOT_RE = /googlebot|bingbot|yandex|baidu|duckduck|slurp|facebookexternalhit|twitterbot|linkedinbot|embedly|quora|pinterest|redditbot|applebot|semrush|ahrefs|mj12bot|dotbot|petalbot|bytespider|crawler|spider|bot\b/i;
+/**
+ * Inclui Google-InspectionTool / GoogleOther / Site-Verification — sem isso o
+ * Relatório de Indexação do Search Console (e validações) sofrem geo-redirect
+ * (.com.br → .com) e reportam "erro de redirecionamento" / página não indexada.
+ */
+const BOT_RE = /googlebot|google-inspectiontool|googleother|google-site-verification|adsbot-google|storebot-google|bingbot|yandex|baidu|duckduck|slurp|facebookexternalhit|twitterbot|linkedinbot|embedly|quora|pinterest|redditbot|applebot|semrush|ahrefs|mj12bot|dotbot|petalbot|bytespider|chrome-lighthouse|crawler|spider|bot\b/i;
 
 export function isBotUserAgent(ua) {
   return BOT_RE.test(String(ua || ''));

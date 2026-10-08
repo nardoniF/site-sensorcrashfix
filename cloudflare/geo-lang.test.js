@@ -138,6 +138,11 @@ test('cross-domain stf_lang breaks cookie bounce', () => {
 
 test('bots skipped helper', () => {
   assert.equal(isBotUserAgent('Mozilla/5.0 (compatible; Googlebot/2.1)'), true);
+  assert.equal(isBotUserAgent('Mozilla/5.0 (compatible; Google-InspectionTool/1.0;)'), true);
+  assert.equal(isBotUserAgent('Mozilla/5.0 (compatible; GoogleOther)'), true);
+  assert.equal(isBotUserAgent('Mozilla/5.0 (compatible; Google-Site-Verification/1.0)'), true);
+  assert.equal(isBotUserAgent('AdsBot-Google (+http://www.google.com/adsbot.html)'), true);
+  assert.equal(isBotUserAgent('Chrome-Lighthouse'), true);
   assert.equal(isBotUserAgent('Mozilla/5.0 (Macintosh) Chrome/120'), false);
 });
 
@@ -147,4 +152,7 @@ test('proxy importa geo-lang', async () => {
   assert.match(src, /from '\.\/geo-lang\.js'/);
   assert.match(src, /localeRedirectTarget/);
   assert.match(src, /CF-IPCountry/);
+  assert.match(src, /index\.html/);
+  assert.match(src, /stf_lang/);
+  assert.match(src, /pathname \+ '\.html'/);
 });
