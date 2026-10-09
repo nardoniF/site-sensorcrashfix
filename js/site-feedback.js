@@ -141,6 +141,11 @@
     if (htmlLang.startsWith('es') || location.pathname.includes('/es/')) return 'es';
     if (htmlLang.startsWith('pl') || location.pathname.includes('/pl/')) return 'pl';
     if (htmlLang.startsWith('sl') || location.pathname.includes('/sl/')) return 'sl';
+    if (htmlLang.startsWith('fr') || location.pathname.includes('/fr/')) return 'fr';
+    if (htmlLang.startsWith('nl') || location.pathname.includes('/nl/')) return 'nl';
+    if (htmlLang.startsWith('sv') || location.pathname.includes('/sv/')) return 'sv';
+    if (htmlLang.startsWith('nb') || htmlLang.startsWith('nn') || htmlLang.startsWith('no') || location.pathname.includes('/no/')) return 'no';
+    if (htmlLang.startsWith('fi') || location.pathname.includes('/fi/')) return 'fi';
     if (
       htmlLang.startsWith('en') ||
       location.pathname.includes('/en/') ||

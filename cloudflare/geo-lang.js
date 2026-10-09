@@ -4,7 +4,7 @@
  */
 
 export const PREF_COOKIE = 'stf_pref_lang';
-export const SITE_LANGS = ['pt', 'en', 'it', 'de', 'es', 'pl', 'sl'];
+export const SITE_LANGS = ['pt', 'en', 'it', 'de', 'es', 'pl', 'sl', 'fr', 'nl', 'sv', 'no', 'fi'];
 
 /** País ISO → idioma do site (só mapeamentos claros). */
 export const COUNTRY_LANG = {
@@ -42,7 +42,15 @@ export const COUNTRY_LANG = {
   AU: 'en',
   NZ: 'en',
   IE: 'en',
-  CA: 'en'
+  CA: 'en',
+  FR: 'fr',
+  BE: 'fr',
+  LU: 'fr',
+  MC: 'fr',
+  NL: 'nl',
+  SE: 'sv',
+  NO: 'no',
+  FI: 'fi'
 };
 
 const BOT_RE = /googlebot|bingbot|yandex|baidu|duckduck|slurp|facebookexternalhit|twitterbot|linkedinbot|embedly|quora|pinterest|redditbot|applebot|semrush|ahrefs|mj12bot|dotbot|petalbot|bytespider|crawler|spider|bot\b/i;
@@ -84,6 +92,11 @@ export function langFromAcceptLanguage(header) {
     if (tag.startsWith('es')) return 'es';
     if (tag.startsWith('it')) return 'it';
     if (tag.startsWith('en')) return 'en';
+    if (tag.startsWith('fr')) return 'fr';
+    if (tag.startsWith('nl')) return 'nl';
+    if (tag.startsWith('sv')) return 'sv';
+    if (tag.startsWith('nb') || tag.startsWith('nn') || tag.startsWith('no')) return 'no';
+    if (tag.startsWith('fi')) return 'fi';
   }
   return null;
 }
@@ -117,7 +130,7 @@ export function prefCookieHeader(lang, maxAgeSec = 60 * 60 * 24 * 365) {
 export function isComEnglishEntryPath(pathname) {
   const p = String(pathname || '');
   if (p === '/' || p === '' || p === '/index.html') return true;
-  if (/^\/(en|it|de|es|pl|sl)(\/|$)/i.test(p)) return false;
+  if (/^\/(en|it|de|es|pl|sl|fr|nl|sv|no|fi)(\/|$)/i.test(p)) return false;
   if (/^\/[a-z0-9_-]+\.html$/i.test(p)) return true;
   return false;
 }
@@ -182,7 +195,7 @@ export function localeRedirectTarget({ hostOrigin, pathname, search, br, preferr
 /** Lang implied by current path (for setting preference cookie). */
 export function langFromPathname(pathname, br) {
   const path = String(pathname || '');
-  const m = path.match(/^\/(en|it|de|es|pl|sl)(\/|$)/i);
+  const m = path.match(/^\/(en|it|de|es|pl|sl|fr|nl|sv|no|fi)(\/|$)/i);
   if (m) return m[1].toLowerCase();
   if (br) return 'pt';
   return 'en';

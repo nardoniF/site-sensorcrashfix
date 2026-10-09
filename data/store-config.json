@@ -43,7 +43,17 @@
         "/images/kit-gallery/kit-03-aplicacao.jpg",
         "/images/kit-gallery/kit-02-conteudo.jpg",
         "/images/kit-gallery/kit-06-antes-depois.jpg"
-      ]
+      ],
+      "nameFr": "Lentille optique Sensor Crash Fix",
+      "descriptionFr": "Lente/couverture pour capteur de smartwatch fissuré — restaure l’étanchéité et l’usage",
+      "nameNl": "Optische Sensor Crash Fix-lens",
+      "descriptionNl": "Lens/afdekking voor gebarsten smartwatch-sensor — herstelt afdichting en gebruik",
+      "nameSv": "Optisk Sensor Crash Fix-lins",
+      "descriptionSv": "Lins/täckning för sprucken smartwatch-sensor — återställer tätning och användning",
+      "nameNo": "Optisk Sensor Crash Fix-linse",
+      "descriptionNo": "Linse/dekke for sprukket smartklokke-sensor — gjenoppretter tetning og bruk",
+      "nameFi": "Optinen Sensor Crash Fix -linssi",
+      "descriptionFi": "Linssi/peite haljenneelle älykellon sensorille — palauttaa tiivistyksen ja käytön"
     },
     {
       "id": "optical-lens-intl",
@@ -82,7 +92,17 @@
       ],
       "aggregated": false,
       "nameSl": "Optična leča SensorCrashFix",
-      "descriptionSl": "Zaščitna leča za počeno optično tipalo pametne ure."
+      "descriptionSl": "Zaščitna leča za počeno optično tipalo pametne ure.",
+      "nameFr": "Lentille optique Sensor Crash Fix",
+      "descriptionFr": "Lente/couverture pour capteur de smartwatch fissuré — restaure l’étanchéité et l’usage",
+      "nameNl": "Optische Sensor Crash Fix-lens",
+      "descriptionNl": "Lens/afdekking voor gebarsten smartwatch-sensor — herstelt afdichting en gebruik",
+      "nameSv": "Optisk Sensor Crash Fix-lins",
+      "descriptionSv": "Lins/täckning för sprucken smartwatch-sensor — återställer tätning och användning",
+      "nameNo": "Optisk Sensor Crash Fix-linse",
+      "descriptionNo": "Linse/dekke for sprukket smartklokke-sensor — gjenoppretter tetning og bruk",
+      "nameFi": "Optinen Sensor Crash Fix -linssi",
+      "descriptionFi": "Linssi/peite haljenneelle älykellon sensorille — palauttaa tiivistyksen ja käytön"
     },
     {
       "id": "kit-smartband-crashfix",
@@ -116,7 +136,17 @@
       "descriptionDe": "Linse für gerissenen Smartband-Sensor — komplettes Kit",
       "descriptionEs": "Lente para sensor de smartband agrietado — kit completo",
       "descriptionPl": "Soczewka na pęknięty czujnik opaski — pełny zestaw",
-      "descriptionSl": "Leča za počeno tipalo pametne zapestnice — celoten komplet"
+      "descriptionSl": "Leča za počeno tipalo pametne zapestnice — celoten komplet",
+      "nameFr": "Lentille Smartband Sensor Crash Fix",
+      "descriptionFr": "Lentille de couverture pour capteur optique de smartband fissuré.",
+      "nameNl": "Smartband Sensor Crash Fix-lens",
+      "descriptionNl": "Afdeklens voor gebarsten optische smartband-sensor.",
+      "nameSv": "Smartband Sensor Crash Fix-lins",
+      "descriptionSv": "Täcklins för sprucken optisk smartband-sensor.",
+      "nameNo": "Smartband Sensor Crash Fix-linse",
+      "descriptionNo": "Dekklinse for sprukket optisk smartband-sensor.",
+      "nameFi": "Smartband Sensor Crash Fix -linssi",
+      "descriptionFi": "Peitelinssi haljenneelle optiselle smartband-sensorille."
     },
     {
       "id": "optical-lens-smartband-intl",
@@ -153,7 +183,17 @@
       ],
       "aggregated": false,
       "nameSl": "Leča SensorCrashFix za pametno zapestnico",
-      "descriptionSl": "Zaščitna leča za počeno optično tipalo pametne zapestnice."
+      "descriptionSl": "Zaščitna leča za počeno optično tipalo pametne zapestnice.",
+      "nameFr": "Lentille Smartband Sensor Crash Fix",
+      "descriptionFr": "Lentille de couverture pour capteur optique de smartband fissuré.",
+      "nameNl": "Smartband Sensor Crash Fix-lens",
+      "descriptionNl": "Afdeklens voor gebarsten optische smartband-sensor.",
+      "nameSv": "Smartband Sensor Crash Fix-lins",
+      "descriptionSv": "Täcklins för sprucken optisk smartband-sensor.",
+      "nameNo": "Smartband Sensor Crash Fix-linse",
+      "descriptionNo": "Dekklinse for sprukket optisk smartband-sensor.",
+      "nameFi": "Smartband Sensor Crash Fix -linssi",
+      "descriptionFi": "Peitelinssi haljenneelle optiselle smartband-sensorille."
     },
     {
       "id": "pelicula-amazfit-bip-2",
@@ -189,7 +229,17 @@
       "filmTypePl": "elastyczna membrana",
       "nameSl": "Zaščitna folija — Amazfit Bip 2",
       "descriptionSl": "Ščiti zaslon pametne ure — tanek film, enostavna namestitev, ista pošiljka.",
-      "filmTypeSl": "prožna membrana"
+      "filmTypeSl": "prožna membrana",
+      "nameFr": "Screen protector — Amazfit Bip 2",
+      "descriptionFr": "Keep your Amazfit Bip screen flawless — slim film, easy install, same shipment.",
+      "nameNl": "Screen protector — Amazfit Bip 2",
+      "descriptionNl": "Keep your Amazfit Bip screen flawless — slim film, easy install, same shipment.",
+      "nameSv": "Screen protector — Amazfit Bip 2",
+      "descriptionSv": "Keep your Amazfit Bip screen flawless — slim film, easy install, same shipment.",
+      "nameNo": "Screen protector — Amazfit Bip 2",
+      "descriptionNo": "Keep your Amazfit Bip screen flawless — slim film, easy install, same shipment.",
+      "nameFi": "Screen protector — Amazfit Bip 2",
+      "descriptionFi": "Keep your Amazfit Bip screen flawless — slim film, easy install, same shipment."
     },
     {
       "id": "pelicula-amazfit-gtr-3",
@@ -231,7 +281,17 @@
       "filmTypePl": "elastyczna membrana",
       "nameSl": "Zaščitna folija — Amazfit GTR 3 / GTR 3 Pro",
       "descriptionSl": "Ščiti zaslon pametne ure — tanek film, enostavna namestitev, ista pošiljka.",
-      "filmTypeSl": "prožna membrana"
+      "filmTypeSl": "prožna membrana",
+      "nameFr": "Screen protector — Amazfit GTR 3 / GTR 3 Pro",
+      "descriptionFr": "Tough film for GTR 3 and GTR 3 Pro — extra screen safety for your workouts.",
+      "nameNl": "Screen protector — Amazfit GTR 3 / GTR 3 Pro",
+      "descriptionNl": "Tough film for GTR 3 and GTR 3 Pro — extra screen safety for your workouts.",
+      "nameSv": "Screen protector — Amazfit GTR 3 / GTR 3 Pro",
+      "descriptionSv": "Tough film for GTR 3 and GTR 3 Pro — extra screen safety for your workouts.",
+      "nameNo": "Screen protector — Amazfit GTR 3 / GTR 3 Pro",
+      "descriptionNo": "Tough film for GTR 3 and GTR 3 Pro — extra screen safety for your workouts.",
+      "nameFi": "Screen protector — Amazfit GTR 3 / GTR 3 Pro",
+      "descriptionFi": "Tough film for GTR 3 and GTR 3 Pro — extra screen safety for your workouts."
     },
     {
       "id": "pelicula-amazfit-gtr-mini",
@@ -273,7 +333,17 @@
       "filmTypePl": "elastyczna membrana",
       "nameSl": "Zaščitna folija — Amazfit GTR Mini",
       "descriptionSl": "Ščiti zaslon pametne ure — tanek film, enostavna namestitev, ista pošiljka.",
-      "filmTypeSl": "prožna membrana"
+      "filmTypeSl": "prožna membrana",
+      "nameFr": "Screen protector — Amazfit GTR Mini",
+      "descriptionFr": "Precise fit for GTR Mini — lightweight protection that stays invisible.",
+      "nameNl": "Screen protector — Amazfit GTR Mini",
+      "descriptionNl": "Precise fit for GTR Mini — lightweight protection that stays invisible.",
+      "nameSv": "Screen protector — Amazfit GTR Mini",
+      "descriptionSv": "Precise fit for GTR Mini — lightweight protection that stays invisible.",
+      "nameNo": "Screen protector — Amazfit GTR Mini",
+      "descriptionNo": "Precise fit for GTR Mini — lightweight protection that stays invisible.",
+      "nameFi": "Screen protector — Amazfit GTR Mini",
+      "descriptionFi": "Precise fit for GTR Mini — lightweight protection that stays invisible."
     },
     {
       "id": "pelicula-amazfit-gts-2-mini",
@@ -316,7 +386,17 @@
       "filmTypePl": "elastyczna membrana",
       "nameSl": "Zaščitna folija — Amazfit GTS 2 Mini",
       "descriptionSl": "Ščiti zaslon pametne ure — tanek film, enostavna namestitev, ista pošiljka.",
-      "filmTypeSl": "prožna membrana"
+      "filmTypeSl": "prožna membrana",
+      "nameFr": "Screen protector — Amazfit GTS 2 Mini",
+      "descriptionFr": "Smart protection for GTS 2 Mini — discreet, durable, perfect for everyday use.",
+      "nameNl": "Screen protector — Amazfit GTS 2 Mini",
+      "descriptionNl": "Smart protection for GTS 2 Mini — discreet, durable, perfect for everyday use.",
+      "nameSv": "Screen protector — Amazfit GTS 2 Mini",
+      "descriptionSv": "Smart protection for GTS 2 Mini — discreet, durable, perfect for everyday use.",
+      "nameNo": "Screen protector — Amazfit GTS 2 Mini",
+      "descriptionNo": "Smart protection for GTS 2 Mini — discreet, durable, perfect for everyday use.",
+      "nameFi": "Screen protector — Amazfit GTS 2 Mini",
+      "descriptionFi": "Smart protection for GTS 2 Mini — discreet, durable, perfect for everyday use."
     },
     {
       "id": "pelicula-amazfit-gts-squircle-44mm",
@@ -359,7 +439,17 @@
       "filmTypePl": "elastyczna membrana",
       "nameSl": "Zaščitna folija — Amazfit GTS 44 mm",
       "descriptionSl": "Ščiti zaslon pametne ure — tanek film, enostavna namestitev, ista pošiljka.",
-      "filmTypeSl": "prožna membrana"
+      "filmTypeSl": "prožna membrana",
+      "nameFr": "Screen protector — Amazfit GTS 44 mm",
+      "descriptionFr": "Flexible rectangular 44 mm film for Amazfit GTS — great fit, great protection.",
+      "nameNl": "Screen protector — Amazfit GTS 44 mm",
+      "descriptionNl": "Flexible rectangular 44 mm film for Amazfit GTS — great fit, great protection.",
+      "nameSv": "Screen protector — Amazfit GTS 44 mm",
+      "descriptionSv": "Flexible rectangular 44 mm film for Amazfit GTS — great fit, great protection.",
+      "nameNo": "Screen protector — Amazfit GTS 44 mm",
+      "descriptionNo": "Flexible rectangular 44 mm film for Amazfit GTS — great fit, great protection.",
+      "nameFi": "Screen protector — Amazfit GTS 44 mm",
+      "descriptionFi": "Flexible rectangular 44 mm film for Amazfit GTS — great fit, great protection."
     },
     {
       "id": "pelicula-apple-38mm",
@@ -401,7 +491,17 @@
       "filmTypePl": "ceramika",
       "nameSl": "Zaščitna folija — Apple Watch 38mm",
       "descriptionSl": "Ščiti zaslon pametne ure — tanek film, enostavna namestitev, ista pošiljka.",
-      "filmTypeSl": "keramika"
+      "filmTypeSl": "keramika",
+      "nameFr": "Screen protector — Apple Watch 38mm",
+      "descriptionFr": "Crystal-clear protection — keeps your Apple Watch screen scratch-free every day.",
+      "nameNl": "Screen protector — Apple Watch 38mm",
+      "descriptionNl": "Crystal-clear protection — keeps your Apple Watch screen scratch-free every day.",
+      "nameSv": "Screen protector — Apple Watch 38mm",
+      "descriptionSv": "Crystal-clear protection — keeps your Apple Watch screen scratch-free every day.",
+      "nameNo": "Screen protector — Apple Watch 38mm",
+      "descriptionNo": "Crystal-clear protection — keeps your Apple Watch screen scratch-free every day.",
+      "nameFi": "Screen protector — Apple Watch 38mm",
+      "descriptionFi": "Crystal-clear protection — keeps your Apple Watch screen scratch-free every day."
     },
     {
       "id": "pelicula-apple-40mm",
@@ -443,7 +543,17 @@
       "filmTypePl": "ceramika",
       "nameSl": "Zaščitna folija — Apple Watch 40mm",
       "descriptionSl": "Ščiti zaslon pametne ure — tanek film, enostavna namestitev, ista pošiljka.",
-      "filmTypeSl": "keramika"
+      "filmTypeSl": "keramika",
+      "nameFr": "Screen protector — Apple Watch 40mm",
+      "descriptionFr": "Thin, tough film — smooth touch and peace of mind for daily wear.",
+      "nameNl": "Screen protector — Apple Watch 40mm",
+      "descriptionNl": "Thin, tough film — smooth touch and peace of mind for daily wear.",
+      "nameSv": "Screen protector — Apple Watch 40mm",
+      "descriptionSv": "Thin, tough film — smooth touch and peace of mind for daily wear.",
+      "nameNo": "Screen protector — Apple Watch 40mm",
+      "descriptionNo": "Thin, tough film — smooth touch and peace of mind for daily wear.",
+      "nameFi": "Screen protector — Apple Watch 40mm",
+      "descriptionFi": "Thin, tough film — smooth touch and peace of mind for daily wear."
     },
     {
       "id": "pelicula-apple-41mm",
@@ -485,7 +595,17 @@
       "filmTypePl": "ceramika",
       "nameSl": "Zaščitna folija — Apple Watch 41mm",
       "descriptionSl": "Ščiti zaslon pametne ure — tanek film, enostavna namestitev, ista pošiljka.",
-      "filmTypeSl": "keramika"
+      "filmTypeSl": "keramika",
+      "nameFr": "Screen protector — Apple Watch 41mm",
+      "descriptionFr": "Discreet screen shield — easy to apply, ideal for all-day wear.",
+      "nameNl": "Screen protector — Apple Watch 41mm",
+      "descriptionNl": "Discreet screen shield — easy to apply, ideal for all-day wear.",
+      "nameSv": "Screen protector — Apple Watch 41mm",
+      "descriptionSv": "Discreet screen shield — easy to apply, ideal for all-day wear.",
+      "nameNo": "Screen protector — Apple Watch 41mm",
+      "descriptionNo": "Discreet screen shield — easy to apply, ideal for all-day wear.",
+      "nameFi": "Screen protector — Apple Watch 41mm",
+      "descriptionFi": "Discreet screen shield — easy to apply, ideal for all-day wear."
     },
     {
       "id": "pelicula-apple-42mm",
@@ -525,7 +645,17 @@
       "filmTypePl": "ceramika",
       "nameSl": "Zaščitna folija — Apple Watch 42mm",
       "descriptionSl": "Ščiti zaslon pametne ure — tanek film, enostavna namestitev, ista pošiljka.",
-      "filmTypeSl": "keramika"
+      "filmTypeSl": "keramika",
+      "nameFr": "Screen protector — Apple Watch 42mm",
+      "descriptionFr": "Premium protection for Series 10 — full clarity and a flawless finish.",
+      "nameNl": "Screen protector — Apple Watch 42mm",
+      "descriptionNl": "Premium protection for Series 10 — full clarity and a flawless finish.",
+      "nameSv": "Screen protector — Apple Watch 42mm",
+      "descriptionSv": "Premium protection for Series 10 — full clarity and a flawless finish.",
+      "nameNo": "Screen protector — Apple Watch 42mm",
+      "descriptionNo": "Premium protection for Series 10 — full clarity and a flawless finish.",
+      "nameFi": "Screen protector — Apple Watch 42mm",
+      "descriptionFi": "Premium protection for Series 10 — full clarity and a flawless finish."
     },
     {
       "id": "pelicula-apple-44mm",
@@ -567,7 +697,17 @@
       "filmTypePl": "ceramika",
       "nameSl": "Zaščitna folija — Apple Watch 44mm",
       "descriptionSl": "Ščiti zaslon pametne ure — tanek film, enostavna namestitev, ista pošiljka.",
-      "filmTypeSl": "keramika"
+      "filmTypeSl": "keramika",
+      "nameFr": "Screen protector — Apple Watch 44mm",
+      "descriptionFr": "Extra care for your watch screen — scratch-resistant without losing touch sensitivity.",
+      "nameNl": "Screen protector — Apple Watch 44mm",
+      "descriptionNl": "Extra care for your watch screen — scratch-resistant without losing touch sensitivity.",
+      "nameSv": "Screen protector — Apple Watch 44mm",
+      "descriptionSv": "Extra care for your watch screen — scratch-resistant without losing touch sensitivity.",
+      "nameNo": "Screen protector — Apple Watch 44mm",
+      "descriptionNo": "Extra care for your watch screen — scratch-resistant without losing touch sensitivity.",
+      "nameFi": "Screen protector — Apple Watch 44mm",
+      "descriptionFi": "Extra care for your watch screen — scratch-resistant without losing touch sensitivity."
     },
     {
       "id": "pelicula-apple-45mm",
@@ -609,7 +749,17 @@
       "filmTypePl": "ceramika",
       "nameSl": "Zaščitna folija — Apple Watch 45mm",
       "descriptionSl": "Ščiti zaslon pametne ure — tanek film, enostavna namestitev, ista pošiljka.",
-      "filmTypeSl": "keramika"
+      "filmTypeSl": "keramika",
+      "nameFr": "Screen protector — Apple Watch 45mm",
+      "descriptionFr": "High-quality film — protects your screen and ships with your Sensor Crash Fix kit.",
+      "nameNl": "Screen protector — Apple Watch 45mm",
+      "descriptionNl": "High-quality film — protects your screen and ships with your Sensor Crash Fix kit.",
+      "nameSv": "Screen protector — Apple Watch 45mm",
+      "descriptionSv": "High-quality film — protects your screen and ships with your Sensor Crash Fix kit.",
+      "nameNo": "Screen protector — Apple Watch 45mm",
+      "descriptionNo": "High-quality film — protects your screen and ships with your Sensor Crash Fix kit.",
+      "nameFi": "Screen protector — Apple Watch 45mm",
+      "descriptionFi": "High-quality film — protects your screen and ships with your Sensor Crash Fix kit."
     },
     {
       "id": "pelicula-apple-46mm",
@@ -649,7 +799,17 @@
       "filmTypePl": "ceramika",
       "nameSl": "Zaščitna folija — Apple Watch 46mm",
       "descriptionSl": "Ščiti zaslon pametne ure — tanek film, enostavna namestitev, ista pošiljka.",
-      "filmTypeSl": "keramika"
+      "filmTypeSl": "keramika",
+      "nameFr": "Screen protector — Apple Watch 46mm",
+      "descriptionFr": "Tailored protection for Series 10 — light, clear, and ready for daily use.",
+      "nameNl": "Screen protector — Apple Watch 46mm",
+      "descriptionNl": "Tailored protection for Series 10 — light, clear, and ready for daily use.",
+      "nameSv": "Screen protector — Apple Watch 46mm",
+      "descriptionSv": "Tailored protection for Series 10 — light, clear, and ready for daily use.",
+      "nameNo": "Screen protector — Apple Watch 46mm",
+      "descriptionNo": "Tailored protection for Series 10 — light, clear, and ready for daily use.",
+      "nameFi": "Screen protector — Apple Watch 46mm",
+      "descriptionFi": "Tailored protection for Series 10 — light, clear, and ready for daily use."
     },
     {
       "id": "pelicula-huawei-gt-2",
@@ -691,7 +851,17 @@
       "filmTypePl": "elastyczna membrana",
       "nameSl": "Zaščitna folija — Huawei Watch GT 2",
       "descriptionSl": "Ščiti zaslon pametne ure — tanek film, enostavna namestitev, ista pošiljka.",
-      "filmTypeSl": "prožna membrana"
+      "filmTypeSl": "prožna membrana",
+      "nameFr": "Screen protector — Huawei Watch GT 2",
+      "descriptionFr": "Shield your Huawei Watch GT display — clear film with a natural feel.",
+      "nameNl": "Screen protector — Huawei Watch GT 2",
+      "descriptionNl": "Shield your Huawei Watch GT display — clear film with a natural feel.",
+      "nameSv": "Screen protector — Huawei Watch GT 2",
+      "descriptionSv": "Shield your Huawei Watch GT display — clear film with a natural feel.",
+      "nameNo": "Screen protector — Huawei Watch GT 2",
+      "descriptionNo": "Shield your Huawei Watch GT display — clear film with a natural feel.",
+      "nameFi": "Screen protector — Huawei Watch GT 2",
+      "descriptionFi": "Shield your Huawei Watch GT display — clear film with a natural feel."
     },
     {
       "id": "pelicula-round-33mm",
@@ -739,7 +909,17 @@
       "filmTypePl": "elastyczna membrana",
       "nameSl": "Zaščitna folija — round ~33mm",
       "descriptionSl": "Ščiti zaslon pametne ure — tanek film, enostavna namestitev, ista pošiljka.",
-      "filmTypeSl": "prožna membrana"
+      "filmTypeSl": "prožna membrana",
+      "nameFr": "Screen protector — round ~33mm",
+      "descriptionFr": "Universal round ~33 mm film — ideal for compatible round watches.",
+      "nameNl": "Screen protector — round ~33mm",
+      "descriptionNl": "Universal round ~33 mm film — ideal for compatible round watches.",
+      "nameSv": "Screen protector — round ~33mm",
+      "descriptionSv": "Universal round ~33 mm film — ideal for compatible round watches.",
+      "nameNo": "Screen protector — round ~33mm",
+      "descriptionNo": "Universal round ~33 mm film — ideal for compatible round watches.",
+      "nameFi": "Screen protector — round ~33mm",
+      "descriptionFi": "Universal round ~33 mm film — ideal for compatible round watches."
     },
     {
       "id": "pelicula-samsung-gw3-45mm",
@@ -779,7 +959,17 @@
       "filmTypePl": "elastyczna membrana",
       "nameSl": "Zaščitna folija — Samsung Galaxy Watch 3 45mm",
       "descriptionSl": "Ščiti zaslon pametne ure — tanek film, enostavna namestitev, ista pošiljka.",
-      "filmTypeSl": "prožna membrana"
+      "filmTypeSl": "prožna membrana",
+      "nameFr": "Screen protector — Samsung Galaxy Watch 3 45mm",
+      "descriptionFr": "Protect your Galaxy Watch 3 screen — thin, scratch-resistant, easy to apply.",
+      "nameNl": "Screen protector — Samsung Galaxy Watch 3 45mm",
+      "descriptionNl": "Protect your Galaxy Watch 3 screen — thin, scratch-resistant, easy to apply.",
+      "nameSv": "Screen protector — Samsung Galaxy Watch 3 45mm",
+      "descriptionSv": "Protect your Galaxy Watch 3 screen — thin, scratch-resistant, easy to apply.",
+      "nameNo": "Screen protector — Samsung Galaxy Watch 3 45mm",
+      "descriptionNo": "Protect your Galaxy Watch 3 screen — thin, scratch-resistant, easy to apply.",
+      "nameFi": "Screen protector — Samsung Galaxy Watch 3 45mm",
+      "descriptionFi": "Protect your Galaxy Watch 3 screen — thin, scratch-resistant, easy to apply."
     },
     {
       "id": "pulseira-alpine-verde-49",
@@ -821,7 +1011,17 @@
       "namePl": "Pasek Alpine Loop z plecionego nylonu — olive green (49mm)",
       "descriptionPl": "Komfort i styl w jednej przesyłce — pasuje do Twojego smartwatcha.",
       "nameSl": "Trak Alpine Loop iz pletenega najlona — olive green (49mm)",
-      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro."
+      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro.",
+      "nameFr": "Alpine Loop Braided Nylon Band — olive green (49mm)",
+      "descriptionFr": "Reinforced double-layer weave with G-hook buckle",
+      "nameNl": "Alpine Loop Braided Nylon Band — olive green (49mm)",
+      "descriptionNl": "Reinforced double-layer weave with G-hook buckle",
+      "nameSv": "Alpine Loop Braided Nylon Band — olive green (49mm)",
+      "descriptionSv": "Reinforced double-layer weave with G-hook buckle",
+      "nameNo": "Alpine Loop Braided Nylon Band — olive green (49mm)",
+      "descriptionNo": "Reinforced double-layer weave with G-hook buckle",
+      "nameFi": "Alpine Loop Braided Nylon Band — olive green (49mm)",
+      "descriptionFi": "Reinforced double-layer weave with G-hook buckle"
     },
     {
       "id": "pulseira-link-grafite-42-49",
@@ -873,7 +1073,17 @@
       "namePl": "Luksusowa stalowa bransoleta — graphite (42/44/45/49mm)",
       "descriptionPl": "Komfort i styl w jednej przesyłce — pasuje do Twojego smartwatcha.",
       "nameSl": "Luksuzna jeklena zapestnica — graphite (42/44/45/49mm)",
-      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro."
+      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro.",
+      "nameFr": "Luxury Stainless Steel Link Band — graphite (42/44/45/49mm)",
+      "descriptionFr": "Premium executive look with hidden butterfly clasp",
+      "nameNl": "Luxury Stainless Steel Link Band — graphite (42/44/45/49mm)",
+      "descriptionNl": "Premium executive look with hidden butterfly clasp",
+      "nameSv": "Luxury Stainless Steel Link Band — graphite (42/44/45/49mm)",
+      "descriptionSv": "Premium executive look with hidden butterfly clasp",
+      "nameNo": "Luxury Stainless Steel Link Band — graphite (42/44/45/49mm)",
+      "descriptionNo": "Premium executive look with hidden butterfly clasp",
+      "nameFi": "Luxury Stainless Steel Link Band — graphite (42/44/45/49mm)",
+      "descriptionFi": "Premium executive look with hidden butterfly clasp"
     },
     {
       "id": "pulseira-mesh-preta-42-49",
@@ -925,7 +1135,17 @@
       "namePl": "Magnetyczna bransoleta mediolańska — graphite (42/44/45/49mm)",
       "descriptionPl": "Komfort i styl w jednej przesyłce — pasuje do Twojego smartwatcha.",
       "nameSl": "Magnetna milanska jeklena zapestnica — graphite (42/44/45/49mm)",
-      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro."
+      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro.",
+      "nameFr": "Magnetic Milanese Steel Band — graphite (42/44/45/49mm)",
+      "descriptionFr": "Compatible with Apple Watch, Galaxy Watch and smartwatches",
+      "nameNl": "Magnetic Milanese Steel Band — graphite (42/44/45/49mm)",
+      "descriptionNl": "Compatible with Apple Watch, Galaxy Watch and smartwatches",
+      "nameSv": "Magnetic Milanese Steel Band — graphite (42/44/45/49mm)",
+      "descriptionSv": "Compatible with Apple Watch, Galaxy Watch and smartwatches",
+      "nameNo": "Magnetic Milanese Steel Band — graphite (42/44/45/49mm)",
+      "descriptionNo": "Compatible with Apple Watch, Galaxy Watch and smartwatches",
+      "nameFi": "Magnetic Milanese Steel Band — graphite (42/44/45/49mm)",
+      "descriptionFi": "Compatible with Apple Watch, Galaxy Watch and smartwatches"
     },
     {
       "id": "pulseira-mesh-rose-38-41",
@@ -977,7 +1197,17 @@
       "namePl": "Magnetyczna bransoleta mediolańska — rose gold (42/44/45/49mm)",
       "descriptionPl": "Komfort i styl w jednej przesyłce — pasuje do Twojego smartwatcha.",
       "nameSl": "Magnetna milanska jeklena zapestnica — rose gold (42/44/45/49mm)",
-      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro."
+      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro.",
+      "nameFr": "Magnetic Milanese Steel Band — rose gold (42/44/45/49mm)",
+      "descriptionFr": "Compatible with Apple Watch, Galaxy Watch and smartwatches",
+      "nameNl": "Magnetic Milanese Steel Band — rose gold (42/44/45/49mm)",
+      "descriptionNl": "Compatible with Apple Watch, Galaxy Watch and smartwatches",
+      "nameSv": "Magnetic Milanese Steel Band — rose gold (42/44/45/49mm)",
+      "descriptionSv": "Compatible with Apple Watch, Galaxy Watch and smartwatches",
+      "nameNo": "Magnetic Milanese Steel Band — rose gold (42/44/45/49mm)",
+      "descriptionNo": "Compatible with Apple Watch, Galaxy Watch and smartwatches",
+      "nameFi": "Magnetic Milanese Steel Band — rose gold (42/44/45/49mm)",
+      "descriptionFi": "Compatible with Apple Watch, Galaxy Watch and smartwatches"
     },
     {
       "id": "pulseira-ocean-branca-42-49",
@@ -1029,7 +1259,17 @@
       "namePl": "Silikonowy pasek Ocean Sport — white",
       "descriptionPl": "Komfort i styl w jednej przesyłce — pasuje do Twojego smartwatcha.",
       "nameSl": "Silikonski trak Ocean Sport — white",
-      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro."
+      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro.",
+      "nameFr": "Ocean Sport Silicone Band — white",
+      "descriptionFr": "Compatible with Apple Watch (Ultra/Series) and smartwatches",
+      "nameNl": "Ocean Sport Silicone Band — white",
+      "descriptionNl": "Compatible with Apple Watch (Ultra/Series) and smartwatches",
+      "nameSv": "Ocean Sport Silicone Band — white",
+      "descriptionSv": "Compatible with Apple Watch (Ultra/Series) and smartwatches",
+      "nameNo": "Ocean Sport Silicone Band — white",
+      "descriptionNo": "Compatible with Apple Watch (Ultra/Series) and smartwatches",
+      "nameFi": "Ocean Sport Silicone Band — white",
+      "descriptionFi": "Compatible with Apple Watch (Ultra/Series) and smartwatches"
     },
     {
       "id": "pulseira-ocean-verde-42-49",
@@ -1081,7 +1321,17 @@
       "namePl": "Silikonowy pasek Ocean Sport — olive green (42/44/45/49mm)",
       "descriptionPl": "Komfort i styl w jednej przesyłce — pasuje do Twojego smartwatcha.",
       "nameSl": "Silikonski trak Ocean Sport — olive green (42/44/45/49mm)",
-      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro."
+      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro.",
+      "nameFr": "Ocean Sport Silicone Band — olive green (42/44/45/49mm)",
+      "descriptionFr": "Compatible with Apple Watch (Ultra/Series) and smartwatches",
+      "nameNl": "Ocean Sport Silicone Band — olive green (42/44/45/49mm)",
+      "descriptionNl": "Compatible with Apple Watch (Ultra/Series) and smartwatches",
+      "nameSv": "Ocean Sport Silicone Band — olive green (42/44/45/49mm)",
+      "descriptionSv": "Compatible with Apple Watch (Ultra/Series) and smartwatches",
+      "nameNo": "Ocean Sport Silicone Band — olive green (42/44/45/49mm)",
+      "descriptionNo": "Compatible with Apple Watch (Ultra/Series) and smartwatches",
+      "nameFi": "Ocean Sport Silicone Band — olive green (42/44/45/49mm)",
+      "descriptionFi": "Compatible with Apple Watch (Ultra/Series) and smartwatches"
     },
     {
       "id": "pulseira-sport-air-preta-42-49",
@@ -1119,7 +1369,17 @@
       "namePl": "Oddychający sportowy pasek silikonowy — black (Galaxy Watch Ultra 47mm)",
       "descriptionPl": "Komfort i styl w jednej przesyłce — pasuje do Twojego smartwatcha.",
       "nameSl": "Dišeči športni silikonski trak — black (Galaxy Watch Ultra 47mm)",
-      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro."
+      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro.",
+      "nameFr": "Breathable Sport Silicone Band — black (Galaxy Watch Ultra 47mm)",
+      "descriptionFr": "Ventilation holes for workouts and high performance",
+      "nameNl": "Breathable Sport Silicone Band — black (Galaxy Watch Ultra 47mm)",
+      "descriptionNl": "Ventilation holes for workouts and high performance",
+      "nameSv": "Breathable Sport Silicone Band — black (Galaxy Watch Ultra 47mm)",
+      "descriptionSv": "Ventilation holes for workouts and high performance",
+      "nameNo": "Breathable Sport Silicone Band — black (Galaxy Watch Ultra 47mm)",
+      "descriptionNo": "Ventilation holes for workouts and high performance",
+      "nameFi": "Breathable Sport Silicone Band — black (Galaxy Watch Ultra 47mm)",
+      "descriptionFi": "Ventilation holes for workouts and high performance"
     },
     {
       "id": "pulseira-sport-azul-38-41",
@@ -1159,7 +1419,17 @@
       "namePl": "Klasyczny miękki pasek silikonowy — dark blue (38/40/41mm)",
       "descriptionPl": "Komfort i styl w jednej przesyłce — pasuje do Twojego smartwatcha.",
       "nameSl": "Klasičen mehak silikonski trak — dark blue (38/40/41mm)",
-      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro."
+      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro.",
+      "nameFr": "Classic Soft Smooth Silicone Band — dark blue (38/40/41mm)",
+      "descriptionFr": "Classic soft design with embedded pin buckle",
+      "nameNl": "Classic Soft Smooth Silicone Band — dark blue (38/40/41mm)",
+      "descriptionNl": "Classic soft design with embedded pin buckle",
+      "nameSv": "Classic Soft Smooth Silicone Band — dark blue (38/40/41mm)",
+      "descriptionSv": "Classic soft design with embedded pin buckle",
+      "nameNo": "Classic Soft Smooth Silicone Band — dark blue (38/40/41mm)",
+      "descriptionNo": "Classic soft design with embedded pin buckle",
+      "nameFi": "Classic Soft Smooth Silicone Band — dark blue (38/40/41mm)",
+      "descriptionFi": "Classic soft design with embedded pin buckle"
     },
     {
       "id": "pulseira-sport-azul-40-45",
@@ -1211,7 +1481,17 @@
       "namePl": "Klasyczny miękki pasek silikonowy — dark blue (Apple Watch 42/44/45/49mm)",
       "descriptionPl": "Komfort i styl w jednej przesyłce — pasuje do Twojego smartwatcha.",
       "nameSl": "Klasičen mehak silikonski trak — dark blue (Apple Watch 42/44/45/49mm)",
-      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro."
+      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro.",
+      "nameFr": "Classic Soft Smooth Silicone Band — dark blue (Apple Watch 42/44/45/49mm)",
+      "descriptionFr": "Classic soft design with embedded pin buckle",
+      "nameNl": "Classic Soft Smooth Silicone Band — dark blue (Apple Watch 42/44/45/49mm)",
+      "descriptionNl": "Classic soft design with embedded pin buckle",
+      "nameSv": "Classic Soft Smooth Silicone Band — dark blue (Apple Watch 42/44/45/49mm)",
+      "descriptionSv": "Classic soft design with embedded pin buckle",
+      "nameNo": "Classic Soft Smooth Silicone Band — dark blue (Apple Watch 42/44/45/49mm)",
+      "descriptionNo": "Classic soft design with embedded pin buckle",
+      "nameFi": "Classic Soft Smooth Silicone Band — dark blue (Apple Watch 42/44/45/49mm)",
+      "descriptionFi": "Classic soft design with embedded pin buckle"
     },
     {
       "id": "pulseira-sport-branca-42-49",
@@ -1263,7 +1543,17 @@
       "namePl": "Klasyczny miękki pasek silikonowy — white (42/44/45/49mm)",
       "descriptionPl": "Komfort i styl w jednej przesyłce — pasuje do Twojego smartwatcha.",
       "nameSl": "Klasičen mehak silikonski trak — white (42/44/45/49mm)",
-      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro."
+      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro.",
+      "nameFr": "Classic Soft Smooth Silicone Band — white (42/44/45/49mm)",
+      "descriptionFr": "Classic soft design with embedded pin buckle",
+      "nameNl": "Classic Soft Smooth Silicone Band — white (42/44/45/49mm)",
+      "descriptionNl": "Classic soft design with embedded pin buckle",
+      "nameSv": "Classic Soft Smooth Silicone Band — white (42/44/45/49mm)",
+      "descriptionSv": "Classic soft design with embedded pin buckle",
+      "nameNo": "Classic Soft Smooth Silicone Band — white (42/44/45/49mm)",
+      "descriptionNo": "Classic soft design with embedded pin buckle",
+      "nameFi": "Classic Soft Smooth Silicone Band — white (42/44/45/49mm)",
+      "descriptionFi": "Classic soft design with embedded pin buckle"
     },
     {
       "id": "pulseira-sport-cinza-38-41",
@@ -1315,7 +1605,17 @@
       "namePl": "Klasyczny miękki pasek silikonowy — gray (Apple Watch 42/44/45/49mm)",
       "descriptionPl": "Komfort i styl w jednej przesyłce — pasuje do Twojego smartwatcha.",
       "nameSl": "Klasičen mehak silikonski trak — gray (Apple Watch 42/44/45/49mm)",
-      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro."
+      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro.",
+      "nameFr": "Classic Soft Smooth Silicone Band — gray (Apple Watch 42/44/45/49mm)",
+      "descriptionFr": "Classic soft design with embedded pin buckle",
+      "nameNl": "Classic Soft Smooth Silicone Band — gray (Apple Watch 42/44/45/49mm)",
+      "descriptionNl": "Classic soft design with embedded pin buckle",
+      "nameSv": "Classic Soft Smooth Silicone Band — gray (Apple Watch 42/44/45/49mm)",
+      "descriptionSv": "Classic soft design with embedded pin buckle",
+      "nameNo": "Classic Soft Smooth Silicone Band — gray (Apple Watch 42/44/45/49mm)",
+      "descriptionNo": "Classic soft design with embedded pin buckle",
+      "nameFi": "Classic Soft Smooth Silicone Band — gray (Apple Watch 42/44/45/49mm)",
+      "descriptionFi": "Classic soft design with embedded pin buckle"
     },
     {
       "id": "pulseira-sport-creme-41-45",
@@ -1359,7 +1659,17 @@
       "namePl": "Sportowy pasek silikonowy — cream (Samsung Galaxy Watch 8 — 40 / 44 / Classic 46 mm)",
       "descriptionPl": "Komfort i styl w jednej przesyłce — pasuje do Twojego smartwatcha.",
       "nameSl": "Športni silikonski trak — cream (Samsung Galaxy Watch 8 — 40 / 44 / Classic 46 mm)",
-      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro."
+      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro.",
+      "nameFr": "Sport Silicone Band — cream (Samsung Galaxy Watch 8 — 40 / 44 / Classic 46 mm)",
+      "descriptionFr": "Classic soft design with embedded pin buckle",
+      "nameNl": "Sport Silicone Band — cream (Samsung Galaxy Watch 8 — 40 / 44 / Classic 46 mm)",
+      "descriptionNl": "Classic soft design with embedded pin buckle",
+      "nameSv": "Sport Silicone Band — cream (Samsung Galaxy Watch 8 — 40 / 44 / Classic 46 mm)",
+      "descriptionSv": "Classic soft design with embedded pin buckle",
+      "nameNo": "Sport Silicone Band — cream (Samsung Galaxy Watch 8 — 40 / 44 / Classic 46 mm)",
+      "descriptionNo": "Classic soft design with embedded pin buckle",
+      "nameFi": "Sport Silicone Band — cream (Samsung Galaxy Watch 8 — 40 / 44 / Classic 46 mm)",
+      "descriptionFi": "Classic soft design with embedded pin buckle"
     },
     {
       "id": "pulseira-sport-samsung-gw4-7",
@@ -1407,7 +1717,17 @@
       "namePl": "Sportowy pasek silikonowy — dark blue (Samsung Galaxy Watch 4/5/6/7)",
       "descriptionPl": "Komfort i styl w jednej przesyłce — pasuje do Twojego smartwatcha.",
       "nameSl": "Športni silikonski trak — dark blue (Samsung Galaxy Watch 4/5/6/7)",
-      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro."
+      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro.",
+      "nameFr": "Sport Silicone Band — dark blue (Samsung Galaxy Watch 4/5/6/7)",
+      "descriptionFr": "Classic soft design with embedded pin buckle",
+      "nameNl": "Sport Silicone Band — dark blue (Samsung Galaxy Watch 4/5/6/7)",
+      "descriptionNl": "Classic soft design with embedded pin buckle",
+      "nameSv": "Sport Silicone Band — dark blue (Samsung Galaxy Watch 4/5/6/7)",
+      "descriptionSv": "Classic soft design with embedded pin buckle",
+      "nameNo": "Sport Silicone Band — dark blue (Samsung Galaxy Watch 4/5/6/7)",
+      "descriptionNo": "Classic soft design with embedded pin buckle",
+      "nameFi": "Sport Silicone Band — dark blue (Samsung Galaxy Watch 4/5/6/7)",
+      "descriptionFi": "Classic soft design with embedded pin buckle"
     },
     {
       "id": "pulseira-sport-preta-42-49",
@@ -1460,7 +1780,17 @@
       "namePl": "Klasyczny miękki pasek silikonowy — black (42/44/45/46mm)",
       "descriptionPl": "Komfort i styl w jednej przesyłce — pasuje do Twojego smartwatcha.",
       "nameSl": "Klasičen mehak silikonski trak — black (42/44/45/46mm)",
-      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro."
+      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro.",
+      "nameFr": "Classic Soft Smooth Silicone Band — black (42/44/45/46mm)",
+      "descriptionFr": "Classic soft design with embedded pin buckle",
+      "nameNl": "Classic Soft Smooth Silicone Band — black (42/44/45/46mm)",
+      "descriptionNl": "Classic soft design with embedded pin buckle",
+      "nameSv": "Classic Soft Smooth Silicone Band — black (42/44/45/46mm)",
+      "descriptionSv": "Classic soft design with embedded pin buckle",
+      "nameNo": "Classic Soft Smooth Silicone Band — black (42/44/45/46mm)",
+      "descriptionNo": "Classic soft design with embedded pin buckle",
+      "nameFi": "Classic Soft Smooth Silicone Band — black (42/44/45/46mm)",
+      "descriptionFi": "Classic soft design with embedded pin buckle"
     },
     {
       "id": "pulseira-sport-preta-ultra-49",
@@ -1500,7 +1830,17 @@
       "namePl": "Klasyczny miękki pasek silikonowy — black (49mm)",
       "descriptionPl": "Komfort i styl w jednej przesyłce — pasuje do Twojego smartwatcha.",
       "nameSl": "Klasičen mehak silikonski trak — black (49mm)",
-      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro."
+      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro.",
+      "nameFr": "Classic Soft Smooth Silicone Band — black (49mm)",
+      "descriptionFr": "Classic soft design with embedded pin buckle — Apple Watch Ultra size.",
+      "nameNl": "Classic Soft Smooth Silicone Band — black (49mm)",
+      "descriptionNl": "Classic soft design with embedded pin buckle — Apple Watch Ultra size.",
+      "nameSv": "Classic Soft Smooth Silicone Band — black (49mm)",
+      "descriptionSv": "Classic soft design with embedded pin buckle — Apple Watch Ultra size.",
+      "nameNo": "Classic Soft Smooth Silicone Band — black (49mm)",
+      "descriptionNo": "Classic soft design with embedded pin buckle — Apple Watch Ultra size.",
+      "nameFi": "Classic Soft Smooth Silicone Band — black (49mm)",
+      "descriptionFi": "Classic soft design with embedded pin buckle — Apple Watch Ultra size."
     },
     {
       "id": "pulseira-trail-preta-ultra-49",
@@ -1542,7 +1882,17 @@
       "namePl": "Pasek Trail Loop z nylonu — black (49mm)",
       "descriptionPl": "Komfort i styl w jednej przesyłce — pasuje do Twojego smartwatcha.",
       "nameSl": "Udoben najlonski trak Trail Loop — black (49mm)",
-      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro."
+      "descriptionSl": "Udobje in stil v eni pošiljki — primerno za vašo pametno uro.",
+      "nameFr": "Trail Loop Nylon Comfort Band — black (49mm)",
+      "descriptionFr": "Light elastic fabric with fast hook-and-loop fit — Apple Watch Ultra size.",
+      "nameNl": "Trail Loop Nylon Comfort Band — black (49mm)",
+      "descriptionNl": "Light elastic fabric with fast hook-and-loop fit — Apple Watch Ultra size.",
+      "nameSv": "Trail Loop Nylon Comfort Band — black (49mm)",
+      "descriptionSv": "Light elastic fabric with fast hook-and-loop fit — Apple Watch Ultra size.",
+      "nameNo": "Trail Loop Nylon Comfort Band — black (49mm)",
+      "descriptionNo": "Light elastic fabric with fast hook-and-loop fit — Apple Watch Ultra size.",
+      "nameFi": "Trail Loop Nylon Comfort Band — black (49mm)",
+      "descriptionFi": "Light elastic fabric with fast hook-and-loop fit — Apple Watch Ultra size."
     }
   ],
   "pix": {

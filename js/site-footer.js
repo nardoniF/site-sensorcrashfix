@@ -100,20 +100,12 @@ window.STF_FOOTER = (function () {
   function detectLang() {
     if (window.STF_PAGE_LANG?.get) return window.STF_PAGE_LANG.get();
     if (window.STF_I18N?.getLang) return window.STF_I18N.getLang();
-    if (isIntlHost()) {
-      if (location.pathname.includes('/it/')) return 'it';
-      if (location.pathname.includes('/de/')) return 'de';
-      if (location.pathname.includes('/es/')) return 'es';
-      if (location.pathname.includes('/pl/')) return 'pl';
-      if (location.pathname.includes('/sl/')) return 'sl';
-      return 'en';
+    const path = location.pathname;
+    for (const lang of ['it', 'de', 'es', 'pl', 'sl', 'fr', 'nl', 'sv', 'no', 'fi']) {
+      if (path.includes(`/${lang}/`)) return lang;
     }
-    if (location.pathname.includes('/it/')) return 'it';
-    if (location.pathname.includes('/de/')) return 'de';
-    if (location.pathname.includes('/es/')) return 'es';
-    if (location.pathname.includes('/pl/')) return 'pl';
-    if (location.pathname.includes('/sl/')) return 'sl';
-    if (location.pathname.includes('/en/')) return 'en';
+    if (isIntlHost()) return 'en';
+    if (path.includes('/en/')) return 'en';
     return 'pt';
   }
 
