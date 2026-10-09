@@ -86,6 +86,56 @@ window.STF_FOOTER = (function () {
       patentLinePrefix: 'Nacionalni patent',
       patentLineJoin: 'Mednarodni',
       rights: 'Vse pravice pridržane.'
+    },
+    fr: {
+      socialTitle: 'Suivez nos réseaux officiels',
+      faq: 'FAQ',
+      community: 'Communauté',
+      feedback: 'Que manquait-il sur le site ?',
+      commissioner: 'Devenir affilié',
+      patentLinePrefix: 'Brevet national',
+      patentLineJoin: 'International',
+      rights: 'Tous droits réservés.'
+    },
+    nl: {
+      socialTitle: 'Volg onze officiële kanalen',
+      faq: 'FAQ',
+      community: 'Community',
+      feedback: 'Wat ontbrak er op de site?',
+      commissioner: 'Word affiliate',
+      patentLinePrefix: 'Nationaal patent',
+      patentLineJoin: 'Internationaal',
+      rights: 'Alle rechten voorbehouden.'
+    },
+    sv: {
+      socialTitle: 'Följ våra officiella kanaler',
+      faq: 'FAQ',
+      community: 'Community',
+      feedback: 'Vad saknades på webbplatsen?',
+      commissioner: 'Bli affiliate',
+      patentLinePrefix: 'Nationellt patent',
+      patentLineJoin: 'Internationellt',
+      rights: 'Alla rättigheter förbehållna.'
+    },
+    no: {
+      socialTitle: 'Følg våre offisielle kanaler',
+      faq: 'FAQ',
+      community: 'Community',
+      feedback: 'Hva manglet på nettstedet?',
+      commissioner: 'Bli affiliate',
+      patentLinePrefix: 'Nasjonalt patent',
+      patentLineJoin: 'Internasjonalt',
+      rights: 'Alle rettigheter forbeholdt.'
+    },
+    fi: {
+      socialTitle: 'Seuraa virallisia kanaviamme',
+      faq: 'UKK',
+      community: 'Yhteisö',
+      feedback: 'Mitä sivustolta puuttui?',
+      commissioner: 'Ryhdy affiliateksi',
+      patentLinePrefix: 'Kansallinen patentti',
+      patentLineJoin: 'Kansainvälinen',
+      rights: 'Kaikki oikeudet pidätetään.'
     }
   };
 
