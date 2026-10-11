@@ -6038,6 +6038,42 @@
       "answerEn": "No. It’s ultra-thin — you charge normally, including magnetic/inductive chargers, <strong>with the lens on</strong>.",
       "answerIt": "No. È ultra sottile — ricarichi normalmente, anche sul caricatore magnetico/induttivo, <strong>con la lente applicata</strong>.",
       "media": []
+    },
+    {
+      "id": "faq-11",
+      "active": true,
+      "order": 11,
+      "question": "Dá para consertar / reparar o sensor digital do smartwatch sem trocar o módulo?",
+      "questionEn": "Can I repair / fix the smartwatch digital sensor without replacing the module?",
+      "questionIt": "Si può riparare il sensore digitale dello smartwatch senza sostituire il modulo?",
+      "answer": "Em muitos casos, sim. O <strong>Sensor Crash Fix</strong> é um reparo óptico externo: cobre o sensor trincado, rachado ou quebrado com uma lente adesiva maior, restaura vedação e pode devolver a leitura biométrica — sem abrir o relógio nem trocar o componente oficial.",
+      "answerEn": "In many cases, yes. <strong>Sensor Crash Fix</strong> is an external optical repair: it covers a cracked, chipped or broken sensor with a larger adhesive lens, restores sealing and can bring biometric reading back — without opening the watch or replacing the official module.",
+      "answerIt": "In molti casi sì. <strong>Sensor Crash Fix</strong> è una riparazione ottica esterna: copre il sensore incrinato, scheggiato o rotto con una lente adesiva più grande, ripristina la tenuta e può far tornare la lettura biometrica — senza aprire l’orologio né sostituire il modulo ufficiale.",
+      "media": []
+    },
+    {
+      "id": "faq-12",
+      "active": true,
+      "order": 12,
+      "question": "Serve para Apple Watch Ultra e Galaxy Watch com sensor quebrado?",
+      "questionEn": "Does it work on Apple Watch Ultra and Galaxy Watch with a broken sensor?",
+      "questionIt": "Funziona su Apple Watch Ultra e Galaxy Watch con sensore rotto?",
+      "answer": "Sim. Funciona em <strong>Apple Watch Ultra</strong>, demais Apple Watch, <strong>Samsung Galaxy Watch</strong> (incluindo Ultra) e outros smartwatches/smartbands com sensor ótico trincado ou quebrado. O que muda é o <strong>mm</strong> da lente — escolha o tamanho do seu modelo na loja.",
+      "answerEn": "Yes. It works on <strong>Apple Watch Ultra</strong>, other Apple Watch models, <strong>Samsung Galaxy Watch</strong> (including Ultra) and other smartwatches/bands with a cracked or broken optical sensor. What changes is the lens <strong>mm</strong> — pick your model size in the store.",
+      "answerIt": "Sì. Funziona su <strong>Apple Watch Ultra</strong>, altri Apple Watch, <strong>Samsung Galaxy Watch</strong> (incluso Ultra) e altri smartwatch/band con sensore ottico incrinato o rotto. Cambia il <strong>mm</strong> della lente — scegli la misura del tuo modello nello store.",
+      "media": []
+    },
+    {
+      "id": "faq-13",
+      "active": true,
+      "order": 13,
+      "question": "Crash Fix e Sensor CrashFix são a mesma marca?",
+      "questionEn": "Are Crash Fix and Sensor CrashFix the same brand?",
+      "questionIt": "Crash Fix e Sensor CrashFix sono lo stesso brand?",
+      "answer": "Sim. <strong>Sensor Crash Fix</strong>, Crash Fix e CrashFix são nomes da mesma linha da 3N20 — a lente de reparo para sensor smartwatch trincado/quebrado. Não confundir com a Sensor Tattoo Fix (produto para pele tatuada).",
+      "answerEn": "Yes. <strong>Sensor Crash Fix</strong>, Crash Fix and CrashFix are names for the same 3N20 line — the repair lens for a cracked/broken smartwatch sensor. Not the same as Sensor Tattoo Fix (the tattoo-skin product).",
+      "answerIt": "Sì. <strong>Sensor Crash Fix</strong>, Crash Fix e CrashFix sono nomi della stessa linea 3N20 — la lente di riparazione per sensore smartwatch incrinato/rotto. Non confondere con Sensor Tattoo Fix (prodotto per pelle tatuata).",
+      "media": []
     }
   ],
   "homeReviews": []

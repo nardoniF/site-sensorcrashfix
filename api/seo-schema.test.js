@@ -21,6 +21,13 @@ test('seo-schema: Product sempre recebe review + aggregateRating', () => {
 });
 
 test('seo-schema: detecta /sl/ e não trata .com como EN cedo demais', () => {
-  assert.match(src, /\\\/sl\\\//);
+  assert.match(src, /\\\/sl/);
   assert.match(src, /isSl/);
+  assert.match(src, /pathLang === 'sl'/);
+});
+
+test('seo-schema: HowTo + descrição de reparo sensor trincado', () => {
+  assert.match(src, /'@type': 'HowTo'/);
+  assert.match(src, /sensor smartwatch trincado/);
+  assert.match(src, /cracked, chipped or broken smartwatch sensor/);
 });
