@@ -1,7 +1,7 @@
 /**
  * Storefront proxy — serves pinned GitHub commit via jsDelivr.
- * - .com / www.sensorcrashfix.com → EN (/) + IT/DE/ES/PL/SL (/it/, /de/, …)
- * - .com.br → Portuguese (repo root); paths /de|/es|/pl|/sl|/it|/en redirecionam ao .com
+ * - .com / www.sensorcrashfix.com → EN (/) + IT/DE/ES/PL/SL/FR/NL/SV/NO/FI
+ * - .com.br → Portuguese (repo root); intl paths redirecionam ao .com
  * - First-hit: cookie / CF-IPCountry / Accept-Language → redirect para idioma nativo
  * IMPORTANT: pin COMMIT after each push so domains are not stuck on stale @main cache.
  */
@@ -13,7 +13,7 @@ import {
   isBotUserAgent
 } from './geo-lang.js';
 
-const COMMIT = '121948021a1068b605671ed95d84f1e212ff0781';
+const COMMIT = '155786b5256a9eb4e17b89a1f8ce281490e555ed';
 const ORIGINS = [
   'https://cdn.jsdelivr.net/gh/nardoniF/site-sensorcrashfix@' + COMMIT,
   'https://raw.githubusercontent.com/nardoniF/site-sensorcrashfix/' + COMMIT,
@@ -82,7 +82,7 @@ const COM_SHARED_ROOT_PAGES = new Set([
   '/google7b1cb2c1f70b0fda.html',
 ]);
 
-const INTL_LANGS = ['it', 'de', 'es', 'pl', 'sl'];
+const INTL_LANGS = ['it', 'de', 'es', 'pl', 'sl', 'fr', 'nl', 'sv', 'no', 'fi'];
 
 function mapPathCom(pathname) {
   if (isStaticAsset(pathname)) return pathname;
@@ -99,6 +99,8 @@ function mapPathCom(pathname) {
   if (pathname === '/' || pathname === '') return '/en/index.html';
   if (pathname.endsWith('/') && pathname.length > 1) return '/en' + pathname + 'index.html';
   if (/^\/[^/]+\.html$/.test(pathname)) return '/en' + pathname;
+  // Extensionless (/loja → /en/loja.html) — evita 404 no .com vs .com.br
+  if (!pathname.includes('.') && !pathname.endsWith('/')) return '/en' + pathname + '.html';
   return '/en' + pathname;
 }
 
@@ -292,32 +294,53 @@ export default {
 
     // Intl canônico no .com — consolidar .com.br/{de,es,pl,sl,it,en}/ → .com
     if (br) {
-      const m = url.pathname.match(/^\/(de|es|pl|sl|it)(\/.*)?$/i);
+      const m = url.pathname.match(/^\/(de|es|pl|sl|it|fr|nl|sv|no|fi)(\/.*)?$/i);
       if (m) {
-        const dest = new URL(`https://www.sensorcrashfix.com/${m[1].toLowerCase()}${m[2] || '/'}`);
+        let rest = m[2] || '/';
+        if (rest === '/index.html') rest = '/';
+        const dest = new URL(`https://www.sensorcrashfix.com/${m[1].toLowerCase()}${rest}`);
         dest.search = url.search;
         return Response.redirect(dest.toString(), 301);
       }
       if (url.pathname === '/en' || url.pathname.startsWith('/en/')) {
-        const rest = url.pathname.replace(/^\/en/, '') || '/';
+        let rest = url.pathname.replace(/^\/en/, '') || '/';
+        if (rest === '/index.html') rest = '/';
         const dest = new URL(`https://www.sensorcrashfix.com${rest}`);
         dest.search = url.search;
         return Response.redirect(dest.toString(), 301);
       }
     }
 
-    // Se só normalizamos apex→www, redireciona
+    // /index.html → / (e /{lang}/index.html → /{lang}/) — evita duplicata canônica
+    if (url.pathname === '/index.html') {
+      url.pathname = '/';
+    } else {
+      const langIndex = url.pathname.match(/^\/(it|de|es|pl|sl)\/index\.html$/i);
+      if (langIndex) {
+        url.pathname = `/${langIndex[1].toLowerCase()}/`;
+      }
+    }
+
+    // Se só normalizamos apex→www ou index.html, redireciona
     if (url.href !== request.url) {
       return Response.redirect(url.toString(), 301);
     }
 
     const siteOrigin = url.origin;
+    const isBot = isBotUserAgent(request.headers.get('user-agent'));
+
+    // Bots: limpar ?stf_lang= (handoff só para humanos) → URL canônica limpa
+    if (isBot && url.searchParams.has('stf_lang')) {
+      url.searchParams.delete('stf_lang');
+      const clean = url.pathname + (url.search || '') + (url.hash || '');
+      return Response.redirect(new URL(clean || '/', url.origin).toString(), 301);
+    }
 
     // First-hit locale: Polônia → /pl/, Alemanha → /de/, etc. (não aplica a bots)
-    if (!isBotUserAgent(request.headers.get('user-agent'))) {
+    if (!isBot) {
       const hadStfLang = url.searchParams.has('stf_lang');
       const force = String(url.searchParams.get('stf_lang') || '').toLowerCase();
-      const forcedLang = ['pt', 'en', 'it', 'de', 'es', 'pl', 'sl'].includes(force) ? force : null;
+      const forcedLang = ['pt', 'en', 'it', 'de', 'es', 'pl', 'sl', 'fr', 'nl', 'sv', 'no', 'fi'].includes(force) ? force : null;
       if (forcedLang) url.searchParams.delete('stf_lang');
       const preferred = forcedLang || resolvePreferredLang({
         cookieHeader: request.headers.get('cookie'),
@@ -366,7 +389,8 @@ export default {
     }
 
     if (!br && (url.pathname.startsWith('/en/') || url.pathname === '/en')) {
-      const stripped = url.pathname.replace(/^\/en/, '') || '/';
+      let stripped = url.pathname.replace(/^\/en/, '') || '/';
+      if (stripped === '/index.html') stripped = '/';
       return Response.redirect(new URL(stripped + url.search, url.origin).toString(), 301);
     }
 

@@ -1,5 +1,5 @@
 /**
- * Renderiza FAQ e elogios da home a partir de store-config (PT / EN / IT / DE / ES / PL).
+ * Renderiza FAQ e elogios da home a partir de store-config (PT / EN / IT / DE / ES / PL / SL / FR / NL / SV / NO / FI).
  */
 (function () {
   let l10nCache = null;
@@ -8,26 +8,26 @@
     if (window.STF_PAGE_LANG?.get) return window.STF_PAGE_LANG.get();
     if (window.STF_I18N?.getLang) return window.STF_I18N.getLang();
     const lang = (document.documentElement.lang || 'pt').slice(0, 2).toLowerCase();
-    if (['pt', 'en', 'it', 'de', 'es', 'pl', 'sl'].includes(lang)) return lang;
+    if (['pt', 'en', 'it', 'de', 'es', 'pl', 'sl', 'fr', 'nl', 'sv', 'no', 'fi'].includes(lang)) return lang;
     return 'pt';
   }
 
   function pick(row, base, lang) {
     const fromI18n = row?.i18n?.[lang]?.[base];
     if (fromI18n) return fromI18n;
-    const suffixMap = { en: 'En', it: 'It', de: 'De', es: 'Es', pl: 'Pl', sl: 'Sl' };
+    const suffixMap = { en: 'En', it: 'It', de: 'De', es: 'Es', pl: 'Pl', sl: 'Sl', fr: 'Fr', nl: 'Nl', sv: 'Sv', no: 'No', fi: 'Fi' };
     const suffix = suffixMap[lang];
     if (suffix) {
       const localized = row[base + suffix];
       if (localized) return localized;
       if (lang === 'it') return row[base + 'En'] || row[base] || '';
-      if (lang === 'de' || lang === 'es' || lang === 'pl' || lang === 'sl') return row[base + 'En'] || '';
+      if (['de', 'es', 'pl', 'sl', 'fr', 'nl', 'sv', 'no', 'fi'].includes(lang)) return row[base + 'En'] || '';
     }
     return row[base] || '';
   }
 
   function pickL10n(kind, id, field, lang) {
-    if (!l10nCache || !['de', 'es', 'pl', 'sl'].includes(lang)) return '';
+    if (!l10nCache || !['de', 'es', 'pl', 'sl', 'fr', 'nl', 'sv', 'no', 'fi'].includes(lang)) return '';
     const bucket = l10nCache[lang]?.[kind]?.[id];
     return bucket?.[field] || '';
   }
