@@ -85,15 +85,14 @@ test('overrides DE/ES/PL definem store.title e page.checkoutTitle*', () => {
   }
 });
 
-test('home-content-l10n.json cobre 21 FAQs e 15 reviews em de/es/pl/sl', () => {
+test('home-content-l10n.json cobre FAQs Crash em de/es/pl/sl/fr/nl/sv/no/fi', () => {
   const data = JSON.parse(fs.readFileSync(path.join(root, 'data/home-content-l10n.json'), 'utf8'));
-  for (const lang of ['de', 'es', 'pl', 'sl']) {
+  for (const lang of ['de', 'es', 'pl', 'sl', 'fr', 'nl', 'sv', 'no', 'fi']) {
     const block = data[lang];
-    assert.ok(block?.reviewsSummary, lang);
-    assert.equal(Object.keys(block.faq).length, 21, `${lang} faq`);
-    assert.ok(block.faq['faq-19']?.question, `${lang} faq-19`);
-    assert.ok(block.faq['faq-21']?.question, `${lang} faq-21`);
-    assert.equal(Object.keys(block.reviews).length, 15, `${lang} reviews`);
+    assert.ok(block?.faq, lang);
+    assert.equal(Object.keys(block.faq).length, 10, `${lang} faq`);
+    assert.ok(block.faq['faq-1']?.question, `${lang} faq-1`);
+    assert.ok(block.faq['faq-10']?.question, `${lang} faq-10`);
   }
 });
 
@@ -204,12 +203,13 @@ test('letter-l10n.json cobre DE/ES/PL com chaves da carta EN', () => {
   }
 });
 
-test('FAQ intl faq-13 aponta para carta, não manual BR', () => {
+test('FAQ intl faq-1 menciona Crash Fix / lente (sem copy Tattoo residual)', () => {
   const l10n = JSON.parse(fs.readFileSync(path.join(root, 'data/home-content-l10n.json'), 'utf8'));
-  for (const lang of ['de', 'es', 'pl']) {
-    const ans = l10n[lang]?.faq?.['faq-13']?.answer || '';
-    assert.match(ans, /carta-agradecimento-intl\.html\?lang=/, `${lang} faq-13`);
-    assert.doesNotMatch(ans, /manual-instalacao-sensor-cracks-fix/, `${lang} faq-13 sem manual BR`);
+  for (const lang of ['de', 'es', 'pl', 'fr', 'nl', 'sv', 'no', 'fi']) {
+    const q = l10n[lang]?.faq?.['faq-1']?.question || '';
+    const a = l10n[lang]?.faq?.['faq-1']?.answer || '';
+    assert.ok(q.length > 10, `${lang} faq-1 question`);
+    assert.doesNotMatch(q + a, /Tattoo Fix|tatouage|tatuointi|tatuering|tatovering/i, `${lang} faq-1 sem Tattoo`);
   }
 });
 
@@ -303,7 +303,19 @@ test('sl/index.html sem blocos alemães óbvios', () => {
   const DE_SNIPPETS = ['Das Problem', 'Jetzt kaufen', 'Über uns', 'Häufig gestellte Fragen', 'Offizieller Shop'];
   const found = DE_SNIPPETS.filter((s) => html.includes(s));
   assert.equal(found.length, 0, `sl/index.html: ${found.join(', ')}`);
-  assert.match(html, /Mir med tinto in silicijem/, 'sl/index tagline');
+  assert.match(html, /Optična zaščita\. Obnova in zaščita\./, 'sl/index tagline');
+});
+
+test('FR/NL/SV/NO/FI: páginas + overrides + seletor', () => {
+  for (const lang of ['fr', 'nl', 'sv', 'no', 'fi']) {
+    assert.ok(fs.existsSync(path.join(root, lang, 'index.html')), `${lang}/index.html`);
+    assert.ok(fs.existsSync(path.join(root, `js/stf-i18n-${lang}-overrides.js`)), `override ${lang}`);
+    const html = fs.readFileSync(path.join(root, lang, 'index.html'), 'utf8');
+    assert.match(html, new RegExp(`stf-i18n-${lang}-overrides\\.js`), lang);
+    assert.match(html, /hreflang="fr"/, lang);
+  }
+  const nav = fs.readFileSync(path.join(root, 'js/stf-lang-nav.js'), 'utf8');
+  assert.match(nav, /'fr',\s*'nl',\s*'sv',\s*'no',\s*'fi'/);
 });
 
 test('hreflang: homes intl canônicas no .com; PT no .com.br', () => {
@@ -330,7 +342,7 @@ test('sitemap.xml: só PT no .com.br; sitemap-com.xml intl no .com', () => {
   const brLocs = [...brXml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
   const comLocs = [...comXml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
   assert.equal(brLocs.length, 4);
-  assert.equal(comLocs.length, 24);
+  assert.equal(comLocs.length, 44);
   for (const loc of brLocs) {
     assert.match(loc, /^https:\/\/www\.sensorcrashfix\.com\.br\//, `loc .com.br: ${loc}`);
     assert.doesNotMatch(loc, /\/(de|es|pl|sl|it)\//, `PT sitemap sem intl: ${loc}`);
@@ -364,7 +376,7 @@ test('proxy .com: <base href> por idioma (DE/ES/PL/SL não herdam a home EN)', (
   const fn = src.match(/function comBaseHref\(originPath\) \{([\s\S]*?)\n\}/);
   assert.ok(fn, 'comBaseHref body');
   const COM_ORIGIN = 'https://www.sensorcrashfix.com';
-  const INTL_LANGS = ['it', 'de', 'es', 'pl', 'sl'];
+  const INTL_LANGS = ['it', 'de', 'es', 'pl', 'sl', 'fr', 'nl', 'sv', 'no', 'fi'];
   function comBaseHref(originPath) {
     for (const lang of INTL_LANGS) {
       if (originPath === `/${lang}` || originPath.startsWith(`/${lang}/`)) {

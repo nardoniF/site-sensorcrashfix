@@ -32,7 +32,8 @@ if grep -nE 'cta\.style\.width\s*=\s*(width|mediaW|h)\b' js/stf-product-gallery.
   fail=1
 fi
 
-for f in index.html en/index.html it/index.html de/index.html es/index.html pl/index.html sl/index.html; do
+for f in index.html en/index.html it/index.html de/index.html es/index.html pl/index.html sl/index.html \
+         fr/index.html nl/index.html sv/index.html no/index.html fi/index.html; do
   if [[ -f "$f" ]] && grep -q 'product-image-wrap--lg' "$f"; then
     echo "FAIL: $f still has product-image-wrap--lg"
     fail=1

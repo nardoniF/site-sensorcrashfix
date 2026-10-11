@@ -341,10 +341,15 @@
     if (lang.startsWith('es')) return 'ES';
     if (lang.startsWith('pl')) return 'PL';
     if (lang.startsWith('sl')) return 'SL';
+    if (lang.startsWith('fr')) return 'FR';
+    if (lang.startsWith('nl')) return 'NL';
+    if (lang.startsWith('sv')) return 'SV';
+    if (lang.startsWith('nb') || lang.startsWith('nn') || lang.startsWith('no')) return 'NO';
+    if (lang.startsWith('fi')) return 'FI';
     const path = String(location.pathname || '').toLowerCase();
-    const m = path.match(/\/(it|de|es|pl|sl|en)(\/|$)/);
+    const m = path.match(/\/(it|de|es|pl|sl|fr|nl|sv|no|fi|en)(\/|$)/);
     if (m) {
-      const map = { it: 'IT', de: 'DE', es: 'ES', pl: 'PL', sl: 'SL', en: 'EN' };
+      const map = { it: 'IT', de: 'DE', es: 'ES', pl: 'PL', sl: 'SL', fr: 'FR', nl: 'NL', sv: 'SV', no: 'NO', fi: 'FI', en: 'EN' };
       return map[m[1]] || 'EN';
     }
     const host = String(location.hostname || '').toLowerCase();
@@ -364,7 +369,12 @@
       || norm === '/de' || norm.endsWith('/de/')
       || norm === '/es' || norm.endsWith('/es/')
       || norm === '/pl' || norm.endsWith('/pl/')
-      || norm === '/sl' || norm.endsWith('/sl/')) {
+      || norm === '/sl' || norm.endsWith('/sl/')
+      || norm === '/fr' || norm.endsWith('/fr/')
+      || norm === '/nl' || norm.endsWith('/nl/')
+      || norm === '/sv' || norm.endsWith('/sv/')
+      || norm === '/no' || norm.endsWith('/no/')
+      || norm === '/fi' || norm.endsWith('/fi/')) {
       return 'Home ' + loc;
     }
     const parts = norm.split('/').filter(Boolean);
