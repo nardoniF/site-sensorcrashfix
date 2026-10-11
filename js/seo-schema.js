@@ -3,12 +3,12 @@
   const SITE = isIntlHost ? 'https://www.sensorcrashfix.com' : 'https://www.sensorcrashfix.com.br';
   const pathLang = (() => {
     const p = location.pathname;
-    if (/\/it\//i.test(p)) return 'it';
-    if (/\/de\//i.test(p)) return 'de';
-    if (/\/es\//i.test(p)) return 'es';
-    if (/\/pl\//i.test(p)) return 'pl';
-    if (/\/sl\//i.test(p)) return 'sl';
-    if (/\/en\//i.test(p)) return 'en';
+    if (/\/it(?:\/|$)/i.test(p)) return 'it';
+    if (/\/de(?:\/|$)/i.test(p)) return 'de';
+    if (/\/es(?:\/|$)/i.test(p)) return 'es';
+    if (/\/pl(?:\/|$)/i.test(p)) return 'pl';
+    if (/\/sl(?:\/|$)/i.test(p)) return 'sl';
+    if (/\/en(?:\/|$)/i.test(p)) return 'en';
     if (isIntlHost) return 'en';
     return 'pt';
   })();
@@ -259,10 +259,10 @@
     let productImage = SITE + '/images/brand/sensorcrashfix.jpg';
     let productId = isIntlCopy ? 'optical-lens-intl' : 'kit-sensor-crashfix';
     let productDescription = isIt
-      ? 'Kit con lente ottica per smartwatch che chiede codice, non misura il battito o interrompe l\'allenamento — spesso per tatuaggio al polso. Ripristina rilevamento al polso, frequenza cardiaca e allenamenti.'
+      ? 'Kit di riparazione ottica Sensor Crash Fix per sensore smartwatch incrinato, scheggiato o rotto. Ripristina tenuta, lettura biometrica, battito e allenamenti senza sostituire il modulo — Apple Watch Ultra, Galaxy Watch, Garmin.'
       : isIntlCopy
-        ? 'Optical lens kit for smartwatch passcode loops, heart rate failures and paused workouts — often caused by wrist cracked glass. Restores wrist detection, heart rate and training.'
-        : 'Kit com lente ótica para smartwatch que pede senha, não mede batimentos ou pausa treino — muitas vezes por rachadura no pulso. Restaura pulso, batimentos e treinos.';
+        ? 'Sensor Crash Fix optical repair kit for a cracked, chipped or broken smartwatch sensor. Restores sealing, biometric reading, heart rate and workouts without replacing the module — Apple Watch Ultra, Galaxy Watch, Garmin.'
+        : 'Kit de reparo óptico Sensor Crash Fix para sensor smartwatch trincado, rachado ou quebrado. Restaura vedação, leitura biométrica, batimentos e treinos sem trocar o módulo — Apple Watch Ultra, Galaxy Watch, Garmin.';
 
     let cfg = null;
     if (window.CHECKOUT_CONFIG) cfg = window.CHECKOUT_CONFIG;
@@ -346,6 +346,43 @@
         mainEntity: faq
       });
     }
+
+    const howToName = isIt
+      ? 'Come applicare la lente Sensor Crash Fix sul sensore incrinato'
+      : isIntlCopy
+        ? 'How to apply the Sensor Crash Fix lens on a cracked sensor'
+        : 'Como aplicar a lente Sensor Crash Fix no sensor trincado';
+    const howToSteps = isIt
+      ? [
+          { name: 'Pulisci il sensore', text: 'Usa il panno del kit per pulire il vetro del sensore incrinato o rotto.' },
+          { name: 'Allinea la lente', text: 'Rimuovi la pellicola dell’adesivo e centra la lente Crash Fix sul sensore.' },
+          { name: 'Premi e sigilla', text: 'Premi circa 30 secondi per risigillare l’area e ripristinare protezione e lettura.' }
+        ]
+      : isIntlCopy
+        ? [
+            { name: 'Clean the sensor', text: 'Use the kit wipe to clean the cracked or broken sensor glass.' },
+            { name: 'Align the lens', text: 'Peel the adhesive backing and center the Crash Fix lens on the sensor.' },
+            { name: 'Press and seal', text: 'Press for about 30 seconds to reseal the area and restore protection and reading.' }
+          ]
+        : [
+            { name: 'Limpe o sensor', text: 'Use o lenço do kit para limpar o vidro do sensor trincado ou quebrado.' },
+            { name: 'Alinhe a lente', text: 'Retire a película do adesivo e centralize a lente Crash Fix sobre o sensor.' },
+            { name: 'Pressione e vede', text: 'Pressione cerca de 30 segundos para lacrar a área e restaurar proteção e leitura.' }
+          ];
+    graph.push({
+      '@type': 'HowTo',
+      '@id': pageUrl + '#howto',
+      name: howToName,
+      description: productDescription,
+      totalTime: 'PT5M',
+      tool: { '@type': 'HowToTool', name: productName },
+      step: howToSteps.map((s, i) => ({
+        '@type': 'HowToStep',
+        position: i + 1,
+        name: s.name,
+        text: s.text
+      }))
+    });
 
     inject(graph);
   }

@@ -1,5 +1,14 @@
 User-agent: *
 Allow: /
+Allow: /loja.html
+Allow: /onde-comprar.html
+Allow: /comunidade.html
+Allow: /en/
+Allow: /it/
+Allow: /de/
+Allow: /es/
+Allow: /pl/
+Allow: /sl/
 
 Disallow: /admin.html
 Disallow: /pedidos.html
