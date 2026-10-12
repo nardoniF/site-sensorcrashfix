@@ -164,3 +164,25 @@ test('proxy redireciona account.html → minha-conta.html', async () => {
   assert.match(src, /\/account\\\.html\$\/i/);
   assert.match(src, /destPath = \(!lang \|\| lang === 'en'\) \? '\/minha-conta\.html'/);
 });
+
+test('FR/NL/SV/NO/FI country e Accept-Language', () => {
+  assert.equal(langFromCountry('FR'), 'fr');
+  assert.equal(langFromCountry('NL'), 'nl');
+  assert.equal(langFromCountry('SE'), 'sv');
+  assert.equal(langFromCountry('NO'), 'no');
+  assert.equal(langFromCountry('FI'), 'fi');
+  assert.equal(langFromAcceptLanguage('fr-FR,fr;q=0.9'), 'fr');
+  assert.equal(langFromAcceptLanguage('nl-NL,nl;q=0.9'), 'nl');
+  assert.equal(langFromAcceptLanguage('sv-SE,sv;q=0.9'), 'sv');
+  assert.equal(langFromAcceptLanguage('nb-NO,nb;q=0.9'), 'no');
+  assert.equal(langFromAcceptLanguage('fi-FI,fi;q=0.9'), 'fi');
+  assert.equal(isComEnglishEntryPath('/fr/loja.html'), false);
+  assert.equal(isComEnglishEntryPath('/nl/'), false);
+});
+
+test('proxy mapeia INTL_LANGS com FR/NL/SV/NO/FI', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('./scf-com-proxy.js', import.meta.url), 'utf8');
+  assert.match(src, /INTL_LANGS = \['it', 'de', 'es', 'pl', 'sl', 'fr', 'nl', 'sv', 'no', 'fi'\]/);
+});
+
