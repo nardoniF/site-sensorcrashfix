@@ -317,7 +317,7 @@ export default {
     if (url.pathname === '/index.html') {
       url.pathname = '/';
     } else {
-      const langIndex = url.pathname.match(/^\/(it|de|es|pl|sl)\/index\.html$/i);
+      const langIndex = url.pathname.match(/^\/(it|de|es|pl|sl|fr|nl|sv|no|fi)\/index\.html$/i);
       if (langIndex) {
         url.pathname = `/${langIndex[1].toLowerCase()}/`;
       }
