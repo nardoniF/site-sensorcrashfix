@@ -15,7 +15,7 @@ import {
 
 // Keep pin on tip that serves minha-conta + intl homes (incl. FR/NL/SV/NO/FI).
 // Do not pin behind production (package-integrity-before-deploy).
-const COMMIT = '9f68c8f2e9821e9d65d72fb1d0724564039f1755';
+const COMMIT = 'e436973f876f5fe5b530e459722627b8e039fc37';
 const ORIGINS = [
   'https://cdn.jsdelivr.net/gh/nardoniF/site-sensorcrashfix@' + COMMIT,
   'https://raw.githubusercontent.com/nardoniF/site-sensorcrashfix/' + COMMIT,
