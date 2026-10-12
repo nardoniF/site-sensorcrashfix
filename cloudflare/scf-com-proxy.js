@@ -13,6 +13,8 @@ import {
   isBotUserAgent
 } from './geo-lang.js';
 
+// Keep pin on tip that serves minha-conta + intl homes (incl. FR/NL/SV/NO/FI).
+// Do not pin behind production (package-integrity-before-deploy).
 const COMMIT = 'a1f0c4c72b936b79901cb2f23f1cbab2da7bbd59';
 const ORIGINS = [
   'https://cdn.jsdelivr.net/gh/nardoniF/site-sensorcrashfix@' + COMMIT,
@@ -398,6 +400,17 @@ export default {
       return new Response(STF_COM_HOST_JS, {
         headers: { 'content-type': 'application/javascript; charset=utf-8', 'cache-control': 'no-store' },
       });
+    }
+
+    // account.html → minha-conta.html (links legados / bookmarks / e-mails)
+    {
+      const acc = url.pathname.match(/^(?:\/(en|it|de|es|pl|sl|fr|nl|sv|no|fi))?\/account\.html$/i);
+      if (acc) {
+        const lang = acc[1] ? acc[1].toLowerCase() : '';
+        const destPath = (!lang || lang === 'en') ? '/minha-conta.html' : `/${lang}/minha-conta.html`;
+        const dest = new URL(`${destPath}${url.search}`, url.origin);
+        return Response.redirect(dest.toString(), 301);
+      }
     }
 
     let originPath = br ? mapPathBr(url.pathname) : mapPathCom(url.pathname);
