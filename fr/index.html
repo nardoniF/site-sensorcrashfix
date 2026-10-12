@@ -39,6 +39,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-L852DLJ9KV"></script>
     <script src="../js/gtag-init.js?v=2"></script>
+
+    <!-- Intl home: feedback FAB below WhatsApp (bottom-right) -->
+    <style>
+      .whatsapp-float { bottom: 108px; right: 40px; }
+      .stf-feedback-fab { left: auto !important; right: 40px; bottom: 40px; }
+      #produtos .benefit-card h3 { font-size: clamp(0.92rem, 1.8vw, 1.1rem); }
+      #produtos .benefit-card p { font-size: clamp(0.72rem, 1.5vw, 0.85rem); line-height: 1.35; }
+      @media (max-width: 640px) {
+        .whatsapp-float { bottom: 92px; right: 16px; }
+        .stf-feedback-fab { left: auto !important; right: 16px; bottom: 24px; }
+      }
+    </style>
+
 </head>
 <body class="home-page">
 
@@ -102,9 +115,9 @@
                     <div class="logo-text">SENSOR <span>CRASHFIX</span></div>
                     <p class="logo-tagline">Blindage optique. Restauration et protection.</p>
                 </div>
-                <span class="badge">3N20 · Sensor Crash Fix</span>
-                <h1>Restaurez l’étanchéité et les fonctions de votre capteur fissuré.</h1>
-                <p>Appliquez le kit de réparation optique Sensor Crash Fix pour protéger contre l’infiltration et restaurer la lecture biométrique — sans remplacer le capteur.</p>
+                <span class="badge">Technologie 3N20</span>
+                <h1>Pour réparer un capteur fissuré ou prévenir les dommages futurs</h1>
+                <p>Sensor CrashFix est un kit de réparation et de restauration optique. Notre lentille adhésive de haute précision scelle la fissure, restaure la lecture biométrique et redonne l’étanchéité — sans remplacer le module de votre montre.</p>
                 <div class="hero-btns">
                     <a href="#onde-comprar" class="btn-primary btn-cta-primary">Acheter</a>
                     <a href="#produtos" class="btn-outline">Voir comment ça marche</a>
@@ -116,10 +129,44 @@
         </div>
     </section>
 
-    <section id="problema" class="content-section grey-bg">
+        <section id="problema" class="content-section grey-bg">
         <div class="container">
             <h2 class="section-title">Le problème</h2>
-            <div class="problem-intro"><p>Une fissure semble « seulement cosmétique » — jusqu’à ce que l’étanchéité cède. L’eau et la sueur s’infiltrent ; la mesure devient instable ; la montre n’est plus fiable au quotidien.</p></div>
+            <div class="problem-intro">
+                <p>Une fissure sur le capteur paraît « seulement esthétique » — jusqu’à ce que l’étanchéité cède. Eau, sueur et humidité entrent ; la lecture optique devient instable ; la montre n’est plus fiable au quotidien. Sans protection, la fissure peut empirer.</p>
+            </div>
+            <div class="problem-grid">
+                <div class="card">
+                    <i class="fas fa-tint"></i>
+                    <h3>Étanchéité perdue</h3>
+                    <p>Avec le verre fissuré, la montre connectée n’est plus étanche comme avant.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Capteur exposé</h3>
+                    <p>La fissure laisse le capteur optique vulnérable aux chocs, à la sueur et à la saleté.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-heartbeat"></i>
+                    <h3>Rythme instable</h3>
+                    <p>La fissure perturbe l’interface optique — la lecture du pouls peut échouer.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-swimmer"></i>
+                    <h3>Peur de l’eau</h3>
+                    <p>Pluie, lavage des mains ou natation légère deviennent un risque après le dommage du capteur.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-tools"></i>
+                    <h3>Réparation coûteuse</h3>
+                    <p>Le remplacement officiel du module est cher et lent — beaucoup préfèrent une couverture immédiate.</p>
+                </div>
+                <div class="card">
+                    <span class="icon-cracked-sphere" aria-hidden="true"></span>
+                    <h3>Risque de dégâts supplémentaires</h3>
+                    <p>Sans protection, la fissure peut s’agrandir — et le dommage du capteur empire.</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -127,16 +174,17 @@
         <div class="container flex-row">
             <div class="text-block">
                 <h2>Pourquoi les solutions de fortune échouent</h2>
-                <p>Beaucoup d’utilisateurs tentent des bricolages qui endommagent l’appareil ou gâchent l’expérience :</p>
+                <p>Après la fissure, beaucoup improvisent — et aggravent le problème :</p>
                 <ul class="fail-list">
-                    <li><i class="fas fa-times-circle"></i> <div><strong>Dômes en résine et époxy :</strong> Faible adhérence. Ils se détachent facilement avec la sueur, l’eau ou l’usage quotidien et deviennent une solution jetable frustrante.</div></li>
-                    <li><i class="fas fa-times-circle"></i> <div><strong>Ruban adhésif et gants en latex :</strong> Matériaux opaques qui bloquent la lumière. Ils sont laids, faussent les données de santé et irritent la peau.</div></li>
-                    <li><i class="fas fa-shield-virus"></i> <div><strong>Désactiver la détection du poignet :</strong> La pire solution. Les utilisateurs la désactivent pour ne plus saisir le code — mais rendent la montre non sécurisée et désactivent toutes les fonctions intelligentes.</div></li>
+                    <li><i class="fas fa-times-circle"></i> <div><strong>Ruban et stickers génériques :</strong> Se décollent avec la sueur et l’eau ; ne scellent pas vraiment et salissent le capteur.</div></li>
+                    <li><i class="fas fa-times-circle"></i> <div><strong>Colle / résine maison :</strong> Peut pousser l’humidité à l’intérieur, laisser des résidus et compliquer une réparation future.</div></li>
+                    <li><i class="fas fa-times-circle"></i> <div><strong>L’utiliser « toujours au sec » :</strong> Vous renoncez à l’entraînement, à la pluie et au quotidien — la montre ne remplit plus son rôle et peut s’endommager davantage.</div></li>
+                
                 </ul>
             </div>
             <div class="warning-visual">
                 <div class="danger-box">
-                    Les solutions de fortune ne marchent pas
+                    Improviser ne scelle pas vraiment
                 </div>
             </div>
         </div>
@@ -150,33 +198,33 @@
                 <div class="product-benefits-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
                     <div class="benefit-card" style="background: #1a1a1a; padding: 20px; border-radius: 12px; border: 1px solid #333; text-align: center;">
                         <i class="fas fa-microscope" style="font-size: 2rem; color: #5EC8D8; margin-bottom: 15px; display: block;"></i>
-                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Correction optique</h3>
-                        <p style="font-size: 0.85rem;">Interface optique précise.</p>
+                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Restaure les capteurs</h3>
+                        <p>Couvre la fissure et restaure la biométrie.</p>
                     </div>
                     <div class="benefit-card" style="background: #1a1a1a; padding: 20px; border-radius: 12px; border: 1px solid #333; text-align: center;">
                         <i class="fas fa-certificate" style="font-size: 2rem; color: #5EC8D8; margin-bottom: 15px; display: block;"></i>
-                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Nouvelle étanchéité</h3>
-                        <p style="font-size: 0.85rem;">Lentille plus grande — re-scelle la fissure.</p>
+                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Étanchéité</h3>
+                        <p>Restaure l’imperméabilité d’origine.</p>
                     </div>
                     <div class="benefit-card" style="background: #1a1a1a; padding: 20px; border-radius: 12px; border: 1px solid #333; text-align: center;">
                         <i class="fas fa-fist-raised" style="font-size: 2rem; color: #5EC8D8; margin-bottom: 15px; display: block;"></i>
-                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Haute durabilité</h3>
-                        <p style="font-size: 0.85rem;">Adhérence extrême sans résidus.</p>
+                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Prévention</h3>
+                        <p>Protection préventive contre les chocs.</p>
                     </div>
                     <div class="benefit-card" style="background: #1a1a1a; padding: 20px; border-radius: 12px; border: 1px solid #333; text-align: center;">
                         <i class="fas fa-feather-alt" style="font-size: 2rem; color: #5EC8D8; margin-bottom: 15px; display: block;"></i>
-                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Matériau souple</h3>
-                        <p style="font-size: 0.85rem;">Hypoallergénique et confortable.</p>
+                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Stoppe les fissures</h3>
+                        <p>Stoppe la fissure et évite qu’elle s’étende.</p>
                     </div>
                     <div class="benefit-card" style="background: #1a1a1a; padding: 20px; border-radius: 12px; border: 1px solid #333; text-align: center;">
                         <i class="fas fa-battery-full" style="font-size: 2rem; color: #5EC8D8; margin-bottom: 15px; display: block;"></i>
-                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Charge complète</h3>
-                        <p style="font-size: 0.85rem;">Aucune interférence à la charge.</p>
+                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Charge</h3>
+                        <p>100 % compatible avec la charge par induction.</p>
                     </div>
                     <div class="benefit-card" style="background: #1a1a1a; padding: 20px; border-radius: 12px; border: 1px solid #333; text-align: center;">
                         <i class="fas fa-tint-slash" style="font-size: 2rem; color: #5EC8D8; margin-bottom: 15px; display: block;"></i>
-                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Étanche</h3>
-                        <p style="font-size: 0.85rem;">Résiste à la natation et à l’entraînement.</p>
+                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Zéro verrouillage</h3>
+                        <p>Fini les verrouillages et demandes de code.</p>
                     </div>
                 </div>
 
@@ -209,14 +257,32 @@
         <div class="container about-section">
             <h2 class="section-title">Qui sommes-nous</h2>
             <div class="about-card about-card--story">
-                <p class="about-origin">Sensor Crash Fix est né de <strong>Sensor Tattoo Fix</strong> — le produit qui restaure les fonctions de la smartwatch sur une <strong>peau tatouée</strong>.</p>
-                <p class="about-body">Certains ont utilisé la lentille Tattoo Fix même sans tatouage sur un <strong>capteur fissuré</strong>. Ainsi est né Crash Fix — non seulement pour la lecture, mais aussi pour restaurer l’<strong>étanchéité</strong>.</p>
-                <p class="about-body"><strong>Qu’est-ce qui change par rapport à la lentille Tattoo Fix ?</strong> La lentille Crash Fix est <strong>plus grande</strong> : elle dépasse le bord du verre du capteur pour <strong>sceller au-delà du bord</strong> — quand la fissure va jusqu’au bord du verre. Tattoo Fix couvre la zone de mesure ; Crash Fix doit aller plus loin pour re-sceller ces fissures de bord.</p>
+                <p class="about-body">Sensor CrashFix est né de la technologie propriétaire de <a href="https://www.sensortattoofix.com" target="_blank" rel="noopener">Sensor TattooFix</a>. Nous avons constaté que notre lentille optique avancée permettait non seulement la lecture biométrique, mais scellait aussi complètement le verre arrière de la montre. Nous avons alors développé une version à diamètre élargi, conçue pour couvrir le bord du capteur, stopper les fissures et rétablir l’étanchéité sans remplacer la pièce d’origine.</p>
+
+                <h3 class="about-story-heading" hidden>Patents</h3>
+                <p class="about-body" hidden>Optical lens and adhesion technology is registered to protect authenticity in Brazil and abroad:</p>
+                <div class="about-patents" hidden aria-label="Patent registrations">
+                    <div class="about-patent">
+                        <i class="fas fa-award" aria-hidden="true"></i>
+                        <div>
+                            <span class="about-patent-label">National patent · INPI</span>
+                            <span class="about-patent-num">BR 20 2026 010875 3</span>
+                        </div>
+                    </div>
+                    <div class="about-patent">
+                        <i class="fas fa-globe-americas" aria-hidden="true"></i>
+                        <div>
+                            <span class="about-patent-label">International patent · PCT</span>
+                            <span class="about-patent-num">PCT BR 2026 050304</span>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="about-signature">
-                    <img src="../images/home/fundador-fabio.jpg?v=crash6" alt="Fábio Nardoni" class="about-signature-photo" width="112" height="112" loading="lazy">
+                    <img src="../images/home/fundador-fabio.jpg?v=crash6" alt="Fábio Nardoni, fondateur de Sensor CrashFix" class="about-signature-photo" width="112" height="112" loading="lazy">
                     <div class="about-signature-text">
                         <p class="about-signature-name">Fábio Nardoni</p>
-                        <p class="about-signature-role">Sensor Crash Fix · 3N20</p>
+                        <p class="about-signature-role">Fondateur · Sensor CrashFix · 3N20</p>
                     </div>
                 </div>
             </div>
@@ -306,7 +372,7 @@
     <script src="../js/mobile-nav.js?v=1"></script>
     <script src="../js/home-logo.js?v=1"></script>
     <script src="../js/onde-comprar-scroll.js?v=1"></script>
-    <script src="../js/home-content.js?v=6"></script>
+    <script src="../js/home-content.js?v=7"></script>
     <script src="../js/faq-embeds.js?v=4"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

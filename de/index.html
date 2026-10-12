@@ -39,6 +39,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-L852DLJ9KV"></script>
     <script src="../js/gtag-init.js?v=2"></script>
+
+    <!-- Intl home: feedback FAB below WhatsApp (bottom-right) -->
+    <style>
+      .whatsapp-float { bottom: 108px; right: 40px; }
+      .stf-feedback-fab { left: auto !important; right: 40px; bottom: 40px; }
+      #produtos .benefit-card h3 { font-size: clamp(0.92rem, 1.8vw, 1.1rem); }
+      #produtos .benefit-card p { font-size: clamp(0.72rem, 1.5vw, 0.85rem); line-height: 1.35; }
+      @media (max-width: 640px) {
+        .whatsapp-float { bottom: 92px; right: 16px; }
+        .stf-feedback-fab { left: auto !important; right: 16px; bottom: 24px; }
+      }
+    </style>
+
 </head>
 <body class="home-page">
 
@@ -102,9 +115,9 @@
                     <div class="logo-text">SENSOR <span>CRASHFIX</span></div>
                     <p class="logo-tagline">Optische Abschirmung. Wiederherstellung und Schutz.</p>
                 </div>
-                <span class="badge">3N20 · Sensor Crash Fix</span>
-                <h1>Reparatur gerissener oder kaputter Smartwatch-Sensor: Dichtung und Funktionen wiederherstellen.</h1>
-                <p>Tragen Sie das optische Reparaturkit Sensor CrashFix auf, um vor Eindringen von Feuchtigkeit zu schützen und die biometrische Messung wiederherzustellen — ohne den Sensor zu tauschen.</p>
+                <span class="badge">3N20-Technologie</span>
+                <h1>Gerissenen Sensor reparieren oder zukünftige Schäden verhindern</h1>
+                <p>Sensor CrashFix ist ein optisches Reparatur- und Restaurationskit. Unsere hochpräzise Haftlinse schließt den Riss, stellt die biometrische Messung wieder her und bringt den Wasserschutz zurück — ohne das Modul Ihrer Uhr zu ersetzen.</p>
                 <div class="hero-btns">
                     <a href="#onde-comprar" class="btn-primary btn-cta-primary">Jetzt kaufen</a>
                     <a href="#produtos" class="btn-outline">So funktioniert’s</a>
@@ -116,27 +129,62 @@
         </div>
     </section>
 
-    <section id="problema" class="content-section grey-bg">
+        <section id="problema" class="content-section grey-bg">
         <div class="container">
             <h2 class="section-title">Das Problem</h2>
-            <div class="problem-intro"><p>Ein Riss wirkt „nur kosmetisch“ — bis die Dichtung versagt. Wasser und Schweiß dringen ein; die Messung wird unstabil; die Uhr ist im Alltag nicht mehr verlässlich.</p></div>
+            <div class="problem-intro">
+                <p>Ein Riss im Sensor wirkt „nur kosmetisch“ — bis die Abdichtung versagt. Wasser, Schweiß und Feuchtigkeit dringen ein; die optische Messung wird instabil; die Uhr ist im Alltag nicht mehr zuverlässig. Ohne Schutz kann der Riss schlimmer werden.</p>
+            </div>
+            <div class="problem-grid">
+                <div class="card">
+                    <i class="fas fa-tint"></i>
+                    <h3>Abdichtung verloren</h3>
+                    <p>Mit gerissenem Glas ist die Smartwatch nicht mehr wasserdicht wie zuvor.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Sensor freiliegend</h3>
+                    <p>Der Riss lässt den optischen Sensor anfällig für Stöße, Schweiß und Schmutz.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-heartbeat"></i>
+                    <h3>Instabiler Puls</h3>
+                    <p>Der Riss stört die optische Schnittstelle — die Pulsmessung kann ausfallen.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-swimmer"></i>
+                    <h3>Angst vor Wasser</h3>
+                    <p>Regen, Händewaschen oder leichtes Schwimmen werden nach Sensorschaden zum Risiko.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-tools"></i>
+                    <h3>Teure Reparatur</h3>
+                    <p>Der offizielle Modulwechsel ist teuer und langsam — viele wollen sofort eine Abdeckung.</p>
+                </div>
+                <div class="card">
+                    <span class="icon-cracked-sphere" aria-hidden="true"></span>
+                    <h3>Risiko weiterer Schäden</h3>
+                    <p>Ohne Schutz kann der Riss wachsen — und der Sensorschaden wird noch schlimmer.</p>
+                </div>
+            </div>
         </div>
     </section>
 
     <section id="paliativos" class="content-section">
         <div class="container flex-row">
             <div class="text-block">
-                <h2>Warum Notlösungen scheitern</h2>
-                <p>Viele Nutzer probieren Hausmittel, die das Gerät beschädigen oder das Erlebnis ruinieren:</p>
+                <h2>Warum Behelfslösungen scheitern</h2>
+                <p>Nach einem Riss improvisieren viele — und machen es schlimmer:</p>
                 <ul class="fail-list">
-                    <li><i class="fas fa-times-circle"></i> <div><strong>Harz- und Epoxid-Kuppeln:</strong> Geringe Haftung. Sie lösen sich leicht durch Schweiß, Wasser oder täglichen Gebrauch und werden zu einer frustrierenden Einweg-Lösung.</div></li>
-                    <li><i class="fas fa-times-circle"></i> <div><strong>Klebeband und Latexhandschuhe:</strong> Undurchsichtige Materialien, die Licht blockieren. Sie sehen schlecht aus, verfälschen Gesundheitswerte und reizen die Haut.</div></li>
-                    <li><i class="fas fa-shield-virus"></i> <div><strong>Handgelenkserkennung deaktivieren:</strong> Die schlechteste Notlösung. Nutzer schalten die Erkennung ab, um keinen Passcode mehr eingeben zu müssen — machen die Uhr aber unsicher und deaktivieren alle Smart-Funktionen.</div></li>
+                    <li><i class="fas fa-times-circle"></i> <div><strong>Klebeband und generische Aufkleber:</strong> Lösen sich bei Schweiß und Wasser; dichten nicht wirklich ab und verschmutzen den Sensor.</div></li>
+                    <li><i class="fas fa-times-circle"></i> <div><strong>Haushaltkleber / Harz:</strong> Kann Feuchtigkeit hineindrücken, Rückstände hinterlassen und eine spätere Reparatur erschweren.</div></li>
+                    <li><i class="fas fa-times-circle"></i> <div><strong>Für immer „trocken“ nutzen:</strong> Verzicht auf Training, Regen und Alltag — die Uhr erfüllt ihren Zweck nicht mehr und kann weiter beschädigt werden.</div></li>
+                
                 </ul>
             </div>
             <div class="warning-visual">
                 <div class="danger-box">
-                    Notlösungen funktionieren nicht
+                    Improvisieren dichtet nicht wirklich ab
                 </div>
             </div>
         </div>
@@ -150,33 +198,33 @@
                 <div class="product-benefits-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
                     <div class="benefit-card" style="background: #1a1a1a; padding: 20px; border-radius: 12px; border: 1px solid #333; text-align: center;">
                         <i class="fas fa-heart-pulse" style="font-size: 2rem; color: #5EC8D8; margin-bottom: 15px; display: block;"></i>
-                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Sensoren retten</h3>
-                        <p style="font-size: 0.85rem;">Deckt den Riss ab, stellt die Messung wieder her.</p>
+                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Stellt Sensoren wieder her</h3>
+                        <p>Deckt den Riss ab und stellt die Biometrie wieder her.</p>
                     </div>
                     <div class="benefit-card" style="background: #1a1a1a; padding: 20px; border-radius: 12px; border: 1px solid #333; text-align: center;">
                         <i class="fas fa-tint" style="font-size: 2rem; color: #5EC8D8; margin-bottom: 15px; display: block;"></i>
                         <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Abdichtung</h3>
-                        <p style="font-size: 0.85rem;">Wieder wasserdicht.</p>
+                        <p>Stellt die originale Wasserdichtigkeit wieder her.</p>
                     </div>
                     <div class="benefit-card" style="background: #1a1a1a; padding: 20px; border-radius: 12px; border: 1px solid #333; text-align: center;">
                         <i class="fas fa-shield-heart" style="font-size: 2rem; color: #5EC8D8; margin-bottom: 15px; display: block;"></i>
                         <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Prävention</h3>
-                        <p style="font-size: 0.85rem;">Schützt einen intakten Sensor.</p>
+                        <p>Vorbeugender Schutz vor Stößen.</p>
                     </div>
                     <div class="benefit-card" style="background: #1a1a1a; padding: 20px; border-radius: 12px; border: 1px solid #333; text-align: center;">
                         <span class="icon-cracked-sphere icon-cracked-sphere--benefit" aria-hidden="true"></span>
-                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Risswachstum</h3>
-                        <p style="font-size: 0.85rem;">Verhindert, dass der Riss wächst.</p>
+                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Stoppt Risse</h3>
+                        <p>Stoppt den Riss und verhindert Ausbreitung.</p>
                     </div>
                     <div class="benefit-card" style="background: #1a1a1a; padding: 20px; border-radius: 12px; border: 1px solid #333; text-align: center;">
                         <i class="fas fa-bolt" style="font-size: 2rem; color: #5EC8D8; margin-bottom: 15px; display: block;"></i>
                         <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Laden</h3>
-                        <p style="font-size: 0.85rem;">Ultradünn — lädt normal.</p>
+                        <p>100 % kompatibel mit induktivem Laden.</p>
                     </div>
                     <div class="benefit-card" style="background: #1a1a1a; padding: 20px; border-radius: 12px; border: 1px solid #333; text-align: center;">
                         <i class="fas fa-check-circle" style="font-size: 2rem; color: #5EC8D8; margin-bottom: 15px; display: block;"></i>
-                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Funktionen</h3>
-                        <p style="font-size: 0.85rem;">Stellt die Funktionen wieder her.</p>
+                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Keine Sperren</h3>
+                        <p>Keine Sperren und Code-Abfragen mehr.</p>
                     </div>
                 </div>
 
@@ -210,31 +258,39 @@
         <div class="container about-section">
             <h2 class="section-title">Über uns</h2>
             <div class="about-card about-card--story">
-                <p class="about-origin">Sensor Crash Fix entstand aus <strong>Sensor Tattoo Fix</strong> — dem Produkt, das Smartwatch-Funktionen auf <strong>tätowierter Haut</strong> zurückbringt.</p>
-                <p class="about-body">Manche nutzten die Tattoo-Fix-Linse auch ohne Tattoo bei <strong>gerissenem Sensor</strong>. So entstand Crash Fix — nicht nur für die Messung, sondern auch um die <strong>Dichtung</strong> wiederherzustellen.</p>
-                <p class="about-body"><strong>Was ändert sich gegenüber der Tattoo-Fix-Linse?</strong> Die Crash-Fix-Linse ist <strong>größer</strong>: sie geht über den Sensorglasrand hinaus, um <strong>über den Rand hinaus abzudichten</strong> — wenn der Riss bis zum Ende des Sensorglases reicht. Tattoo Fix deckt die Messfläche ab; Crash Fix muss weiter gehen, um solche Randrisse neu abzudichten.</p>
+                <p class="about-body">Sensor CrashFix entstand aus der proprietären Technologie von <a href="https://www.sensortattoofix.com" target="_blank" rel="noopener">Sensor TattooFix</a>. Wir erkannten, dass unsere fortschrittliche optische Linse nicht nur die biometrische Messung ermöglichte, sondern auch das Rückglas der Smartwatch vollständig abdichtete. Daraufhin entwickelten wir eine Version mit größerem Durchmesser, speziell um den Sensorrand abzudecken, Risse zu stoppen und die Wasserdichtigkeit wiederherzustellen — ohne das Originalteil zu ersetzen.</p>
+
+                <h3 class="about-story-heading" hidden>Patents</h3>
+                <p class="about-body" hidden>Optical lens and adhesion technology is registered to protect authenticity in Brazil and abroad:</p>
+                <div class="about-patents" hidden aria-label="Patent registrations">
+                    <div class="about-patent">
+                        <i class="fas fa-award" aria-hidden="true"></i>
+                        <div>
+                            <span class="about-patent-label">National patent · INPI</span>
+                            <span class="about-patent-num">BR 20 2026 010875 3</span>
+                        </div>
+                    </div>
+                    <div class="about-patent">
+                        <i class="fas fa-globe-americas" aria-hidden="true"></i>
+                        <div>
+                            <span class="about-patent-label">International patent · PCT</span>
+                            <span class="about-patent-num">PCT BR 2026 050304</span>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="about-signature">
-                    <img src="../images/home/fundador-fabio.jpg?v=crash6" alt="Fábio Nardoni" class="about-signature-photo" width="112" height="112" loading="lazy">
+                    <img src="../images/home/fundador-fabio.jpg?v=crash6" alt="Fábio Nardoni, Gründer von Sensor CrashFix" class="about-signature-photo" width="112" height="112" loading="lazy">
                     <div class="about-signature-text">
                         <p class="about-signature-name">Fábio Nardoni</p>
-                        <p class="about-signature-role">Sensor Crash Fix · 3N20</p>
+                        <p class="about-signature-role">Gründer · Sensor CrashFix · 3N20</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="guia-reparo" class="content-section">
-        <div class="container">
-            <h2 class="section-title">Smartwatch-Sensor gerissen, abgeplatzt oder kaputt reparieren</h2>
-            <div class="problem-intro" style="max-width:720px;margin:0 auto 1.5rem;text-align:left">
-                <p>Wenn das optische Sensorglas (Rückseite der Uhr) reißt, abplatzt oder zerbricht, verliert die Smartwatch die Dichtung und die biometrische Messung wird instabil. Ein Modulwechsel beim offiziellen Service ist oft teuer. <strong>Sensor Crash Fix</strong> (auch Crash Fix / CrashFix) ist ein optisches Reparaturkit: eine größere Haftlinse, die den Schaden abdeckt, die Fläche neu abdichtet und in vielen Fällen Puls, Herzfrequenz und Arm-Erkennung wiederherstellt — ohne das Gerät zu öffnen.</p>
-                <p>Kompatibel mit <strong>Apple Watch</strong> (inkl. Ultra), <strong>Samsung Galaxy Watch</strong>, Garmin, Xiaomi, Amazfit und anderen Marken mit optischem Sensor auf der Rückseite.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="faq" class="content-section">
+<section id="faq" class="content-section">
         <div class="container">
             <h2 class="section-title">Häufig gestellte Fragen (FAQ)</h2>
 
@@ -317,7 +373,7 @@
     <script src="../js/mobile-nav.js?v=1"></script>
     <script src="../js/home-logo.js?v=1"></script>
     <script src="../js/onde-comprar-scroll.js?v=1"></script>
-    <script src="../js/home-content.js?v=5"></script>
+    <script src="../js/home-content.js?v=7"></script>
     <script src="../js/faq-embeds.js?v=4"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

@@ -90,9 +90,10 @@ test('home-content-l10n.json cobre FAQs Crash em de/es/pl/sl/fr/nl/sv/no/fi', ()
   for (const lang of ['de', 'es', 'pl', 'sl', 'fr', 'nl', 'sv', 'no', 'fi']) {
     const block = data[lang];
     assert.ok(block?.faq, lang);
-    assert.equal(Object.keys(block.faq).length, 10, `${lang} faq`);
+    assert.equal(Object.keys(block.faq).length, 5, `${lang} faq`);
     assert.ok(block.faq['faq-1']?.question, `${lang} faq-1`);
-    assert.ok(block.faq['faq-10']?.question, `${lang} faq-10`);
+    assert.ok(block.faq['faq-5']?.question, `${lang} faq-5`);
+    assert.ok(!block.faq['faq-10'], `${lang} sem faq-10 (PT tem 5 itens)`);
   }
 });
 

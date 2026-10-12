@@ -39,6 +39,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-L852DLJ9KV"></script>
     <script src="../js/gtag-init.js?v=2"></script>
+
+    <!-- Intl home: feedback FAB below WhatsApp (bottom-right) -->
+    <style>
+      .whatsapp-float { bottom: 108px; right: 40px; }
+      .stf-feedback-fab { left: auto !important; right: 40px; bottom: 40px; }
+      #produtos .benefit-card h3 { font-size: clamp(0.92rem, 1.8vw, 1.1rem); }
+      #produtos .benefit-card p { font-size: clamp(0.72rem, 1.5vw, 0.85rem); line-height: 1.35; }
+      @media (max-width: 640px) {
+        .whatsapp-float { bottom: 92px; right: 16px; }
+        .stf-feedback-fab { left: auto !important; right: 16px; bottom: 24px; }
+      }
+    </style>
+
 </head>
 <body class="home-page">
 
@@ -102,9 +115,9 @@
                     <div class="logo-text">SENSOR <span>CRASHFIX</span></div>
                     <p class="logo-tagline">Optische afscherming. Herstel en bescherming.</p>
                 </div>
-                <span class="badge">3N20 · Sensor Crash Fix</span>
-                <h1>Herstel de afdichting en functies van je gebarsten sensor.</h1>
-                <p>Breng de optische reparatieset Sensor Crash Fix aan om infiltratie te voorkomen en de biometrische meting te herstellen — zonder de sensor te vervangen.</p>
+                <span class="badge">3N20-technologie</span>
+                <h1>Om een gebarsten sensor te repareren of toekomstige schade te voorkomen</h1>
+                <p>Sensor CrashFix is een optische reparatie- en herstelkit. Onze hoogprecieze kleeflens dicht de barst, herstelt biometrische meting en brengt waterdichtheid terug — zonder de module van je horloge te vervangen.</p>
                 <div class="hero-btns">
                     <a href="#onde-comprar" class="btn-primary btn-cta-primary">Nu kopen</a>
                     <a href="#produtos" class="btn-outline">Bekijk hoe het werkt</a>
@@ -116,27 +129,62 @@
         </div>
     </section>
 
-    <section id="problema" class="content-section grey-bg">
+        <section id="problema" class="content-section grey-bg">
         <div class="container">
             <h2 class="section-title">Het probleem</h2>
-            <div class="problem-intro"><p>Een barst lijkt „alleen cosmetisch” — tot de afdichting faalt. Water en zweet dringen binnen; de meting wordt onstabiel; het horloge is niet meer betrouwbaar in het dagelijks gebruik.</p></div>
+            <div class="problem-intro">
+                <p>Een barst in de sensor lijkt “alleen cosmetisch” — tot de afdichting faalt. Water, zweet en vocht komen binnen; de optische meting wordt onstabiel; het horloge is dagelijks niet meer betrouwbaar. Zonder bescherming kan de barst erger worden.</p>
+            </div>
+            <div class="problem-grid">
+                <div class="card">
+                    <i class="fas fa-tint"></i>
+                    <h3>Afdichting verloren</h3>
+                    <p>Met gebarsten glas is de smartwatch niet meer waterdicht zoals eerder.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Sensor blootgesteld</h3>
+                    <p>De barst maakt de optische sensor kwetsbaar voor schokken, zweet en vuil.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-heartbeat"></i>
+                    <h3>Onstabiele hartslag</h3>
+                    <p>De barst verstoort de optische interface — hartslagmeting kan falen.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-swimmer"></i>
+                    <h3>Bang voor water</h3>
+                    <p>Regen, handen wassen of licht zwemmen worden een risico na sensorschade.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-tools"></i>
+                    <h3>Dure reparatie</h3>
+                    <p>Officiële modulevervanging is duur en traag — velen willen meteen een afdekking.</p>
+                </div>
+                <div class="card">
+                    <span class="icon-cracked-sphere" aria-hidden="true"></span>
+                    <h3>Risico op meer schade</h3>
+                    <p>Zonder bescherming kan de barst groeien — en de sensorschade wordt erger.</p>
+                </div>
+            </div>
         </div>
     </section>
 
     <section id="paliativos" class="content-section">
         <div class="container flex-row">
             <div class="text-block">
-                <h2>Waarom noodmogelijkheden falen</h2>
-                <p>Veel gebruikers proberen huis-tuin-en-keukenmiddeltjes die het apparaat beschadigen of de ervaring verpesten:</p>
+                <h2>Waarom noodreparaties mislukken</h2>
+                <p>Na een barst improviseren velen — en maken het erger:</p>
                 <ul class="fail-list">
-                    <li><i class="fas fa-times-circle"></i> <div><strong>Hars- en epoxykoepels:</strong> Slechte hechting. Ze laten los door zweet, water of dagelijks gebruik en worden een frustrerende eenmalige oplossing.</div></li>
-                    <li><i class="fas fa-times-circle"></i> <div><strong>Tape en latexhandschoenen:</strong> Ondoorzichtige materialen die licht blokkeren. Ze zien er slecht uit, verstoren gezondheidsmetingen en irriteren de huid.</div></li>
-                    <li><i class="fas fa-shield-virus"></i> <div><strong>Polsherkenning uitschakelen:</strong> De slechtste noodgreep. Gebruikers zetten herkenning uit om geen toegangscode meer in te voeren — maar maken het horloge onveilig en schakelen alle slimme functies uit.</div></li>
+                    <li><i class="fas fa-times-circle"></i> <div><strong>Tape en generieke stickers:</strong> Laten los door zweet en water; dichten niet echt af en maken de sensor vies.</div></li>
+                    <li><i class="fas fa-times-circle"></i> <div><strong>Huis-tuin-keukenlijm / hars:</strong> Kan vocht naar binnen duwen, resten achterlaten en een latere reparatie bemoeilijken.</div></li>
+                    <li><i class="fas fa-times-circle"></i> <div><strong>Voor altijd “droog” gebruiken:</strong> Je geeft training, regen en routine op — het horloge doet zijn werk niet meer en kan verder beschadigd raken.</div></li>
+                
                 </ul>
             </div>
             <div class="warning-visual">
                 <div class="danger-box">
-                    Noodmogelijkheden werken niet
+                    Improviseren dicht niet echt af
                 </div>
             </div>
         </div>
@@ -150,33 +198,33 @@
                 <div class="product-benefits-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
                     <div class="benefit-card" style="background: #1a1a1a; padding: 20px; border-radius: 12px; border: 1px solid #333; text-align: center;">
                         <i class="fas fa-microscope" style="font-size: 2rem; color: #5EC8D8; margin-bottom: 15px; display: block;"></i>
-                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Optische correctie</h3>
-                        <p style="font-size: 0.85rem;">Precieze optische interface.</p>
+                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Herstelt sensoren</h3>
+                        <p>Dekt de barst af en herstelt biometrie.</p>
                     </div>
                     <div class="benefit-card" style="background: #1a1a1a; padding: 20px; border-radius: 12px; border: 1px solid #333; text-align: center;">
                         <i class="fas fa-certificate" style="font-size: 2rem; color: #5EC8D8; margin-bottom: 15px; display: block;"></i>
-                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Nieuwe afdichting</h3>
-                        <p style="font-size: 0.85rem;">Grotere lens — dicht de barst opnieuw af.</p>
+                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Afdichting</h3>
+                        <p>Herstelt de originele waterdichtheid.</p>
                     </div>
                     <div class="benefit-card" style="background: #1a1a1a; padding: 20px; border-radius: 12px; border: 1px solid #333; text-align: center;">
                         <i class="fas fa-fist-raised" style="font-size: 2rem; color: #5EC8D8; margin-bottom: 15px; display: block;"></i>
-                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Hoge duurzaamheid</h3>
-                        <p style="font-size: 0.85rem;">Extreme hechting zonder resten.</p>
+                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Preventie</h3>
+                        <p>Preventieve bescherming tegen schokken.</p>
                     </div>
                     <div class="benefit-card" style="background: #1a1a1a; padding: 20px; border-radius: 12px; border: 1px solid #333; text-align: center;">
                         <i class="fas fa-feather-alt" style="font-size: 2rem; color: #5EC8D8; margin-bottom: 15px; display: block;"></i>
-                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Zacht materiaal</h3>
-                        <p style="font-size: 0.85rem;">Hypoallergeen en comfortabel.</p>
+                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Stopt barsten</h3>
+                        <p>Stopt de barst en voorkomt uitbreiding.</p>
                     </div>
                     <div class="benefit-card" style="background: #1a1a1a; padding: 20px; border-radius: 12px; border: 1px solid #333; text-align: center;">
                         <i class="fas fa-battery-full" style="font-size: 2rem; color: #5EC8D8; margin-bottom: 15px; display: block;"></i>
-                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Volledig laden</h3>
-                        <p style="font-size: 0.85rem;">Geen storing bij opladen.</p>
+                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Opladen</h3>
+                        <p>100% compatibel met inductieladen.</p>
                     </div>
                     <div class="benefit-card" style="background: #1a1a1a; padding: 20px; border-radius: 12px; border: 1px solid #333; text-align: center;">
                         <i class="fas fa-tint-slash" style="font-size: 2rem; color: #5EC8D8; margin-bottom: 15px; display: block;"></i>
-                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Waterdicht</h3>
-                        <p style="font-size: 0.85rem;">Bestand tegen zwemmen en training.</p>
+                        <h3 style="color: #5EC8D8; font-size: 1.1rem; margin-bottom: 10px;">Geen vergrendelingen</h3>
+                        <p>Geen vergrendelingen en codevragen meer.</p>
                     </div>
                 </div>
 
@@ -209,14 +257,32 @@
         <div class="container about-section">
             <h2 class="section-title">Over ons</h2>
             <div class="about-card about-card--story">
-                <p class="about-origin">Sensor Crash Fix kwam voort uit <strong>Sensor Tattoo Fix</strong> — het product dat smartwatch-functies op <strong>getatoeëerde huid</strong> terugbrengt.</p>
-                <p class="about-body">Sommigen gebruikten de Tattoo Fix-lens ook zonder tattoo bij een <strong>gebarsten sensor</strong>. Zo ontstond Crash Fix — niet alleen voor de meting, maar ook om de <strong>afdichting</strong> te herstellen.</p>
-                <p class="about-body"><strong>Wat verandert er t.o.v. de Tattoo Fix-lens?</strong> De Crash Fix-lens is <strong>groter</strong>: hij gaat over de rand van het sensorglas heen om <strong>voorbij de rand af te dichten</strong> — wanneer de barst tot aan de rand van het sensorglas reikt. Tattoo Fix dekt het meetvlak; Crash Fix moet verder gaan om zulke randbarsten opnieuw af te dichten.</p>
+                <p class="about-body">Sensor CrashFix is ontstaan uit de eigen technologie van <a href="https://www.sensortattoofix.com" target="_blank" rel="noopener">Sensor TattooFix</a>. We zagen dat onze geavanceerde optische lens niet alleen biometrische meting mogelijk maakte, maar ook het achterglas van de smartwatch volledig afdichtte. Daarom ontwikkelden we een versie met grotere diameter, ontworpen om de sensorrand te bedekken, barsten te stoppen en waterdichte afdichting terug te brengen zonder het originele onderdeel te vervangen.</p>
+
+                <h3 class="about-story-heading" hidden>Patents</h3>
+                <p class="about-body" hidden>Optical lens and adhesion technology is registered to protect authenticity in Brazil and abroad:</p>
+                <div class="about-patents" hidden aria-label="Patent registrations">
+                    <div class="about-patent">
+                        <i class="fas fa-award" aria-hidden="true"></i>
+                        <div>
+                            <span class="about-patent-label">National patent · INPI</span>
+                            <span class="about-patent-num">BR 20 2026 010875 3</span>
+                        </div>
+                    </div>
+                    <div class="about-patent">
+                        <i class="fas fa-globe-americas" aria-hidden="true"></i>
+                        <div>
+                            <span class="about-patent-label">International patent · PCT</span>
+                            <span class="about-patent-num">PCT BR 2026 050304</span>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="about-signature">
-                    <img src="../images/home/fundador-fabio.jpg?v=crash6" alt="Fábio Nardoni" class="about-signature-photo" width="112" height="112" loading="lazy">
+                    <img src="../images/home/fundador-fabio.jpg?v=crash6" alt="Fábio Nardoni, oprichter van Sensor CrashFix" class="about-signature-photo" width="112" height="112" loading="lazy">
                     <div class="about-signature-text">
                         <p class="about-signature-name">Fábio Nardoni</p>
-                        <p class="about-signature-role">Sensor Crash Fix · 3N20</p>
+                        <p class="about-signature-role">Oprichter · Sensor CrashFix · 3N20</p>
                     </div>
                 </div>
             </div>
@@ -306,7 +372,7 @@
     <script src="../js/mobile-nav.js?v=1"></script>
     <script src="../js/home-logo.js?v=1"></script>
     <script src="../js/onde-comprar-scroll.js?v=1"></script>
-    <script src="../js/home-content.js?v=6"></script>
+    <script src="../js/home-content.js?v=7"></script>
     <script src="../js/faq-embeds.js?v=4"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
