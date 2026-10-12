@@ -3444,6 +3444,7 @@ window.STF_MONEY = window.STF_MONEY || (function () {
           els.paymentStatus.className = 'payment-status confirmed';
           els.paymentStatus.innerHTML = `<i class="fas fa-check-circle"></i> ${L('status.paid')}`;
           els.confirmTitle.textContent = L('title.orderRegistered');
+          window.STF_ANALYTICS?.trackPurchase(orderId, data.total, 'stripe');
         } else {
           startPolling(orderId, accessToken, data.total);
         }
