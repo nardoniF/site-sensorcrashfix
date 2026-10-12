@@ -46,6 +46,12 @@
       moeda: 'BRL',
       pagamento: forma
     });
+    // Google Ads — conversão PURCHASE (snippet do assistente Ads)
+    track('ads_conversion_PURCHASE_1', {
+      transaction_id: orderId,
+      value: valor,
+      currency: 'BRL'
+    });
   }
 
   function normalizarTexto(s) {
