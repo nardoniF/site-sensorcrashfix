@@ -148,3 +148,11 @@ test('proxy importa geo-lang', async () => {
   assert.match(src, /localeRedirectTarget/);
   assert.match(src, /CF-IPCountry/);
 });
+
+test('proxy redireciona account.html → minha-conta.html', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('./scf-com-proxy.js', import.meta.url), 'utf8');
+  assert.match(src, /account\.html → minha-conta\.html/);
+  assert.match(src, /\/account\\\.html\$\/i/);
+  assert.match(src, /destPath = \(!lang \|\| lang === 'en'\) \? '\/minha-conta\.html'/);
+});
