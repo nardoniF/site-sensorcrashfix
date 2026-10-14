@@ -206,6 +206,15 @@ test('proxy isenta geo-redirect em clique Ads pago', async () => {
   assert.match(src, /!isBot && !isPaidAdsClickSearch\(url\.search\)/);
 });
 
+test('proxy .com.br nunca geo-bounce e pin PT no handoff', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('./scf-com-proxy.js', import.meta.url), 'utf8');
+  assert.match(src, /\.com\.br: never geo\/cookie host-bounce/);
+  assert.match(src, /if \(br\) \{/);
+  assert.match(src, /prefCookieHeader\('pt'\)/);
+  assert.match(src, /br: false/);
+});
+
 test('proxy /stf-log encaminha IP/país/UA do visitante', async () => {
   const fs = await import('node:fs');
   const src = fs.readFileSync(new URL('./scf-com-proxy.js', import.meta.url), 'utf8');

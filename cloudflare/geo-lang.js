@@ -193,7 +193,6 @@ export function isPaidAdsClickSearch(searchOrUrl) {
  */
 export function localeRedirectTarget({ hostOrigin, pathname, search, br, preferred }) {
   const lang = normalizeSiteLang(preferred) || 'en';
-  const COM = 'https://www.sensorcrashfix.com';
   const BR = 'https://www.sensorcrashfix.com.br';
   const path = pathname || '/';
   const q = search || '';
@@ -206,7 +205,7 @@ export function localeRedirectTarget({ hostOrigin, pathname, search, br, preferr
 
   const isHome = path === '/' || path === '' || path === '/index.html';
   const file = isHome ? '' : path.replace(/^\//, '');
-  const base = String(hostOrigin || COM).replace(/\/$/, '');
+  const base = String(hostOrigin || 'https://www.sensorcrashfix.com').replace(/\/$/, '');
 
   if (lang === 'pt') {
     // Cross-domain → always pin stf_lang=pt on .com.br
