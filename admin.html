@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>Admin — Sensor Crash Fix</title>
-    <link rel="stylesheet" href="style.css?v=3.28-crash">
+    <link rel="stylesheet" href="style.css?v=3.29-crash">
     <style>
       .clicks-device-badge{display:inline-block;padding:2px 7px;border-radius:999px;font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
       .clicks-device--mobile{background:rgba(76,175,80,.14);color:#81c784}
@@ -50,13 +50,13 @@
                         <li><strong>Pagamento</strong> — cadastro de processadores (cartão, PIX, PayPal internacional e chave PIX reserva).</li>
                         <li><strong>Frete</strong> — remetente, modalidades, motoboy, Correios BR e internacional.</li>
                         <li><strong>Cupons</strong> — desconto ao cliente; comissão/e-mail só se houver comissionado.</li>
-                        <li><strong>Contato</strong> — WhatsApp, e-mails da loja, assuntos, mensagens e testes de envio.</li>
+                        <li><strong>Contato</strong> — WhatsApp, e-mails da loja, assuntos e testes de envio.</li>
                         <li><strong>API</strong> — URL do Worker e status das integrações (MP, Asaas, PayPal, Correios, Super Frete…).</li>
                         <li><strong>Documentação</strong> — guia técnico (secrets, webhooks, deploy).</li>
                     </ul>
                     <p class="admin-help-foot"><strong>Login:</strong> usuário <code>admin</code> + senha do secret <code>ADMIN_PASSWORD</code> no Cloudflare. Após 5 erros, bloqueio ~30 min.</p>
                 </div>
-                <form id="admin-login-form" class="admin-form admin-form-compact">
+                <form id="admin-login-form" class="admin-form admin-form-compact" method="post" action="#">
                     <label>Usuário
                         <input type="text" name="username" value="admin" required autocomplete="username">
                     </label>
@@ -534,6 +534,7 @@
                     <div id="admin-tab-contato" class="admin-tab-panel" role="tabpanel" hidden>
                     <fieldset>
                         <legend><i class="fas fa-headset"></i> Contato e pedidos</legend>
+                        <p class="admin-meta">O formulário público envia aviso por e-mail via Worker <code>/contact</code> (Resend, fallback FormSubmit) para <code>contato@</code>; o Gmail só recebe se o Email Routing encaminhar.</p>
                         <div class="form-grid">
                             <label>WhatsApp (somente números)
                                 <input type="text" name="whatsapp" required placeholder="5511999999999">
@@ -545,6 +546,7 @@
                                 <input type="text" name="emailFrom" placeholder="Sensor Crash Fix &lt;pedidos@sensorcrashfix.com.br&gt;">
                             </label>
                         </div>
+                        <p class="admin-meta">Avisos e mailto públicos usam <code>contato@sensorcrashfix.com.br</code> (nunca TattooFix). Com MX <code>0 .</code>, ative Cloudflare Email Routing no .com.br e encaminhe para o Outlook verificado (ex.: <code>F.nardoni@outlook.com</code>).</p>
                     </fieldset>
 
                     <fieldset>
@@ -1367,6 +1369,6 @@
     })();
     </script>
     <script type="module" src="js/sales-money.mjs?v=6"></script>
-    <script defer src="js/admin.js?v=226"></script>
+    <script defer src="js/admin.js?v=231"></script>
 </body>
 </html>
