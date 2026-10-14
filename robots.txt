@@ -9,6 +9,11 @@ Allow: /de/
 Allow: /es/
 Allow: /pl/
 Allow: /sl/
+Allow: /fr/
+Allow: /nl/
+Allow: /sv/
+Allow: /no/
+Allow: /fi/
 
 Disallow: /admin.html
 Disallow: /pedidos.html

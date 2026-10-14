@@ -10,7 +10,8 @@ import {
   localeRedirectTarget,
   prefCookieHeader,
   langFromPathname,
-  isBotUserAgent
+  isBotUserAgent,
+  isPaidAdsClickSearch
 } from './geo-lang.js';
 
 // Keep pin on tip that serves minha-conta + intl homes (incl. FR/NL/SV/NO/FI).
@@ -339,7 +340,8 @@ export default {
     }
 
     // First-hit locale: Polônia → /pl/, Alemanha → /de/, etc. (não aplica a bots)
-    if (!isBot) {
+    // Paid Ads clicks (gclid/gbraid/wbraid): never geo-bounce — Final URL must stick.
+    if (!isBot && !isPaidAdsClickSearch(url.search)) {
       const hadStfLang = url.searchParams.has('stf_lang');
       const force = String(url.searchParams.get('stf_lang') || '').toLowerCase();
       const forcedLang = ['pt', 'en', 'it', 'de', 'es', 'pl', 'sl', 'fr', 'nl', 'sv', 'no', 'fi'].includes(force) ? force : null;

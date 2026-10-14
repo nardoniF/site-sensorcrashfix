@@ -163,6 +163,29 @@ export function withStfLang(absoluteUrl, lang) {
 }
 
 /**
+ * Google Ads / paid click markers in the query string.
+ * When present, the storefront must NOT geo/locale-redirect: Final URL must
+ * match the landing (cookie leftover like stf_pref_lang=pt on .com would
+ * otherwise bounce intl Ads clicks to .com.br).
+ */
+export function isPaidAdsClickSearch(searchOrUrl) {
+  const raw = String(searchOrUrl || '');
+  let params;
+  try {
+    if (/^https?:\/\//i.test(raw)) params = new URL(raw).searchParams;
+    else params = new URLSearchParams(raw.startsWith('?') ? raw.slice(1) : raw);
+  } catch {
+    return false;
+  }
+  return (
+    params.has('gclid')
+    || params.has('gbraid')
+    || params.has('wbraid')
+    || params.has('gad_source')
+  );
+}
+
+/**
  * @returns {string|null} absolute URL to redirect to, or null
  */
 export function localeRedirectTarget({ hostOrigin, pathname, search, br, preferred }) {

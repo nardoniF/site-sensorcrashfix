@@ -7,7 +7,8 @@ import {
   localeRedirectTarget,
   isComEnglishEntryPath,
   isBotUserAgent,
-  prefLangFromCookie
+  prefLangFromCookie,
+  isPaidAdsClickSearch
 } from './geo-lang.js';
 
 test('country → lang', () => {
@@ -184,5 +185,22 @@ test('proxy mapeia INTL_LANGS com FR/NL/SV/NO/FI', async () => {
   const fs = await import('node:fs');
   const src = fs.readFileSync(new URL('./scf-com-proxy.js', import.meta.url), 'utf8');
   assert.match(src, /INTL_LANGS = \['it', 'de', 'es', 'pl', 'sl', 'fr', 'nl', 'sv', 'no', 'fi'\]/);
+});
+
+test('isPaidAdsClickSearch detecta gclid/gbraid/wbraid/gad_source', () => {
+  assert.equal(isPaidAdsClickSearch('?gclid=Abc'), true);
+  assert.equal(isPaidAdsClickSearch('gbraid=xyz&utm_source=google'), true);
+  assert.equal(isPaidAdsClickSearch('?wbraid=1'), true);
+  assert.equal(isPaidAdsClickSearch('?gad_source=1&utm_medium=cpc'), true);
+  assert.equal(isPaidAdsClickSearch('https://www.sensorcrashfix.com/?gclid=x'), true);
+  assert.equal(isPaidAdsClickSearch('?utm_source=google&utm_medium=cpc'), false);
+  assert.equal(isPaidAdsClickSearch(''), false);
+});
+
+test('proxy isenta geo-redirect em clique Ads pago', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('./scf-com-proxy.js', import.meta.url), 'utf8');
+  assert.match(src, /isPaidAdsClickSearch/);
+  assert.match(src, /!isBot && !isPaidAdsClickSearch\(url\.search\)/);
 });
 
