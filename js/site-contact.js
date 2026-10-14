@@ -1,6 +1,6 @@
 /**
- * Formulário #contato → POST /contact no Worker (KV + Resend).
- * Não depende de FormSubmit / ativação por e-mail.
+ * Formulário #contato → POST /contact no Worker.
+ * Sucesso = e-mail enviado (Resend) para contato@sensorcrashfix.com.br.
  */
 (function () {
   const I18N = {
@@ -227,7 +227,9 @@
           body: JSON.stringify(payload)
         });
         const data = await res.json().catch(() => ({}));
-        if (!res.ok) throw new Error(data.error || 'Falha');
+        if (!res.ok || data.ok !== true || data.notified === false) {
+          throw new Error(data.error || 'Falha');
+        }
 
         window.STF_ANALYTICS?.track?.('contato_enviado', { pagina: payload.pagina });
         setStatus(statusEl, t('thanks'), true);

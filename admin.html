@@ -50,7 +50,7 @@
                         <li><strong>Pagamento</strong> — cadastro de processadores (cartão, PIX, PayPal internacional e chave PIX reserva).</li>
                         <li><strong>Frete</strong> — remetente, modalidades, motoboy, Correios BR e internacional.</li>
                         <li><strong>Cupons</strong> — desconto ao cliente; comissão/e-mail só se houver comissionado.</li>
-                        <li><strong>Contato</strong> — WhatsApp, e-mails da loja, assuntos, mensagens e testes de envio.</li>
+                        <li><strong>Contato</strong> — WhatsApp, e-mails da loja, assuntos e testes de envio.</li>
                         <li><strong>API</strong> — URL do Worker e status das integrações (MP, Asaas, PayPal, Correios, Super Frete…).</li>
                         <li><strong>Documentação</strong> — guia técnico (secrets, webhooks, deploy).</li>
                     </ul>
@@ -534,7 +534,7 @@
                     <div id="admin-tab-contato" class="admin-tab-panel" role="tabpanel" hidden>
                     <fieldset>
                         <legend><i class="fas fa-headset"></i> Contato e pedidos</legend>
-                        <p class="admin-meta">O formulário do site grava primeiro em <strong>Mensagens do site</strong> (abaixo) via Worker <code>/contact</code>. O Gmail só recebe se o Resend (ou fallback FormSubmit) enviar para <code>contato@</code> e o Email Routing encaminhar. Cada cartão mostra se o aviso de e-mail saiu (✉ OK / ✉ falhou).</p>
+                        <p class="admin-meta">O formulário do site envia e-mail via Resend para <code>contato@sensorcrashfix.com.br</code> (Email Routing → Gmail). Sem e-mail enviado, o visitante vê erro — não há inbox no Admin.</p>
                         <div class="form-grid">
                             <label>WhatsApp (somente números)
                                 <input type="text" name="whatsapp" required placeholder="5511999999999">
@@ -546,12 +546,13 @@
                                 <input type="text" name="emailFrom" placeholder="Sensor Crash Fix &lt;pedidos@sensorcrashfix.com.br&gt;">
                             </label>
                         </div>
-                        <p class="admin-meta">Avisos e mailto públicos usam <code>contato@sensorcrashfix.com.br</code> (nunca TattooFix). Com MX <code>0 .</code>, ative Cloudflare Email Routing no .com.br e encaminhe para o Outlook verificado (ex.: <code>F.nardoni@outlook.com</code>). Mensagens do formulário também ficam em Contatos (KV).</p>
+                        <p class="admin-meta">Mailto público e avisos usam <code>contato@sensorcrashfix.com.br</code>. MX deve ser Cloudflare Email Routing (<code>route*.mx.cloudflare.net</code>), não Null MX.</p>
                     </fieldset>
 
-                    <fieldset>
+                    <!-- Inbox KV oculta: produto = e-mail em contato@. Backup silencioso no Worker permanece. -->
+                    <fieldset hidden aria-hidden="true">
                         <legend class="admin-legend-row"><span><i class="fas fa-inbox"></i> Mensagens do site (formulário Contato)</span></legend>
-                        <p class="admin-meta">Mensagens enviadas pelo formulário das homes (PT + .com). Fonte durável = KV; e-mail é aviso via Resend.</p>
+                        <p class="admin-meta">Backup KV (não é o canal de atendimento).</p>
                         <div class="admin-clicks-filters">
                             <label class="admin-clicks-search">
                                 <input type="search" id="contact-search" placeholder="Buscar nas mensagens…" autocomplete="off" aria-label="Buscar contato">
@@ -567,7 +568,7 @@
                         </div>
                         <p id="contact-checked-at" class="admin-meta" hidden></p>
                         <div id="contact-list-root" class="feedback-list-root">
-                            <p class="admin-meta">Abra esta seção para carregar as mensagens.</p>
+                            <p class="admin-meta">Backup KV oculto.</p>
                         </div>
                     </fieldset>
 
@@ -1391,6 +1392,6 @@
     })();
     </script>
     <script type="module" src="js/sales-money.mjs?v=6"></script>
-    <script defer src="js/admin.js?v=228"></script>
+    <script defer src="js/admin.js?v=229"></script>
 </body>
 </html>

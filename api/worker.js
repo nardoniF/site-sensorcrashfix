@@ -17364,9 +17364,8 @@ function looksLikeEmail(value) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s) && s.length <= 120;
 }
 
-/** Destinos de aviso do formulário de contato (KV é a fonte durável).
- * Público + notify: sempre contato@sensorcrashfix.com.br (nunca TattooFix).
- * Com Null MX, o aviso Resend só chega após Email Routing no .com.br. */
+/** Destinos do formulário de contato: sempre contato@sensorcrashfix.com.br (nunca TattooFix).
+ * Produto = e-mail (Resend → contato@ → Email Routing → Gmail). KV é só backup silencioso. */
 function contactNotifyRecipients(config) {
   const recipients = new Set(['contato@sensorcrashfix.com.br']);
   const primary = String(config?.formsubmit?.email || '').trim().toLowerCase();
@@ -17430,14 +17429,6 @@ async function handleContact(request, env, origin, ctx) {
     notifyError: ''
   };
 
-  let row;
-  try {
-    row = await appendContact(env, entry);
-  } catch (err) {
-    console.error('contact save:', err.message);
-    return json({ error: 'Falha ao gravar.' }, 503, origin);
-  }
-
   const config = await getConfig(env);
   const when = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
   const fields = {
@@ -17450,59 +17441,63 @@ async function handleContact(request, env, origin, ctx) {
     Quando: when
   };
 
-  // Await notify (não fire-and-forget): sem waitUntil o Worker podia morrer antes do Resend.
-  // notifyEmail = Resend + fallback FormSubmit. TO contato@ → Email Routing → Gmail.
+  // E-mail é obrigatório para sucesso. notifyEmail = Resend (+ fallback FormSubmit).
+  // TO contato@ → Email Routing → Gmail do dono.
   const recipients = contactNotifyRecipients(config);
-  const notifyWork = (async () => {
-    const results = [];
-    for (const to of recipients) {
-      try {
-        const result = await notifyEmail(env, config, to, subject, fields, email);
-        results.push({
-          to,
-          ok: !!result?.ok,
-          provider: result?.provider || null,
-          error: result?.ok
-            ? null
-            : (result?.error || result?.resend?.error || result?.formsubmit?.error || 'falha')
-        });
-      } catch (err) {
-        results.push({ to, ok: false, provider: null, error: err.message || 'erro' });
-      }
+  const results = [];
+  for (const to of recipients) {
+    try {
+      const result = await notifyEmail(env, config, to, subject, fields, email);
+      results.push({
+        to,
+        ok: !!result?.ok,
+        provider: result?.provider || null,
+        error: result?.ok
+          ? null
+          : (result?.error || result?.resend?.error || result?.formsubmit?.error || 'falha')
+      });
+    } catch (err) {
+      results.push({ to, ok: false, provider: null, error: err.message || 'erro' });
     }
-    const notified = results.some((r) => r.ok);
-    const firstErr = results.find((r) => !r.ok)?.error || '';
-    const providers = results.filter((r) => r.ok).map((r) => r.provider).filter(Boolean);
-    await patchContactNotify(env, row.id, {
-      notified,
-      notifyError: notified ? '' : String(firstErr || 'notify falhou').slice(0, 240),
-      notifyProvider: providers[0] || '',
-      notifiedAt: Date.now(),
-      notifyResults: results.slice(0, 6)
-    });
-    if (!notified) {
-      console.error('contact notify failed:', JSON.stringify(results));
+  }
+  const notified = results.some((r) => r.ok);
+  const firstErr = results.find((r) => !r.ok)?.error || '';
+  const providers = results.filter((r) => r.ok).map((r) => r.provider).filter(Boolean);
+  const notifyError = notified ? '' : String(firstErr || 'Falha ao enviar e-mail').slice(0, 240);
+
+  // Backup silencioso no KV (não define sucesso para o visitante).
+  const backupWork = (async () => {
+    try {
+      const row = await appendContact(env, {
+        ...entry,
+        notified,
+        notifyError,
+        notifyProvider: providers[0] || '',
+        notifiedAt: Date.now(),
+        notifyResults: results.slice(0, 6)
+      });
+      return row;
+    } catch (err) {
+      console.error('contact kv backup:', err.message);
+      return null;
     }
-    return { notified, results };
   })();
-
   if (ctx && typeof ctx.waitUntil === 'function') {
-    ctx.waitUntil(notifyWork);
+    ctx.waitUntil(backupWork);
+  } else {
+    await backupWork;
   }
 
-  let notified = false;
-  let notifyError = '';
-  try {
-    const outcome = await notifyWork;
-    notified = !!outcome.notified;
-    notifyError = notified ? '' : (outcome.results?.find((r) => !r.ok)?.error || 'notify falhou');
-  } catch (err) {
-    notifyError = err.message || 'notify falhou';
-    console.error('contact notify:', notifyError);
+  if (!notified) {
+    console.error('contact notify failed:', JSON.stringify(results));
+    return json({
+      error: 'Não foi possível enviar o e-mail. Tente de novo ou escreva para contato@sensorcrashfix.com.br.',
+      notified: false,
+      notifyError
+    }, 502, origin);
   }
 
-  // ok:true = gravado no Admin (KV). notified diz se o e-mail saiu (Gmail via Routing).
-  return json({ ok: true, saved: true, notified, notifyError: notified ? undefined : notifyError }, 202, origin);
+  return json({ ok: true, notified: true, provider: providers[0] || 'resend' }, 200, origin);
 }
 
 async function handleAdminListContact(request, env, origin) {

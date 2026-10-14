@@ -91,13 +91,19 @@ test('contato do site: forms usam /contact (sem FormSubmit) + Worker expõe rota
   assert.ok(worker.includes('CONTACT_BLOB'));
   assert.ok(worker.includes('contato@sensorcrashfix.com.br'), 'notify default CrashFix');
   assert.equal(worker.includes('contato@sensortattoofix.com.br'), false, 'notify nunca TattooFix');
-  assert.ok(worker.includes('patchContactNotify'), 'persiste status do aviso de e-mail');
-  assert.ok(worker.includes('await notifyWork'), 'aguarda notify (não fire-and-forget)');
   assert.ok(worker.includes('notifyEmail(env, config, to, subject, fields, email)'), 'contato usa notifyEmail (Resend+fallback)');
+  assert.ok(worker.includes("notified: true"), 'sucesso exige e-mail enviado');
+  assert.ok(worker.includes('502'), 'falha de e-mail devolve 502 (não ok:true só com KV)');
   assert.equal(
     /sendViaResend\(env, config, to, subject, fields, email\)\.catch\(\(\) => \{\}\)/.test(worker),
     false,
     'contato não engole Resend em fire-and-forget'
+  );
+  assert.ok(contactJs.includes('data.notified === false'), 'front recusa ok sem e-mail');
+  const adminHtml = fs.readFileSync(path.join(root, 'admin.html'), 'utf8');
+  assert.ok(
+    /<fieldset hidden aria-hidden="true">[\s\S]*Mensagens do site/.test(adminHtml),
+    'inbox Mensagens do site oculta no Admin'
   );
   const indexesAll = [
     'index.html',
