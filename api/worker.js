@@ -7014,14 +7014,48 @@ async function saveConfig(env, config) {
   return toSave;
 }
 
+function adminSessionCacheReq(token) {
+  return new Request('https://stf-internal/adminSession/' + encodeURIComponent(token));
+}
+
+async function putAdminSessionCache(token) {
+  try {
+    await caches.default.put(
+      adminSessionCacheReq(token),
+      new Response('1', {
+        headers: {
+          'Content-Type': 'text/plain',
+          'Cache-Control': 'max-age=86400'
+        }
+      })
+    );
+    return true;
+  } catch (err) {
+    console.error('admin session cache put:', err?.message || err);
+    return false;
+  }
+}
+
 async function createSession(env) {
   const token = crypto.randomUUID();
-  await kvPut(env, 'session:' + token, '1', { expirationTtl: 86400 });
-  return token;
+  const ok = await kvPutSafe(env, 'session:' + token, '1', { expirationTtl: 86400 });
+  if (ok) return token;
+  // Free-tier KV write quota exhausted: keep admin login alive via Cache API (same as customer).
+  if (await putAdminSessionCache(token)) return token;
+  const err = new Error('LOGIN_STORAGE_UNAVAILABLE');
+  err.code = 'LOGIN_STORAGE_UNAVAILABLE';
+  throw err;
 }
 
 async function isValidSession(env, token) {
-  return !!(token && await env.STORE_KV.get('session:' + token));
+  if (!token) return false;
+  if (await env.STORE_KV.get('session:' + token)) return true;
+  try {
+    const hit = await caches.default.match(adminSessionCacheReq(token));
+    return !!(hit && (await hit.text()));
+  } catch {
+    return false;
+  }
 }
 
 async function getOrder(env, orderId) {
@@ -15818,22 +15852,32 @@ async function handleMercadoPagoWebhook(request, env, origin) {
 async function handleLogin(request, env, origin) {
   if (!env.ADMIN_PASSWORD) return json({ error: 'ADMIN_PASSWORD não configurado.' }, 500, origin);
 
-  const ip = clientIp(request);
-  const lock = await getLoginLock(env, ip, 'admin');
-  if (lock?.lockedUntil && Date.now() < lock.lockedUntil) {
-    return loginLockedResponse(lock, origin);
-  }
+  try {
+    const ip = clientIp(request);
+    const lock = await getLoginLock(env, ip, 'admin');
+    if (lock?.lockedUntil && Date.now() < lock.lockedUntil) {
+      return loginLockedResponse(lock, origin);
+    }
 
-  const body = await request.json();
-  const username = String(body.username || '').trim();
-  const password = String(body.password || '');
-  if (username !== (env.ADMIN_USERNAME || 'admin') || password !== env.ADMIN_PASSWORD) {
-    await recordLoginFailure(env, ip, 'admin');
-    return json({ error: 'Usuário ou senha incorretos.' }, 401, origin);
-  }
+    const body = await request.json().catch(() => ({}));
+    const username = String(body.username || '').trim();
+    const password = String(body.password || '');
+    if (username !== (env.ADMIN_USERNAME || 'admin') || password !== env.ADMIN_PASSWORD) {
+      await recordLoginFailure(env, ip, 'admin');
+      return json({ error: 'Usuário ou senha incorretos.' }, 401, origin);
+    }
 
-  await clearLoginFailures(env, ip, 'admin');
-  return json({ token: await createSession(env), username: env.ADMIN_USERNAME || 'admin' }, 200, origin);
+    await clearLoginFailures(env, ip, 'admin');
+    return json({ token: await createSession(env), username: env.ADMIN_USERNAME || 'admin' }, 200, origin);
+  } catch (err) {
+    console.error('admin login:', err?.message || err);
+    if (err?.code === 'LOGIN_STORAGE_UNAVAILABLE' || isKvQuotaError(err)) {
+      return json({
+        error: 'Login temporariamente indisponível (limite diário do servidor). Tente após 21h (horário de Brasília).'
+      }, 503, origin);
+    }
+    return json({ error: 'Não foi possível entrar agora. Tente de novo em instantes.' }, 500, origin);
+  }
 }
 
 async function handleSession(request, env, origin) {

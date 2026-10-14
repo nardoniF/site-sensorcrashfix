@@ -7911,12 +7911,29 @@ ${worksheets}
     }
   }
 
+  function scrubLoginSecretsFromUrl() {
+    try {
+      const url = new URL(location.href);
+      if (!url.searchParams.has('username') && !url.searchParams.has('password')) return;
+      url.searchParams.delete('username');
+      url.searchParams.delete('password');
+      const next = url.pathname + (url.searchParams.toString() ? '?' + url.searchParams.toString() : '') + url.hash;
+      history.replaceState(null, '', next);
+    } catch (_) { /* ignore */ }
+  }
+
   els.loginForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
+    e.stopPropagation();
+    scrubLoginSecretsFromUrl();
     showStatus('Entrando...', '');
     try {
-      const fd = new FormData(els.loginForm);
-      await tryLogin(fd.get('username'), fd.get('password'));
+      const userInput = els.loginForm.querySelector('[name="username"]');
+      const passInput = els.loginForm.querySelector('[name="password"]');
+      // Prefer live .value — autofill can lag behind FormData in some browsers.
+      const username = (userInput?.value ?? new FormData(els.loginForm).get('username') ?? '').toString();
+      const password = (passInput?.value ?? new FormData(els.loginForm).get('password') ?? '').toString();
+      await tryLogin(username, password);
       showPanel();
       await initPanel();
       loadDocFrame(true);
@@ -8201,6 +8218,7 @@ ${worksheets}
   document.getElementById('btn-mp-release-audit')?.addEventListener('click', () => runMpReleaseAudit());
 
   document.addEventListener('DOMContentLoaded', async () => {
+    scrubLoginSecretsFromUrl();
     await waitSalesMoney();
     const token = sessionStorage.getItem(SESSION_KEY);
     if (token && apiBase()) {
