@@ -11,7 +11,7 @@
   }
   if (!isIntlPage()) return;
 
-  const EMAIL = window.STF_SITE?.supportEmail?.() || 'support@sensorcrashfix.com';
+  const EMAIL = window.STF_SITE?.supportEmail?.() || 'contato@sensorcrashfix.com.br';
   const isIt = /\/it(\/|$)/i.test(location.pathname)
     || (document.documentElement.lang || '').toLowerCase().startsWith('it');
   const copy = isIt
