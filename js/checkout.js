@@ -543,22 +543,25 @@ window.STF_MONEY = window.STF_MONEY || (function () {
         return formatChargeMoney(foreign, cur);
       }
 
-      /** Convert cart line / product using stored list price (R$ + markup → FX already applied). */
-      if (product && window.STF_MONEY?.configuredForeignPrice) {
-        const unitForeign = window.STF_MONEY.configuredForeignPrice(product, cur, cfg);
+      /** Product line: R$ × markup% → FX (TattooFix). Markup% beats stale priceUsd until KV sync. */
+      if (product) {
         const unitBrl = Number(product.price) || 0;
+        const markup = Number(product.intlMarkupPercent);
+        let unitForeign = null;
+        if (Number.isFinite(markup) && markup >= 0 && fxRate && unitBrl > 0) {
+          unitForeign = roundFx(unitBrl * (1 + markup / 100) * fxRate);
+        }
+        if (unitForeign == null && window.STF_MONEY?.configuredForeignPrice) {
+          unitForeign = window.STF_MONEY.configuredForeignPrice(product, cur, cfg);
+        }
+        if (unitForeign == null && fxRate && unitBrl > 0) {
+          unitForeign = roundFx(unitBrl * (1 + 130 / 100) * fxRate);
+        }
         if (unitForeign != null && unitBrl > 0) {
           const qty = Math.abs(brl - unitBrl) < 0.001 ? 1 : brl / unitBrl;
           if (Number.isFinite(qty) && qty > 0) {
             return emit(Math.round(unitForeign * qty * 100) / 100);
           }
-        }
-        if (unitForeign == null && fxRate && unitBrl > 0) {
-          const markup = Number(product.intlMarkupPercent);
-          const pct = Number.isFinite(markup) && markup >= 0 ? markup : 130;
-          const unitF = roundFx(unitBrl * (1 + pct / 100) * fxRate);
-          const qty = Math.abs(brl - unitBrl) < 0.001 ? 1 : brl / unitBrl;
-          if (Number.isFinite(qty) && qty > 0) return emit(Math.round(unitF * qty * 100) / 100);
         }
       }
 
