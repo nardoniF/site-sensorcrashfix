@@ -122,13 +122,11 @@ window.STF_MONEY = (function () {
 
   function visitorDisplayCurrency(countryCode) {
     const country = String(countryCode || visitorCountry()).toUpperCase();
-    if (isIntlHost()) {
-      if (country === 'IT' || country === 'FR' || country === 'NL' || country === 'FI') return 'EUR';
-      if (country === 'SE') return 'SEK';
-      if (country === 'NO') return 'NOK';
-      return 'USD';
-    }
     const cur = currencyForCountry(country);
+    // .com never displays BRL — fall back to USD if country maps to reais.
+    if (isIntlHost() || isVisitorLocalized()) {
+      return cur === 'BRL' ? 'USD' : cur;
+    }
     return cur === 'BRL' ? 'BRL' : cur;
   }
 
@@ -170,13 +168,16 @@ window.STF_MONEY = (function () {
 
   async function formatForVisitor(amountBrl, config, countryCode) {
     const country = String(countryCode || visitorCountry()).toUpperCase();
-    if (isIntlHost()) {
+    if (isIntlHost() || isVisitorLocalized()) {
       const cur = visitorDisplayCurrency(country);
       const rate = await loadRate(apiBase(config), cur);
-      if (!rate) return formatBRL(amountBrl);
+      if (!rate) {
+        // Never flash R$ on .com / localized paths while FX is unavailable.
+        return formatForeign(Number(amountBrl) || 0, cur, country).replace(/[\d.,\u00a0]+/, '…');
+      }
       return formatForeign(convertFromBrl(amountBrl, rate), cur, country);
     }
-    if (country === 'BR' && !isVisitorLocalized()) return formatBRL(amountBrl);
+    if (country === 'BR') return formatBRL(amountBrl);
     const cur = currencyForCountry(country);
     if (cur === 'BRL') return formatBRL(amountBrl);
     const rate = await loadRate(apiBase(config), cur);
@@ -190,13 +191,15 @@ window.STF_MONEY = (function () {
       return text.includes(' (') ? text.split(' (')[0] : text;
     }
     const country = String(countryCode || visitorCountry()).toUpperCase();
-    if (isIntlHost()) {
+    if (isIntlHost() || isVisitorLocalized()) {
       const cur = visitorDisplayCurrency(country);
       const rate = await loadRate(apiBase(config), cur);
-      if (!rate) return formatBRL(amountBrl);
+      if (!rate) {
+        return formatForeign(Number(amountBrl) || 0, cur, country).replace(/[\d.,\u00a0]+/, '…');
+      }
       return formatForeign(convertFromBrl(amountBrl, rate), cur, country);
     }
-    if (country === 'BR' && !isVisitorLocalized()) return formatBRL(amountBrl);
+    if (country === 'BR') return formatBRL(amountBrl);
     const cur = currencyForCountry(country);
     if (cur === 'BRL') return formatBRL(amountBrl);
     const rate = await loadRate(apiBase(config), cur);

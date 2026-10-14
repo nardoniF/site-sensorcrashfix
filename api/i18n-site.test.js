@@ -97,6 +97,49 @@ test('home-content-l10n.json cobre FAQs Crash em de/es/pl/sl/fr/nl/sv/no/fi', ()
   }
 });
 
+test('STF_MONEY: .com FR/DE → EUR; EN → USD; .com.br PT → BRL', () => {
+  function loadMoney(hostname, pathname) {
+    const location = { hostname, pathname, search: '' };
+    const window = {
+      location,
+      STF_SITE: {
+        isIntlHost: () => hostname === 'sensorcrashfix.com' || hostname === 'www.sensorcrashfix.com'
+      }
+    };
+    const sandbox = { window, globalThis: window, location, console };
+    vm.runInNewContext(fs.readFileSync(path.join(jsDir, 'stf-money.js'), 'utf8'), sandbox, { filename: 'stf-money.js' });
+    return sandbox.window.STF_MONEY;
+  }
+  const fr = loadMoney('www.sensorcrashfix.com', '/fr/comprar.html');
+  assert.equal(fr.visitorCountry(), 'FR');
+  assert.equal(fr.visitorDisplayCurrency(), 'EUR');
+  const de = loadMoney('www.sensorcrashfix.com', '/de/');
+  assert.equal(de.visitorCountry(), 'DE');
+  assert.equal(de.visitorDisplayCurrency(), 'EUR');
+  const en = loadMoney('www.sensorcrashfix.com', '/comprar.html');
+  assert.equal(en.visitorDisplayCurrency(), 'USD');
+  const br = loadMoney('www.sensorcrashfix.com.br', '/comprar.html');
+  assert.equal(br.visitorCountry(), 'BR');
+  assert.equal(br.visitorDisplayCurrency(), 'BRL');
+});
+
+test('home-content.js: FAQ intl não cai em questionEn; limita a 5; prefere store-config', () => {
+  const src = fs.readFileSync(path.join(jsDir, 'home-content.js'), 'utf8');
+  assert.match(src, /never leak English leftovers/);
+  assert.match(src, /htmlParts\.length >= 5/);
+  assert.match(src, /Prefer static store-config/);
+  assert.match(src, /active\.length > 5/);
+});
+
+test('checkout.js: locale FR/DE mapeia moeda (não força só IT→EUR)', () => {
+  const src = fs.readFileSync(path.join(jsDir, 'checkout.js'), 'utf8');
+  assert.match(src, /function localeToCountry/);
+  assert.match(src, /function intlCheckoutCountry/);
+  assert.match(src, /'fr'/);
+  assert.match(src, /Never show R\$/);
+  assert.doesNotMatch(src, /checkoutLocale\(\) === 'it' \? 'IT' : 'US'/);
+});
+
 test('forum-l10n.json cobre chaves principais em de/es/pl', () => {
   const data = JSON.parse(fs.readFileSync(path.join(root, 'data/forum-l10n.json'), 'utf8'));
   const required = ['title', 'loading', 'signIn', 'newTopic', 'post', 'reply'];

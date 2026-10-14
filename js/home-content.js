@@ -20,8 +20,11 @@
     if (suffix) {
       const localized = row[base + suffix];
       if (localized) return localized;
+      // IT may fall back to EN copy embedded on the row; other EU langs must use l10n
+      // (never leak English leftovers like "Does it work on Apple Watch?").
       if (lang === 'it') return row[base + 'En'] || row[base] || '';
-      if (['de', 'es', 'pl', 'sl', 'fr', 'nl', 'sv', 'no', 'fi'].includes(lang)) return row[base + 'En'] || '';
+      if (lang === 'en') return row[base + 'En'] || row[base] || '';
+      if (['de', 'es', 'pl', 'sl', 'fr', 'nl', 'sv', 'no', 'fi'].includes(lang)) return '';
     }
     return row[base] || '';
   }
@@ -65,20 +68,29 @@
   function renderFaq(items, lang) {
     const root = document.getElementById('home-faq-root');
     if (!root) return;
+    const l10nLangs = ['de', 'es', 'pl', 'sl', 'fr', 'nl', 'sv', 'no', 'fi'];
     const rows = (items || [])
       .filter((r) => r && r.active !== false)
       .slice()
       .sort((a, b) => (a.order || 0) - (b.order || 0));
-    root.innerHTML = rows.map((row) => {
-      const q = pickL10n('faq', row.id, 'question', lang) || pick(row, 'question', lang);
-      const a = pickL10n('faq', row.id, 'answer', lang) || pick(row, 'answer', lang);
-      if (!q) return '';
-      return `<details class="faq-item">
+    const htmlParts = [];
+    for (const row of rows) {
+      const fromL10nQ = pickL10n('faq', row.id, 'question', lang);
+      const fromL10nA = pickL10n('faq', row.id, 'answer', lang);
+      const q = fromL10nQ || pick(row, 'question', lang);
+      const a = fromL10nA || pick(row, 'answer', lang);
+      // EU locales: require a real translation (l10n or native field) — never EN leftovers.
+      if (l10nLangs.includes(lang) && !fromL10nQ && !pick(row, 'question', lang)) continue;
+      if (!q) continue;
+      htmlParts.push(`<details class="faq-item">
         <summary>${q}</summary>
         ${a ? `<p>${a}</p>` : ''}
         ${renderMedia(row.media)}
-      </details>`;
-    }).join('');
+      </details>`);
+      // Canonical PT home ships 5 FAQs — keep parity per locale.
+      if (htmlParts.length >= 5) break;
+    }
+    root.innerHTML = htmlParts.join('');
   }
 
   function renderReviews(items, lang) {
@@ -138,11 +150,32 @@
     return l10nCache;
   }
 
+  async function loadLocalStoreConfig() {
+    try {
+      const res = await fetch('/data/store-config.json?v=' + Date.now(), { cache: 'no-store' });
+      if (res.ok) return res.json();
+    } catch (e) {
+      console.warn('home-content: falha ao carregar store-config', e);
+    }
+    return null;
+  }
+
   async function loadConfig() {
     const fromStore = resolveConfig();
     if (fromStore && Array.isArray(fromStore.homeFaq) && fromStore.homeFaq.length) {
+      const active = fromStore.homeFaq.filter((r) => r && r.active !== false);
+      // Merged CHECKOUT_CONFIG from store-loader already prefers local FAQ.
+      if (active.length && active.length <= 5) return fromStore;
+      if (active.length > 5) {
+        // Stale Admin list (10 EN-era items) — prefer repo store-config for l10n IDs.
+        const local = await loadLocalStoreConfig();
+        if (local?.homeFaq?.length) return local;
+      }
       return fromStore;
     }
+    // Prefer static store-config (matches home-content-l10n.json IDs) over raw Admin API.
+    const local = await loadLocalStoreConfig();
+    if (local && Array.isArray(local.homeFaq) && local.homeFaq.length) return local;
     const apiBase = String(window.CONFIG_BOOTSTRAP?.configApiUrl || '').replace(/\/$/, '');
     if (apiBase) {
       try {
@@ -154,12 +187,6 @@
       } catch (e) {
         console.warn('home-content: falha API config', e);
       }
-    }
-    try {
-      const res = await fetch('/data/store-config.json?v=' + Date.now(), { cache: 'no-store' });
-      if (res.ok) return res.json();
-    } catch (e) {
-      console.warn('home-content: falha ao carregar store-config', e);
     }
     return fromStore || { homeFaq: [], homeReviews: [] };
   }
