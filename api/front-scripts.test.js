@@ -62,3 +62,29 @@ test('película compat: case mm, Apple squircle, other model skipped', () => {
   assert.equal(STF_PELICULA.isCompatible(null, 'Apple Watch Series 10 (46 mm)'), false);
   assert.equal(STF_PELICULA.findCompatible('Outro modelo', []).length, 0);
 });
+
+test('contato do site: forms usam /contact (sem FormSubmit) + Worker expõe rota', () => {
+  const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
+  const indexes = [
+    'index.html',
+    'en/index.html',
+    'it/index.html',
+    'de/index.html',
+    'es/index.html',
+    'pl/index.html',
+    'sl/index.html'
+  ];
+  for (const rel of indexes) {
+    const html = fs.readFileSync(path.join(root, rel), 'utf8');
+    assert.ok(html.includes('form.contact-form') || html.includes('class="contact-form"'), rel);
+    assert.ok(html.includes('data-contact-api="1"'), `${rel} precisa data-contact-api`);
+    assert.ok(html.includes('site-contact.js'), `${rel} precisa site-contact.js`);
+    assert.equal(html.includes('formsubmit.co'), false, `${rel} não deve usar formsubmit.co`);
+  }
+  const contactJs = fs.readFileSync(path.join(root, 'js/site-contact.js'), 'utf8');
+  assert.ok(contactJs.includes("/contact"));
+  const worker = fs.readFileSync(path.join(root, 'api/worker.js'), 'utf8');
+  assert.ok(worker.includes("path === '/contact'"));
+  assert.ok(worker.includes('handleContact'));
+  assert.ok(worker.includes('CONTACT_BLOB'));
+});

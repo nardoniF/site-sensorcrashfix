@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>Admin — Sensor Crash Fix</title>
-    <link rel="stylesheet" href="style.css?v=3.28-crash">
+    <link rel="stylesheet" href="style.css?v=3.29-crash">
     <style>
       .clicks-device-badge{display:inline-block;padding:2px 7px;border-radius:999px;font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
       .clicks-device--mobile{background:rgba(76,175,80,.14);color:#81c784}
@@ -534,6 +534,7 @@
                     <div id="admin-tab-contato" class="admin-tab-panel" role="tabpanel" hidden>
                     <fieldset>
                         <legend><i class="fas fa-headset"></i> Contato e pedidos</legend>
+                        <p class="admin-meta">O formulário do site grava em <strong>Mensagens do site</strong> (abaixo) via Worker <code>/contact</code> + Resend. Não depende de ativação FormSubmit.</p>
                         <div class="form-grid">
                             <label>WhatsApp (somente números)
                                 <input type="text" name="whatsapp" required placeholder="5511999999999">
@@ -544,6 +545,29 @@
                             <label class="full">Remetente dos e-mails (Resend)
                                 <input type="text" name="emailFrom" placeholder="Sensor Crash Fix &lt;pedidos@sensorcrashfix.com.br&gt;">
                             </label>
+                        </div>
+                        <p class="admin-meta">Se o MX de <code>sensorcrashfix.com.br</code> for <code>0 .</code> (nulo), e-mails para <code>contato@…com.br</code> <strong>não chegam</strong>. Ative Cloudflare Email Routing no .com.br ou use um inbox com MX real (ex.: <code>support@sensorcrashfix.com</code>).</p>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend class="admin-legend-row"><span><i class="fas fa-inbox"></i> Mensagens do site (formulário Contato)</span></legend>
+                        <p class="admin-meta">Mensagens enviadas pelo formulário das homes (PT + .com). Fonte durável = KV; e-mail é aviso via Resend.</p>
+                        <div class="admin-clicks-filters">
+                            <label class="admin-clicks-search">
+                                <input type="search" id="contact-search" placeholder="Buscar nas mensagens…" autocomplete="off" aria-label="Buscar contato">
+                            </label>
+                        </div>
+                        <div class="admin-clicks-toolbar admin-toolbar-split">
+                            <div class="admin-toolbar-main">
+                                <button type="button" id="btn-contact-refresh" class="btn-secondary"><i class="fas fa-sync-alt"></i> Atualizar</button>
+                            </div>
+                            <div class="admin-toolbar-risk">
+                                <button type="button" id="btn-contact-clear" class="btn-danger-outline" title="Apaga todas as mensagens"><i class="fas fa-trash-alt"></i> Limpar tudo</button>
+                            </div>
+                        </div>
+                        <p id="contact-checked-at" class="admin-meta" hidden></p>
+                        <div id="contact-list-root" class="feedback-list-root">
+                            <p class="admin-meta">Abra esta seção para carregar as mensagens.</p>
                         </div>
                     </fieldset>
 
@@ -1367,6 +1391,6 @@
     })();
     </script>
     <script type="module" src="js/sales-money.mjs?v=6"></script>
-    <script defer src="js/admin.js?v=226"></script>
+    <script defer src="js/admin.js?v=227"></script>
 </body>
 </html>

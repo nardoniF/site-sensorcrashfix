@@ -850,6 +850,10 @@ body.stf-lens-only .kit-box { display: none !important; }
 .contact-form { display: flex; flex-direction: column; gap: 14px; }
 .contact-form input, .contact-form textarea { padding: 12px; background: #0a0a0a; border: 1px solid #333; color: white; border-radius: 8px; font-size: 0.95rem; width: 100%; }
 .contact-form button { cursor: pointer; border: none; }
+.contact-form-status { margin: 0; font-size: 0.9rem; text-align: center; }
+.contact-form-status--ok { color: #6dd47e; }
+.contact-form-status--err { color: #f07178; }
+.contact-form-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; }
 
 /* Pesquisa / feedback do visitante */
 .stf-feedback-fab {

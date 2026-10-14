@@ -237,6 +237,26 @@ Ative em **todas** as contas abaixo. Prefira **app autenticador** (Google Authen
 4. Ative **bloqueio de transferência** do domínio (impede mudar titular sem procedimento).
 5. Confirme que o **e-mail de contato** do domínio é seu e está ativo (recuperação).
 
+### MX / e-mail de contato
+
+Diagnóstico (verificar com `dig MX …`):
+
+| Domínio | MX típico quebrado | Efeito |
+|---------|-------------------|--------|
+| `sensorcrashfix.com.br` | **`0 .`** (MX nulo) | Nada chega em `contato@…com.br` |
+| `sensorcrashfix.com` | sem MX (ou Routing desligado) | Nada chega em `support@…com` |
+
+Efeitos:
+- Ativação FormSubmit **nunca chega** (o link de confirmação é enviado para o endereço de destino).
+- O site **não depende mais** disso: o formulário Contato grava no Worker (`POST /contact` → KV) e tenta aviso via **Resend**; no Admin → Cadastros → Contatos → **Mensagens do site**.
+
+Para voltar a receber em `contato@` / `support@` (Cloudflare Email Routing):
+
+1. Cloudflare → zona do domínio → **Email** → **Email Routing**.
+2. Ative Routing e crie o endereço → encaminhar para um Gmail/Outlook real.
+3. Aceite os registros MX sugeridos (`route1/2/3.mx.cloudflare.net`) — isso **substitui** o MX nulo `0 .` ou a ausência de MX.
+4. Remova/ajuste SPF `v=spf1 -all` no .com.br se for enviar *de* esse domínio (Resend/Email Routing têm guias próprios).
+
 ### Depois de ativar
 
 - Guarde recovery codes em local **fora** do Git e do e-mail da loja.
