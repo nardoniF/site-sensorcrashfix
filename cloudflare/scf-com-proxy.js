@@ -1,8 +1,9 @@
 /**
  * Storefront proxy — serves pinned GitHub commit via jsDelivr.
  * - .com / www.sensorcrashfix.com → EN (/) + IT/DE/ES/PL/SL/FR/NL/SV/NO/FI
- * - .com.br → Portuguese (repo root); intl paths redirecionam ao .com
- * - First-hit: cookie / CF-IPCountry / Accept-Language → redirect para idioma nativo
+ * - .com.br → Portuguese (repo root); never geo/cookie-bounce away to .com
+ * - First-hit on .com: cookie / CF-IPCountry / Accept-Language → idioma nativo
+ * - Paths /de|/es|/pl|/it|/en on .com.br still canonicalize to .com (explicit URL)
  * IMPORTANT: pin COMMIT after each push so domains are not stuck on stale @main cache.
  */
 import {
@@ -376,47 +377,64 @@ export default {
 
     // First-hit locale: Polônia → /pl/, Alemanha → /de/, etc. (não aplica a bots)
     // Paid Ads clicks (gclid/gbraid/wbraid): never geo-bounce — Final URL must stick.
+    // .com.br: never geo/cookie host-bounce to .com — intentional BR visits stay PT.
     if (!isBot && !isPaidAdsClickSearch(url.search)) {
       const hadStfLang = url.searchParams.has('stf_lang');
       const force = String(url.searchParams.get('stf_lang') || '').toLowerCase();
       const forcedLang = ['pt', 'en', 'it', 'de', 'es', 'pl', 'sl', 'fr', 'nl', 'sv', 'no', 'fi'].includes(force) ? force : null;
       if (forcedLang) url.searchParams.delete('stf_lang');
-      const preferred = forcedLang || resolvePreferredLang({
-        cookieHeader: request.headers.get('cookie'),
-        country: request.cf?.country || request.headers.get('CF-IPCountry'),
-        acceptLanguage: request.headers.get('accept-language'),
-        fallback: br ? 'pt' : 'en'
-      });
-      const dest = localeRedirectTarget({
-        hostOrigin: siteOrigin,
-        pathname: url.pathname,
-        search: url.search,
-        br,
-        preferred
-      });
-      if (dest) {
-        const destUrl = new URL(dest);
-        if (destUrl.pathname !== url.pathname || destUrl.origin !== url.origin || destUrl.search !== url.search) {
+
+      if (br) {
+        // Strip ?stf_lang handoff and always pin PT cookie on .com.br (no host change).
+        if (forcedLang && hadStfLang) {
+          const clean = url.pathname + (url.search || '') + (url.hash || '');
           return new Response(null, {
             status: 302,
             headers: {
-              Location: dest,
-              'Set-Cookie': prefCookieHeader(preferred),
+              Location: clean || '/',
+              'Set-Cookie': prefCookieHeader('pt'),
               'Cache-Control': 'no-store'
             }
           });
         }
-      } else if (forcedLang && hadStfLang) {
-        // Cross-domain handoff landed correctly — strip ?stf_lang and persist cookie here
-        const clean = url.pathname + (url.search || '') + (url.hash || '');
-        return new Response(null, {
-          status: 302,
-          headers: {
-            Location: clean || '/',
-            'Set-Cookie': prefCookieHeader(forcedLang),
-            'Cache-Control': 'no-store'
-          }
+      } else {
+        const preferred = forcedLang || resolvePreferredLang({
+          cookieHeader: request.headers.get('cookie'),
+          country: request.cf?.country || request.headers.get('CF-IPCountry'),
+          acceptLanguage: request.headers.get('accept-language'),
+          fallback: 'en'
         });
+        const dest = localeRedirectTarget({
+          hostOrigin: siteOrigin,
+          pathname: url.pathname,
+          search: url.search,
+          br: false,
+          preferred
+        });
+        if (dest) {
+          const destUrl = new URL(dest);
+          if (destUrl.pathname !== url.pathname || destUrl.origin !== url.origin || destUrl.search !== url.search) {
+            return new Response(null, {
+              status: 302,
+              headers: {
+                Location: dest,
+                'Set-Cookie': prefCookieHeader(preferred),
+                'Cache-Control': 'no-store'
+              }
+            });
+          }
+        } else if (forcedLang && hadStfLang) {
+          // Same-host handoff — strip ?stf_lang and persist cookie here
+          const clean = url.pathname + (url.search || '') + (url.hash || '');
+          return new Response(null, {
+            status: 302,
+            headers: {
+              Location: clean || '/',
+              'Set-Cookie': prefCookieHeader(forcedLang),
+              'Cache-Control': 'no-store'
+            }
+          });
+        }
       }
     }
 
