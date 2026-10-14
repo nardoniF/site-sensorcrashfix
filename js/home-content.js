@@ -87,8 +87,8 @@
         ${a ? `<p>${a}</p>` : ''}
         ${renderMedia(row.media)}
       </details>`);
-      // Canonical PT home ships 5 FAQs — keep parity per locale.
-      if (htmlParts.length >= 5) break;
+      // Canonical home ships 10 FAQs — keep parity per locale.
+      if (htmlParts.length >= 10) break;
     }
     root.innerHTML = htmlParts.join('');
   }
@@ -141,7 +141,7 @@
   async function loadL10n() {
     if (l10nCache) return l10nCache;
     try {
-      const res = await fetch('/data/home-content-l10n.json?v=3', { cache: 'no-store' });
+      const res = await fetch('/data/home-content-l10n.json?v=4', { cache: 'no-store' });
       if (res.ok) l10nCache = await res.json();
     } catch (e) {
       console.warn('home-content: falha ao carregar l10n', e);
@@ -165,9 +165,9 @@
     if (fromStore && Array.isArray(fromStore.homeFaq) && fromStore.homeFaq.length) {
       const active = fromStore.homeFaq.filter((r) => r && r.active !== false);
       // Merged CHECKOUT_CONFIG from store-loader already prefers local FAQ.
-      if (active.length && active.length <= 5) return fromStore;
-      if (active.length > 5) {
-        // Stale Admin list (10 EN-era items) — prefer repo store-config for l10n IDs.
+      if (active.length && active.length <= 10) return fromStore;
+      if (active.length > 10) {
+        // Stale Admin list (extra EN-era items) — prefer repo store-config for l10n IDs.
         const local = await loadLocalStoreConfig();
         if (local?.homeFaq?.length) return local;
       }

@@ -3,24 +3,44 @@
     "reviewsSummary": "",
     "faq": {
       "faq-1": {
-        "question": "Warum misst meine Uhr nach dem Riss keinen Puls mehr und verlangt ständig den Code?",
-        "answer": "Der Riss stört die <strong>optische Messung</strong> und die <strong>Handgelenk-/Armerkennung</strong>: Die Uhr kann den Puls nicht mehr messen und denkt, sie sei abgenommen — und fragt wiederholt nach dem Code. Die Sensor-CrashFix-Haftlinse deckt den Schaden ab und stabilisiert in vielen Fällen die Biometrie und reduziert oder beendet Code-Abfragen — abhängig von Rissgröße und dem richtigen mm für Ihr Modell."
+        "question": "Funktioniert es bei Apple Watch, Samsung Galaxy Watch, Garmin und anderen Marken?",
+        "answer": "Ja! Sensor CrashFix ist universell und kompatibel mit Apple Watch (inkl. Ultra), Samsung Galaxy Watch, Garmin, Amazfit, Xiaomi, Polar, Suunto und vielen weiteren Marken. Wählen Sie beim Kauf einfach den exakten Durchmesser (mm) des Heck-sensors Ihres Modells."
       },
       "faq-2": {
-        "question": "Stellt die Sensor-CrashFix-Linse die Wasserdichtigkeit wieder her?",
-        "answer": "Das ist eines der Hauptziele: den Riss abdecken und für Schweiß, Regen, Händewaschen und leichtes Schwimmen <strong>neu abdichten</strong>. Sie ersetzt keine offizielle Reparatur bei schwerem strukturellen Gehäuseschaden."
+        "question": "Warum pausiert meine Uhr Workouts und verlangt nach dem Riss ständig den Code?",
+        "answer": "Wenn das rückseitige Glas reißt, bricht und streut das Licht der optischen Sensor-LEDs in den Rissen statt in die Haut einzudringen. Die Uhr erkennt das Handgelenk nicht mehr, sperrt (fragt nach dem Code) oder pausiert Workouts von allein."
       },
       "faq-3": {
-        "question": "Stört die Linse beim induktiven Laden oder im Alltag?",
-        "answer": "Nein. Ultra-dünn — Sie laden normal, auch am Magnet-/Induktionsladegerät, <strong>mit aufgeklebter Linse</strong>, und nutzen die Uhr weiter wie gewohnt."
+        "question": "Wie behebt die Sensor-CrashFix-Linse das Problem?",
+        "answer": "Die Linse hat einen optischen Brechungsindex, der den Lichtstrahl neu ausrichtet. Sie beseitigt die Streuung durch Risse im Glas, sodass Licht die Haut durchdringen und sauber zum Leser zurückkehren kann — und stellt die kontinuierliche biometrische Messung wieder her."
       },
       "faq-4": {
-        "question": "Welche Marken und Modelle sind kompatibel?",
-        "answer": "Funktioniert bei <strong>allen Smartwatches</strong> (und Smartbands) mit optischem Sensor auf der Rückseite — Apple Watch (inkl. Ultra), Samsung Galaxy Watch, Garmin, Xiaomi, Amazfit und ähnliche. Was sich ändert, ist der <strong>Durchmesser (mm)</strong> der Linse; im Shop wählen Sie die Größe für Ihr Modell."
+        "question": "Funktionieren Epoxid, Kleber oder Pflaster zur Sensorreparatur?",
+        "answer": "Nein. Gewöhnliche Kleber und Epoxid trüben das Glas, verbrennen Sensorharz, blockieren Licht und können die Haut reizen. Pflaster dichten nicht gegen Wasser ab. Nur eine graduierte optische Linse mit Engineering-Primer dichtet ab und erhält die Funktion der Uhr."
       },
       "faq-5": {
-        "question": "Wie wird die Linse installiert?",
-        "answer": "Sensor reinigen (Hygiene-Kit), Sensor Primer auftragen falls im Handbuch angegeben, Kleberschutzfolie abziehen, Linse mittig ausrichten und ca. 30 Sekunden andrücken. Es ist eine Abdeckung <strong>über</strong> dem gerissenen Glas — ohne die Uhr zu öffnen."
+        "question": "Stellt die Linse die Wasserdichtigkeit der Uhr wieder her?",
+        "answer": "Ja! Anders als gewöhnliche Folien hat die Sensor-CrashFix-Linse einen vergrößerten Durchmesser und einen hochdichtenden optischen Kleber. Sie überlappt die Rissränder und versiegelt den beschädigten Bereich vollständig gegen Wasser, Schweiß und Feuchtigkeit."
+      },
+      "faq-6": {
+        "question": "Stört die Anwendung das induktive Laden oder löst sie sich leicht?",
+        "answer": "Nein. Sensor CrashFix nutzt eine ultradünne optische Linse — induktives Laden bleibt 100 % normal. Das Kit enthält zudem Sensor Primer für eine dauerhafte Haftung, die Schweiß, Duschen und Temperaturwechsel ohne Ablösen standhält."
+      },
+      "faq-7": {
+        "question": "Wie lange soll ich warten, bevor ich ins Wasser gehe?",
+        "answer": "Wir empfehlen, 24 Stunden nach dem Aufbringen zu warten, bis der optische Kleber voll aushärtet und maximale Dichtkraft erreicht. Danach ist die Uhr für Duschen und Wasser-Workouts freigegeben."
+      },
+      "faq-8": {
+        "question": "Wie läuft die Installation ab? Kann ich sie selbst aufbringen?",
+        "answer": "Ja — die Installation ist schnell und dauert unter 3 Minuten. Das Kit enthält eine Schritt-für-Schritt-Anleitung, ein Isopropanol-Reinigungstuch, Sensor Primer und einen Präzisionsapplikator."
+      },
+      "faq-9": {
+        "question": "Kann ich sie vorbeugend nutzen, auch ohne gerissenen Sensor?",
+        "answer": "Auf jeden Fall! Viele Kunden nutzen die Linse als zusätzliche Schutzschicht gegen direkte Stöße und Kratzer und erhalten so Integrität und Wiederverkaufswert der Smartwatch."
+      },
+      "faq-10": {
+        "question": "Versenden Sie in andere Länder? Gibt es Garantie?",
+        "answer": "Ja! Wir versenden weltweit (Versandkosten und Lieferzeit werden automatisch im Checkout berechnet). Das Produkt hat eine Herstellergarantie: erfüllt die Linse Lesung oder Dichtung nicht wie erwartet, kontaktieren Sie einfach unseren Support."
       }
     },
     "reviews": {}
@@ -29,24 +49,44 @@
     "reviewsSummary": "",
     "faq": {
       "faq-1": {
-        "question": "¿Por qué mi reloj dejó de medir el ritmo y pide la contraseña tras la grieta?",
-        "answer": "La grieta dificulta la <strong>lectura óptica</strong> y la <strong>detección de muñeca/brazo</strong>: el reloj puede dejar de medir el ritmo y creer que se lo quitaron, pidiendo la clave varias veces. La lente adhesiva Sensor CrashFix cubre el daño y, en muchos casos, estabiliza la biometría y reduce o elimina las peticiones de contraseña — depende del tamaño de la grieta y de los mm correctos para tu modelo."
+        "question": "¿Funciona en Apple Watch, Samsung Galaxy Watch, Garmin y otras marcas?",
+        "answer": "¡Sí! Sensor CrashFix es universal y compatible con Apple Watch (incluido Ultra), Samsung Galaxy Watch, Garmin, Amazfit, Xiaomi, Polar, Suunto y muchas otras marcas. Solo elige el diámetro exacto (mm) del sensor trasero de tu modelo al comprar."
       },
       "faq-2": {
-        "question": "¿La lente Sensor CrashFix restaura el sellado impermeable?",
-        "answer": "Ese es uno de los objetivos principales: cubrir la grieta y <strong>sellar de nuevo</strong> para sudor, lluvia, lavarse las manos y natación ligera. No sustituye una reparación oficial ante daño estructural grave de la caja."
+        "question": "¿Por qué mi reloj pausa los entrenamientos y pide la contraseña tras la grieta?",
+        "answer": "Cuando el cristal trasero se agrieta, la luz de los LED del sensor óptico se refracta y se dispersa por las fisuras en lugar de penetrar en la piel. El reloj deja de detectar la muñeca, se bloquea (pidiendo la clave) o pausa los entrenamientos solo."
       },
       "faq-3": {
-        "question": "¿La lente interfiere con la carga por inducción o el uso diario?",
-        "answer": "No. Es ultrafina — cargas con normalidad, también en el cargador magnético/inductivo, <strong>con la lente puesta</strong>, y sigues el uso diario del reloj."
+        "question": "¿Cómo corrige el problema la lente Sensor CrashFix?",
+        "answer": "La lente tiene un índice de refracción óptica diseñado para realinear el haz de luz. Elimina la dispersión de las fisuras del cristal agrietado, permitiendo que la luz atraviese la piel y vuelva al lector sin interferencias, restaurando la lectura biométrica continua."
       },
       "faq-4": {
-        "question": "¿Qué marcas y modelos son compatibles?",
-        "answer": "Funciona en <strong>todos los smartwatches</strong> (y smartbands) con sensor óptico en la parte trasera — Apple Watch (incluido Ultra), Samsung Galaxy Watch, Garmin, Xiaomi, Amazfit y similares. Lo que cambia es el <strong>diámetro (mm)</strong> de la lente; en la tienda eliges el tamaño de tu modelo."
+        "question": "¿Epoxi, pegamento o esparadrapo sirven para reparar el sensor?",
+        "answer": "No. Los pegamentos comunes y el epoxi opacifican el cristal, queman la resina del sensor, bloquean la luz y pueden irritar la piel. El esparadrapo no sella contra el agua. Solo una lente óptica graduada con primer de ingeniería sella y mantiene el funcionamiento del reloj."
       },
       "faq-5": {
-        "question": "¿Cómo se instala?",
-        "answer": "Limpia el sensor (kit de higiene), aplica el Sensor Primer si el manual lo indica, retira la película del adhesivo, centra la lente en el sensor y presiona unos 30 segundos. Es una cobertura que va <strong>encima</strong> del cristal agrietado — sin abrir el reloj."
+        "question": "¿La lente restaura el sellado impermeable del reloj?",
+        "answer": "¡Sí! A diferencia de películas comunes, la lente Sensor CrashFix tiene diámetro ampliado y adhesivo óptico de alta estanqueidad. Sobrepasa los bordes de la grieta y sella por completo el área dañada, impidiendo infiltración de agua, sudor y humedad."
+      },
+      "faq-6": {
+        "question": "¿La aplicación interfiere con la carga por inducción o se despega fácil?",
+        "answer": "No. Sensor CrashFix usa una lente óptica ultrafina: la carga por inducción sigue al 100 %. El kit incluye Sensor Primer para una fijación permanente que resiste sudor continuo, ducha y cambios de temperatura sin despegarse."
+      },
+      "faq-7": {
+        "question": "¿Cuánto tiempo debo esperar antes de entrar al agua?",
+        "answer": "Recomendamos esperar 24 horas tras la aplicación para que el adhesivo óptico cure por completo y alcance la máxima fuerza de sellado. Después, el reloj está listo para ducha y entrenamientos en agua."
+      },
+      "faq-8": {
+        "question": "¿Cómo se instala? ¿Puedo aplicarla yo solo?",
+        "answer": "Sí: la instalación es rápida y dura menos de 3 minutos. El kit incluye manual paso a paso, toallita de limpieza isopropílica, Sensor Primer de adherencia y aplicador de precisión."
+      },
+      "faq-9": {
+        "question": "¿Puedo usarla de forma preventiva aunque el sensor no esté agrietado?",
+        "answer": "¡Claro! Muchos clientes usan la lente como capa protectora extra contra impactos directos y rayones, preservando la integridad y el valor de reventa del smartwatch."
+      },
+      "faq-10": {
+        "question": "¿Envían a otros países? ¿Hay garantía?",
+        "answer": "¡Sí! Enviamos a todo el mundo (el envío y el plazo se calculan automáticamente en el checkout). El producto tiene garantía de fabricación: si la lente no restaura la lectura o el sellado como se espera, contacta con nuestro soporte."
       }
     },
     "reviews": {}
@@ -55,24 +95,44 @@
     "reviewsSummary": "",
     "faq": {
       "faq-1": {
-        "question": "Dlaczego po pęknięciu zegarek przestał mierzyć tętno i ciągle prosi o kod?",
-        "answer": "Pęknięcie utrudnia <strong>odczyt optyczny</strong> i <strong>wykrywanie nadgarstka</strong>: zegarek może przestać mierzyć tętno i uznać, że został zdjęty, prosząc o kod wielokrotnie. Samoprzylepna soczewka Sensor CrashFix zakrywa uszkodzenie i w wielu przypadkach stabilizuje biometrię oraz ogranicza lub eliminuje prośby o kod — zależy od rozmiaru pęknięcia i właściwych mm dla Twojego modelu."
+        "question": "Czy działa na Apple Watch, Samsung Galaxy Watch, Garmin i innych markach?",
+        "answer": "Tak! Sensor CrashFix jest uniwersalny i kompatybilny z Apple Watch (w tym Ultra), Samsung Galaxy Watch, Garmin, Amazfit, Xiaomi, Polar, Suunto i wieloma innymi. Wystarczy przy zakupie wybrać dokładną średnicę (mm) tylnego sensora Twojego modelu."
       },
       "faq-2": {
-        "question": "Czy soczewka Sensor CrashFix przywraca uszczelnienie wodoodporne?",
-        "answer": "To jeden z głównych celów: zakryć pęknięcie i <strong>uszczelnić na nowo</strong> na pot, deszcz, mycie rąk i lekkie pływanie. Nie zastępuje oficjalnej naprawy przy poważnym uszkodzeniu strukturalnym obudowy."
+        "question": "Dlaczego zegarek pauzuje treningi i prosi o kod po pęknięciu?",
+        "answer": "Gdy tylne szkło pęka, światło LED sensora optycznego załamuje się i rozprasza w szczelinach zamiast wnikać w skórę. Zegarek nie wykrywa nadgarstka, blokuje się (prosząc o kod) lub sam pauzuje treningi."
       },
       "faq-3": {
-        "question": "Czy soczewka przeszkadza w ładowaniu indukcyjnym lub codziennym użytkowaniu?",
-        "answer": "Nie. Jest ultracienka — ładujesz normalnie, także na ładowarce magnetycznej/indukcyjnej, <strong>z przyklejoną soczewką</strong>, i korzystasz z zegarka jak zwykle."
+        "question": "Jak soczewka Sensor CrashFix rozwiązuje problem?",
+        "answer": "Soczewka ma optyczny współczynnik załamania zaprojektowany do ponownego wyrównania wiązki światła. Usuwa rozpraszanie spowodowane pęknięciami szkła, umożliwiając światłu przejście przez skórę i czysty powrót do czytnika, przywracając ciągły odczyt biometryczny."
       },
       "faq-4": {
-        "question": "Jakie marki i modele są kompatybilne?",
-        "answer": "Działa na <strong>wszystkich smartwatchach</strong> (i smartbandach) z sensorem optycznym z tyłu — Apple Watch (w tym Ultra), Samsung Galaxy Watch, Garmin, Xiaomi, Amazfit i podobne. Zmienia się <strong>średnica (mm)</strong> soczewki; w sklepie wybierasz rozmiar swojego modelu."
+        "question": "Czy epoxy, klej lub plaster naprawiają sensor?",
+        "answer": "Nie. Zwykłe kleje i epoxy matowią szkło, spalają żywicę sensora, blokują światło i mogą podrażniać skórę. Plaster nie uszczelnia przed wodą. Tylko graduowana soczewka optyczna z primerem inżynieryjnym uszczelnia i zachowuje działanie zegarka."
       },
       "faq-5": {
-        "question": "Jak przebiega montaż?",
-        "answer": "Wyczyść sensor (zestaw higieniczny), nałóż Sensor Primer jeśli wskazano w instrukcji, zdejmij folię kleju, wycentruj soczewkę na sensorze i dociskaj ok. 30 sekund. To pokrycie, które idzie <strong>na</strong> pęknięte szkło — bez otwierania zegarka."
+        "question": "Czy soczewka przywraca wodoodporne uszczelnienie zegarka?",
+        "answer": "Tak! W przeciwieństwie do zwykłych folii soczewka Sensor CrashFix ma powiększoną średnicę i optyczny klej o wysokiej szczelności. Zachodzi na krawędzie pęknięcia i całkowicie uszczelnia uszkodzony obszar przed wodą, potem i wilgocią."
+      },
+      "faq-6": {
+        "question": "Czy aplikacja przeszkadza w ładowaniu indukcyjnym lub łatwo odpada?",
+        "answer": "Nie. Sensor CrashFix ma ultracienką soczewkę optyczną — ładowanie indukcyjne pozostaje w 100% normalne. Zestaw zawiera też Sensor Primer zapewniający trwałe mocowanie odporne na pot, prysznic i zmiany temperatury."
+      },
+      "faq-7": {
+        "question": "Jak długo czekać przed wejściem do wody?",
+        "answer": "Zalecamy odczekanie 24 godzin po aplikacji, aż klej optyczny całkowicie zwiąże i osiągnie maksymalną siłę uszczelnienia. Potem zegarek jest gotowy do prysznica i treningów w wodzie."
+      },
+      "faq-8": {
+        "question": "Jak przebiega montaż? Czy mogę założyć sam?",
+        "answer": "Tak — montaż jest szybki i zajmuje poniżej 3 minut. Zestaw zawiera instrukcję krok po kroku, chusteczkę izopropylową, Sensor Primer i precyzyjny aplikator."
+      },
+      "faq-9": {
+        "question": "Czy mogę używać zapobiegawczo bez pękniętego sensora?",
+        "answer": "Oczywiście! Wielu klientów używa soczewki jako dodatkowej warstwy ochronnej przed uderzeniami i zarysowaniami, chroniąc integralność i wartość odsprzedaży smartwatcha."
+      },
+      "faq-10": {
+        "question": "Czy wysyłacie do innych krajów? Czy jest gwarancja?",
+        "answer": "Tak! Wysyłamy na cały świat (koszt i czas dostawy liczone są automatycznie w kasie). Produkt ma gwarancję producenta: jeśli soczewka nie przywróci odczytu lub uszczelnienia zgodnie z oczekiwaniami, skontaktuj się z naszym wsparciem."
       }
     },
     "reviews": {}
@@ -81,24 +141,44 @@
     "reviewsSummary": "",
     "faq": {
       "faq-1": {
-        "question": "Zakaj ura po razpoki ne meri več utripa in stalno zahteva geslo?",
-        "answer": "Razpoka ovira <strong>optično branje</strong> in <strong>zaznavanje zapestja</strong>: ura lahko preneha meriti utrip in misli, da je bila odstranjena, ter večkrat zahteva geslo. Lepilna leča Sensor CrashFix pokrije poškodbo in v mnogih primerih stabilizira biometrijo ter zmanjša ali odpravi zahteve za geslo — odvisno od velikosti razpoke in pravih mm za vaš model."
+        "question": "Ali deluje na Apple Watch, Samsung Galaxy Watch, Garmin in drugih znamkah?",
+        "answer": "Da! Sensor CrashFix je univerzalna in združljiva z Apple Watch (vključno Ultra), Samsung Galaxy Watch, Garmin, Amazfit, Xiaomi, Polar, Suunto in mnogimi drugimi. Ob nakupu izberite natančen premer (mm) zadnjega tipala vašega modela."
       },
       "faq-2": {
-        "question": "Ali leča Sensor CrashFix obnovi vodotesno tesnjenje?",
-        "answer": "To je eden glavnih ciljev: pokriti razpoko in <strong>znova zatesniti</strong> za znoj, dež, umivanje rok in lahko plavanje. Ne nadomešča uradnega popravila pri hudi strukturni poškodbi ohišja."
+        "question": "Zakaj ura pauzira treninge in po razpoki zahteva geslo?",
+        "answer": "Ko se zadnje steklo razpoči, se svetloba LED optičnega tipala lomi in razprši po razpokah namesto da bi prodrla v kožo. Ura ne zazna več zapestja, se zaklene (zahteva geslo) ali sama pauzira treninge."
       },
       "faq-3": {
-        "question": "Ali leča moti induktivno polnjenje ali vsakodnevno uporabo?",
-        "answer": "Ne. Je ultra tanka — polnite normalno, tudi na magnetnem/induktivnem polnilniku, <strong>z nameščeno lečo</strong>, in uporabljate uro kot doslej."
+        "question": "Kako leča Sensor CrashFix odpravi težavo?",
+        "answer": "Leča ima optični lomni količnik, zasnovan za ponovno poravnavo svetlobnega snopa. Odpravi razpršitev zaradi razpok v steklu, da svetloba preide skozi kožo in se čisto vrne k bralniku ter obnovi neprekinjeno biometrično branje."
       },
       "faq-4": {
-        "question": "Katere znamke in modeli so združljivi?",
-        "answer": "Deluje na <strong>vseh pametnih urah</strong> (in smartbandih) z optičnim tipalom na hrbtni strani — Apple Watch (vključno Ultra), Samsung Galaxy Watch, Garmin, Xiaomi, Amazfit in podobni. Spremeni se <strong>premer (mm)</strong> leče; v trgovini izberete velikost za svoj model."
+        "question": "Ali epoksi, lepilo ali obliž popravijo tipalo?",
+        "answer": "Ne. Običajna lepila in epoksi zameglijo steklo, zažgejo smolo tipala, blokirajo svetlobo in lahko dražijo kožo. Obliž ne tesni proti vodi. Samo graduirana optična leča z inženirskim primerjem tesni in ohranja delovanje ure."
       },
       "faq-5": {
-        "question": "Kako poteka namestitev?",
-        "answer": "Očistite tipalo (higienični komplet), nanesite Sensor Primer, če je navedeno v priročniku, odstranite zaščitno folijo lepila, centrirajte lečo na tipalu in pritisnite približno 30 sekund. Gre za pokrov, ki gre <strong>čez</strong> počito steklo — brez odpiranja ure."
+        "question": "Ali leča obnovi vodotesno tesnjenje ure?",
+        "answer": "Da! Za razliko od običajnih folij ima leča Sensor CrashFix povečan premer in visoko tesnilno optično lepilo. Prekriva robove razpoke in popolnoma zatesni poškodovano območje pred vodo, znojem in vlago."
+      },
+      "faq-6": {
+        "question": "Ali namestitev moti induktivno polnjenje ali se zlahka odlepi?",
+        "answer": "Ne. Sensor CrashFix uporablja ultra tanko optično lečo — induktivno polnjenje ostane 100 % normalno. Komplet vključuje tudi Sensor Primer za trajno pritrditev, odporno na znoj, tuš in temperaturne spremembe."
+      },
+      "faq-7": {
+        "question": "Koliko časa počakati pred vstopom v vodo?",
+        "answer": "Priporočamo 24 ur po namestitvi, da optično lepilo popolnoma strdi in doseže največjo tesnilno moč. Nato je ura pripravljena za tuš in treninge v vodi."
+      },
+      "faq-8": {
+        "question": "Kako poteka namestitev? Ali jo lahko namestim sam?",
+        "answer": "Da — namestitev je hitra in traja manj kot 3 minute. Komplet vključuje priročnik korak za korakom, izopropilni robček, Sensor Primer in precizni aplikator."
+      },
+      "faq-9": {
+        "question": "Ali jo lahko uporabljam preventivno tudi brez počitega tipala?",
+        "answer": "Seveda! Mnogi stranke uporabljajo lečo kot dodatno zaščitno plast proti neposrednim udarcem in praskam ter ohranijo celovitost in vrednost preprodaje pametne ure."
+      },
+      "faq-10": {
+        "question": "Ali pošiljate v druge države? Ali obstaja garancija?",
+        "answer": "Da! Pošiljamo po vsem svetu (strošek in rok dostave se samodejno izračunata ob blagajni). Izdelek ima tovarniško garancijo: če leča ne obnovi branja ali tesnjenja kot pričakovano, kontaktirajte našo podporo."
       }
     },
     "reviews": {}
@@ -107,24 +187,44 @@
     "reviewsSummary": "",
     "faq": {
       "faq-1": {
-        "question": "Pourquoi ma montre a-t-elle arrêté de mesurer le rythme et demande-t-elle le code après la fissure ?",
-        "answer": "La fissure perturbe la <strong>lecture optique</strong> et la <strong>détection du poignet</strong> : la montre peut cesser de mesurer le rythme et croire qu’elle a été retirée, redemandant le code plusieurs fois. La lentille adhésive Sensor CrashFix couvre le dommage et, dans bien des cas, stabilise la biométrie et réduit ou élimine les demandes de code — cela dépend de la taille de la fissure et des mm adaptés à votre modèle."
+        "question": "Fonctionne-t-elle sur Apple Watch, Samsung Galaxy Watch, Garmin et d’autres marques ?",
+        "answer": "Oui ! Sensor CrashFix est universelle et compatible avec Apple Watch (y compris Ultra), Samsung Galaxy Watch, Garmin, Amazfit, Xiaomi, Polar, Suunto et de nombreuses autres marques. Il suffit de choisir au moment de l’achat le diamètre exact (mm) du capteur arrière de votre modèle."
       },
       "faq-2": {
-        "question": "La lentille Sensor CrashFix restaure-t-elle l’étanchéité ?",
-        "answer": "C’est l’un des objectifs principaux : couvrir la fissure et <strong>resceller</strong> pour la sueur, la pluie, le lavage des mains et la natation légère. Elle ne remplace pas une réparation officielle en cas de dommage structurel grave du boîtier."
+        "question": "Pourquoi ma montre met-elle les entraînements en pause et demande-t-elle le code après la fissure ?",
+        "answer": "Lorsque le verre arrière se fissure, la lumière des LED du capteur optique se réfracte et se disperse dans les fissures au lieu de pénétrer dans la peau. La montre ne détecte plus le poignet, se verrouille (demande le code) ou met seule les entraînements en pause."
       },
       "faq-3": {
-        "question": "La lentille interfère-t-elle avec la charge par induction ou l’usage quotidien ?",
-        "answer": "Non. Elle est ultrafine — vous chargez normalement, y compris sur un chargeur magnétique/inductif, <strong>avec la lentille posée</strong>, et continuez l’usage quotidien de la montre."
+        "question": "Comment la lentille Sensor CrashFix corrige-t-elle le problème ?",
+        "answer": "La lentille a un indice de réfraction optique conçu pour réaligner le faisceau lumineux. Elle élimine la dispersion due aux fissures du verre, permettant à la lumière de traverser la peau et de revenir proprement au lecteur, restaurant la lecture biométrique continue."
       },
       "faq-4": {
-        "question": "Quelles marques et quels modèles sont compatibles ?",
-        "answer": "Elle fonctionne sur <strong>toutes les montres connectées</strong> (et bracelets) avec capteur optique à l’arrière — Apple Watch (y compris Ultra), Samsung Galaxy Watch, Garmin, Xiaomi, Amazfit et similaires. Ce qui change, c’est le <strong>diamètre (mm)</strong> de la lentille ; en boutique vous choisissez la taille de votre modèle."
+        "question": "L’époxy, la colle ou le sparadrap réparent-ils le capteur ?",
+        "answer": "Non. Les colles ordinaires et l’époxy opacifient le verre, brûlent la résine du capteur, bloquent la lumière et peuvent irriter la peau. Le sparadrap n’étanchéifie pas contre l’eau. Seule une lentille optique graduée avec primer d’ingénierie étanchéifie et maintient le fonctionnement de la montre."
       },
       "faq-5": {
-        "question": "Comment se fait l’installation ?",
-        "answer": "Nettoyez le capteur (kit d’hygiène), appliquez le Sensor Primer si le manuel l’indique, retirez le film adhésif, centrez la lentille sur le capteur et appuyez environ 30 secondes. C’est une couverture qui se pose <strong>par-dessus</strong> le verre fissuré — sans ouvrir la montre."
+        "question": "La lentille restaure-t-elle l’étanchéité de la montre ?",
+        "answer": "Oui ! Contrairement aux films ordinaires, la lentille Sensor CrashFix a un diamètre élargi et un adhésif optique haute étanchéité. Elle dépasse les bords de la fissure et scelle complètement la zone endommagée contre l’eau, la sueur et l’humidité."
+      },
+      "faq-6": {
+        "question": "L’application gêne-t-elle la charge par induction ou se décolle-t-elle facilement ?",
+        "answer": "Non. Sensor CrashFix utilise une lentille optique ultrafine : la charge par induction reste 100 % normale. Le kit inclut aussi le Sensor Primer pour une fixation permanente qui résiste à la sueur continue, à la douche et aux variations de température sans se décoller."
+      },
+      "faq-7": {
+        "question": "Combien de temps attendre avant d’entrer dans l’eau ?",
+        "answer": "Nous recommandons d’attendre 24 heures après l’application pour que l’adhésif optique atteigne une cure complète et une force d’étanchéité maximale. Après cela, la montre est prête pour la douche et les entraînements aquatiques."
+      },
+      "faq-8": {
+        "question": "Comment se fait l’installation ? Puis-je l’appliquer moi-même ?",
+        "answer": "Oui — l’installation est rapide et prend moins de 3 minutes. Le kit comprend le manuel pas à pas, une lingette de nettoyage isopropylique, le Sensor Primer d’adhérence et un applicateur de précision."
+      },
+      "faq-9": {
+        "question": "Puis-je l’utiliser en prévention même sans capteur fissuré ?",
+        "answer": "Absolument ! De nombreux clients utilisent la lentille comme couche protectrice supplémentaire contre les chocs directs et les rayures, préservant l’intégrité et la valeur de revente de la montre connectée."
+      },
+      "faq-10": {
+        "question": "Livrez-vous vers d’autres pays ? Y a-t-il une garantie ?",
+        "answer": "Oui ! Nous livrons dans le monde entier (frais et délai calculés automatiquement au checkout). Le produit a une garantie de fabrication : si la lentille ne restaure pas la lecture ou l’étanchéité comme prévu, contactez simplement notre support."
       }
     },
     "reviews": {}
@@ -133,24 +233,44 @@
     "reviewsSummary": "",
     "faq": {
       "faq-1": {
-        "question": "Waarom meet mijn horloge na de barst geen hartslag meer en vraagt het steeds de code?",
-        "answer": "De barst verstoort de <strong>optische meting</strong> en de <strong>pols-/armdetectie</strong>: het horloge kan de hartslag niet meer meten en denkt dat het is afgedaan, waardoor het herhaaldelijk om de code vraagt. De Sensor CrashFix-kleeflens dekt de schade af en stabiliseert in veel gevallen de biometrie en vermindert of stopt codevragen — afhankelijk van de barstgrootte en de juiste mm voor jouw model."
+        "question": "Werkt het op Apple Watch, Samsung Galaxy Watch, Garmin en andere merken?",
+        "answer": "Ja! Sensor CrashFix is universeel en compatibel met Apple Watch (inclusief Ultra), Samsung Galaxy Watch, Garmin, Amazfit, Xiaomi, Polar, Suunto en vele andere merken. Kies bij aankoop gewoon de exacte diameter (mm) van de achterste sensor van jouw model."
       },
       "faq-2": {
-        "question": "Herstelt de Sensor CrashFix-lens de waterdichte afdichting?",
-        "answer": "Dat is een van de hoofddoelen: de barst afdekken en opnieuw <strong>afdichten</strong> voor zweet, regen, handen wassen en licht zwemmen. Het vervangt geen officiële reparatie bij ernstige structurele behuizingsschade."
+        "question": "Waarom pauzeert mijn horloge workouts en vraagt het na de barst om de code?",
+        "answer": "Als het achterglas barst, breekt en verspreidt het licht van de optische sensor-LED’s zich door de scheuren in plaats van de huid binnen te dringen. Het horloge detecteert de pols niet meer, vergrendelt (vraagt de code) of pauzeert workouts vanzelf."
       },
       "faq-3": {
-        "question": "Verstoort de lens inductieladen of dagelijks gebruik?",
-        "answer": "Nee. Ultradun — je laadt normaal, ook op een magnetische/inductielader, <strong>met de lens aangebracht</strong>, en blijft het horloge dagelijks gebruiken."
+        "question": "Hoe lost de Sensor CrashFix-lens het probleem op?",
+        "answer": "De lens heeft een optische brekingsindex die de lichtbundel opnieuw uitlijnt. Ze verwijdert de verstrooiing door barsten in het glas, zodat licht door de huid kan en schoon terugkeert naar de lezer — en herstelt de continue biometrische meting."
       },
       "faq-4": {
-        "question": "Welke merken en modellen zijn compatibel?",
-        "answer": "Werkt op <strong>alle smartwatches</strong> (en smartbands) met een optische sensor op de achterkant — Apple Watch (inclusief Ultra), Samsung Galaxy Watch, Garmin, Xiaomi, Amazfit en vergelijkbaar. Wat verandert is de <strong>diameter (mm)</strong> van de lens; in de shop kies je de maat van jouw model."
+        "question": "Werken epoxy, lijm of pleister om de sensor te repareren?",
+        "answer": "Nee. Gewone lijmen en epoxy vertroebelen het glas, verbranden sensorhars, blokkeren licht en kunnen de huid irriteren. Pleister waterdicht niet. Alleen een gegradeerde optische lens met engineering-primer dicht af en houdt het horloge werkend."
       },
       "faq-5": {
-        "question": "Hoe verloopt de installatie?",
-        "answer": "Reinig de sensor (hygiënekit), breng Sensor Primer aan indien in de handleiding aangegeven, verwijder de kleeffolie, centreer de lens op de sensor en druk ongeveer 30 seconden aan. Het is een afdekking <strong>bovenop</strong> het gebarsten glas — zonder het horloge te openen."
+        "question": "Herstelt de lens de waterdichte afdichting van het horloge?",
+        "answer": "Ja! In tegenstelling tot gewone folies heeft de Sensor CrashFix-lens een vergrote diameter en een hoogdichtende optische lijm. Ze overlapt de barstranden en verzegelt het beschadigde gebied volledig tegen water, zweet en vocht."
+      },
+      "faq-6": {
+        "question": "Verstoort het aanbrengen inductieladen of laat het makkelijk los?",
+        "answer": "Nee. Sensor CrashFix gebruikt een ultradunne optische lens — inductieladen blijft 100% normaal. De kit bevat ook Sensor Primer voor een permanente hechting die continua zweet, douchen en temperatuurschommelingen weerstaan zonder los te laten."
+      },
+      "faq-7": {
+        "question": "Hoe lang moet ik wachten voordat ik het water in ga?",
+        "answer": "We raden aan 24 uur na aanbrengen te wachten tot de optische lijm volledig uithardt en maximale afdichtkracht bereikt. Daarna is het horloge klaar voor douchen en waterworkouts."
+      },
+      "faq-8": {
+        "question": "Hoe verloopt de installatie? Kan ik hem zelf aanbrengen?",
+        "answer": "Ja — installatie is snel en duurt minder dan 3 minuten. De kit bevat een stapsgewijze handleiding, een isopropyl reinigingsdoekje, Sensor Primer en een precisie-applicator."
+      },
+      "faq-9": {
+        "question": "Kan ik hem preventief gebruiken zonder gebarsten sensor?",
+        "answer": "Absoluut! Veel klanten gebruiken de lens als extra beschermlaag tegen directe stoten en krassen, en behouden zo de integriteit en doorverkoopwaarde van de smartwatch."
+      },
+      "faq-10": {
+        "question": "Verzenden jullie naar andere landen? Is er garantie?",
+        "answer": "Ja! We verzenden wereldwijd (verzending en levertijd worden automatisch berekend bij checkout). Het product heeft fabrieksgarantie: herstelt de lens lezing of afdichting niet zoals verwacht, neem contact op met onze support."
       }
     },
     "reviews": {}
@@ -159,24 +279,44 @@
     "reviewsSummary": "",
     "faq": {
       "faq-1": {
-        "question": "Varför slutade klockan mäta puls och ber om koden efter sprickan?",
-        "answer": "Sprickan stör <strong>optisk avläsning</strong> och <strong>handleds-/armdetektering</strong>: klockan kan sluta mäta puls och tro att den tagits av, och be om koden flera gånger. Sensor CrashFix-limlinsen täcker skadan och stabiliserar i många fall biometrin samt minskar eller tar bort kodförfrågningar — beror på sprickans storlek och rätt mm för din modell."
+        "question": "Fungerar den på Apple Watch, Samsung Galaxy Watch, Garmin och andra märken?",
+        "answer": "Ja! Sensor CrashFix är universell och kompatibel med Apple Watch (inklusive Ultra), Samsung Galaxy Watch, Garmin, Amazfit, Xiaomi, Polar, Suunto och många andra. Välj bara exakt diameter (mm) för din modells bakre sensor vid köpet."
       },
       "faq-2": {
-        "question": "Återställer Sensor CrashFix-linsen vattentät tätning?",
-        "answer": "Det är ett av huvudmålen: täcka sprickan och <strong>täta igen</strong> för svett, regn, handtvätt och lätt simning. Den ersätter inte officiell reparation vid allvarlig strukturell skada på höljet."
+        "question": "Varför pausar klockan träningspass och ber om koden efter sprickan?",
+        "answer": "När bakglaset spricker bryts och sprids ljuset från sensor-LED:erna i sprickorna i stället för att gå in i huden. Klockan upptäcker inte handleden, låser sig (ber om koden) eller pausar träningspass själv."
       },
       "faq-3": {
-        "question": "Stör linsen induktiv laddning eller daglig användning?",
-        "answer": "Nej. Ultratunn — du laddar normalt, även på magnetisk/induktiv laddare, <strong>med linsen på</strong>, och använder klockan som vanligt."
+        "question": "Hur åtgärdar Sensor CrashFix-linsen problemet?",
+        "answer": "Linsen har ett optiskt brytningsindex som är utformat för att rikta om ljusstrålen. Den tar bort spridningen från sprickor i glaset så att ljuset kan gå genom huden och återvända rent till läsaren — och återställer kontinuerlig biometrisk avläsning."
       },
       "faq-4": {
-        "question": "Vilka märken och modeller är kompatibla?",
-        "answer": "Fungerar på <strong>alla smartklockor</strong> (och smartband) med optisk sensor på baksidan — Apple Watch (inklusive Ultra), Samsung Galaxy Watch, Garmin, Xiaomi, Amazfit och liknande. Det som ändras är linsens <strong>diameter (mm)</strong>; i butiken väljer du storleken för din modell."
+        "question": "Fungerar epoxi, lim eller plåster för att reparera sensorn?",
+        "answer": "Nej. Vanligt lim och epoxi grumlar glaset, bränner sensorharts, blockerar ljus och kan irritera huden. Plåster tätar inte mot vatten. Endast en graderad optisk lins med engineering-primer tätar och behåller klockans funktion."
       },
       "faq-5": {
-        "question": "Hur går installationen till?",
-        "answer": "Rengör sensorn (hygienkit), applicera Sensor Primer om manualen anger det, ta bort limfilmen, centrera linsen på sensorn och tryck ca 30 sekunder. Det är ett skydd som går <strong>ovanpå</strong> det spruckna glaset — utan att öppna klockan."
+        "question": "Återställer linsen klockans vattentäta tätning?",
+        "answer": "Ja! Till skillnad från vanliga filmer har Sensor CrashFix-linsen förstorad diameter och högtätande optiskt lim. Den överlappar sprickkanterna och förseglar det skadade området helt mot vatten, svett och fukt."
+      },
+      "faq-6": {
+        "question": "Stör appliceringen induktiv laddning eller lossnar den lätt?",
+        "answer": "Nej. Sensor CrashFix använder en ultratunn optisk lins — induktiv laddning förblir 100 % normal. Kitet inkluderar också Sensor Primer för permanent fäste som tål kontinuerlig svett, dusch och temperaturväxlingar utan att lossna."
+      },
+      "faq-7": {
+        "question": "Hur länge ska jag vänta innan jag går i vatten?",
+        "answer": "Vi rekommenderar att vänta 24 timmar efter applicering så att det optiska limmet härdar helt och når maximal tätningsstyrka. Därefter är klockan redo för dusch och vattenträning."
+      },
+      "faq-8": {
+        "question": "Hur går installationen till? Kan jag applicera den själv?",
+        "answer": "Ja — installationen är snabb och tar under 3 minuter. Kitet innehåller steg-för-steg-manual, isopropanolrengöringsduk, Sensor Primer och en precisionsapplikator."
+      },
+      "faq-9": {
+        "question": "Kan jag använda den förebyggande även utan sprucken sensor?",
+        "answer": "Absolut! Många kunder använder linsen som ett extra skyddsskikt mot direkta stötar och repor och bevarar smartklockans integritet och återförsäljningsvärde."
+      },
+      "faq-10": {
+        "question": "Skickar ni till andra länder? Finns garanti?",
+        "answer": "Ja! Vi skickar världen över (frakt och leveranstid beräknas automatiskt i kassan). Produkten har tillverkargaranti: om linsen inte återställer avläsning eller tätning som förväntat, kontakta vår support."
       }
     },
     "reviews": {}
@@ -185,24 +325,44 @@
     "reviewsSummary": "",
     "faq": {
       "faq-1": {
-        "question": "Hvorfor sluttet klokken å måle puls og ber stadig om koden etter sprekken?",
-        "answer": "Sprekken forstyrrer <strong>optisk avlesning</strong> og <strong>håndledds-/armgjenkjenning</strong>: klokken kan slutte å måle puls og tro at den er tatt av, og be om koden flere ganger. Sensor CrashFix-limlinsen dekker skaden og stabiliserer i mange tilfeller biometrien samt reduserer eller fjerner kodeforespørsler — avhengig av sprekkstørrelse og riktige mm for din modell."
+        "question": "Fungerer den på Apple Watch, Samsung Galaxy Watch, Garmin og andre merker?",
+        "answer": "Ja! Sensor CrashFix er universell og kompatibel med Apple Watch (inkl. Ultra), Samsung Galaxy Watch, Garmin, Amazfit, Xiaomi, Polar, Suunto og mange andre. Velg bare eksakt diameter (mm) for bakre sensor på din modell ved kjøp."
       },
       "faq-2": {
-        "question": "Gjenoppretter Sensor CrashFix-linsen vanntett forsegling?",
-        "answer": "Det er et av hovedmålene: dekke sprekken og <strong>forsegle på nytt</strong> for svette, regn, håndvask og lett svømming. Den erstatter ikke offisiell reparasjon ved alvorlig strukturell skade på kassen."
+        "question": "Hvorfor pauser klokken treningsøkter og ber om koden etter sprekken?",
+        "answer": "Når bakglasset sprekker, brytes og spres lyset fra sensor-LED-ene i sprekkene i stedet for å gå inn i huden. Klokken oppdager ikke håndleddet, låser seg (ber om koden) eller pauser treningsøkter selv."
       },
       "faq-3": {
-        "question": "Forstyrrer linsen induktiv lading eller daglig bruk?",
-        "answer": "Nei. Ultratynn — du lader normalt, også på magnetisk/induktiv lader, <strong>med linsen på</strong>, og bruker klokken som vanlig."
+        "question": "Hvordan fikser Sensor CrashFix-linsen problemet?",
+        "answer": "Linsen har en optisk brytningsindeks designet for å rette lysstrålen på nytt. Den fjerner spredningen fra sprekker i glasset slik at lyset kan gå gjennom huden og returnere rent til leseren — og gjenoppretter kontinuerlig biometrisk avlesning."
       },
       "faq-4": {
-        "question": "Hvilke merker og modeller er kompatible?",
-        "answer": "Fungerer på <strong>alle smartklokker</strong> (og smartbånd) med optisk sensor bak — Apple Watch (inkl. Ultra), Samsung Galaxy Watch, Garmin, Xiaomi, Amazfit og lignende. Det som endres er linsens <strong>diameter (mm)</strong>; i butikken velger du størrelsen for din modell."
+        "question": "Fungerer epoxy, lim eller plaster for å reparere sensoren?",
+        "answer": "Nei. Vanlig lim og epoxy gjør glasset uklart, brenner sensorharpiks, blokkerer lys og kan irritere huden. Plaster tetter ikke mot vann. Bare en graduert optisk linse med engineering-primer tetter og beholder klokkens funksjon."
       },
       "faq-5": {
-        "question": "Hvordan foregår installasjonen?",
-        "answer": "Rengjør sensoren (hygiene-sett), påfør Sensor Primer hvis manualen sier det, fjern limfilmen, sentrer linsen på sensoren og trykk ca. 30 sekunder. Det er et deksel som går <strong>oppå</strong> det sprukne glasset — uten å åpne klokken."
+        "question": "Gjenoppretter linsen klokkens vanntette forsegling?",
+        "answer": "Ja! I motsetning til vanlige filmer har Sensor CrashFix-linsen forstørret diameter og høytettende optisk lim. Den overlapper sprekkantene og forsegler det skadede området helt mot vann, svette og fukt."
+      },
+      "faq-6": {
+        "question": "Forstyrrer påføringen induktiv lading eller løsner den lett?",
+        "answer": "Nei. Sensor CrashFix bruker en ultratynn optisk linse — induktiv lading forblir 100 % normal. Settet inkluderer også Sensor Primer for permanent feste som tåler kontinuerlig svette, dusj og temperaturendringer uten å løsne."
+      },
+      "faq-7": {
+        "question": "Hvor lenge skal jeg vente før jeg går i vann?",
+        "answer": "Vi anbefaler å vente 24 timer etter påføring slik at det optiske limet herder helt og når maksimal tetningsstyrke. Deretter er klokken klar for dusj og vanntreening."
+      },
+      "faq-8": {
+        "question": "Hvordan foregår installasjonen? Kan jeg legge den på selv?",
+        "answer": "Ja — installasjonen er rask og tar under 3 minutter. Settet inkluderer trinn-for-trinn-manual, isopropanol-rensduker, Sensor Primer og en presisjonsapplikator."
+      },
+      "faq-9": {
+        "question": "Kan jeg bruke den forebyggende selv uten sprukket sensor?",
+        "answer": "Absolutt! Mange kunder bruker linsen som et ekstra beskyttelseslag mot direkte slag og riper, og bevarer smartklokkens integritet og videresalgsverdi."
+      },
+      "faq-10": {
+        "question": "Sender dere til andre land? Finnes garanti?",
+        "answer": "Ja! Vi sender verden over (frakt og leveringstid beregnes automatisk i kassen). Produktet har fabrikkgaranti: hvis linsen ikke gjenoppretter avlesning eller forsegling som forventet, kontakt vår support."
       }
     },
     "reviews": {}
@@ -211,24 +371,44 @@
     "reviewsSummary": "",
     "faq": {
       "faq-1": {
-        "question": "Miksi kelloni lopetti sykkeen mittauksen ja pyytää jatkuvasti koodia halkeaman jälkeen?",
-        "answer": "Halkeama häiritsee <strong>optista lukemista</strong> ja <strong>ranteen/käsivarsien tunnistusta</strong>: kello voi lopettaa sykkeen mittauksen ja luulla, että se on otettu pois, pyytäen koodia useasti. Sensor CrashFix -liimalinssi peittää vaurion ja monissa tapauksissa vakauttaa biometrian sekä vähentää tai poistaa koodipyynnöt — riippuu halkeaman koosta ja mallisi oikeista millimetreistä."
+        "question": "Toimiiko se Apple Watchissa, Samsung Galaxy Watchissa, Garminissa ja muissa merkeissä?",
+        "answer": "Kyllä! Sensor CrashFix on universaali ja yhteensopiva Apple Watchin (myös Ultra), Samsung Galaxy Watchin, Garminin, Amazfitin, Xiaomin, Polarín, Suunnon ja monien muiden kanssa. Valitse ostettaessa mallisi takasensorin tarkka halkaisija (mm)."
       },
       "faq-2": {
-        "question": "Palauttaako Sensor CrashFix -linssi vesitiiviin tiivistyksen?",
-        "answer": "Se on yksi päätavoitteista: peittää halkeama ja <strong>tiivistää uudelleen</strong> hikeä, sadetta, käsienpesua ja kevyttä uintia varten. Se ei korvaa virallista korjausta vakavassa rakenteellisessa kotelovauriossa."
+        "question": "Miksi kelloni keskeyttää treenit ja pyytää koodia halkeaman jälkeen?",
+        "answer": "Kun takalasi halkeaa, optisen sensorin LED-valo taittuu ja hajoaa halkeamiin sen sijaan, että se menisi ihoon. Kello ei tunnista rannetta, lukittuu (pyytää koodia) tai keskeyttää treenit itsestään."
       },
       "faq-3": {
-        "question": "Häiritseekö linssi induktiolatausta tai päivittäistä käyttöä?",
-        "answer": "Ei. Se on ultrathin — lataat normaalisti, myös magneetti-/induktiolaturilla, <strong>linssi paikallaan</strong>, ja käytät kelloa arjessa kuten ennen."
+        "question": "Miten Sensor CrashFix -linssi korjaa ongelman?",
+        "answer": "Linssillä on optinen taitekerroin, joka kohdistaa valokeilan uudelleen. Se poistaa haljenneen lasin aiheuttaman hajonnan, jolloin valo kulkee ihon läpi ja palaa puhtaasti lukijaan — ja palauttaa jatkuvan biometrisen lukeman."
       },
       "faq-4": {
-        "question": "Mitkä merkit ja mallit ovat yhteensopivia?",
-        "answer": "Toimii <strong>kaikissa älykelloissa</strong> (ja älyrannekkeissa), joissa on optinen sensori takana — Apple Watch (myös Ultra), Samsung Galaxy Watch, Garmin, Xiaomi, Amazfit ja vastaavat. Muuttuva asia on linssin <strong>halkaisija (mm)</strong>; kaupassa valitset mallisi koon."
+        "question": "Korjaavatko epoksi, liima tai laastari sensorin?",
+        "answer": "Ei. Tavalliset liimat ja epoksi samentavat lasin, polttavat sensorihartsin, estävät valon ja voivat ärsyttää ihoa. Laastari ei tiivistä vettä vastaan. Vain graduoidussa optisessa linssissä engineering-primerilla tiivistyy ja kello toimii."
       },
       "faq-5": {
-        "question": "Miten asennus tehdään?",
-        "answer": "Puhdista sensori (hygieniapaketti), levitä Sensor Primer jos ohjeessa mainitaan, poista liimakalvo, keskitä linssi sensoriin ja paina noin 30 sekuntia. Se on peite, joka menee <strong>haljenneen lasin päälle</strong> — avaamatta kelloa."
+        "question": "Palauttaako linssi kellon vesitiiviin tiivistyksen?",
+        "answer": "Kyllä! Toisin kuin tavalliset kalvot, Sensor CrashFix -linssillä on laajennettu halkaisija ja korkean tiiviyden optinen liima. Se ylittää halkeaman reunat ja tiivistää vaurioituneen alueen kokonaan vedeltä, hieltä ja kosteudelta."
+      },
+      "faq-6": {
+        "question": "Häiritseekö asennus induktiolatausta tai irtoaako se helposti?",
+        "answer": "Ei. Sensor CrashFix käyttää ultrathin-optista linssiä — induktiolataus pysyy 100 % normaalina. Pakkaus sisältää myös Sensor Primerin pysyvään kiinnitykseen, joka kestää jatkuvaa hikeä, suihkua ja lämpötilanvaihteluita irtoamatta."
+      },
+      "faq-7": {
+        "question": "Kuinka kauan odottaa ennen veteen menoa?",
+        "answer": "Suosittelemme odottamaan 24 tuntia asennuksen jälkeen, jotta optinen liima kovettuu täysin ja saavuttaa maksimaalisen tiivistysvoiman. Sen jälkeen kello on valmis suihkuun ja vesitreeneihin."
+      },
+      "faq-8": {
+        "question": "Miten asennus tehdään? Voinko asentaa itse?",
+        "answer": "Kyllä — asennus on nopea ja kestää alle 3 minuuttia. Pakkaus sisältää vaiheittain-oppaan, isopropanolipuhdistusliinan, Sensor Primerin ja tarkkuusapplikaattorin."
+      },
+      "faq-9": {
+        "question": "Voinko käyttää ennaltaehkäisevästi ilman haljennutta sensoria?",
+        "answer": "Ehdottomasti! Monet asiakkaat käyttävät linssiä lisäsuojakerroksena suoria iskuja ja naarmuja vastaan säilyttäen älykellon eheyden ja jälleenmyyntiarvon."
+      },
+      "faq-10": {
+        "question": "Lähetättekö muihin maihin? Onko takuu?",
+        "answer": "Kyllä! Lähetämme ympäri maailmaa (toimituskulut ja -aika lasketaan automaattisesti kassalla). Tuotteella on valmistustakuu: jos linssi ei palauta lukemaa tai tiivistystä odotetusti, ota yhteyttä tukeemme."
       }
     },
     "reviews": {}

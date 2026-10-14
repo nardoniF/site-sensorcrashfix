@@ -52,6 +52,8 @@ nav,
     gap: 12px;
     flex-shrink: 0;
     min-width: 0;
+    /* ~2cm à esquerda: libera espaço no nav para DE/IT no lang switcher */
+    margin-left: -2cm;
 }
 
 .logo-img-link {
@@ -212,13 +214,19 @@ nav,
     font-size: 0.62rem;
     border-radius: 6px;
     line-height: 1;
-    min-width: 42px;
+    min-width: 48px;
     justify-content: center;
+    flex-wrap: nowrap;
+    white-space: nowrap;
 }
 
 .nav-lang-stack .nav-lang img {
-    width: 16px;
-    height: 12px;
+    width: 18px;
+    height: 14px;
+    object-fit: cover;
+    object-position: center;
+    flex-shrink: 0;
+    display: block;
 }
 
 /* Seletor compacto de idiomas (PT, EN, IT, DE, ES, PL) */
@@ -321,6 +329,7 @@ nav,
     .logo-text { font-size: 1.2rem; }
     .logo-img-link { width: 76px; height: 76px; }
     .site-social { min-width: 96px; padding: 0 12px; }
+    .logo-area { margin-left: -1.2cm; }
 }
 
 /* Header IT: rótulos um pouco mais longos — só ajustes de espaço, mesma tipografia do menu */
@@ -1856,7 +1865,7 @@ footer,
     body.home-page #onde-comprar { scroll-margin-top: 64px; }
     .site-nav,
     nav { position: relative; flex-wrap: nowrap; gap: 6px; }
-    .logo-area { flex: 0 0 auto; min-width: 0; gap: 8px; }
+    .logo-area { flex: 0 0 auto; min-width: 0; gap: 8px; margin-left: 0; }
     .logo-img-link { width: 56px; height: 56px; }
     .logo-text { font-size: 0.95rem; }
     .logo-tagline { font-size: 0.68rem; }

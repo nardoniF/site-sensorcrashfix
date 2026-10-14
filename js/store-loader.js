@@ -114,7 +114,7 @@ window.StoreConfig = (function () {
                   return apiCat || localCat;
                 })(),
                 homeFaq: (() => {
-                  // Prefer repo store-config FAQ (5 Crash items + l10n IDs). Admin KV often
+                  // Prefer repo store-config FAQ (10 Crash items + l10n IDs). Admin KV often
                   // still has stale extra EN-era FAQs that break DE/FR/… translations.
                   const apiList = apiConfig.homeFaq || [];
                   const localList = local.homeFaq || [];
