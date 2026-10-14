@@ -63,20 +63,38 @@ window.STF_MONEY = window.STF_MONEY || (function () {
   function isIntlHost() {
     return !!(window.STF_SITE?.isIntlHost?.() || /\.sensorcrashfix\.com$/i.test(location.hostname));
   }
+  function visitorCountry() {
+    const path = typeof location !== 'undefined' ? location.pathname : '';
+    const map = {
+      '/it/': 'IT', '/de/': 'DE', '/es/': 'ES', '/pl/': 'PL', '/sl/': 'SI',
+      '/fr/': 'FR', '/nl/': 'NL', '/sv/': 'SE', '/no/': 'NO', '/fi/': 'FI', '/en/': 'US'
+    };
+    for (const [prefix, code] of Object.entries(map)) {
+      if (path.includes(prefix)) return code;
+    }
+    if (isIntlHost()) return 'US';
+    return 'BR';
+  }
+  function visitorDisplayCurrency(countryCode) {
+    const country = String(countryCode || visitorCountry()).toUpperCase();
+    const cur = currencyForCountry(country);
+    if (isIntlHost()) return cur === 'BRL' ? 'USD' : cur;
+    return cur;
+  }
   async function formatForVisitor(amountBrl, config) {
     if (isIntlHost()) {
-      const rate = await loadRate(String(config?.api?.baseUrl || window.CONFIG_BOOTSTRAP?.configApiUrl || '').replace(/\/$/, ''), 'USD');
-      if (!rate) return formatBRL(amountBrl);
-      return formatForeign(convertFromBrl(amountBrl, rate), 'USD');
+      const country = visitorCountry();
+      const cur = visitorDisplayCurrency(country);
+      const rate = await loadRate(String(config?.api?.baseUrl || window.CONFIG_BOOTSTRAP?.configApiUrl || '').replace(/\/$/, ''), cur);
+      if (!rate) return formatForeign(Number(amountBrl) || 0, cur).replace(/[\d.,\u00a0]+/, '…');
+      return formatForeign(convertFromBrl(amountBrl, rate), cur);
     }
     return formatBRL(amountBrl);
   }
   return {
     currencyForCountry, loadRate, resetCache, convertFromBrl, formatBRL, formatForeign, formatDual,
-    formatForVisitor, formatPrimaryForVisitor: formatForVisitor, isIntlHost, computePayPalFee, visitorCountry: function () {
-      if (isIntlHost()) return location.pathname.includes('/it/') ? 'IT' : 'US';
-      return 'BR';
-    }
+    formatForVisitor, formatPrimaryForVisitor: formatForVisitor, isIntlHost, computePayPalFee,
+    visitorCountry, visitorDisplayCurrency
   };
 })();
 
@@ -113,9 +131,26 @@ window.STF_MONEY = window.STF_MONEY || (function () {
 
   function checkoutLocale() {
     if (!isIntlCheckoutShell()) return 'pt';
-    const lang = window.STF_I18N?.getLang?.() || 'en';
-    if (lang === 'it' || lang === 'de' || lang === 'es' || lang === 'pl' || lang === 'sl' || lang === 'en') return lang;
+    const lang = window.STF_I18N?.getLang?.()
+      || window.STF_PAGE_LANG?.get?.()
+      || (document.documentElement.lang || '').slice(0, 2).toLowerCase()
+      || 'en';
+    if (['en', 'it', 'de', 'es', 'pl', 'sl', 'fr', 'nl', 'sv', 'no', 'fi'].includes(lang)) return lang;
     return 'en';
+  }
+
+  function localeToCountry(lang) {
+    const map = {
+      pt: 'BR', en: 'US', it: 'IT', de: 'DE', es: 'ES', pl: 'PL', sl: 'SI',
+      fr: 'FR', nl: 'NL', sv: 'SE', no: 'NO', fi: 'FI'
+    };
+    return map[lang] || (window.STF_MONEY?.visitorCountry?.() || 'US');
+  }
+
+  function intlCheckoutCountry() {
+    const fromSelect = String(els.paisCode?.value || '').toUpperCase();
+    if (fromSelect && fromSelect !== 'BR') return fromSelect;
+    return localeToCountry(checkoutLocale());
   }
 
   /** EN/IT checkout on .com.br path: PayPal only. On .com: Stripe (if live) + PayPal. */
@@ -418,21 +453,26 @@ window.STF_MONEY = window.STF_MONEY || (function () {
   let displayCurrency = 'BRL';
 
   function intlDisplayCurrency() {
+    const country = intlCheckoutCountry();
     if (window.STF_MONEY?.visitorDisplayCurrency) {
-      const country = checkoutLocale() === 'it' ? 'IT' : 'US';
       return window.STF_MONEY.visitorDisplayCurrency(country);
     }
-    return checkoutLocale() === 'it' ? 'EUR' : 'USD';
+    if (window.STF_MONEY?.currencyForCountry) {
+      const cur = window.STF_MONEY.currencyForCountry(country);
+      return cur === 'BRL' ? 'USD' : cur;
+    }
+    return localeToCountry(checkoutLocale()) === 'US' ? 'USD' : 'EUR';
   }
 
   async function refreshDisplayCurrency() {
     if (!isInternational || !window.STF_MONEY) {
       fxRate = null;
-      displayCurrency = 'BRL';
+      displayCurrency = isIntlCheckoutShell() ? intlDisplayCurrency() : 'BRL';
       return;
     }
-    if (window.STF_MONEY.isIntlHost?.()) {
+    if (window.STF_MONEY.isIntlHost?.() || isIntlCheckoutShell()) {
       displayCurrency = intlDisplayCurrency();
+      if (displayCurrency === 'BRL') displayCurrency = 'USD';
       fxRate = await window.STF_MONEY.loadRate(apiBase(), displayCurrency);
       return;
     }
@@ -444,18 +484,28 @@ window.STF_MONEY = window.STF_MONEY || (function () {
 
   function formatCheckoutMoney(v) {
     try {
-      if (!isInternational || !window.STF_MONEY || !fxRate || displayCurrency === 'BRL') {
+      if (!isInternational || !window.STF_MONEY) {
         return formatBRL(v);
       }
-      const country = checkoutLocale() === 'it' ? 'IT' : (els.paisCode?.value || window.STF_MONEY.visitorCountry?.() || 'US');
-      if (window.STF_MONEY.isIntlHost?.()) {
-        const foreign = window.STF_MONEY.convertFromBrl(v, fxRate);
-        if (foreign == null) return formatBRL(v);
-        return window.STF_MONEY.formatForeign(foreign, displayCurrency, country);
+      const country = intlCheckoutCountry();
+      const cur = (displayCurrency && displayCurrency !== 'BRL') ? displayCurrency : intlDisplayCurrency();
+      const onIntlUi = !!(window.STF_MONEY.isIntlHost?.() || isIntlCheckoutShell());
+      if (onIntlUi) {
+        if (fxRate && cur !== 'BRL') {
+          const foreign = window.STF_MONEY.convertFromBrl(v, fxRate);
+          if (foreign != null) return window.STF_MONEY.formatForeign(foreign, cur, country);
+        }
+        // Never show R$ on .com / intl shell — even if FX has not resolved yet.
+        return window.STF_MONEY.formatForeign(Number(v) || 0, cur, country).replace(/[\d.,\u00a0]+/, '…');
       }
+      if (!fxRate || displayCurrency === 'BRL') return formatBRL(v);
       return window.STF_MONEY.formatDual(v, displayCurrency, fxRate, country);
     } catch (e) {
       console.warn('formatCheckoutMoney', e);
+      if (isIntlCheckoutShell() || window.STF_MONEY?.isIntlHost?.()) {
+        const cur = intlDisplayCurrency();
+        return `${cur} …`;
+      }
       return formatBRL(v);
     }
   }
@@ -464,7 +514,7 @@ window.STF_MONEY = window.STF_MONEY || (function () {
   function formatChargeMoney(v, currency) {
     try {
       const cur = String(currency || displayCurrency || 'USD').toUpperCase();
-      const country = checkoutLocale() === 'it' ? 'IT' : (els.paisCode?.value || window.STF_MONEY?.visitorCountry?.() || 'US');
+      const country = intlCheckoutCountry();
       if (window.STF_MONEY?.formatForeign) {
         return window.STF_MONEY.formatForeign(Number(v) || 0, cur, country);
       }
@@ -1687,10 +1737,12 @@ window.STF_MONEY = window.STF_MONEY || (function () {
   }
 
   function intlCountryLocale() {
-    const lang = (document.documentElement.lang || '').toLowerCase();
-    if (lang.startsWith('it')) return 'it';
-    if (lang.startsWith('en')) return 'en';
-    return 'pt-BR';
+    const lang = checkoutLocale();
+    const map = {
+      it: 'it-IT', en: 'en-US', de: 'de-DE', es: 'es-ES', pl: 'pl-PL', sl: 'sl-SI',
+      fr: 'fr-FR', nl: 'nl-NL', sv: 'sv-SE', no: 'nb-NO', fi: 'fi-FI', pt: 'pt-BR'
+    };
+    return map[lang] || 'en-US';
   }
 
   function intlCountryLabel(code, ptLabel) {
@@ -1704,10 +1756,7 @@ window.STF_MONEY = window.STF_MONEY || (function () {
   }
 
   function defaultIntlCountry() {
-    const lang = (document.documentElement.lang || '').toLowerCase();
-    if (lang.startsWith('it')) return 'IT';
-    if (lang.startsWith('en')) return 'US';
-    return null;
+    return localeToCountry(checkoutLocale());
   }
 
   async function resolveDefaultIntlCountry() {
@@ -3444,6 +3493,7 @@ window.STF_MONEY = window.STF_MONEY || (function () {
           els.paymentStatus.className = 'payment-status confirmed';
           els.paymentStatus.innerHTML = `<i class="fas fa-check-circle"></i> ${L('status.paid')}`;
           els.confirmTitle.textContent = L('title.orderRegistered');
+          window.STF_ANALYTICS?.trackPurchase(orderId, data.total, 'stripe');
         } else {
           startPolling(orderId, accessToken, data.total);
         }
@@ -3588,16 +3638,21 @@ window.STF_MONEY = window.STF_MONEY || (function () {
     if (!orderSidebarLocked) {
       try { seedCartFromUrl(); } catch (e) { console.warn('stf-config-ready seed', e); }
     }
-    initializeLocalizedCheckout().catch(() => {});
-    if (!orderSidebarLocked && window.STF_CART && !window.STF_CART.isEmpty()) {
+    (async () => {
       try {
-        renderCartSidebar();
-        updateSmartwatchVisibility();
-        updateSummary();
-        window.STF_CART.initBadges();
-      } catch (e) {
-        console.warn('stf-config-ready cart render', e);
+        await initializeLocalizedCheckout();
+        if (isIntlCheckoutShell() || isInternational) await refreshDisplayCurrency();
+      } catch (_) { /* geo/fx optional */ }
+      if (!orderSidebarLocked && window.STF_CART && !window.STF_CART.isEmpty()) {
+        try {
+          renderCartSidebar();
+          updateSmartwatchVisibility();
+          updateSummary();
+          window.STF_CART.initBadges();
+        } catch (e) {
+          console.warn('stf-config-ready cart render', e);
+        }
       }
-    }
+    })();
   });
 })();
