@@ -496,14 +496,20 @@ window.STF_MONEY = window.STF_MONEY || (function () {
       const unitBrl = Number(item.price != null ? item.price : p.price) || 0;
       const qty = Math.max(1, Number(item.qty) || 1);
       brlProduct += unitBrl * qty;
-      let unitF = window.STF_MONEY?.configuredForeignPrice?.(p, cur, cfg);
-      if (unitF == null && catalog) {
-        unitF = window.STF_MONEY?.configuredForeignPrice?.(catalog, cur, cfg);
+      // Markup% is source of truth (TattooFix: R$ × markup → FX). Prefer it over stale priceUsd in KV.
+      const markup = Number(p.intlMarkupPercent ?? catalog?.intlMarkupPercent);
+      let unitF = null;
+      if (Number.isFinite(markup) && markup >= 0 && fxRate && unitBrl > 0) {
+        unitF = Math.round(unitBrl * (1 + markup / 100) * fxRate * factor) / factor;
       }
-      if (unitF == null && fxRate) {
-        const markup = Number(p.intlMarkupPercent ?? catalog?.intlMarkupPercent);
-        const pct = Number.isFinite(markup) && markup >= 0 ? markup : 130;
-        const base = unitBrl * (1 + pct / 100);
+      if (unitF == null) {
+        unitF = window.STF_MONEY?.configuredForeignPrice?.(p, cur, cfg);
+        if (unitF == null && catalog) {
+          unitF = window.STF_MONEY?.configuredForeignPrice?.(catalog, cur, cfg);
+        }
+      }
+      if (unitF == null && fxRate && unitBrl > 0) {
+        const base = unitBrl * (1 + 130 / 100);
         unitF = Math.round(base * fxRate * factor) / factor;
       }
       if (unitF != null) foreignProduct += Number(unitF) * qty;
