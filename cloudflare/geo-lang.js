@@ -187,6 +187,9 @@ export function isPaidAdsClickSearch(searchOrUrl) {
 
 /**
  * @returns {string|null} absolute URL to redirect to, or null
+ *
+ * .com.br: never geo/cookie-bounce to .com or /en|/it|… — intentional .com.br
+ * visits always stay (PT). Lang switcher uses explicit hrefs to .com.
  */
 export function localeRedirectTarget({ hostOrigin, pathname, search, br, preferred }) {
   const lang = normalizeSiteLang(preferred) || 'en';
@@ -195,13 +198,8 @@ export function localeRedirectTarget({ hostOrigin, pathname, search, br, preferr
   const path = pathname || '/';
   const q = search || '';
 
-  if (br) {
-    if (!isBrHomePath(path)) return null;
-    if (lang === 'pt') return null;
-    // Visitante intl na home BR → mercado .com no idioma certo (+ stf_lang anti-loop)
-    if (lang === 'en') return withStfLang(q ? `${COM}/${q}` : `${COM}/`, 'en');
-    return withStfLang(q ? `${COM}/${lang}/${q}` : `${COM}/${lang}/`, lang);
-  }
+  // Direct .com.br (www/apex) stays PT — cookie/geo/Accept-Language must NOT host-bounce.
+  if (br) return null;
 
   if (!isComEnglishEntryPath(path)) return null;
   if (lang === 'en') return null;

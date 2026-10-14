@@ -1,8 +1,9 @@
 /**
  * Storefront proxy — serves pinned GitHub commit via jsDelivr.
  * - .com / www.sensorcrashfix.com → EN (/) + IT/DE/ES/PL/SL/FR/NL/SV/NO/FI
- * - .com.br → Portuguese (repo root); intl paths redirecionam ao .com
- * - First-hit: cookie / CF-IPCountry / Accept-Language → redirect para idioma nativo
+ * - .com.br → Portuguese (repo root); never geo/cookie-bounce away to .com
+ * - First-hit on .com: cookie / CF-IPCountry / Accept-Language → idioma nativo
+ * - Paths /de|/es|/pl|/it|/en on .com.br still canonicalize to .com (explicit URL)
  * IMPORTANT: pin COMMIT after each push so domains are not stuck on stale @main cache.
  */
 import {

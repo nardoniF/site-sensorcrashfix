@@ -81,34 +81,24 @@ test('localeRedirectTarget .com loja.html', () => {
   assert.equal(isComEnglishEntryPath('/pl/loja.html'), false);
 });
 
-test('localeRedirectTarget .com.br home intl', () => {
+test('localeRedirectTarget .com.br never host-bounces', () => {
+  const brHome = {
+    hostOrigin: 'https://www.sensorcrashfix.com.br',
+    pathname: '/',
+    search: '',
+    br: true
+  };
+  assert.equal(localeRedirectTarget({ ...brHome, preferred: 'pl' }), null);
+  assert.equal(localeRedirectTarget({ ...brHome, preferred: 'en' }), null);
+  assert.equal(localeRedirectTarget({ ...brHome, preferred: 'it' }), null);
+  assert.equal(localeRedirectTarget({ ...brHome, preferred: 'pt' }), null);
   assert.equal(
     localeRedirectTarget({
       hostOrigin: 'https://www.sensorcrashfix.com.br',
-      pathname: '/',
-      search: '',
-      br: true,
-      preferred: 'pl'
-    }),
-    'https://www.sensorcrashfix.com/pl/?stf_lang=pl'
-  );
-  assert.equal(
-    localeRedirectTarget({
-      hostOrigin: 'https://www.sensorcrashfix.com.br',
-      pathname: '/',
+      pathname: '/loja.html',
       search: '',
       br: true,
       preferred: 'en'
-    }),
-    'https://www.sensorcrashfix.com/?stf_lang=en'
-  );
-  assert.equal(
-    localeRedirectTarget({
-      hostOrigin: 'https://www.sensorcrashfix.com.br',
-      pathname: '/',
-      search: '',
-      br: true,
-      preferred: 'pt'
     }),
     null
   );
@@ -126,15 +116,27 @@ test('cross-domain stf_lang breaks cookie bounce', () => {
   assert.ok(toBr.includes('stf_lang=pt'));
   assert.ok(toBr.startsWith('https://www.sensorcrashfix.com.br/'));
 
-  // .br with en pref → .com with stf_lang=en
-  const toCom = localeRedirectTarget({
-    hostOrigin: 'https://www.sensorcrashfix.com.br',
-    pathname: '/',
-    search: '',
-    br: true,
-    preferred: 'en'
-  });
-  assert.equal(toCom, 'https://www.sensorcrashfix.com/?stf_lang=en');
+  // .br with leftover en/it cookie must NOT bounce to .com (stay PT)
+  assert.equal(
+    localeRedirectTarget({
+      hostOrigin: 'https://www.sensorcrashfix.com.br',
+      pathname: '/',
+      search: '',
+      br: true,
+      preferred: 'en'
+    }),
+    null
+  );
+  assert.equal(
+    localeRedirectTarget({
+      hostOrigin: 'https://www.sensorcrashfix.com.br',
+      pathname: '/',
+      search: '',
+      br: true,
+      preferred: 'it'
+    }),
+    null
+  );
 });
 
 test('bots skipped helper', () => {
