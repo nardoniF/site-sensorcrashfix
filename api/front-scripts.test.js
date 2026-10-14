@@ -91,6 +91,14 @@ test('contato do site: forms usam /contact (sem FormSubmit) + Worker expõe rota
   assert.ok(worker.includes('CONTACT_BLOB'));
   assert.ok(worker.includes('contato@sensorcrashfix.com.br'), 'notify default CrashFix');
   assert.equal(worker.includes('contato@sensortattoofix.com.br'), false, 'notify nunca TattooFix');
+  assert.ok(worker.includes('patchContactNotify'), 'persiste status do aviso de e-mail');
+  assert.ok(worker.includes('await notifyWork'), 'aguarda notify (não fire-and-forget)');
+  assert.ok(worker.includes('notifyEmail(env, config, to, subject, fields, email)'), 'contato usa notifyEmail (Resend+fallback)');
+  assert.equal(
+    /sendViaResend\(env, config, to, subject, fields, email\)\.catch\(\(\) => \{\}\)/.test(worker),
+    false,
+    'contato não engole Resend em fire-and-forget'
+  );
   const indexesAll = [
     'index.html',
     'en/index.html',

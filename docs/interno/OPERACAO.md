@@ -258,7 +258,7 @@ Outros registros no `.com.br` (manter — **não apagar**):
 **Endereço público / notify:** sempre `contato@sensorcrashfix.com.br` — **nunca** `contato@sensortattoofix.com.br`.
 O Outlook (`F.nardoni@…`) é só o *destino de encaminhamento* do Email Routing, não o mailto do site.
 
-**Site Contato:** o formulário grava no Worker (`POST /contact` → KV) e tenta aviso Resend **TO** `contato@sensorcrashfix.com.br`. Com Null MX esse aviso só chega depois do Email Routing. No Admin → Cadastros → Contatos → **Mensagens do site** as mensagens já ficam no KV mesmo com MX quebrado.
+**Site Contato:** o formulário grava no Worker (`POST /contact` → KV) e **aguarda** o aviso (`notifyEmail`: Resend + fallback FormSubmit) **TO** `contato@sensorcrashfix.com.br`. O Gmail só recebe se esse envio sair e o Email Routing encaminhar (ex.: `sensorcrashfix@gmail.com`). Sem `waitUntil`/await o Worker podia morrer antes do Resend — isso foi corrigido. No Admin → Cadastros → Contatos → **Mensagens do site** as mensagens ficam no KV mesmo se o e-mail falhar; o cartão mostra ✉ OK / ✉ falhou.
 
 #### Ativar Cloudflare Email Routing (cliques — zona `.com.br`)
 

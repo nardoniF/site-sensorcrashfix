@@ -5432,15 +5432,24 @@ ${worksheets}
         const email = row.email
           ? `<a class="feedback-card-email" href="mailto:${escapeHtml(row.email)}"><i class="fas fa-envelope" aria-hidden="true"></i> ${escapeHtml(row.email)}</a>`
           : '<span class="feedback-card-anon"><i class="fas fa-user-secret" aria-hidden="true"></i> Sem e-mail</span>';
+        const notifyPill = row.notified === true
+          ? `<span class="feedback-pill" title="E-mail enviado (Resend/FormSubmit → contato@ → Gmail via Routing)">✉ OK${row.notifyProvider ? ' · ' + escapeHtml(row.notifyProvider) : ''}</span>`
+          : (row.notified === false
+            ? `<span class="feedback-pill feedback-pill--geo" title="${escapeHtml(row.notifyError || 'E-mail não saiu — mensagem só no Admin')}">✉ falhou</span>`
+            : '');
         const pills = [
           row.idioma ? `<span class="feedback-pill">${escapeHtml(String(row.idioma).toUpperCase())}</span>` : '',
-          row.pais ? `<span class="feedback-pill feedback-pill--geo">${escapeHtml(row.pais)}</span>` : ''
+          row.pais ? `<span class="feedback-pill feedback-pill--geo">${escapeHtml(row.pais)}</span>` : '',
+          notifyPill
         ].filter(Boolean).join('');
         const subject = row.subject
           ? `<div class="feedback-card-block feedback-card-block--sug">
               <span class="feedback-card-label"><i class="fas fa-tag" aria-hidden="true"></i> Assunto</span>
               <p>${escapeHtml(row.subject)}</p>
             </div>`
+          : '';
+        const notifyHint = row.notified === false && row.notifyError
+          ? `<p class="admin-meta" style="margin:6px 0 0;color:#b45309">Aviso e-mail: ${escapeHtml(String(row.notifyError).slice(0, 160))}</p>`
           : '';
 
         return `<article class="feedback-card">
@@ -5456,6 +5465,7 @@ ${worksheets}
           <div class="feedback-card-block feedback-card-block--primary">
             <span class="feedback-card-label"><i class="fas fa-comment" aria-hidden="true"></i> Mensagem</span>
             <p>${escapeHtml(row.message || '')}</p>
+            ${notifyHint}
           </div>
           <footer class="feedback-card-foot">
             ${email}

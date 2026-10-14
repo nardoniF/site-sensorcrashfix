@@ -534,7 +534,7 @@
                     <div id="admin-tab-contato" class="admin-tab-panel" role="tabpanel" hidden>
                     <fieldset>
                         <legend><i class="fas fa-headset"></i> Contato e pedidos</legend>
-                        <p class="admin-meta">O formulário do site grava em <strong>Mensagens do site</strong> (abaixo) via Worker <code>/contact</code> + Resend. Não depende de ativação FormSubmit.</p>
+                        <p class="admin-meta">O formulário do site grava primeiro em <strong>Mensagens do site</strong> (abaixo) via Worker <code>/contact</code>. O Gmail só recebe se o Resend (ou fallback FormSubmit) enviar para <code>contato@</code> e o Email Routing encaminhar. Cada cartão mostra se o aviso de e-mail saiu (✉ OK / ✉ falhou).</p>
                         <div class="form-grid">
                             <label>WhatsApp (somente números)
                                 <input type="text" name="whatsapp" required placeholder="5511999999999">
@@ -1391,6 +1391,6 @@
     })();
     </script>
     <script type="module" src="js/sales-money.mjs?v=6"></script>
-    <script defer src="js/admin.js?v=227"></script>
+    <script defer src="js/admin.js?v=228"></script>
 </body>
 </html>

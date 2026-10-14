@@ -17337,6 +17337,16 @@ async function appendContact(env, entry) {
   return row;
 }
 
+/** Atualiza meta de notificação (Resend/FormSubmit) numa mensagem já gravada. */
+async function patchContactNotify(env, id, notifyMeta) {
+  if (!id || !notifyMeta) return;
+  const list = await getContactList(env);
+  const idx = list.findIndex((row) => row && row.id === id);
+  if (idx < 0) return;
+  list[idx] = { ...list[idx], ...notifyMeta };
+  await saveContactList(env, list);
+}
+
 async function checkContactRate(env, ip) {
   if (!ip || ip === 'unknown') return true;
   const hour = Math.floor(Date.now() / 3600000);
@@ -17371,7 +17381,7 @@ function contactNotifyRecipients(config) {
   return [...recipients];
 }
 
-async function handleContact(request, env, origin) {
+async function handleContact(request, env, origin, ctx) {
   if (!isAllowedSiteRequest(request)) {
     return json({ error: 'Origem não permitida.' }, 403, origin);
   }
@@ -17415,11 +17425,14 @@ async function handleContact(request, env, origin) {
     idioma: feedbackField(body, 'idioma', 24),
     referrer: feedbackField(body, 'referrer', 200),
     pais: paisCf,
-    ip: ip !== 'unknown' ? ip : ''
+    ip: ip !== 'unknown' ? ip : '',
+    notified: false,
+    notifyError: ''
   };
 
+  let row;
   try {
-    await appendContact(env, entry);
+    row = await appendContact(env, entry);
   } catch (err) {
     console.error('contact save:', err.message);
     return json({ error: 'Falha ao gravar.' }, 503, origin);
@@ -17436,12 +17449,60 @@ async function handleContact(request, env, origin) {
     País: entry.pais || '—',
     Quando: when
   };
-  // Resend only — FormSubmit exige ativação por e-mail no destino (morto se MX nulo)
-  for (const to of contactNotifyRecipients(config)) {
-    sendViaResend(env, config, to, subject, fields, email).catch(() => {});
+
+  // Await notify (não fire-and-forget): sem waitUntil o Worker podia morrer antes do Resend.
+  // notifyEmail = Resend + fallback FormSubmit. TO contato@ → Email Routing → Gmail.
+  const recipients = contactNotifyRecipients(config);
+  const notifyWork = (async () => {
+    const results = [];
+    for (const to of recipients) {
+      try {
+        const result = await notifyEmail(env, config, to, subject, fields, email);
+        results.push({
+          to,
+          ok: !!result?.ok,
+          provider: result?.provider || null,
+          error: result?.ok
+            ? null
+            : (result?.error || result?.resend?.error || result?.formsubmit?.error || 'falha')
+        });
+      } catch (err) {
+        results.push({ to, ok: false, provider: null, error: err.message || 'erro' });
+      }
+    }
+    const notified = results.some((r) => r.ok);
+    const firstErr = results.find((r) => !r.ok)?.error || '';
+    const providers = results.filter((r) => r.ok).map((r) => r.provider).filter(Boolean);
+    await patchContactNotify(env, row.id, {
+      notified,
+      notifyError: notified ? '' : String(firstErr || 'notify falhou').slice(0, 240),
+      notifyProvider: providers[0] || '',
+      notifiedAt: Date.now(),
+      notifyResults: results.slice(0, 6)
+    });
+    if (!notified) {
+      console.error('contact notify failed:', JSON.stringify(results));
+    }
+    return { notified, results };
+  })();
+
+  if (ctx && typeof ctx.waitUntil === 'function') {
+    ctx.waitUntil(notifyWork);
   }
 
-  return json({ ok: true }, 202, origin);
+  let notified = false;
+  let notifyError = '';
+  try {
+    const outcome = await notifyWork;
+    notified = !!outcome.notified;
+    notifyError = notified ? '' : (outcome.results?.find((r) => !r.ok)?.error || 'notify falhou');
+  } catch (err) {
+    notifyError = err.message || 'notify falhou';
+    console.error('contact notify:', notifyError);
+  }
+
+  // ok:true = gravado no Admin (KV). notified diz se o e-mail saiu (Gmail via Routing).
+  return json({ ok: true, saved: true, notified, notifyError: notified ? undefined : notifyError }, 202, origin);
 }
 
 async function handleAdminListContact(request, env, origin) {
@@ -19077,7 +19138,7 @@ export default {
         return handleAdminClearFeedback(request, env, origin);
       }
       if (path === '/contact' && request.method === 'POST') {
-        return handleContact(request, env, origin);
+        return handleContact(request, env, origin, ctx);
       }
       if (path === '/admin/contact' && request.method === 'GET') {
         return handleAdminListContact(request, env, origin);
