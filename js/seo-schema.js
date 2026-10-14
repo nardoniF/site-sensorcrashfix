@@ -8,6 +8,11 @@
     if (/\/es(?:\/|$)/i.test(p)) return 'es';
     if (/\/pl(?:\/|$)/i.test(p)) return 'pl';
     if (/\/sl(?:\/|$)/i.test(p)) return 'sl';
+    if (/\/fr(?:\/|$)/i.test(p)) return 'fr';
+    if (/\/nl(?:\/|$)/i.test(p)) return 'nl';
+    if (/\/sv(?:\/|$)/i.test(p)) return 'sv';
+    if (/\/no(?:\/|$)/i.test(p)) return 'no';
+    if (/\/fi(?:\/|$)/i.test(p)) return 'fi';
     if (/\/en(?:\/|$)/i.test(p)) return 'en';
     if (isIntlHost) return 'en';
     return 'pt';
@@ -17,13 +22,26 @@
   const isEs = pathLang === 'es';
   const isPl = pathLang === 'pl';
   const isSl = pathLang === 'sl';
+  const isFr = pathLang === 'fr';
+  const isNl = pathLang === 'nl';
+  const isSv = pathLang === 'sv';
+  const isNo = pathLang === 'no';
+  const isFi = pathLang === 'fi';
   const isEn = pathLang === 'en';
-  const isIntlCopy = isEn || isIt || isDe || isEs || isPl || isSl;
-  const langPrefix = isIt ? '/it/' : isDe ? '/de/' : isEs ? '/es/' : isPl ? '/pl/' : isSl ? '/sl/' : isEn ? '/en/' : '/';
+  const isIntlCopy = isEn || isIt || isDe || isEs || isPl || isSl || isFr || isNl || isSv || isNo || isFi;
+  const LANG_PREFIX = {
+    it: '/it/', de: '/de/', es: '/es/', pl: '/pl/', sl: '/sl/',
+    fr: '/fr/', nl: '/nl/', sv: '/sv/', no: '/no/', fi: '/fi/', en: '/en/'
+  };
+  const langPrefix = LANG_PREFIX[pathLang] || '/';
   const pageUrl = isIntlHost
     ? (pathLang === 'en' ? SITE + '/' : SITE + langPrefix)
     : (pathLang === 'pt' ? SITE + '/' : SITE + langPrefix);
-  const inLanguage = isIt ? 'it' : isDe ? 'de' : isEs ? 'es' : isPl ? 'pl' : isSl ? 'sl' : isEn ? 'en' : 'pt-BR';
+  const IN_LANG = {
+    it: 'it', de: 'de', es: 'es', pl: 'pl', sl: 'sl',
+    fr: 'fr', nl: 'nl', sv: 'sv', no: 'nb', fi: 'fi', en: 'en', pt: 'pt-BR'
+  };
+  const inLanguage = IN_LANG[pathLang] || 'pt-BR';
 
   /** Fallback if DOM/config still empty when Googlebot runs (real customer quotes). */
   const FALLBACK_REVIEWS = {
@@ -43,7 +61,10 @@
     if (!row) return '';
     const fromI18n = row.i18n?.[pathLang]?.[field];
     if (fromI18n) return String(fromI18n);
-    const suffix = { en: 'En', it: 'It', de: 'De', es: 'Es', pl: 'Pl', sl: 'Sl' }[pathLang];
+    const suffix = {
+      en: 'En', it: 'It', de: 'De', es: 'Es', pl: 'Pl', sl: 'Sl',
+      fr: 'Fr', nl: 'Nl', sv: 'Sv', no: 'No', fi: 'Fi'
+    }[pathLang];
     if (suffix && row[field + suffix]) return String(row[field + suffix]);
     if (isIntlCopy && row[field + 'En']) return String(row[field + 'En']);
     return String(row[field] || '');
