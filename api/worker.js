@@ -17354,14 +17354,19 @@ function looksLikeEmail(value) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s) && s.length <= 120;
 }
 
-/** Destinos de aviso do formulário de contato (KV é a fonte durável). */
+/** Destinos de aviso do formulário de contato (KV é a fonte durável).
+ * Público + notify: sempre contato@sensorcrashfix.com.br (nunca TattooFix).
+ * Com Null MX, o aviso Resend só chega após Email Routing no .com.br. */
 function contactNotifyRecipients(config) {
+  const recipients = new Set(['contato@sensorcrashfix.com.br']);
   const primary = String(config?.formsubmit?.email || '').trim().toLowerCase();
-  const recipients = new Set();
-  if (primary) recipients.add(primary);
-  // .com.br costuma ter MX nulo (0 .) — Email Routing ativo no .com
-  if (!primary || primary.endsWith('@sensorcrashfix.com.br')) {
-    recipients.add('support@sensorcrashfix.com');
+  if (
+    primary &&
+    primary !== 'contato@sensorcrashfix.com.br' &&
+    /@sensorcrashfix\.(com\.br|com)$/i.test(primary) &&
+    !/@sensortattoofix\./i.test(primary)
+  ) {
+    recipients.add(primary);
   }
   return [...recipients];
 }

@@ -38,7 +38,7 @@
       sending: 'Sending…',
       close: 'Close',
       thanks: 'Thank you! Your feedback helps us improve the site.',
-      err: 'Could not send. Try again or email support@sensorcrashfix.com.',
+      err: 'Could not send. Try again or email contato@sensorcrashfix.com.br.',
       errShort: 'Please describe what you were looking for (at least 8 characters).'
     },
     it: {
@@ -56,7 +56,7 @@
       sending: 'Invio…',
       close: 'Chiudi',
       thanks: 'Grazie! Il tuo feedback ci aiuta a migliorare il sito.',
-      err: 'Invio non riuscito. Riprova o scrivi a support@sensorcrashfix.com.',
+      err: 'Invio non riuscito. Riprova o scrivi a contato@sensorcrashfix.com.br.',
       errShort: 'Descrivi cosa cercavi (almeno 8 caratteri).'
     },
     de: {
@@ -74,7 +74,7 @@
       sending: 'Wird gesendet…',
       close: 'Schließen',
       thanks: 'Danke! Ihr Feedback hilft uns, die Website zu verbessern.',
-      err: 'Senden fehlgeschlagen. Versuchen Sie es erneut oder schreiben Sie an support@sensorcrashfix.com.',
+      err: 'Senden fehlgeschlagen. Versuchen Sie es erneut oder schreiben Sie an contato@sensorcrashfix.com.br.',
       errShort: 'Beschreiben Sie, wonach Sie gesucht haben (mindestens 8 Zeichen).'
     },
     es: {
@@ -92,7 +92,7 @@
       sending: 'Enviando…',
       close: 'Cerrar',
       thanks: '¡Gracias! Tu comentario nos ayuda a mejorar el sitio.',
-      err: 'No se pudo enviar. Inténtalo de nuevo o escribe a support@sensorcrashfix.com.',
+      err: 'No se pudo enviar. Inténtalo de nuevo o escribe a contato@sensorcrashfix.com.br.',
       errShort: 'Describe qué buscabas (al menos 8 caracteres).'
     },
     pl: {
@@ -110,7 +110,7 @@
       sending: 'Wysyłanie…',
       close: 'Zamknij',
       thanks: 'Dziękujemy! Twoja opinia pomaga nam ulepszać stronę.',
-      err: 'Nie udało się wysłać. Spróbuj ponownie lub napisz na support@sensorcrashfix.com.',
+      err: 'Nie udało się wysłać. Spróbuj ponownie lub napisz na contato@sensorcrashfix.com.br.',
       errShort: 'Opisz, czego szukałeś (co najmniej 8 znaków).'
     },
     sl: {
@@ -128,7 +128,7 @@
       sending: 'Pošiljanje…',
       close: 'Zapri',
       thanks: 'Hvala! Vaše mnenje nam pomaga izboljšati stran.',
-      err: 'Pošiljanje ni uspelo. Poskusite znova ali pišite na support@sensorcrashfix.com.',
+      err: 'Pošiljanje ni uspelo. Poskusite znova ali pišite na contato@sensorcrashfix.com.br.',
       errShort: 'Opišite, kaj ste iskali (vsaj 8 znakov).'
     },
     fr: {
@@ -146,7 +146,7 @@
       sending: 'Envoi…',
       close: 'Fermer',
       thanks: 'Merci ! Votre retour nous aide à améliorer le site.',
-      err: 'Envoi impossible. Réessayez ou écrivez à support@sensorcrashfix.com.',
+      err: 'Envoi impossible. Réessayez ou écrivez à contato@sensorcrashfix.com.br.',
       errShort: 'Décrivez ce que vous cherchiez (au moins 8 caractères).'
     },
     nl: {
@@ -164,7 +164,7 @@
       sending: 'Versturen…',
       close: 'Sluiten',
       thanks: 'Bedankt! Je feedback helpt ons de site te verbeteren.',
-      err: 'Versturen mislukt. Probeer opnieuw of mail support@sensorcrashfix.com.',
+      err: 'Versturen mislukt. Probeer opnieuw of mail contato@sensorcrashfix.com.br.',
       errShort: 'Beschrijf wat je zocht (minstens 8 tekens).'
     },
     sv: {
@@ -182,7 +182,7 @@
       sending: 'Skickar…',
       close: 'Stäng',
       thanks: 'Tack! Din feedback hjälper oss att förbättra webbplatsen.',
-      err: 'Kunde inte skicka. Försök igen eller mejla support@sensorcrashfix.com.',
+      err: 'Kunde inte skicka. Försök igen eller mejla contato@sensorcrashfix.com.br.',
       errShort: 'Beskriv vad du sökte (minst 8 tecken).'
     },
     no: {
@@ -200,7 +200,7 @@
       sending: 'Sender…',
       close: 'Lukk',
       thanks: 'Takk! Tilbakemeldingen din hjelper oss å forbedre nettstedet.',
-      err: 'Kunne ikke sende. Prøv igjen eller skriv til support@sensorcrashfix.com.',
+      err: 'Kunne ikke sende. Prøv igjen eller skriv til contato@sensorcrashfix.com.br.',
       errShort: 'Beskriv hva du lette etter (minst 8 tegn).'
     },
     fi: {
@@ -218,7 +218,7 @@
       sending: 'Lähetetään…',
       close: 'Sulje',
       thanks: 'Kiitos! Palautteesi auttaa meitä parantamaan sivustoa.',
-      err: 'Lähetys epäonnistui. Yritä uudelleen tai kirjoita support@sensorcrashfix.com.',
+      err: 'Lähetys epäonnistui. Yritä uudelleen tai kirjoita contato@sensorcrashfix.com.br.',
       errShort: 'Kuvaile, mitä etsit (vähintään 8 merkkiä).'
     }
   };

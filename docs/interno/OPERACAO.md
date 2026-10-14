@@ -255,7 +255,10 @@ Outros registros no `.com.br` (manter — **não apagar**):
 
 **Resend outbound:** o SPF do Resend vive no subdomínio `send.` (via CNAME), não na raiz. O `v=spf1 -all` na raiz **não impede** envio pelo Resend. O bloqueio de **entrada** é só o Null MX (`0 .`).
 
-**Site Contato:** já **não depende** de MX. O formulário grava no Worker (`POST /contact` → KV) e tenta aviso via Resend; no Admin → Cadastros → Contatos → **Mensagens do site** as mensagens chegam mesmo com MX quebrado.
+**Endereço público / notify:** sempre `contato@sensorcrashfix.com.br` — **nunca** `contato@sensortattoofix.com.br`.
+O Outlook (`F.nardoni@…`) é só o *destino de encaminhamento* do Email Routing, não o mailto do site.
+
+**Site Contato:** o formulário grava no Worker (`POST /contact` → KV) e tenta aviso Resend **TO** `contato@sensorcrashfix.com.br`. Com Null MX esse aviso só chega depois do Email Routing. No Admin → Cadastros → Contatos → **Mensagens do site** as mensagens já ficam no KV mesmo com MX quebrado.
 
 #### Ativar Cloudflare Email Routing (cliques — zona `.com.br`)
 
