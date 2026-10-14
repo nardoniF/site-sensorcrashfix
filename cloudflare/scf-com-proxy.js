@@ -219,6 +219,46 @@ async function fetchOrigin(originPath, search) {
   return last;
 }
 
+/**
+ * Forward real visitor IP / geo / UA to the API Worker.
+ * Without this, /stf-log subrequests look like the Cloudflare edge (wrong
+ * country) and Admin buckets almost all .com traffic as bounce/"bot".
+ */
+function clientForwardHeaders(request, siteOrigin) {
+  const cf = request.cf || {};
+  const ip = request.headers.get('CF-Connecting-IP')
+    || (request.headers.get('X-Forwarded-For') || '').split(',')[0].trim()
+    || '';
+  const country = String(cf.country || request.headers.get('CF-IPCountry') || '')
+    .trim()
+    .toUpperCase()
+    .slice(0, 12);
+  const region = String(cf.regionCode || cf.region || '').trim().slice(0, 48);
+  const city = String(cf.city || '').trim().slice(0, 48);
+  const ua = (request.headers.get('User-Agent') || '').slice(0, 200);
+  const headers = {
+    Accept: 'application/json',
+    Origin: siteOrigin,
+    Referer: siteOrigin + '/',
+  };
+  if (ip) {
+    headers['X-STF-Client-IP'] = ip;
+    headers['CF-Connecting-IP'] = ip;
+    headers['X-Forwarded-For'] = ip;
+  }
+  if (country) {
+    headers['X-STF-Client-Country'] = country;
+    headers['CF-IPCountry'] = country;
+  }
+  if (region) headers['X-STF-Client-Region'] = region;
+  if (city) headers['X-STF-Client-City'] = city;
+  if (ua) {
+    headers['User-Agent'] = ua;
+    headers['X-STF-Client-UA'] = ua;
+  }
+  return headers;
+}
+
 /** Same-origin click log — no CORS, works with sendBeacon from the storefront. */
 async function proxyClickLog(request, siteOrigin) {
   if (request.method === 'OPTIONS') {
@@ -236,14 +276,11 @@ async function proxyClickLog(request, siteOrigin) {
     return new Response('Method Not Allowed', { status: 405 });
   }
   const body = await request.arrayBuffer();
+  const headers = clientForwardHeaders(request, siteOrigin);
+  headers['Content-Type'] = request.headers.get('Content-Type') || 'application/json';
   const res = await fetch(API_ORIGIN + '/analytics/click', {
     method: 'POST',
-    headers: {
-      'Content-Type': request.headers.get('Content-Type') || 'application/json',
-      Accept: 'application/json',
-      Origin: siteOrigin,
-      Referer: siteOrigin + '/',
-    },
+    headers,
     body,
   });
   const text = await res.text();
@@ -259,12 +296,10 @@ async function proxyClickLog(request, siteOrigin) {
 
 async function proxyClickPixel(request, siteOrigin) {
   const incoming = new URL(request.url);
+  const headers = clientForwardHeaders(request, siteOrigin);
   const res = await fetch(API_ORIGIN + '/analytics/pixel.gif' + incoming.search, {
     method: 'GET',
-    headers: {
-      Origin: siteOrigin,
-      Referer: siteOrigin + '/',
-    },
+    headers,
   });
   const buf = await res.arrayBuffer();
   return new Response(buf, {

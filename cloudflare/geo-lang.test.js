@@ -204,3 +204,14 @@ test('proxy isenta geo-redirect em clique Ads pago', async () => {
   assert.match(src, /!isBot && !isPaidAdsClickSearch\(url\.search\)/);
 });
 
+test('proxy /stf-log encaminha IP/país/UA do visitante', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('./scf-com-proxy.js', import.meta.url), 'utf8');
+  assert.match(src, /function clientForwardHeaders/);
+  assert.match(src, /X-STF-Client-IP/);
+  assert.match(src, /X-STF-Client-Country/);
+  assert.match(src, /X-STF-Client-UA/);
+  assert.match(src, /X-STF-Client-City/);
+  assert.match(src, /clientForwardHeaders\(request, siteOrigin\)/);
+});
+

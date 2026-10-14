@@ -2623,18 +2623,30 @@ function resolveRequestOrigin(request) {
 }
 
 function clientIp(request) {
-  return request.headers.get('CF-Connecting-IP') ||
+  // Prefer proxy-forwarded visitor IP from /stf-log (X-STF-Client-IP).
+  return request.headers.get('X-STF-Client-IP') ||
+    request.headers.get('CF-Connecting-IP') ||
     (request.headers.get('X-Forwarded-For') || '').split(',')[0].trim() ||
     'unknown';
 }
 
 function extractClickGeo(request) {
   const cf = request.cf || {};
-  const pais = String(cf.country || request.headers.get('CF-IPCountry') || '').trim().toUpperCase().slice(0, 12);
-  const regionCode = String(cf.regionCode || '').trim().slice(0, 12);
+  // /stf-log proxy forwards real visitor geo; request.cf alone is the edge colo.
+  const pais = String(
+    request.headers.get('X-STF-Client-Country')
+    || cf.country
+    || request.headers.get('CF-IPCountry')
+    || ''
+  ).trim().toUpperCase().slice(0, 12);
+  const regionCode = String(
+    request.headers.get('X-STF-Client-Region') || cf.regionCode || ''
+  ).trim().slice(0, 12);
   const regionName = String(cf.region || '').trim().slice(0, 48);
   const estado = (regionCode || regionName).slice(0, 48);
-  const cidade = String(cf.city || '').trim().slice(0, 48);
+  const cidade = String(
+    request.headers.get('X-STF-Client-City') || cf.city || ''
+  ).trim().slice(0, 48);
   let paisNome = '';
   if (pais) {
     try {
@@ -16772,7 +16784,7 @@ function clickField(data, key, maxLen, fallback) {
 }
 
 function inferDispositivoFromRequest(request) {
-  const ua = request.headers.get('User-Agent') || '';
+  const ua = request.headers.get('X-STF-Client-UA') || request.headers.get('User-Agent') || '';
   if (!ua) return '';
   const mobile = /Mobile|Android|iPhone|iPad/i.test(ua);
   let browser = 'outro';
@@ -16793,11 +16805,24 @@ function inferDispositivoFromUserAgent(uaRaw) {
 function buildClickEntry(data, request) {
   const ip = clientIp(request);
   const geo = extractClickGeo(request);
-  const userAgent = (request.headers.get('User-Agent') || '').slice(0, 200);
+  const userAgent = (
+    request.headers.get('X-STF-Client-UA')
+    || request.headers.get('User-Agent')
+    || ''
+  ).slice(0, 200);
   const dispositivoClient = clickField(data, 'dispositivo', 80);
   const dispositivo = (dispositivoClient && dispositivoClient !== '—')
     ? dispositivoClient
     : inferDispositivoFromRequest(request);
+  const idiomaRaw = clickField(data, 'idioma', 24);
+  const siteHostRaw = clickField(data, 'site_host', 16);
+  // Infer .com vs .com.br when client omitted site_host (older analytics).
+  let siteHost = siteHostRaw;
+  if (!siteHost) {
+    const lang = idiomaRaw.toLowerCase();
+    if (lang.startsWith('pt')) siteHost = 'com.br';
+    else if (lang) siteHost = 'com';
+  }
   return {
     tipo: clickField(data, 'tipo', 24, 'clique'),
     destino: clickField(data, 'destino', 48),
@@ -16809,8 +16834,8 @@ function buildClickEntry(data, request) {
     href: clickField(data, 'href', 500),
     pagina: clickField(data, 'pagina', 200),
     titulo_pagina: clickField(data, 'titulo_pagina', 120),
-    idioma: clickField(data, 'idioma', 24),
-    site_host: clickField(data, 'site_host', 16),
+    idioma: idiomaRaw,
+    site_host: siteHost,
     referrer: clickField(data, 'referrer', 200),
     dispositivo,
     user_agent: userAgent,
