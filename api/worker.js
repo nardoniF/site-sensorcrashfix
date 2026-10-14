@@ -17500,38 +17500,6 @@ async function handleContact(request, env, origin, ctx) {
   return json({ ok: true, notified: true, provider: providers[0] || 'resend' }, 200, origin);
 }
 
-async function handleAdminListContact(request, env, origin) {
-  if (!(await isValidSession(env, bearerToken(request)))) {
-    return json({ error: 'Não autorizado.' }, 401, origin);
-  }
-  const url = new URL(request.url);
-  const q = (url.searchParams.get('q') || '').trim().toLowerCase();
-  const limit = Math.min(200, Math.max(20, parseInt(url.searchParams.get('limit') || '100', 10) || 100));
-  const loaded = await getContactList(env);
-  let items = loaded;
-  if (q) {
-    items = loaded.filter((row) => {
-      const hay = [row.name, row.email, row.message, row.subject, row.pagina, row.idioma, row.pais].join(' ').toLowerCase();
-      return hay.includes(q);
-    });
-  }
-  return json({
-    contact: items.slice(0, limit),
-    total: loaded.length,
-    checkedAt: new Date().toISOString()
-  }, 200, origin);
-}
-
-async function handleAdminClearContact(request, env, origin) {
-  if (!(await isValidSession(env, bearerToken(request)))) {
-    return json({ error: 'Não autorizado.' }, 401, origin);
-  }
-  const list = await getContactList(env);
-  const removed = list.length;
-  await saveContactList(env, []);
-  return json({ ok: true, removed }, 200, origin);
-}
-
 async function handleTestEmail(request, env, origin) {
   if (!(await isValidSession(env, bearerToken(request)))) {
     return json({ error: 'Não autorizado.' }, 401, origin);
@@ -19134,12 +19102,6 @@ export default {
       }
       if (path === '/contact' && request.method === 'POST') {
         return handleContact(request, env, origin, ctx);
-      }
-      if (path === '/admin/contact' && request.method === 'GET') {
-        return handleAdminListContact(request, env, origin);
-      }
-      if (path === '/admin/contact' && request.method === 'DELETE') {
-        return handleAdminClearContact(request, env, origin);
       }
       if (path === '/fx/rate' && request.method === 'GET') {
         return handleFxRate(request, env, origin);
