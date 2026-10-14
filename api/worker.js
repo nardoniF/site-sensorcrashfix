@@ -101,7 +101,8 @@ import {
   applyMarkupFxToIntlProducts,
   syncOpticalIntlBrlFromBrKit,
   productListPriceFromRegistry,
-  normalizeMarkupPercent
+  normalizeMarkupPercent,
+  canonIntlMarkupPercent
 } from './intl-money.js';
 
 const ALLOWED_ORIGINS = [
@@ -2557,17 +2558,28 @@ function autoFxEnabled(config) {
   return true;
 }
 
-function seedMissingIntlMarkup(products, baseProducts) {
+/**
+ * TattooFix canon: INT products in DEFAULT_CONFIG always use that markup% (130).
+ * Stale KV values (e.g. 78.5) must be overwritten — missing-only seed left live at ~$25.
+ * Returns { products, changed } where changed is count of markup fields corrected.
+ */
+function seedCanonIntlMarkup(products, baseProducts) {
   const baseById = new Map((baseProducts || []).map((p) => [p?.id || p?.slug, p]));
-  return (products || []).map((p) => {
+  let changed = 0;
+  const next = (products || []).map((p) => {
     if (!isIntlMarketProductRow(p)) return p;
-    if (p.intlMarkupPercent != null && Number.isFinite(Number(p.intlMarkupPercent))) return p;
     const base = baseById.get(p.id) || baseById.get(p.slug);
-    const mk = base?.intlMarkupPercent != null
-      ? normalizeMarkupPercent(base.intlMarkupPercent)
-      : DEFAULT_INTL_MARKUP_PERCENT;
+    const mk = canonIntlMarkupPercent(p, base);
+    if (Number(p.intlMarkupPercent) === mk) return p;
+    changed += 1;
     return { ...p, intlMarkupPercent: mk };
   });
+  return { products: next, changed };
+}
+
+/** @deprecated alias — prefer seedCanonIntlMarkup */
+function seedMissingIntlMarkup(products, baseProducts) {
+  return seedCanonIntlMarkup(products, baseProducts).products;
 }
 
 /** Recompute INT foreign list prices: (R$ × markup%) × FX — identical to TattooFix. */
@@ -2575,11 +2587,14 @@ async function syncIntlProductPricesFromMarkupFx(env, { force = false } = {}) {
   const config = await getConfig(env);
   if (!force && !autoFxEnabled(config)) return { updated: 0, skipped: true };
   const currencies = normalizeIntlCurrencies(config.intlCurrencies);
-  const seeded = seedMissingIntlMarkup(config.products || [], DEFAULT_CONFIG.products);
+  const { products: seeded, changed: markupChanged } = seedCanonIntlMarkup(
+    config.products || [],
+    DEFAULT_CONFIG.products
+  );
   const synced = syncOpticalIntlBrlFromBrKit(seeded);
   const fxRates = await fetchFxRatesMap(env, currencies.map((c) => c.code));
   const { products, updated } = applyMarkupFxToIntlProducts(synced.products, currencies, fxRates);
-  const changed = updated || synced.synced;
+  const changed = updated || synced.synced || markupChanged;
   if (changed) {
     await saveConfig(env, {
       ...config,
@@ -2589,35 +2604,69 @@ async function syncIntlProductPricesFromMarkupFx(env, { force = false } = {}) {
       intlCurrenciesAutoPpp: true
     });
   }
-  return { updated: updated + (synced.synced ? 1 : 0), currencies: currencies.map((c) => c.code), fxRates };
+  return {
+    updated: updated + (synced.synced ? 1 : 0) + markupChanged,
+    currencies: currencies.map((c) => c.code),
+    fxRates,
+    markupChanged
+  };
 }
 
 async function syncIntlProductPricesFromFx(env) {
   return syncIntlProductPricesFromMarkupFx(env);
 }
 
-/** Apply markup×FX in-memory for public config (does not require KV write). */
+/**
+ * Apply markup×FX for public config. When KV still has stale markup (≠ DEFAULT_CONFIG),
+ * persist corrected products so Stripe/PayPal charges match the list price.
+ */
 async function ensurePublicIntlListPrices(config, env) {
   if (!autoFxEnabled(config)) return config;
   const currencies = normalizeIntlCurrencies(config.intlCurrencies);
-  const seeded = seedMissingIntlMarkup(config.products || [], DEFAULT_CONFIG.products);
+  const { products: seeded, changed: markupChanged } = seedCanonIntlMarkup(
+    config.products || [],
+    DEFAULT_CONFIG.products
+  );
   const synced = syncOpticalIntlBrlFromBrKit(seeded);
   const fxRates = await fetchFxRatesMap(env, currencies.map((c) => c.code));
-  const { products } = applyMarkupFxToIntlProducts(synced.products, currencies, fxRates);
-  return {
+  const { products, updated } = applyMarkupFxToIntlProducts(synced.products, currencies, fxRates);
+  const out = {
     ...config,
     products,
     intlCurrencies: currencies,
     intlCurrenciesAutoFx: true,
     intlCurrenciesAutoPpp: true
   };
+  // Write-through only when canon markup was forced (not on every FX tick).
+  if (markupChanged > 0 && env?.STORE_KV) {
+    try {
+      await saveConfig(env, out);
+    } catch (err) {
+      console.warn('ensurePublicIntlListPrices: KV persist failed', err?.message || err);
+    }
+  } else if (updated && !markupChanged) {
+    /* FX-only drift stays in-memory until cron syncIntlProductPricesFromFx */
+  }
+  return out;
 }
 
 async function intlForeignCharge(order, env, config, items, currency) {
   const cur = String(currency || 'USD').toUpperCase();
   const fx = await fetchFxRate(env, cur);
   const itemList = items || order.items || [];
-  const products = getActiveProducts(config || await getConfig(env));
+  // Prefer public ensure (canon markup×FX) so charges never use stale KV 78.5 list prices.
+  let cfg = config;
+  if (!cfg) {
+    cfg = await getPublicConfig(env);
+  } else if (autoFxEnabled(cfg)) {
+    const { products: seeded } = seedCanonIntlMarkup(cfg.products || [], DEFAULT_CONFIG.products);
+    const synced = syncOpticalIntlBrlFromBrKit(seeded);
+    const currencies = normalizeIntlCurrencies(cfg.intlCurrencies);
+    const fxRates = await fetchFxRatesMap(env, currencies.map((c) => c.code));
+    const { products } = applyMarkupFxToIntlProducts(synced.products, currencies, fxRates);
+    cfg = { ...cfg, products, intlCurrencies: currencies };
+  }
+  const products = getActiveProducts(cfg);
   let productForeign = 0;
   let allConfigured = itemList.length > 0;
   for (const item of itemList) {
@@ -18136,7 +18185,10 @@ async function handleAdminApplyIntlMarkupFx(request, env, origin) {
     : (body.intlCurrenciesAutoPpp != null
       ? body.intlCurrenciesAutoPpp !== false
       : autoFxEnabled(current));
-  const seeded = seedMissingIntlMarkup(current.products || [], DEFAULT_CONFIG.products);
+  const { products: seeded, changed: markupChanged } = seedCanonIntlMarkup(
+    current.products || [],
+    DEFAULT_CONFIG.products
+  );
   const synced = syncOpticalIntlBrlFromBrKit(seeded);
   const fxRates = await fetchFxRatesMap(env, currencies.map((c) => c.code));
   const { products, updated } = applyMarkupFxToIntlProducts(synced.products, currencies, fxRates);
@@ -18149,7 +18201,8 @@ async function handleAdminApplyIntlMarkupFx(request, env, origin) {
   });
   return json({
     ok: true,
-    updated: updated + (synced.synced ? 1 : 0),
+    updated: updated + (synced.synced ? 1 : 0) + markupChanged,
+    markupChanged,
     syncedOpticalBrl: synced.synced,
     fxRates,
     currencies: currencies.map((c) => ({ code: c.code, decimals: c.decimals })),

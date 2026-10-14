@@ -10,7 +10,8 @@ import {
   applyMarkupFxToIntlProducts,
   syncOpticalIntlBrlFromBrKit,
   currencyForLocaleFromRegistry,
-  normalizeIntlCurrencies
+  normalizeIntlCurrencies,
+  canonIntlMarkupPercent
 } from './intl-money.js';
 
 const FX = {
@@ -34,6 +35,28 @@ test('markup 130% (TattooFix) then FX: R$72.90 → base R$167.67 → ~USD 32.71'
   assert.equal(applyFxAmount(167.67, FX.USD, 2), 32.71);
   assert.equal(applyFxAmount(167.67, FX.EUR, 2), 28.14);
   assert.equal(applyFxAmount(167.67, FX.SEK, 0), 314);
+});
+
+test('canonIntlMarkupPercent overwrites stale KV 78.5 with DEFAULT_CONFIG 130', () => {
+  assert.equal(
+    canonIntlMarkupPercent({ intlMarkupPercent: 78.5 }, { intlMarkupPercent: 130 }),
+    130
+  );
+  assert.equal(canonIntlMarkupPercent({ intlMarkupPercent: 78.5 }, null), 78.5);
+  assert.equal(canonIntlMarkupPercent({}, null), 130);
+  const { product } = applyMarkupFxToProduct(
+    {
+      price: 72.9,
+      intlMarkupPercent: canonIntlMarkupPercent(
+        { intlMarkupPercent: 78.5 },
+        { intlMarkupPercent: 130 }
+      )
+    },
+    DEFAULT_INTL_CURRENCIES,
+    FX
+  );
+  assert.equal(product.intlMarkupPercent, 130);
+  assert.equal(product.priceUsd, 32.71);
 });
 
 test('applyMarkupFxToProduct writes all currency fields from one BRL base', () => {

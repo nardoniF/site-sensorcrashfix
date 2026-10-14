@@ -71,6 +71,21 @@ export function normalizeMarkupPercent(raw, fallback = DEFAULT_INTL_MARKUP_PERCE
   return Math.round(n * 100) / 100;
 }
 
+/**
+ * Canon markup for an INT product: DEFAULT_CONFIG row wins (TattooFix 130),
+ * else product value, else DEFAULT_INTL_MARKUP_PERCENT.
+ * Overwrites stale KV markups like 78.5 when the catalog default is 130.
+ */
+export function canonIntlMarkupPercent(product, baseProduct) {
+  if (baseProduct?.intlMarkupPercent != null && Number.isFinite(Number(baseProduct.intlMarkupPercent))) {
+    return normalizeMarkupPercent(baseProduct.intlMarkupPercent);
+  }
+  if (product?.intlMarkupPercent != null && Number.isFinite(Number(product.intlMarkupPercent))) {
+    return normalizeMarkupPercent(product.intlMarkupPercent);
+  }
+  return DEFAULT_INTL_MARKUP_PERCENT;
+}
+
 export function intlBaseBrl(priceBrl, markupPercent) {
   const brl = Math.max(0, Number(priceBrl) || 0);
   const markup = normalizeMarkupPercent(markupPercent);
