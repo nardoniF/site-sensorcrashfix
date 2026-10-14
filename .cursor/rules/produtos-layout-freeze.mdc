@@ -1,0 +1,48 @@
+---
+description: Layout #produtos congelado (molde TattooFix 380px) — nunca reverter
+alwaysApply: true
+---
+
+# Layout `#produtos` — CONGELADO
+
+Pedido explícito do dono (2026-10-01): **nunca mais mexer no layout da seção Produtos** nem voltar ao que era antes (galeria full-width / sync JS que inflava / CTA faixa larga).
+
+## O que está travado
+
+Referência canônica: CSS do Sensor TattooFix adaptado ao Crash (acento cyan, fotos/textos Crash).
+
+| Peça | Valor obrigatório |
+|------|-------------------|
+| Grid solução | `#produtos .product-solution-grid` → `1fr 1fr`, `gap: 40px` |
+| Benefícios | 6 cards em **3×2** (`.product-benefits-grid`) |
+| Quadro galeria | `width: min(100%, 380px)`, `aspect-ratio: 1 / 1`, `padding: 8px` |
+| Imagem | `object-fit: contain` (não `cover`) |
+| CTA | `.btn-product-cta` → `display: inline-block`, `padding: 12px 28px`, **não** `width: 100%` |
+| JS | `syncProductAlbumToBenefits` **só limpa** estilos inline — **proibido** setar `width`/`height` na galeria/CTA |
+
+Arquivos: `style.css` (bloco `#produtos .product-*`), `js/stf-product-gallery.js`, HTML `#produtos` em `index.html` + locales (`en/`, `it/`, `de/`, `es/`, `pl/`, `sl/`).
+
+## Proibido
+
+- Reintroduzir `product-image-wrap--lg` ou quadro `width: 100%` da coluna
+- Reintroduzir setas em faixa lateral full-height que alterem o molde Tattoo
+- Forçar altura da galeria = altura do grid via JS/ResizeObserver
+- “Melhorar”, redesenhar ou “alinhar de novo” essa seção sem pedido **explícito** do usuário nomeando `#produtos` / Produtos
+- Em pin/rebase: aceitar tip que tenha perdido o quadro 380px
+
+## Permitido sem pedir
+
+- Tradução de texto dos 6 cards / CTA (mantendo estrutura 3×2 e classes)
+- Troca de foto do álbum Crash (URLs), sem mudar o molde do quadro
+- Bugs fora de `#produtos` (hero, loja, checkout, etc.)
+
+## Checklist rápido antes de commit/pin que toque home
+
+```bash
+rg -n 'width: min\(100%, 380px\)' style.css
+rg -n 'product-image-wrap--lg' index.html en/index.html it/index.html || true
+# sync NÃO deve atribuir wrap.style.width / height com pixels de layout
+rg -n "wrap\.style\.width\s*=" js/stf-product-gallery.js && echo FAIL || echo OK
+```
+
+Se faltar `min(100%, 380px)` ou o sync voltar a dimensionar: **parar e restaurar** este tip — não “inventar outro layout”.

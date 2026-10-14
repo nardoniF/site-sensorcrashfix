@@ -7644,6 +7644,7 @@ ${worksheets}
         wireSmartwatchCatalogUi();
         renderSmartwatchCatalogTable();
       }
+      // Inbox "Mensagens do site" oculta — atendimento = e-mail em contato@.
     }
 
     function showTab(tabId) {
@@ -7970,7 +7971,6 @@ ${worksheets}
   document.getElementById('btn-feedback-refresh')?.addEventListener('click', () => loadFeedback());
   document.getElementById('btn-feedback-clear')?.addEventListener('click', () => clearFeedback());
   document.getElementById('feedback-search')?.addEventListener('input', scheduleFeedbackReload);
-
   const EMAIL_TEST_LABELS = {
     generic: 'Simples',
     shop_order: 'Loja — novo pedido',

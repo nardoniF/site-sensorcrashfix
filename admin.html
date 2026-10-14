@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>Admin — Sensor Crash Fix</title>
-    <link rel="stylesheet" href="style.css?v=3.28-crash">
+    <link rel="stylesheet" href="style.css?v=3.29-crash">
     <style>
       .clicks-device-badge{display:inline-block;padding:2px 7px;border-radius:999px;font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
       .clicks-device--mobile{background:rgba(76,175,80,.14);color:#81c784}
@@ -50,7 +50,7 @@
                         <li><strong>Pagamento</strong> — cadastro de processadores (cartão, PIX, PayPal internacional e chave PIX reserva).</li>
                         <li><strong>Frete</strong> — remetente, modalidades, motoboy, Correios BR e internacional.</li>
                         <li><strong>Cupons</strong> — desconto ao cliente; comissão/e-mail só se houver comissionado.</li>
-                        <li><strong>Contato</strong> — WhatsApp, e-mails da loja, assuntos, mensagens e testes de envio.</li>
+                        <li><strong>Contato</strong> — WhatsApp, e-mails da loja, assuntos e testes de envio.</li>
                         <li><strong>API</strong> — URL do Worker e status das integrações (MP, Asaas, PayPal, Correios, Super Frete…).</li>
                         <li><strong>Documentação</strong> — guia técnico (secrets, webhooks, deploy).</li>
                     </ul>
@@ -534,6 +534,7 @@
                     <div id="admin-tab-contato" class="admin-tab-panel" role="tabpanel" hidden>
                     <fieldset>
                         <legend><i class="fas fa-headset"></i> Contato e pedidos</legend>
+                        <p class="admin-meta">O formulário do site envia e-mail via Resend para <code>contato@sensorcrashfix.com.br</code> (Email Routing → Gmail). Sem e-mail enviado, o visitante vê erro — não há inbox no Admin.</p>
                         <div class="form-grid">
                             <label>WhatsApp (somente números)
                                 <input type="text" name="whatsapp" required placeholder="5511999999999">
@@ -545,6 +546,7 @@
                                 <input type="text" name="emailFrom" placeholder="Sensor Crash Fix &lt;pedidos@sensorcrashfix.com.br&gt;">
                             </label>
                         </div>
+                        <p class="admin-meta">Mailto público e avisos usam <code>contato@sensorcrashfix.com.br</code>. MX deve ser Cloudflare Email Routing (<code>route*.mx.cloudflare.net</code>), não Null MX.</p>
                     </fieldset>
 
                     <fieldset>
@@ -1367,6 +1369,6 @@
     })();
     </script>
     <script type="module" src="js/sales-money.mjs?v=6"></script>
-    <script defer src="js/admin.js?v=226"></script>
+    <script defer src="js/admin.js?v=229"></script>
 </body>
 </html>
