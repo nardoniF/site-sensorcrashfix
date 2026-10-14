@@ -332,17 +332,10 @@ nav,
     .logo-area { margin-left: -1.2cm; }
 }
 
-/* Header IT: rótulos um pouco mais longos — só ajustes de espaço, mesma tipografia do menu */
+/* Header IT: só espaçamento do nav — logo CrashFix igual às outras langs */
 html[lang="it"] .site-nav { gap: 10px; }
-html[lang="it"] .logo-text { font-size: 1.18rem; }
-html[lang="it"] .logo-tagline { font-size: 0.74rem; }
-html[lang="it"] .logo-img-link { width: 74px; height: 74px; }
 html[lang="it"] .site-social { min-width: 92px; padding: 0 10px; gap: 5px; }
 html[lang="it"] .nav-actions { gap: 6px; }
-
-@media (max-width: 1360px) {
-    html[lang="it"] .logo-lockup .logo-tagline { display: none; }
-}
 
 @media (max-width: 1180px) {
     .btn-nav-comprar .btn-nav-label { display: none; }
