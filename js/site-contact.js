@@ -8,7 +8,7 @@
       sending: 'Enviando…',
       send: 'Enviar Mensagem',
       thanks: 'Mensagem enviada! Responderemos por e-mail em breve.',
-      err: 'Não foi possível enviar. Tente de novo ou use contato@sensorcrashfix.com.br.',
+      err: 'Não foi possível enviar. Tente de novo ou use contato@sensortattoofix.com.br.',
       errName: 'Informe seu nome.',
       errEmail: 'E-mail inválido.',
       errMsg: 'Escreva uma mensagem (mín. 8 caracteres).'
@@ -17,7 +17,7 @@
       sending: 'Sending…',
       send: 'Send Message',
       thanks: 'Message sent! We will reply by email soon.',
-      err: 'Could not send. Try again or email support@sensorcrashfix.com.',
+      err: 'Could not send. Try again or email contato@sensortattoofix.com.br.',
       errName: 'Please enter your name.',
       errEmail: 'Invalid email.',
       errMsg: 'Please write a message (at least 8 characters).'
@@ -26,7 +26,7 @@
       sending: 'Invio…',
       send: 'Invia messaggio',
       thanks: 'Messaggio inviato! Risponderemo via e-mail a breve.',
-      err: 'Invio non riuscito. Riprova o scrivi a support@sensorcrashfix.com.',
+      err: 'Invio non riuscito. Riprova o scrivi a contato@sensortattoofix.com.br.',
       errName: 'Inserisci il tuo nome.',
       errEmail: 'E-mail non valida.',
       errMsg: 'Scrivi un messaggio (almeno 8 caratteri).'
@@ -35,7 +35,7 @@
       sending: 'Wird gesendet…',
       send: 'Nachricht senden',
       thanks: 'Nachricht gesendet! Wir antworten bald per E-Mail.',
-      err: 'Senden fehlgeschlagen. Versuchen Sie es erneut oder schreiben Sie an support@sensorcrashfix.com.',
+      err: 'Senden fehlgeschlagen. Versuchen Sie es erneut oder schreiben Sie an contato@sensortattoofix.com.br.',
       errName: 'Bitte Namen eingeben.',
       errEmail: 'Ungültige E-Mail.',
       errMsg: 'Bitte eine Nachricht schreiben (mind. 8 Zeichen).'
@@ -44,7 +44,7 @@
       sending: 'Enviando…',
       send: 'Enviar mensaje',
       thanks: '¡Mensaje enviado! Responderemos por email pronto.',
-      err: 'No se pudo enviar. Inténtalo de nuevo o escribe a support@sensorcrashfix.com.',
+      err: 'No se pudo enviar. Inténtalo de nuevo o escribe a contato@sensortattoofix.com.br.',
       errName: 'Indica tu nombre.',
       errEmail: 'Correo inválido.',
       errMsg: 'Escribe un mensaje (mín. 8 caracteres).'
@@ -53,7 +53,7 @@
       sending: 'Wysyłanie…',
       send: 'Wyślij wiadomość',
       thanks: 'Wiadomość wysłana! Odpowiemy e-mailem wkrótce.',
-      err: 'Nie udało się wysłać. Spróbuj ponownie lub napisz na support@sensorcrashfix.com.',
+      err: 'Nie udało się wysłać. Spróbuj ponownie lub napisz na contato@sensortattoofix.com.br.',
       errName: 'Podaj imię i nazwisko.',
       errEmail: 'Nieprawidłowy e-mail.',
       errMsg: 'Napisz wiadomość (min. 8 znaków).'
@@ -62,7 +62,7 @@
       sending: 'Pošiljanje…',
       send: 'Pošlji sporočilo',
       thanks: 'Sporočilo poslano! Kmalu odgovorimo po e-pošti.',
-      err: 'Pošiljanje ni uspelo. Poskusite znova ali pišite na support@sensorcrashfix.com.',
+      err: 'Pošiljanje ni uspelo. Poskusite znova ali pišite na contato@sensortattoofix.com.br.',
       errName: 'Vnesite ime.',
       errEmail: 'Neveljaven e-poštni naslov.',
       errMsg: 'Napišite sporočilo (vsaj 8 znakov).'
@@ -71,7 +71,7 @@
       sending: 'Envoi…',
       send: 'Envoyer le message',
       thanks: 'Message envoyé ! Nous répondrons bientôt par e-mail.',
-      err: 'Envoi impossible. Réessayez ou écrivez à support@sensorcrashfix.com.',
+      err: 'Envoi impossible. Réessayez ou écrivez à contato@sensortattoofix.com.br.',
       errName: 'Indiquez votre nom.',
       errEmail: 'E-mail invalide.',
       errMsg: 'Écrivez un message (min. 8 caractères).'
@@ -80,7 +80,7 @@
       sending: 'Verzenden…',
       send: 'Bericht sturen',
       thanks: 'Bericht verzonden! We reageren binnenkort per e-mail.',
-      err: 'Verzenden mislukt. Probeer opnieuw of mail support@sensorcrashfix.com.',
+      err: 'Verzenden mislukt. Probeer opnieuw of mail contato@sensortattoofix.com.br.',
       errName: 'Vul je naam in.',
       errEmail: 'Ongeldig e-mailadres.',
       errMsg: 'Schrijf een bericht (min. 8 tekens).'
@@ -89,7 +89,7 @@
       sending: 'Skickar…',
       send: 'Skicka meddelande',
       thanks: 'Meddelandet skickades! Vi svarar snart via e-post.',
-      err: 'Kunde inte skicka. Försök igen eller mejla support@sensorcrashfix.com.',
+      err: 'Kunde inte skicka. Försök igen eller mejla contato@sensortattoofix.com.br.',
       errName: 'Ange ditt namn.',
       errEmail: 'Ogiltig e-post.',
       errMsg: 'Skriv ett meddelande (minst 8 tecken).'
@@ -98,7 +98,7 @@
       sending: 'Sender…',
       send: 'Send melding',
       thanks: 'Meldingen er sendt! Vi svarer snart på e-post.',
-      err: 'Kunne ikke sende. Prøv igjen eller e-post support@sensorcrashfix.com.',
+      err: 'Kunne ikke sende. Prøv igjen eller e-post contato@sensortattoofix.com.br.',
       errName: 'Skriv inn navnet ditt.',
       errEmail: 'Ugyldig e-post.',
       errMsg: 'Skriv en melding (minst 8 tegn).'
@@ -107,7 +107,7 @@
       sending: 'Lähetetään…',
       send: 'Lähetä viesti',
       thanks: 'Viesti lähetetty! Vastaamme pian sähköpostitse.',
-      err: 'Lähetys epäonnistui. Yritä uudelleen tai kirjoita support@sensorcrashfix.com.',
+      err: 'Lähetys epäonnistui. Yritä uudelleen tai kirjoita contato@sensortattoofix.com.br.',
       errName: 'Anna nimesi.',
       errEmail: 'Virheellinen sähköposti.',
       errMsg: 'Kirjoita viesti (vähintään 8 merkkiä).'

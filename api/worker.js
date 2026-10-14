@@ -382,7 +382,9 @@ const DEFAULT_CONFIG = {
     'Polar Pacer / Ignite',
     'Outro modelo (informar nas observações)'
   ],
-  formsubmit: { email: 'contato@sensorcrashfix.com.br', subject: 'Novo pedido — Loja Oficial Sensor Crash Fix' },
+  // Inbox com MX real (Cloudflare Email Routing em sensortattoofix.com.br).
+  // FROM do Resend continua no domínio Crash Fix (DKIM). Null MX do .com.br não afeta o TO.
+  formsubmit: { email: 'contato@sensortattoofix.com.br', subject: 'Novo pedido — Loja Oficial Sensor Crash Fix' },
   emails: {
     from: 'Sensor Crash Fix <pedidos@sensorcrashfix.com.br>',
     shopPaidSubject: 'PAGO — {orderId}',
@@ -989,7 +991,7 @@ function commissionerWelcomeHtml(config, coupon, name, attachmentCount) {
     </ul>
     <p><strong>Link para seus clientes:</strong><br><a href="${esc(buyUrl)}">${esc(buyUrl)}</a></p>
     ${storiesNote}
-    <p style="color:#666;font-size:13px">Dúvidas: contato@sensorcrashfix.com.br · Sensor Crash Fix — sensorcrashfix.com.br</p>
+    <p style="color:#666;font-size:13px">Dúvidas: contato@sensortattoofix.com.br · Sensor Crash Fix — sensorcrashfix.com.br</p>
   </div>`;
 }
 
@@ -2229,7 +2231,7 @@ function publicConfigView(config, env) {
     homeFaq: Array.isArray(config.homeFaq) ? config.homeFaq.filter((r) => r && r.active !== false) : [],
     homeReviews: Array.isArray(config.homeReviews) ? config.homeReviews.filter((r) => r && r.active !== false) : [],
     formsubmit: {
-      email: config.formsubmit?.email || DEFAULT_CONFIG.formsubmit.email,
+      email: shopNotifyEmail(config),
       subject: config.formsubmit?.subject || DEFAULT_CONFIG.formsubmit.subject
     },
     whatsapp: config.whatsapp || DEFAULT_CONFIG.whatsapp,
@@ -3196,10 +3198,19 @@ function watchBrandForCopy(order) {
   return haystack.split(/\s+[—\-]\s+/)[0].trim() || haystack;
 }
 
+/** E-mail da loja (TO). Remapeia inbox morto @sensorcrashfix.com.br (Null MX). */
+function shopNotifyEmail(config) {
+  const email = String(config?.formsubmit?.email || DEFAULT_CONFIG.formsubmit.email || '').trim();
+  if (!email || /@sensorcrashfix\.com\.br$/i.test(email)) {
+    return 'contato@sensortattoofix.com.br';
+  }
+  return email;
+}
+
 function customerSupportEmail(order, config) {
   const loc = orderCheckoutLocale(order);
   if (isIntlCheckoutLocale(loc)) return 'support@sensorcrashfix.com';
-  return String(config?.formsubmit?.email || 'contato@sensorcrashfix.com.br').trim();
+  return shopNotifyEmail(config);
 }
 
 function customerSiteBase(order, config) {
@@ -13218,13 +13229,13 @@ async function notifyEmail(env, config, to, subject, fields, replyTo, content) {
 }
 
 async function notifyShop(env, config, subject, fields, content) {
-  return notifyEmail(env, config, config.formsubmit?.email, subject, fields, null, content);
+  return notifyEmail(env, config, shopNotifyEmail(config), subject, fields, null, content);
 }
 
 async function notifyCustomer(env, config, order, subject, fields, content) {
   const loc = orderCheckoutLocale(order);
   const nameKey = customerFieldLabel(loc);
-  return notifyEmail(env, config, order.email, subject, { [nameKey]: order.nome, ...fields }, config.formsubmit?.email, content);
+  return notifyEmail(env, config, order.email, subject, { [nameKey]: order.nome, ...fields }, shopNotifyEmail(config), content);
 }
 
 async function notifyCustomerPendingPix(env, config, order) {
@@ -17356,12 +17367,14 @@ function looksLikeEmail(value) {
 
 /** Destinos de aviso do formulário de contato (KV é a fonte durável). */
 function contactNotifyRecipients(config) {
+  // Preferência fixa: TattooFix tem MX Cloudflare Email Routing; CrashFix .com.br tem Null MX.
+  const recipients = new Set(['contato@sensortattoofix.com.br']);
   const primary = String(config?.formsubmit?.email || '').trim().toLowerCase();
-  const recipients = new Set();
-  if (primary) recipients.add(primary);
-  // .com.br costuma ter MX nulo (0 .) — Email Routing ativo no .com
-  if (!primary || primary.endsWith('@sensorcrashfix.com.br')) {
-    recipients.add('support@sensorcrashfix.com');
+  if (primary && primary !== 'contato@sensortattoofix.com.br') {
+    // Evita TO morto em @sensorcrashfix.com.br enquanto MX for 0 .
+    if (!primary.endsWith('@sensorcrashfix.com.br')) {
+      recipients.add(primary);
+    }
   }
   return [...recipients];
 }
@@ -18396,7 +18409,7 @@ async function sendMonthlyReportEmail(env, config, year, month, { force = false 
   const report = await buildMonthlyReport(env, year, month);
   const monthName = MONTH_NAMES_PT[month - 1] || String(month);
   const subject = monthlyClicksReportSubject(config, monthName, String(year));
-  const to = (getEmails(config).monthlyReportTo || config.formsubmit?.email || '').trim();
+  const to = (getEmails(config).monthlyReportTo || shopNotifyEmail(config) || '').trim();
   if (!to) return { ok: false, error: 'E-mail de destino não configurado (formsubmit.email).' };
 
   const fields = buildMonthlyReportFields(report);
@@ -18661,7 +18674,7 @@ async function sendMonthlySalesReportEmail(env, config, year, month, { force = f
   const report = await buildMonthlySalesReport(env, year, month);
   const monthName = MONTH_NAMES_PT[month - 1] || String(month);
   const subject = emailSubject(config, 'monthlySalesReportSubject', { month: monthName, year: String(year) });
-  const to = (getEmails(config).monthlyReportTo || config.formsubmit?.email || '').trim();
+  const to = (getEmails(config).monthlyReportTo || shopNotifyEmail(config) || '').trim();
   if (!to) return { ok: false, error: 'E-mail de destino não configurado (formsubmit.email).' };
 
   const fields = buildMonthlySalesReportFields(report);

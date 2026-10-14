@@ -243,8 +243,9 @@ Ative em **todas** as contas abaixo. Prefira **app autenticador** (Google Authen
 
 | Domínio | MX atual | TXT SPF raiz | Efeito |
 |---------|----------|--------------|--------|
-| `sensorcrashfix.com.br` | **`0 .`** (Null MX) | `v=spf1 -all` | Recusa e-mail de entrada → `contato@` nunca chega |
+| `sensorcrashfix.com.br` | **`0 .`** (Null MX) | `v=spf1 -all` | Recusa e-mail de entrada → `contato@…com.br` nunca chega |
 | `sensorcrashfix.com` | **sem MX** | (sem TXT SPF na raiz) | `support@` / inbound inexistente |
+| `sensortattoofix.com.br` | **Cloudflare Email Routing** (`route1/2/3.mx.cloudflare.net`) | inclui `_spf.mx.cloudflare.net` | Inbox `contato@sensortattoofix.com.br` recebe |
 
 Outros registros no `.com.br` (manter — **não apagar**):
 
@@ -255,7 +256,7 @@ Outros registros no `.com.br` (manter — **não apagar**):
 
 **Resend outbound:** o SPF do Resend vive no subdomínio `send.` (via CNAME), não na raiz. O `v=spf1 -all` na raiz **não impede** envio pelo Resend. O bloqueio de **entrada** é só o Null MX (`0 .`).
 
-**Site Contato:** já **não depende** de MX. O formulário grava no Worker (`POST /contact` → KV) e tenta aviso via Resend; no Admin → Cadastros → Contatos → **Mensagens do site** as mensagens chegam mesmo com MX quebrado.
+**Site Contato:** o formulário grava no Worker (`POST /contact` → KV) e manda aviso Resend **TO** `contato@sensortattoofix.com.br` (FROM continua no domínio Crash Fix / DKIM). Admin → Cadastros → Contatos → **Mensagens do site** é a fonte durável. Não é obrigatório ativar Email Routing no CrashFix `.com.br` só para o formulário.
 
 #### Ativar Cloudflare Email Routing (cliques — zona `.com.br`)
 

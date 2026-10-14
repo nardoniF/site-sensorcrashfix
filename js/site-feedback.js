@@ -20,7 +20,7 @@
       sending: 'Enviando…',
       close: 'Fechar',
       thanks: 'Obrigado! Sua resposta nos ajuda a melhorar o site.',
-      err: 'Não foi possível enviar. Tente de novo ou use contato@sensorcrashfix.com.br.',
+      err: 'Não foi possível enviar. Tente de novo ou use contato@sensortattoofix.com.br.',
       errShort: 'Descreva em pelo menos 8 caracteres o que procurava.'
     },
     en: {

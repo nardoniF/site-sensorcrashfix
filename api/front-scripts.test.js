@@ -87,4 +87,20 @@ test('contato do site: forms usam /contact (sem FormSubmit) + Worker expõe rota
   assert.ok(worker.includes("path === '/contact'"));
   assert.ok(worker.includes('handleContact'));
   assert.ok(worker.includes('CONTACT_BLOB'));
+  assert.ok(worker.includes('contato@sensortattoofix.com.br'), 'avisos /contact → TattooFix');
+  assert.ok(worker.includes('function contactNotifyRecipients'));
+  assert.ok(worker.includes('function shopNotifyEmail'));
+  for (const rel of indexes) {
+    const html = fs.readFileSync(path.join(root, rel), 'utf8');
+    assert.ok(
+      html.includes('mailto:contato@sensortattoofix.com.br'),
+      `${rel} deve exibir contato@sensortattoofix.com.br`
+    );
+  }
+  const moreIndexes = ['fr/index.html', 'nl/index.html', 'sv/index.html', 'no/index.html', 'fi/index.html'];
+  for (const rel of moreIndexes) {
+    const html = fs.readFileSync(path.join(root, rel), 'utf8');
+    assert.ok(html.includes('mailto:contato@sensortattoofix.com.br'), `${rel} mailto TattooFix`);
+    assert.equal(html.includes('formsubmit.co'), false, `${rel} sem FormSubmit`);
+  }
 });

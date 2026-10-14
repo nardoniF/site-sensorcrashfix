@@ -28,7 +28,8 @@
   }
 
   function supportEmail() {
-    return isIntlHost() ? 'support@sensorcrashfix.com' : 'contato@sensorcrashfix.com.br';
+    // Inbox com MX real (Cloudflare Email Routing). CrashFix .com.br tem Null MX.
+    return 'contato@sensortattoofix.com.br';
   }
 
   /** Map current path to equivalent on the other host (for lang / market switches). */
