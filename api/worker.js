@@ -93,6 +93,16 @@ import {
   saleMoneyParts,
   storeOrderListedGross
 } from './sales-money.js';
+import {
+  DEFAULT_INTL_CURRENCIES,
+  DEFAULT_INTL_MARKUP_PERCENT,
+  normalizeIntlCurrencies,
+  activeIntlCurrencies,
+  applyMarkupFxToIntlProducts,
+  syncOpticalIntlBrlFromBrKit,
+  productListPriceFromRegistry,
+  normalizeMarkupPercent
+} from './intl-money.js';
 
 const ALLOWED_ORIGINS = [
   'https://sensorcrashfix.com.br',
@@ -121,6 +131,8 @@ const CLICKS_TREE_MAX = 4000;
 /** Rolling window: 5 closed months + current (= 6 months). Oldest closed month drops when a new month starts. */
 const FEEDBACK_BLOB = 'feedback:blob';
 const FEEDBACK_MAX = 500;
+const CONTACT_BLOB = 'contact:blob';
+const CONTACT_MAX = 500;
 const CLICK_TTL_SEC = 120 * 86400;
 const CLICK_LOG_KEY_FALLBACK = 'stf_ck_7f3a9e2b1c';
 const LEGACY_API_BASE = 'https://sensorcrashfix-payments.sensorcrashfix.workers.dev';
@@ -195,7 +207,9 @@ const DEFAULT_CONFIG = {
       description: 'Lente de correção óptica para smartwatch em pele danificado.',
       descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
       descriptionIt: 'Progettata per i sensori ottici degli smartwatch su sensore incrinato.',
-      price: 62.9,
+      price: 72.9,
+      intlMarkupPercent: 130,
+      intlBaseBrl: 167.67,
       image: '/images/lens-gallery/01-optical-correction-lens.jpg',
       images: [
         '/images/lens-gallery/01-optical-correction-lens.jpg',
@@ -223,8 +237,8 @@ const DEFAULT_CONFIG = {
       descriptionEn: 'Designed for smartband optical sensors on cracked sensor.',
       descriptionIt: 'Progettata per i sensori ottici degli smartband su sensore incrinato.',
       price: 62.9,
-      priceUsd: 12.99,
-      priceEur: 11.99,
+      intlMarkupPercent: 130,
+      intlBaseBrl: 144.67,
       image: '/images/smartband/lens-en/01-embalagem.jpg',
       images: [
         '/images/smartband/lens-en/01-embalagem.jpg',
@@ -302,6 +316,9 @@ const DEFAULT_CONFIG = {
   internationalSurcharge: 0,
   /** Multiplies Correios intl quote. 1 = sem markup (valor real da cotação). */
   internationalShippingMultiplier: 1,
+  intlCurrencies: DEFAULT_INTL_CURRENCIES,
+  intlCurrenciesAutoFx: true,
+  intlCurrenciesAutoPpp: true,
   internationalProduct: {
     title: 'Envio internacional',
     hint: '',
@@ -1343,7 +1360,13 @@ function supplementAggregatedFromSite(kvProduct, siteProduct) {
     'markets',
     'images',
     'priceUsd',
-    'priceEur'
+    'priceEur',
+    'priceGbp',
+    'pricePln',
+    'priceSek',
+    'priceNok',
+    'intlMarkupPercent',
+    'intlBaseBrl'
   ];
   catalogFields.forEach((field) => {
     if (!isEmptyCatalogValue(merged[field])) return;
@@ -1469,7 +1492,8 @@ async function fetchSiteCatalog() {
 async function getPublicConfig(env) {
   const config = await getConfig(env);
   const site = await fetchSiteCatalog();
-  return mergeSiteCatalog(config, site);
+  const merged = mergeSiteCatalog(config, site);
+  return ensurePublicIntlListPrices(merged, env);
 }
 
 function normalizeApiBaseUrl(api) {
@@ -1570,6 +1594,17 @@ function withConfigDefaults(stored) {
     internationalShippingMultiplier: Number.isFinite(Number(stored.internationalShippingMultiplier))
       ? Math.max(1, Number(stored.internationalShippingMultiplier))
       : base.internationalShippingMultiplier,
+    intlCurrencies: normalizeIntlCurrencies(stored.intlCurrencies),
+    intlCurrenciesAutoFx: stored.intlCurrenciesAutoFx != null
+      ? stored.intlCurrenciesAutoFx !== false
+      : (stored.intlCurrenciesAutoPpp != null
+        ? stored.intlCurrenciesAutoPpp !== false
+        : base.intlCurrenciesAutoFx !== false),
+    intlCurrenciesAutoPpp: stored.intlCurrenciesAutoFx != null
+      ? stored.intlCurrenciesAutoFx !== false
+      : (stored.intlCurrenciesAutoPpp != null
+        ? stored.intlCurrenciesAutoPpp !== false
+        : base.intlCurrenciesAutoPpp !== false),
     internationalProduct: { ...base.internationalProduct, ...(stored.internationalProduct || {}) },
     payments: {
       ...base.payments,
@@ -2168,6 +2203,16 @@ function publicProductFields(p, config) {
   if (Array.isArray(p.images) && p.images.length) row.images = p.images;
   if (p.priceUsd != null) row.priceUsd = Number(p.priceUsd);
   if (p.priceEur != null) row.priceEur = Number(p.priceEur);
+  if (p.priceGbp != null) row.priceGbp = Number(p.priceGbp);
+  if (p.pricePln != null) row.pricePln = Number(p.pricePln);
+  if (p.priceSek != null) row.priceSek = Number(p.priceSek);
+  if (p.priceNok != null) row.priceNok = Number(p.priceNok);
+  if (p.intlMarkupPercent != null && Number.isFinite(Number(p.intlMarkupPercent))) {
+    row.intlMarkupPercent = Number(p.intlMarkupPercent);
+  }
+  if (p.intlBaseBrl != null && Number.isFinite(Number(p.intlBaseBrl))) {
+    row.intlBaseBrl = Number(p.intlBaseBrl);
+  }
   const stock = productStockQty(p);
   row.inStock = productInStock(p, 1);
   if (stock != null) row.stock = stock;
@@ -2201,6 +2246,9 @@ function publicConfigView(config, env) {
     internationalCountries: publicIntlCountriesList(config.internationalShipping || {}),
     internationalSurcharge: getIntlSurcharge(config),
     internationalShippingMultiplier: getIntlShippingMultiplier(config),
+    intlCurrencies: activeIntlCurrencies(config),
+    intlCurrenciesAutoFx: config.intlCurrenciesAutoFx !== false && config.intlCurrenciesAutoPpp !== false,
+    intlCurrenciesAutoPpp: config.intlCurrenciesAutoFx !== false && config.intlCurrenciesAutoPpp !== false,
     internationalProduct: config.internationalProduct || DEFAULT_CONFIG.internationalProduct,
     payments: {
       intlEmbedded: true,
@@ -2479,27 +2527,90 @@ function isIntlMarketProductRow(p) {
   return m.includes('INT') && !m.includes('BR');
 }
 
-async function syncIntlProductPricesFromFx(env) {
-  const config = await getConfig(env);
-  const products = config.products || [];
-  if (!products.length) return { updated: 0 };
-  const fxUsd = await fetchFxRate(env, 'USD');
-  const fxEur = await fetchFxRate(env, 'EUR');
-  let updated = 0;
-  products.forEach((p) => {
-    if (!isIntlMarketProductRow(p)) return;
-    const brl = Number(p.price) || 0;
-    if (!brl) return;
-    const usd = Math.round(brl * fxUsd.rate * 100) / 100;
-    const eur = Math.round(brl * fxEur.rate * 100) / 100;
-    if (p.priceUsd !== usd || p.priceEur !== eur) {
-      p.priceUsd = usd;
-      p.priceEur = eur;
-      updated += 1;
-    }
+function productIntlListPrice(product, currency, config) {
+  const fromRegistry = productListPriceFromRegistry(
+    product,
+    currency,
+    config?.intlCurrencies || DEFAULT_INTL_CURRENCIES
+  );
+  if (fromRegistry != null) return fromRegistry;
+  const cur = String(currency || 'USD').toUpperCase();
+  if (cur === 'EUR') return productIntlEur(product);
+  return productIntlUsd(product);
+}
+
+async function fetchFxRatesMap(env, currencyCodes) {
+  const codes = [...new Set((currencyCodes || []).map((c) => String(c || '').toUpperCase()).filter((c) => c && c !== 'BRL'))];
+  const out = {};
+  await Promise.all(codes.map(async (code) => {
+    try {
+      const row = await fetchFxRate(env, code);
+      if (row?.rate > 0) out[code] = Number(row.rate);
+    } catch { /* skip missing */ }
+  }));
+  return out;
+}
+
+function autoFxEnabled(config) {
+  if (config?.intlCurrenciesAutoFx === false) return false;
+  if (config?.intlCurrenciesAutoPpp === false) return false;
+  return true;
+}
+
+function seedMissingIntlMarkup(products, baseProducts) {
+  const baseById = new Map((baseProducts || []).map((p) => [p?.id || p?.slug, p]));
+  return (products || []).map((p) => {
+    if (!isIntlMarketProductRow(p)) return p;
+    if (p.intlMarkupPercent != null && Number.isFinite(Number(p.intlMarkupPercent))) return p;
+    const base = baseById.get(p.id) || baseById.get(p.slug);
+    const mk = base?.intlMarkupPercent != null
+      ? normalizeMarkupPercent(base.intlMarkupPercent)
+      : DEFAULT_INTL_MARKUP_PERCENT;
+    return { ...p, intlMarkupPercent: mk };
   });
-  if (updated) await saveConfig(env, { ...config, products });
-  return { updated, usdRate: fxUsd.rate, eurRate: fxEur.rate };
+}
+
+/** Recompute INT foreign list prices: (R$ × markup%) × FX — identical to TattooFix. */
+async function syncIntlProductPricesFromMarkupFx(env, { force = false } = {}) {
+  const config = await getConfig(env);
+  if (!force && !autoFxEnabled(config)) return { updated: 0, skipped: true };
+  const currencies = normalizeIntlCurrencies(config.intlCurrencies);
+  const seeded = seedMissingIntlMarkup(config.products || [], DEFAULT_CONFIG.products);
+  const synced = syncOpticalIntlBrlFromBrKit(seeded);
+  const fxRates = await fetchFxRatesMap(env, currencies.map((c) => c.code));
+  const { products, updated } = applyMarkupFxToIntlProducts(synced.products, currencies, fxRates);
+  const changed = updated || synced.synced;
+  if (changed) {
+    await saveConfig(env, {
+      ...config,
+      products,
+      intlCurrencies: currencies,
+      intlCurrenciesAutoFx: true,
+      intlCurrenciesAutoPpp: true
+    });
+  }
+  return { updated: updated + (synced.synced ? 1 : 0), currencies: currencies.map((c) => c.code), fxRates };
+}
+
+async function syncIntlProductPricesFromFx(env) {
+  return syncIntlProductPricesFromMarkupFx(env);
+}
+
+/** Apply markup×FX in-memory for public config (does not require KV write). */
+async function ensurePublicIntlListPrices(config, env) {
+  if (!autoFxEnabled(config)) return config;
+  const currencies = normalizeIntlCurrencies(config.intlCurrencies);
+  const seeded = seedMissingIntlMarkup(config.products || [], DEFAULT_CONFIG.products);
+  const synced = syncOpticalIntlBrlFromBrKit(seeded);
+  const fxRates = await fetchFxRatesMap(env, currencies.map((c) => c.code));
+  const { products } = applyMarkupFxToIntlProducts(synced.products, currencies, fxRates);
+  return {
+    ...config,
+    products,
+    intlCurrencies: currencies,
+    intlCurrenciesAutoFx: true,
+    intlCurrenciesAutoPpp: true
+  };
 }
 
 async function intlForeignCharge(order, env, config, items, currency) {
@@ -2511,7 +2622,7 @@ async function intlForeignCharge(order, env, config, items, currency) {
   let allConfigured = itemList.length > 0;
   for (const item of itemList) {
     const p = products.find((x) => x.id === item.productId || x.slug === item.productId);
-    const price = p ? (cur === 'EUR' ? productIntlEur(p) : productIntlUsd(p)) : null;
+    const price = p ? productIntlListPrice(p, cur, config) : null;
     if (price == null) { allConfigured = false; break; }
     productForeign += price * (Number(item.qty) || 1);
   }
@@ -2621,18 +2732,30 @@ function resolveRequestOrigin(request) {
 }
 
 function clientIp(request) {
-  return request.headers.get('CF-Connecting-IP') ||
+  // Prefer proxy-forwarded visitor IP from /stf-log (X-STF-Client-IP).
+  return request.headers.get('X-STF-Client-IP') ||
+    request.headers.get('CF-Connecting-IP') ||
     (request.headers.get('X-Forwarded-For') || '').split(',')[0].trim() ||
     'unknown';
 }
 
 function extractClickGeo(request) {
   const cf = request.cf || {};
-  const pais = String(cf.country || request.headers.get('CF-IPCountry') || '').trim().toUpperCase().slice(0, 12);
-  const regionCode = String(cf.regionCode || '').trim().slice(0, 12);
+  // /stf-log proxy forwards real visitor geo; request.cf alone is the edge colo.
+  const pais = String(
+    request.headers.get('X-STF-Client-Country')
+    || cf.country
+    || request.headers.get('CF-IPCountry')
+    || ''
+  ).trim().toUpperCase().slice(0, 12);
+  const regionCode = String(
+    request.headers.get('X-STF-Client-Region') || cf.regionCode || ''
+  ).trim().slice(0, 12);
   const regionName = String(cf.region || '').trim().slice(0, 48);
   const estado = (regionCode || regionName).slice(0, 48);
-  const cidade = String(cf.city || '').trim().slice(0, 48);
+  const cidade = String(
+    request.headers.get('X-STF-Client-City') || cf.city || ''
+  ).trim().slice(0, 48);
   let paisNome = '';
   if (pais) {
     try {
@@ -12753,9 +12876,15 @@ function buildIntegrationRows(env, config, checks) {
   rows.push({
     id: 'formsubmit',
     label: 'FormSubmit',
-    description: 'Fallback de e-mail se Resend falhar',
-    status: formsubmitEmail ? 'ok' : 'off',
-    detail: formsubmitEmail ? formsubmitEmail : 'E-mail de destino não configurado'
+    description: 'Fallback de e-mail se Resend falhar (contato do site usa /contact + Resend)',
+    status: !formsubmitEmail
+      ? 'off'
+      : (resend.configured && resend.authOk ? 'ok' : 'warn'),
+    detail: !formsubmitEmail
+      ? 'E-mail de destino não configurado'
+      : (resend.configured && resend.authOk
+        ? `${formsubmitEmail} · opcional (fallback se Resend falhar)`
+        : `${formsubmitEmail} · fallback ativo — Resend não conectado`)
   });
 
   if (!zapi.configured) {
@@ -16768,7 +16897,7 @@ function clickField(data, key, maxLen, fallback) {
 }
 
 function inferDispositivoFromRequest(request) {
-  const ua = request.headers.get('User-Agent') || '';
+  const ua = request.headers.get('X-STF-Client-UA') || request.headers.get('User-Agent') || '';
   if (!ua) return '';
   const mobile = /Mobile|Android|iPhone|iPad/i.test(ua);
   let browser = 'outro';
@@ -16789,11 +16918,24 @@ function inferDispositivoFromUserAgent(uaRaw) {
 function buildClickEntry(data, request) {
   const ip = clientIp(request);
   const geo = extractClickGeo(request);
-  const userAgent = (request.headers.get('User-Agent') || '').slice(0, 200);
+  const userAgent = (
+    request.headers.get('X-STF-Client-UA')
+    || request.headers.get('User-Agent')
+    || ''
+  ).slice(0, 200);
   const dispositivoClient = clickField(data, 'dispositivo', 80);
   const dispositivo = (dispositivoClient && dispositivoClient !== '—')
     ? dispositivoClient
     : inferDispositivoFromRequest(request);
+  const idiomaRaw = clickField(data, 'idioma', 24);
+  const siteHostRaw = clickField(data, 'site_host', 16);
+  // Infer .com vs .com.br when client omitted site_host (older analytics).
+  let siteHost = siteHostRaw;
+  if (!siteHost) {
+    const lang = idiomaRaw.toLowerCase();
+    if (lang.startsWith('pt')) siteHost = 'com.br';
+    else if (lang) siteHost = 'com';
+  }
   return {
     tipo: clickField(data, 'tipo', 24, 'clique'),
     destino: clickField(data, 'destino', 48),
@@ -16805,8 +16947,8 @@ function buildClickEntry(data, request) {
     href: clickField(data, 'href', 500),
     pagina: clickField(data, 'pagina', 200),
     titulo_pagina: clickField(data, 'titulo_pagina', 120),
-    idioma: clickField(data, 'idioma', 24),
-    site_host: clickField(data, 'site_host', 16),
+    idioma: idiomaRaw,
+    site_host: siteHost,
     referrer: clickField(data, 'referrer', 200),
     dispositivo,
     user_agent: userAgent,
@@ -17309,6 +17451,198 @@ async function handleAdminClearFeedback(request, env, origin) {
   return json({ ok: true, removed }, 200, origin);
 }
 
+async function getContactList(env) {
+  try {
+    const raw = await env.STORE_KV.get(CONTACT_BLOB);
+    if (!raw) return [];
+    const list = JSON.parse(raw);
+    return Array.isArray(list) ? list : [];
+  } catch {
+    return [];
+  }
+}
+
+async function saveContactList(env, list) {
+  await kvPut(env, CONTACT_BLOB, JSON.stringify(list));
+}
+
+async function appendContact(env, entry) {
+  const row = { id: crypto.randomUUID(), ts: Date.now(), ...entry };
+  let list = await getContactList(env);
+  list.unshift(row);
+  if (list.length > CONTACT_MAX) list.length = CONTACT_MAX;
+  await saveContactList(env, list);
+  return row;
+}
+
+/** Atualiza meta de notificação (Resend/FormSubmit) numa mensagem já gravada. */
+async function patchContactNotify(env, id, notifyMeta) {
+  if (!id || !notifyMeta) return;
+  const list = await getContactList(env);
+  const idx = list.findIndex((row) => row && row.id === id);
+  if (idx < 0) return;
+  list[idx] = { ...list[idx], ...notifyMeta };
+  await saveContactList(env, list);
+}
+
+async function checkContactRate(env, ip) {
+  if (!ip || ip === 'unknown') return true;
+  const hour = Math.floor(Date.now() / 3600000);
+  const cache = caches.default;
+  const req = new Request(`https://stf-contact-rate/${encodeURIComponent(ip)}/${hour}`);
+  const hit = await cache.match(req);
+  const n = (hit ? parseInt(await hit.text(), 10) || 0 : 0) + 1;
+  if (n > 12) return false;
+  await cache.put(req, new Response(String(n), { headers: { 'Cache-Control': 'max-age=7200' } }));
+  return true;
+}
+
+function looksLikeEmail(value) {
+  const s = String(value || '').trim();
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s) && s.length <= 120;
+}
+
+/** Destinos de aviso do formulário de contato (KV é a fonte durável).
+ * Público + notify: sempre contato@sensorcrashfix.com.br (nunca TattooFix).
+ * Com Null MX, o aviso Resend só chega após Email Routing no .com.br. */
+function contactNotifyRecipients(config) {
+  const recipients = new Set(['contato@sensorcrashfix.com.br']);
+  const primary = String(config?.formsubmit?.email || '').trim().toLowerCase();
+  if (
+    primary &&
+    primary !== 'contato@sensorcrashfix.com.br' &&
+    /@sensorcrashfix\.(com\.br|com)$/i.test(primary) &&
+    !/@sensortattoofix\./i.test(primary)
+  ) {
+    recipients.add(primary);
+  }
+  return [...recipients];
+}
+
+async function handleContact(request, env, origin, ctx) {
+  if (!isAllowedSiteRequest(request)) {
+    return json({ error: 'Origem não permitida.' }, 403, origin);
+  }
+  const body = await request.json().catch(() => null);
+  if (!body || typeof body !== 'object') {
+    return json({ error: 'Payload inválido.' }, 400, origin);
+  }
+
+  // Honeypot (bots preenchendo "company")
+  if (String(body.company || body.website || '').trim()) {
+    return json({ ok: true }, 202, origin);
+  }
+
+  const name = feedbackField(body, 'name', 120);
+  const email = feedbackField(body, 'email', 120).toLowerCase();
+  const message = feedbackField(body, 'message', 4000);
+  const subject = feedbackField(body, 'subject', 160) || 'Contato — Sensor Crash Fix';
+
+  if (name.length < 2) {
+    return json({ error: 'Informe seu nome.' }, 400, origin);
+  }
+  if (!looksLikeEmail(email)) {
+    return json({ error: 'E-mail inválido.' }, 400, origin);
+  }
+  if (message.length < 8) {
+    return json({ error: 'Escreva uma mensagem (mín. 8 caracteres).' }, 400, origin);
+  }
+
+  const ip = clientIp(request);
+  if (!(await checkContactRate(env, ip))) {
+    return json({ error: 'Muitas mensagens em pouco tempo. Tente mais tarde.' }, 429, origin);
+  }
+
+  const paisCf = (request.headers.get('CF-IPCountry') || '').trim();
+  const entry = {
+    name,
+    email,
+    message,
+    subject,
+    pagina: feedbackField(body, 'pagina', 200),
+    idioma: feedbackField(body, 'idioma', 24),
+    referrer: feedbackField(body, 'referrer', 200),
+    pais: paisCf,
+    ip: ip !== 'unknown' ? ip : '',
+    notified: false,
+    notifyError: ''
+  };
+
+  let row;
+  try {
+    row = await appendContact(env, entry);
+  } catch (err) {
+    console.error('contact save:', err.message);
+    return json({ error: 'Falha ao gravar.' }, 503, origin);
+  }
+
+  const config = await getConfig(env);
+  const when = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
+  const fields = {
+    Nome: name,
+    Email: email,
+    Mensagem: message,
+    Página: entry.pagina || '—',
+    Idioma: entry.idioma || '—',
+    País: entry.pais || '—',
+    Quando: when
+  };
+
+  // Await notify (não fire-and-forget): sem waitUntil o Worker podia morrer antes do Resend.
+  // notifyEmail = Resend + fallback FormSubmit. TO contato@ → Email Routing → Gmail.
+  const recipients = contactNotifyRecipients(config);
+  const notifyWork = (async () => {
+    const results = [];
+    for (const to of recipients) {
+      try {
+        const result = await notifyEmail(env, config, to, subject, fields, email);
+        results.push({
+          to,
+          ok: !!result?.ok,
+          provider: result?.provider || null,
+          error: result?.ok
+            ? null
+            : (result?.error || result?.resend?.error || result?.formsubmit?.error || 'falha')
+        });
+      } catch (err) {
+        results.push({ to, ok: false, provider: null, error: err.message || 'erro' });
+      }
+    }
+    const notified = results.some((r) => r.ok);
+    const firstErr = results.find((r) => !r.ok)?.error || '';
+    const providers = results.filter((r) => r.ok).map((r) => r.provider).filter(Boolean);
+    await patchContactNotify(env, row.id, {
+      notified,
+      notifyError: notified ? '' : String(firstErr || 'notify falhou').slice(0, 240),
+      notifyProvider: providers[0] || '',
+      notifiedAt: Date.now(),
+      notifyResults: results.slice(0, 6)
+    });
+    if (!notified) {
+      console.error('contact notify failed:', JSON.stringify(results));
+    }
+    return { notified, results };
+  })();
+
+  if (ctx && typeof ctx.waitUntil === 'function') {
+    ctx.waitUntil(notifyWork);
+  }
+
+  let notified = false;
+  let notifyError = '';
+  try {
+    const outcome = await notifyWork;
+    notified = !!outcome.notified;
+    notifyError = notified ? '' : (outcome.results?.find((r) => !r.ok)?.error || 'notify falhou');
+  } catch (err) {
+    notifyError = err.message || 'notify falhou';
+    console.error('contact notify:', notifyError);
+  }
+
+  // ok:true = gravado (KV backup). notified diz se o e-mail saiu (Gmail via Routing).
+  return json({ ok: true, saved: true, notified, notifyError: notified ? undefined : notifyError }, 202, origin);
+}
+
 async function handleTestEmail(request, env, origin) {
   if (!(await isValidSession(env, bearerToken(request)))) {
     return json({ error: 'Não autorizado.' }, 401, origin);
@@ -17692,8 +18026,28 @@ async function handlePutConfig(request, env, origin, ctx) {
       : (current.homeFaq || []),
     homeReviews: body.homeReviews != null
       ? mergePreservedI18n(Array.isArray(body.homeReviews) ? body.homeReviews : current.homeReviews || [], current.homeReviews || [])
-      : (current.homeReviews || [])
+      : (current.homeReviews || []),
+    intlCurrencies: body.intlCurrencies != null
+      ? normalizeIntlCurrencies(body.intlCurrencies)
+      : normalizeIntlCurrencies(current.intlCurrencies),
+    intlCurrenciesAutoFx: body.intlCurrenciesAutoFx != null
+      ? body.intlCurrenciesAutoFx !== false
+      : (body.intlCurrenciesAutoPpp != null
+        ? body.intlCurrenciesAutoPpp !== false
+        : autoFxEnabled(current)),
+    intlCurrenciesAutoPpp: body.intlCurrenciesAutoFx != null
+      ? body.intlCurrenciesAutoFx !== false
+      : (body.intlCurrenciesAutoPpp != null
+        ? body.intlCurrenciesAutoPpp !== false
+        : autoFxEnabled(current))
   };
+  if (autoFxEnabled(merged)) {
+    const seeded = seedMissingIntlMarkup(merged.products || [], DEFAULT_CONFIG.products);
+    const synced = syncOpticalIntlBrlFromBrKit(seeded);
+    const fxRates = await fetchFxRatesMap(env, (merged.intlCurrencies || []).map((c) => c.code));
+    const applied = applyMarkupFxToIntlProducts(synced.products, merged.intlCurrencies, fxRates);
+    merged.products = applied.products;
+  }
   if (merged.products?.[0]) {
     merged.product = {
       name: merged.products[0].name,
@@ -17717,6 +18071,57 @@ async function handlePutConfig(request, env, origin, ctx) {
   if (ctx && typeof ctx.waitUntil === 'function') ctx.waitUntil(runI18n);
   else await runI18n;
   return json(saved, 200, origin);
+}
+
+async function handleAdminApplyIntlMarkupFx(request, env, origin) {
+  if (!(await isValidSession(env, bearerToken(request)))) {
+    return json({ error: 'Não autorizado.' }, 401, origin);
+  }
+  let body = {};
+  try {
+    body = await request.json();
+  } catch {
+    body = {};
+  }
+  const current = await getConfig(env);
+  const currencies = body.intlCurrencies != null
+    ? normalizeIntlCurrencies(body.intlCurrencies)
+    : normalizeIntlCurrencies(current.intlCurrencies);
+  const auto = body.intlCurrenciesAutoFx != null
+    ? body.intlCurrenciesAutoFx !== false
+    : (body.intlCurrenciesAutoPpp != null
+      ? body.intlCurrenciesAutoPpp !== false
+      : autoFxEnabled(current));
+  const seeded = seedMissingIntlMarkup(current.products || [], DEFAULT_CONFIG.products);
+  const synced = syncOpticalIntlBrlFromBrKit(seeded);
+  const fxRates = await fetchFxRatesMap(env, currencies.map((c) => c.code));
+  const { products, updated } = applyMarkupFxToIntlProducts(synced.products, currencies, fxRates);
+  const saved = await saveConfig(env, {
+    ...current,
+    products,
+    intlCurrencies: currencies,
+    intlCurrenciesAutoFx: auto,
+    intlCurrenciesAutoPpp: auto
+  });
+  return json({
+    ok: true,
+    updated: updated + (synced.synced ? 1 : 0),
+    syncedOpticalBrl: synced.synced,
+    fxRates,
+    currencies: currencies.map((c) => ({ code: c.code, decimals: c.decimals })),
+    products: (saved.products || []).filter(isIntlMarketProductRow).map((p) => ({
+      id: p.id,
+      price: p.price,
+      intlMarkupPercent: p.intlMarkupPercent,
+      intlBaseBrl: p.intlBaseBrl,
+      priceUsd: p.priceUsd,
+      priceEur: p.priceEur,
+      priceSek: p.priceSek,
+      priceNok: p.priceNok,
+      pricePln: p.pricePln,
+      priceGbp: p.priceGbp
+    }))
+  }, 200, origin);
 }
 
 async function handleAdminHomeI18nRefresh(request, env, origin, ctx) {
@@ -18730,6 +19135,12 @@ export default {
         return handleAddressSuggest(request, env, origin);
       }
       if (path === '/admin/config' && request.method === 'GET') return handleAdminGetConfig(request, env, origin);
+      if (path === '/admin/apply-intl-markup-fx' && request.method === 'POST') {
+        return handleAdminApplyIntlMarkupFx(request, env, origin);
+      }
+      if (path === '/admin/apply-intl-ppp' && request.method === 'POST') {
+        return handleAdminApplyIntlMarkupFx(request, env, origin);
+      }
       if (path === '/admin/home-i18n/refresh' && request.method === 'POST') {
         return handleAdminHomeI18nRefresh(request, env, origin, ctx);
       }
@@ -18908,6 +19319,9 @@ export default {
       }
       if (path === '/admin/feedback' && request.method === 'DELETE') {
         return handleAdminClearFeedback(request, env, origin);
+      }
+      if (path === '/contact' && request.method === 'POST') {
+        return handleContact(request, env, origin, ctx);
       }
       if (path === '/fx/rate' && request.method === 'GET') {
         return handleFxRate(request, env, origin);

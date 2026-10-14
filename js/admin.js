@@ -4081,14 +4081,34 @@ ${worksheets}
     if (/sensorcrashfix\.com\.br/.test(host)) return 'com.br';
     if (/sensorcrashfix\.com(?!\.br)/.test(host)) return 'com';
     const idioma = String(c?.idioma || '').toLowerCase();
-    if (idioma.startsWith('en') || idioma.startsWith('it')) return 'com';
     if (idioma.startsWith('pt')) return 'com.br';
+    if (/^(en|it|de|es|pl|sl|fr|nl|sv|nb|nn|no|fi)/.test(idioma)) return 'com';
     const pagina = String(c?.pagina || '');
-    if (/\b(EN|IT)\b/.test(pagina)) return 'com';
+    if (/\b(EN|IT|DE|ES|PL|SL|FR|NL|SV|NO|FI)\b/.test(pagina)) return 'com';
     if (/\bBR\b/.test(pagina)) return 'com.br';
     const dest = String(c?.destino || '');
-    if (/_(en|it)(_|$)/.test(dest) || /_(en|it)$/.test(dest)) return 'com';
+    if (/_(en|it|de|es|pl|sl|fr|nl|sv|no|fi)(_|$)/.test(dest) || /_(en|it|de|es|pl|sl|fr|nl|sv|no|fi)$/.test(dest)) {
+      return 'com';
+    }
+    const pais = String(c?.pais || c?.pais_nome || '').trim();
+    if (pais && !/^(BR|BRASIL|BRAZIL)$/i.test(pais) && !/brasil|brazil/i.test(pais)) return 'com';
     return 'com.br';
+  }
+
+  /** True when visit geo/host is outside Brazil (.com SEO humans often bounce). */
+  function isIntlClickVisit(events) {
+    const list = Array.isArray(events) ? events : [events];
+    for (const c of list) {
+      if (!c) continue;
+      if (clickSiteHost(c) === 'com') return true;
+      const pais = String(c.pais || c.pais_nome || '').trim();
+      if (pais && !/^(BR|BRASIL|BRAZIL|XX|T1)$/i.test(pais) && !/brasil|brazil/i.test(pais)) {
+        return true;
+      }
+      const idioma = String(c.idioma || '').toLowerCase();
+      if (idioma && !idioma.startsWith('pt')) return true;
+    }
+    return false;
   }
 
   function clickSessionKey(c) {
@@ -4151,6 +4171,9 @@ ${worksheets}
     const drop = new Set();
     groupClicksByLogicalVisit(clicks).forEach((evs) => {
       if (!isUniqueOrRepeatOnlySession(evs)) return;
+      // .com / exterior: SEO landings often have only a pageview (or one home
+      // repeat). Do NOT treat those real humans as bots — only BR bounce noise.
+      if (isIntlClickVisit(evs)) return;
       evs.forEach((c) => drop.add(c));
     });
     return (clicks || []).filter((c) => !drop.has(c) && !isCrawlerClickRow(c));
@@ -4182,6 +4205,8 @@ ${worksheets}
     const sessions = [];
     groupClicksBySession(withoutTests).forEach((events, key) => {
       if (!isUniqueOrRepeatOnlySession(events)) return;
+      // Intl SEO bounces count as official traffic — keep them out of "únicos/bots".
+      if (isIntlClickVisit(events) && !events.some(isCrawlerClickRow)) return;
       const ordered = [...events].sort((a, b) => (Number(a.ts || a.client_ts) || 0) - (Number(b.ts || b.client_ts) || 0));
       const first = ordered[0] || {};
       const ts = Number(first.ts || first.client_ts || 0);
@@ -7970,7 +7995,6 @@ ${worksheets}
   document.getElementById('btn-feedback-refresh')?.addEventListener('click', () => loadFeedback());
   document.getElementById('btn-feedback-clear')?.addEventListener('click', () => clearFeedback());
   document.getElementById('feedback-search')?.addEventListener('input', scheduleFeedbackReload);
-
   const EMAIL_TEST_LABELS = {
     generic: 'Simples',
     shop_order: 'Loja — novo pedido',
