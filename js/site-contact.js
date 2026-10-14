@@ -66,6 +66,51 @@
       errName: 'Vnesite ime.',
       errEmail: 'Neveljaven e-poštni naslov.',
       errMsg: 'Napišite sporočilo (vsaj 8 znakov).'
+    },
+    fr: {
+      sending: 'Envoi…',
+      send: 'Envoyer le message',
+      thanks: 'Message envoyé ! Nous répondrons bientôt par e-mail.',
+      err: 'Envoi impossible. Réessayez ou écrivez à support@sensorcrashfix.com.',
+      errName: 'Indiquez votre nom.',
+      errEmail: 'E-mail invalide.',
+      errMsg: 'Écrivez un message (min. 8 caractères).'
+    },
+    nl: {
+      sending: 'Verzenden…',
+      send: 'Bericht sturen',
+      thanks: 'Bericht verzonden! We reageren binnenkort per e-mail.',
+      err: 'Verzenden mislukt. Probeer opnieuw of mail support@sensorcrashfix.com.',
+      errName: 'Vul je naam in.',
+      errEmail: 'Ongeldig e-mailadres.',
+      errMsg: 'Schrijf een bericht (min. 8 tekens).'
+    },
+    sv: {
+      sending: 'Skickar…',
+      send: 'Skicka meddelande',
+      thanks: 'Meddelandet skickades! Vi svarar snart via e-post.',
+      err: 'Kunde inte skicka. Försök igen eller mejla support@sensorcrashfix.com.',
+      errName: 'Ange ditt namn.',
+      errEmail: 'Ogiltig e-post.',
+      errMsg: 'Skriv ett meddelande (minst 8 tecken).'
+    },
+    no: {
+      sending: 'Sender…',
+      send: 'Send melding',
+      thanks: 'Meldingen er sendt! Vi svarer snart på e-post.',
+      err: 'Kunne ikke sende. Prøv igjen eller e-post support@sensorcrashfix.com.',
+      errName: 'Skriv inn navnet ditt.',
+      errEmail: 'Ugyldig e-post.',
+      errMsg: 'Skriv en melding (minst 8 tegn).'
+    },
+    fi: {
+      sending: 'Lähetetään…',
+      send: 'Lähetä viesti',
+      thanks: 'Viesti lähetetty! Vastaamme pian sähköpostitse.',
+      err: 'Lähetys epäonnistui. Yritä uudelleen tai kirjoita support@sensorcrashfix.com.',
+      errName: 'Anna nimesi.',
+      errEmail: 'Virheellinen sähköposti.',
+      errMsg: 'Kirjoita viesti (vähintään 8 merkkiä).'
     }
   };
 
@@ -77,12 +122,22 @@
     if (html.startsWith('es')) return 'es';
     if (html.startsWith('pl')) return 'pl';
     if (html.startsWith('sl')) return 'sl';
+    if (html.startsWith('fr')) return 'fr';
+    if (html.startsWith('nl')) return 'nl';
+    if (html.startsWith('sv')) return 'sv';
+    if (html.startsWith('nb') || html.startsWith('no')) return 'no';
+    if (html.startsWith('fi')) return 'fi';
     const path = location.pathname || '';
     if (/\/it(\/|$)/.test(path)) return 'it';
     if (/\/de(\/|$)/.test(path)) return 'de';
     if (/\/es(\/|$)/.test(path)) return 'es';
     if (/\/pl(\/|$)/.test(path)) return 'pl';
     if (/\/sl(\/|$)/.test(path)) return 'sl';
+    if (/\/fr(\/|$)/.test(path)) return 'fr';
+    if (/\/nl(\/|$)/.test(path)) return 'nl';
+    if (/\/sv(\/|$)/.test(path)) return 'sv';
+    if (/\/no(\/|$)/.test(path)) return 'no';
+    if (/\/fi(\/|$)/.test(path)) return 'fi';
     if (/\/en(\/|$)/.test(path) || /\.com$/i.test(location.hostname)) return 'en';
     return 'pt';
   }
