@@ -12,10 +12,14 @@ window.STF_MONEY = (function () {
 
   const LOCALE = {
     USD: 'en-US', EUR: 'de-DE', GBP: 'en-GB', CAD: 'en-CA', AUD: 'en-AU', CHF: 'de-CH',
-    JPY: 'ja-JP', BRL: 'pt-BR'
+    JPY: 'ja-JP', BRL: 'pt-BR', SEK: 'sv-SE', NOK: 'nb-NO', PLN: 'pl-PL', EUR: 'de-DE'
   };
 
-  const COUNTRY_LOCALE = { IT: 'it-IT', US: 'en-US', GB: 'en-GB', BR: 'pt-BR' };
+  const COUNTRY_LOCALE = {
+    IT: 'it-IT', US: 'en-US', GB: 'en-GB', BR: 'pt-BR',
+    FR: 'fr-FR', NL: 'nl-NL', SE: 'sv-SE', NO: 'nb-NO', FI: 'fi-FI',
+    DE: 'de-DE', ES: 'es-ES', PL: 'pl-PL', SI: 'sl-SI'
+  };
 
   let cache = { currency: null, rate: null, at: 0 };
 
@@ -49,6 +53,11 @@ window.STF_MONEY = (function () {
     if (path.includes('/es/')) return 'ES';
     if (path.includes('/pl/')) return 'PL';
     if (path.includes('/sl/')) return 'SI';
+    if (path.includes('/fr/')) return 'FR';
+    if (path.includes('/nl/')) return 'NL';
+    if (path.includes('/sv/')) return 'SE';
+    if (path.includes('/no/')) return 'NO';
+    if (path.includes('/fi/')) return 'FI';
     if (isIntlHost() || path.includes('/en/')) return 'US';
     return 'BR';
   }
@@ -56,7 +65,7 @@ window.STF_MONEY = (function () {
   function isVisitorLocalized() {
     if (isIntlHost()) return true;
     const path = typeof location !== 'undefined' ? location.pathname : '';
-    return /^\/(en|it|de|es|pl|sl)(\/|$)/.test(path);
+    return /^\/(en|it|de|es|pl|sl|fr|nl|sv|no|fi)(\/|$)/.test(path);
   }
 
   function formatBRL(n) {
@@ -113,7 +122,12 @@ window.STF_MONEY = (function () {
 
   function visitorDisplayCurrency(countryCode) {
     const country = String(countryCode || visitorCountry()).toUpperCase();
-    if (isIntlHost()) return country === 'IT' ? 'EUR' : 'USD';
+    if (isIntlHost()) {
+      if (country === 'IT' || country === 'FR' || country === 'NL' || country === 'FI') return 'EUR';
+      if (country === 'SE') return 'SEK';
+      if (country === 'NO') return 'NOK';
+      return 'USD';
+    }
     const cur = currencyForCountry(country);
     return cur === 'BRL' ? 'BRL' : cur;
   }
@@ -125,14 +139,31 @@ window.STF_MONEY = (function () {
       const e = Number(product.priceEur);
       return Number.isFinite(e) && e > 0 ? e : null;
     }
-    const u = Number(product.priceUsd);
-    return Number.isFinite(u) && u > 0 ? u : null;
+    if (cur === 'USD') {
+      const u = Number(product.priceUsd);
+      return Number.isFinite(u) && u > 0 ? u : null;
+    }
+    return null;
+  }
+
+  /** SEK/NOK: derive from USD list price (keeps intl markup) via FX cross-rate. */
+  async function listPriceInCurrency(product, currency, config) {
+    const cur = String(currency || '').toUpperCase();
+    const direct = configuredForeignPrice(product, cur);
+    if (direct != null) return direct;
+    if (cur !== 'SEK' && cur !== 'NOK') return null;
+    const usd = configuredForeignPrice(product, 'USD');
+    if (usd == null) return null;
+    const usdRate = await loadRate(apiBase(config), 'USD');
+    const localRate = await loadRate(apiBase(config), cur);
+    if (!usdRate || !localRate) return null;
+    return Math.round(usd * (localRate / usdRate) * 100) / 100;
   }
 
   async function formatProductForVisitor(product, config, countryCode) {
     const country = String(countryCode || visitorCountry()).toUpperCase();
     const cur = visitorDisplayCurrency(country);
-    const fixed = configuredForeignPrice(product, cur);
+    const fixed = await listPriceInCurrency(product, cur, config);
     if (fixed != null) return formatForeign(fixed, cur, country);
     return formatForVisitor(Number(product?.price) || 0, config, countryCode);
   }
@@ -140,7 +171,7 @@ window.STF_MONEY = (function () {
   async function formatForVisitor(amountBrl, config, countryCode) {
     const country = String(countryCode || visitorCountry()).toUpperCase();
     if (isIntlHost()) {
-      const cur = String(country || '').toUpperCase() === 'IT' ? 'EUR' : 'USD';
+      const cur = visitorDisplayCurrency(country);
       const rate = await loadRate(apiBase(config), cur);
       if (!rate) return formatBRL(amountBrl);
       return formatForeign(convertFromBrl(amountBrl, rate), cur, country);
@@ -194,6 +225,7 @@ window.STF_MONEY = (function () {
     formatPrimary,
     visitorDisplayCurrency,
     configuredForeignPrice,
+    listPriceInCurrency,
     formatProductForVisitor,
     formatForVisitor,
     formatPrimaryForVisitor,

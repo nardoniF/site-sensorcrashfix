@@ -28,7 +28,8 @@
   }
 
   function supportEmail() {
-    return isIntlHost() ? 'support@sensorcrashfix.com' : 'contato@sensorcrashfix.com.br';
+    // Endereço público CrashFix (nunca TattooFix). Inbox depende de Email Routing no .com.br.
+    return 'contato@sensorcrashfix.com.br';
   }
 
   /** Map current path to equivalent on the other host (for lang / market switches). */
