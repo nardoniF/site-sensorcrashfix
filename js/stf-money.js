@@ -130,16 +130,24 @@ window.STF_MONEY = (function () {
     return cur === 'BRL' ? 'BRL' : cur;
   }
 
-  function configuredForeignPrice(product, currency) {
+  function priceFieldForCurrency(currency) {
+    const cur = String(currency || '').toUpperCase();
+    if (!/^[A-Z]{3}$/.test(cur)) return null;
+    return 'price' + cur[0] + cur.slice(1).toLowerCase();
+  }
+
+  /** List prices from product (markup×FX already applied on save — TattooFix scheme). */
+  function configuredForeignPrice(product, currency, _config) {
     if (!product) return null;
     const cur = String(currency || 'USD').toUpperCase();
-    if (cur === 'EUR') {
-      const e = Number(product.priceEur);
-      return Number.isFinite(e) && e > 0 ? e : null;
-    }
-    if (cur === 'USD') {
-      const u = Number(product.priceUsd);
-      return Number.isFinite(u) && u > 0 ? u : null;
+    const pick = (key) => {
+      const n = Number(product[key]);
+      return Number.isFinite(n) && n > 0 ? n : null;
+    };
+    const field = priceFieldForCurrency(cur);
+    if (field) {
+      const direct = pick(field);
+      if (direct != null) return direct;
     }
     return null;
   }
@@ -147,10 +155,10 @@ window.STF_MONEY = (function () {
   /** SEK/NOK: derive from USD list price (keeps intl markup) via FX cross-rate. */
   async function listPriceInCurrency(product, currency, config) {
     const cur = String(currency || '').toUpperCase();
-    const direct = configuredForeignPrice(product, cur);
+    const direct = configuredForeignPrice(product, cur, config);
     if (direct != null) return direct;
     if (cur !== 'SEK' && cur !== 'NOK') return null;
-    const usd = configuredForeignPrice(product, 'USD');
+    const usd = configuredForeignPrice(product, 'USD', config);
     if (usd == null) return null;
     const usdRate = await loadRate(apiBase(config), 'USD');
     const localRate = await loadRate(apiBase(config), cur);

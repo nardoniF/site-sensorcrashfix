@@ -70,9 +70,7 @@
       "descriptionDe": "Abdecklinse für gerissenen optischen Smartwatch-Sensor.",
       "descriptionEs": "Lente de cobertura para sensor óptico de smartwatch agrietado.",
       "descriptionPl": "Soczewka ochronna na pęknięty czujnik optyczny smartwatcha.",
-      "price": 62.9,
-      "priceUsd": 12.99,
-      "priceEur": 11.99,
+      "price": 72.9,
       "image": "/images/lens-gallery/01-optical-correction-lens.jpg",
       "images": [
         "/images/lens-gallery/01-optical-correction-lens.jpg",
@@ -102,7 +100,9 @@
       "nameNo": "Optisk Sensor Crash Fix-linse",
       "descriptionNo": "Linse/dekke for sprukket smartklokke-sensor — gjenoppretter tetning og bruk",
       "nameFi": "Optinen Sensor Crash Fix -linssi",
-      "descriptionFi": "Linssi/peite haljenneelle älykellon sensorille — palauttaa tiivistyksen ja käytön"
+      "descriptionFi": "Linssi/peite haljenneelle älykellon sensorille — palauttaa tiivistyksen ja käytön",
+      "intlMarkupPercent": 130,
+      "intlBaseBrl": 167.67
     },
     {
       "id": "kit-smartband-crashfix",
@@ -165,8 +165,6 @@
       "descriptionEs": "Lente de cobertura para sensor óptico de smartband agrietado.",
       "descriptionPl": "Soczewka ochronna na pęknięty czujnik optyczny opaski.",
       "price": 62.9,
-      "priceUsd": 12.99,
-      "priceEur": 11.99,
       "image": "/images/smartband/lens-en/01-embalagem.jpg",
       "images": [
         "/images/smartband/lens-en/01-embalagem.jpg",
@@ -193,7 +191,9 @@
       "nameNo": "Smartband Sensor Crash Fix-linse",
       "descriptionNo": "Dekklinse for sprukket optisk smartband-sensor.",
       "nameFi": "Smartband Sensor Crash Fix -linssi",
-      "descriptionFi": "Peitelinssi haljenneelle optiselle smartband-sensorille."
+      "descriptionFi": "Peitelinssi haljenneelle optiselle smartband-sensorille.",
+      "intlMarkupPercent": 130,
+      "intlBaseBrl": 144.67
     },
     {
       "id": "pelicula-amazfit-bip-2",
@@ -6076,5 +6076,7 @@
       "media": []
     }
   ],
-  "homeReviews": []
+  "homeReviews": [],
+  "intlCurrenciesAutoFx": true,
+  "intlCurrenciesAutoPpp": true
 }
