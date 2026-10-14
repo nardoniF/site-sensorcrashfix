@@ -239,23 +239,66 @@ Ative em **todas** as contas abaixo. Prefira **app autenticador** (Google Authen
 
 ### MX / e-mail de contato
 
-Diagnóstico (verificar com `dig MX …`):
+#### Diagnóstico confirmado (dig + painel DNS, out/2026)
 
-| Domínio | MX típico quebrado | Efeito |
-|---------|-------------------|--------|
-| `sensorcrashfix.com.br` | **`0 .`** (MX nulo) | Nada chega em `contato@…com.br` |
-| `sensorcrashfix.com` | sem MX (ou Routing desligado) | Nada chega em `support@…com` |
+| Domínio | MX atual | TXT SPF raiz | Efeito |
+|---------|----------|--------------|--------|
+| `sensorcrashfix.com.br` | **`0 .`** (Null MX) | `v=spf1 -all` | Recusa e-mail de entrada → `contato@` nunca chega |
+| `sensorcrashfix.com` | **sem MX** | (sem TXT SPF na raiz) | `support@` / inbound inexistente |
 
-Efeitos:
-- Ativação FormSubmit **nunca chega** (o link de confirmação é enviado para o endereço de destino).
-- O site **não depende mais** disso: o formulário Contato grava no Worker (`POST /contact` → KV) e tenta aviso via **Resend**; no Admin → Cadastros → Contatos → **Mensagens do site**.
+Outros registros no `.com.br` (manter — **não apagar**):
 
-Para voltar a receber em `contato@` / `support@` (Cloudflare Email Routing):
+- CNAME `send` → `send.forge.rmta.net` e `rsend` → `rsend.forge.rmta.net` (Resend)
+- TXT `resend._domainkey` (DKIM Resend)
+- DMARC `_dmarc` `v=DMARC1; p=reject;`
+- AAAA `100::` em `@` / `www` / `api` (Workers)
 
-1. Cloudflare → zona do domínio → **Email** → **Email Routing**.
-2. Ative Routing e crie o endereço → encaminhar para um Gmail/Outlook real.
-3. Aceite os registros MX sugeridos (`route1/2/3.mx.cloudflare.net`) — isso **substitui** o MX nulo `0 .` ou a ausência de MX.
-4. Remova/ajuste SPF `v=spf1 -all` no .com.br se for enviar *de* esse domínio (Resend/Email Routing têm guias próprios).
+**Resend outbound:** o SPF do Resend vive no subdomínio `send.` (via CNAME), não na raiz. O `v=spf1 -all` na raiz **não impede** envio pelo Resend. O bloqueio de **entrada** é só o Null MX (`0 .`).
+
+**Site Contato:** já **não depende** de MX. O formulário grava no Worker (`POST /contact` → KV) e tenta aviso via Resend; no Admin → Cadastros → Contatos → **Mensagens do site** as mensagens chegam mesmo com MX quebrado.
+
+#### Ativar Cloudflare Email Routing (cliques — zona `.com.br`)
+
+Conta Cloudflare (screenshot): zona `sensorcrashfix.com.br`, Free plan. Destino sugerido: `F.nardoni@outlook.com`.
+
+1. Abra https://dash.cloudflare.com → zona **sensorcrashfix.com.br**.
+2. Menu esquerdo → **Email** → **Email Routing**.
+3. **Get started** / **Enable Email Routing** (se ainda desligado).
+4. Em **Destination addresses** → **Add destination**:
+   - Digite `F.nardoni@outlook.com` → salve.
+   - Abra o e-mail de verificação no Outlook e confirme o link.
+5. Em **Routing rules** → **Create address**:
+   - Custom address: `contato` (fica `contato@sensorcrashfix.com.br`).
+   - Action: **Send to an email** → escolha `F.nardoni@outlook.com`.
+   - Salve / Enable a regra.
+6. Quando o painel pedir **MX records**, aceite a substituição:
+   - Apague o MX `@` → `.` (Null MX).
+   - Deixe os MX sugeridos (típicos):
+     - `route1.mx.cloudflare.net` prioridade **12**
+     - `route2.mx.cloudflare.net` prioridade **56**
+     - `route3.mx.cloudflare.net` prioridade **34**
+7. **Não** delete CNAMEs `send` / `rsend` nem TXT `resend._domainkey`.
+8. SPF na raiz (opcional, só se for **enviar** pelo domínio raiz via Cloudflare):
+   - Pode trocar `v=spf1 -all` por algo como  
+     `v=spf1 include:_spf.mx.cloudflare.net ~all`  
+   - **Não** é obrigatório para *receber* via Email Routing.
+   - **Não** precisa `include:amazonses.com` na raiz (Resend já autentica em `send.`).
+
+Repita o mesmo fluxo na zona **sensorcrashfix.com** se quiser `support@sensorcrashfix.com` (hoje sem MX).
+
+#### Verificar depois
+
+```bash
+dig MX sensorcrashfix.com.br +short
+# esperado: route1/2/3.mx.cloudflare.net (sem "0 .")
+
+dig MX sensorcrashfix.com +short   # se configurou .com
+
+# teste real: de outro e-mail, envie para contato@sensorcrashfix.com.br
+# e confirme chegada em F.nardoni@outlook.com (e pasta spam)
+```
+
+API Cloudflare Email Routing **não** foi aplicada daqui: sem `CLOUDFLARE_API_TOKEN` com permissão Email Routing / Zone DNS, e MCP Cloudflare sem auth neste ambiente. Só o painel (passos acima) resolve.
 
 ### Depois de ativar
 
