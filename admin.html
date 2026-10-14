@@ -549,29 +549,6 @@
                         <p class="admin-meta">Mailto público e avisos usam <code>contato@sensorcrashfix.com.br</code>. MX deve ser Cloudflare Email Routing (<code>route*.mx.cloudflare.net</code>), não Null MX.</p>
                     </fieldset>
 
-                    <!-- Inbox KV oculta: produto = e-mail em contato@. Backup silencioso no Worker permanece. -->
-                    <fieldset hidden aria-hidden="true">
-                        <legend class="admin-legend-row"><span><i class="fas fa-inbox"></i> Mensagens do site (formulário Contato)</span></legend>
-                        <p class="admin-meta">Backup KV (não é o canal de atendimento).</p>
-                        <div class="admin-clicks-filters">
-                            <label class="admin-clicks-search">
-                                <input type="search" id="contact-search" placeholder="Buscar nas mensagens…" autocomplete="off" aria-label="Buscar contato">
-                            </label>
-                        </div>
-                        <div class="admin-clicks-toolbar admin-toolbar-split">
-                            <div class="admin-toolbar-main">
-                                <button type="button" id="btn-contact-refresh" class="btn-secondary"><i class="fas fa-sync-alt"></i> Atualizar</button>
-                            </div>
-                            <div class="admin-toolbar-risk">
-                                <button type="button" id="btn-contact-clear" class="btn-danger-outline" title="Apaga todas as mensagens"><i class="fas fa-trash-alt"></i> Limpar tudo</button>
-                            </div>
-                        </div>
-                        <p id="contact-checked-at" class="admin-meta" hidden></p>
-                        <div id="contact-list-root" class="feedback-list-root">
-                            <p class="admin-meta">Backup KV oculto.</p>
-                        </div>
-                    </fieldset>
-
                     <fieldset>
                         <legend class="admin-legend-row"><span><i class="fas fa-share-nodes"></i> Redes e lojas no site</span><button type="button" class="admin-help-btn admin-help-btn-inline" data-admin-help aria-controls="help-channels" aria-expanded="false" title="Ajuda"><i class="fas fa-circle-question" aria-hidden="true"></i></button></legend>
                         <div id="help-channels" class="admin-help-panel admin-help-panel--fieldset" hidden>

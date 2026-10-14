@@ -101,9 +101,14 @@ test('contato do site: forms usam /contact (sem FormSubmit) + Worker expõe rota
   );
   assert.ok(contactJs.includes('data.notified === false'), 'front recusa ok sem e-mail');
   const adminHtml = fs.readFileSync(path.join(root, 'admin.html'), 'utf8');
+  assert.equal(
+    adminHtml.includes('id="contact-list-root"'),
+    false,
+    'inbox Mensagens do site removida do Admin'
+  );
   assert.ok(
-    /<fieldset hidden aria-hidden="true">[\s\S]*Mensagens do site/.test(adminHtml),
-    'inbox Mensagens do site oculta no Admin'
+    adminHtml.includes('contato@sensorcrashfix.com.br') && adminHtml.includes('Resend'),
+    'Admin Contato descreve e-mail Resend'
   );
   const indexesAll = [
     'index.html',

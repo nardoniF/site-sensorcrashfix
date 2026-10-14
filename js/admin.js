@@ -3207,8 +3207,6 @@ ${worksheets}
   let clicksMetaCache = null;
   let feedbackLoading = false;
   let feedbackSearchTimer = null;
-  let contactLoading = false;
-  let contactSearchTimer = null;
   let clicksCache = [];
   let clicksWhenCache = [];
   let clicksWhenWindow = null;
@@ -5410,133 +5408,6 @@ ${worksheets}
       showStatus(`${data.removed || 0} resposta(s) removida(s).`, 'success', 'pesquisa');
     } catch (err) {
       showStatus(err.message || 'Erro ao limpar.', 'error', 'pesquisa');
-    }
-  }
-
-  function renderContactList(items, total, checkedAt) {
-    const root = document.getElementById('contact-list-root');
-    const checkedEl = document.getElementById('contact-checked-at');
-    if (!root) return;
-
-    if (!items?.length) {
-      root.innerHTML = '<div class="feedback-empty"><i class="fas fa-inbox" aria-hidden="true"></i><p>Nenhuma mensagem ainda.</p><span>Quando visitantes usarem o formulário <strong>Contato</strong> no site, aparecem aqui.</span></div>';
-    } else {
-      const statsHtml = `<div class="feedback-stats-bar">
-        <div class="feedback-stat"><span class="feedback-stat-num">${total}</span><span class="feedback-stat-label">mensagem${total === 1 ? '' : 's'} no total</span></div>
-        <div class="feedback-stat"><span class="feedback-stat-num">${items.length}</span><span class="feedback-stat-label">exibida${items.length === 1 ? '' : 's'}</span></div>
-      </div>`;
-
-      const cardsHtml = items.map((row) => {
-        const paginaLabel = humanizarPaginaLog(row.pagina) || row.pagina || '—';
-        const paginaRaw = row.pagina ? `<span class="feedback-card-path" title="${escapeHtml(row.pagina)}">${escapeHtml(row.pagina)}</span>` : '';
-        const email = row.email
-          ? `<a class="feedback-card-email" href="mailto:${escapeHtml(row.email)}"><i class="fas fa-envelope" aria-hidden="true"></i> ${escapeHtml(row.email)}</a>`
-          : '<span class="feedback-card-anon"><i class="fas fa-user-secret" aria-hidden="true"></i> Sem e-mail</span>';
-        const notifyPill = row.notified === true
-          ? `<span class="feedback-pill" title="E-mail enviado (Resend/FormSubmit → contato@ → Gmail via Routing)">✉ OK${row.notifyProvider ? ' · ' + escapeHtml(row.notifyProvider) : ''}</span>`
-          : (row.notified === false
-            ? `<span class="feedback-pill feedback-pill--geo" title="${escapeHtml(row.notifyError || 'E-mail não saiu — mensagem só no Admin')}">✉ falhou</span>`
-            : '');
-        const pills = [
-          row.idioma ? `<span class="feedback-pill">${escapeHtml(String(row.idioma).toUpperCase())}</span>` : '',
-          row.pais ? `<span class="feedback-pill feedback-pill--geo">${escapeHtml(row.pais)}</span>` : '',
-          notifyPill
-        ].filter(Boolean).join('');
-        const subject = row.subject
-          ? `<div class="feedback-card-block feedback-card-block--sug">
-              <span class="feedback-card-label"><i class="fas fa-tag" aria-hidden="true"></i> Assunto</span>
-              <p>${escapeHtml(row.subject)}</p>
-            </div>`
-          : '';
-        const notifyHint = row.notified === false && row.notifyError
-          ? `<p class="admin-meta" style="margin:6px 0 0;color:#b45309">Aviso e-mail: ${escapeHtml(String(row.notifyError).slice(0, 160))}</p>`
-          : '';
-
-        return `<article class="feedback-card">
-          <header class="feedback-card-top">
-            <div class="feedback-card-top-main">
-              <span class="feedback-card-badge"><i class="fas fa-user" aria-hidden="true"></i> ${escapeHtml(row.name || '—')}</span>
-              <span class="feedback-card-badge"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> ${escapeHtml(paginaLabel)}</span>
-              ${paginaRaw}
-            </div>
-            <time class="feedback-card-time" datetime="${row.ts}">${escapeHtml(formatFeedbackDate(row.ts))}</time>
-          </header>
-          ${subject}
-          <div class="feedback-card-block feedback-card-block--primary">
-            <span class="feedback-card-label"><i class="fas fa-comment" aria-hidden="true"></i> Mensagem</span>
-            <p>${escapeHtml(row.message || '')}</p>
-            ${notifyHint}
-          </div>
-          <footer class="feedback-card-foot">
-            ${email}
-            <div class="feedback-card-pills">${pills}</div>
-          </footer>
-        </article>`;
-      }).join('');
-
-      root.innerHTML = statsHtml + `<div class="feedback-cards">${cardsHtml}</div>`;
-    }
-
-    if (checkedEl) {
-      checkedEl.textContent = `Atualizado em ${formatFeedbackDate(checkedAt ? Date.parse(checkedAt) : Date.now())} · ${items.length} de ${total} mensagem(ns)`;
-      checkedEl.hidden = false;
-    }
-  }
-
-  async function loadContactMessages() {
-    const root = document.getElementById('contact-list-root');
-    if (!root || contactLoading) return;
-    const token = sessionStorage.getItem(SESSION_KEY);
-    const base = apiBase();
-    if (!token || !base) {
-      root.innerHTML = '<p class="admin-meta">Faça login no admin.</p>';
-      return;
-    }
-    const q = document.getElementById('contact-search')?.value?.trim() || '';
-    contactLoading = true;
-    root.innerHTML = '<p class="admin-meta"><i class="fas fa-spinner fa-spin"></i> Carregando…</p>';
-    try {
-      const params = new URLSearchParams({ limit: '100' });
-      if (q) params.set('q', q);
-      const res = await fetch(`${base}/admin/contact?${params}`, {
-        headers: { Authorization: 'Bearer ' + token },
-        cache: 'no-store'
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.error || 'Falha ao carregar contatos');
-      renderContactList(data.contact || [], data.total || 0, data.checkedAt);
-    } catch (err) {
-      root.innerHTML = `<p class="admin-status-bad">${escapeHtml(err.message)}</p>`;
-    } finally {
-      contactLoading = false;
-    }
-  }
-
-  function scheduleContactReload() {
-    clearTimeout(contactSearchTimer);
-    contactSearchTimer = setTimeout(() => loadContactMessages(), 350);
-  }
-
-  async function clearContactMessages() {
-    const token = sessionStorage.getItem(SESSION_KEY);
-    const base = apiBase();
-    if (!token || !base) {
-      showStatus('Faça login no admin.', 'error', 'contato');
-      return;
-    }
-    if (!confirm('Apagar TODAS as mensagens de contato do site?\n\nNão dá para desfazer.')) return;
-    showStatus('Limpando…', '', 'contato');
-    try {
-      const res = await fetch(`${base}/admin/contact`, {
-        method: 'DELETE',
-        headers: { Authorization: 'Bearer ' + token }
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.error || 'Falha ao limpar');
-      await loadContactMessages();
-      showStatus(`${data.removed || 0} mensagem(ns) removida(s).`, 'success', 'contato');
-    } catch (err) {
-      showStatus(err.message || 'Erro ao limpar.', 'error', 'contato');
     }
   }
 
@@ -7773,7 +7644,7 @@ ${worksheets}
         wireSmartwatchCatalogUi();
         renderSmartwatchCatalogTable();
       }
-      if (sec === 'contato') loadContactMessages();
+      // Inbox "Mensagens do site" oculta — atendimento = e-mail em contato@.
     }
 
     function showTab(tabId) {
@@ -8100,10 +7971,6 @@ ${worksheets}
   document.getElementById('btn-feedback-refresh')?.addEventListener('click', () => loadFeedback());
   document.getElementById('btn-feedback-clear')?.addEventListener('click', () => clearFeedback());
   document.getElementById('feedback-search')?.addEventListener('input', scheduleFeedbackReload);
-  document.getElementById('btn-contact-refresh')?.addEventListener('click', () => loadContactMessages());
-  document.getElementById('btn-contact-clear')?.addEventListener('click', () => clearContactMessages());
-  document.getElementById('contact-search')?.addEventListener('input', scheduleContactReload);
-
   const EMAIL_TEST_LABELS = {
     generic: 'Simples',
     shop_order: 'Loja — novo pedido',
