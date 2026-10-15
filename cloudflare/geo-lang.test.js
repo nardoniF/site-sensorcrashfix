@@ -215,6 +215,24 @@ test('proxy .com.br nunca geo-bounce e pin PT no handoff', async () => {
   assert.match(src, /br: false/);
 });
 
+test('proxy serve /admin.html na raiz do .com (não /en/admin.html)', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('./scf-com-proxy.js', import.meta.url), 'utf8');
+  assert.match(src, /\/admin\.html/);
+  assert.match(src, /function isOpsAdminPath/);
+  assert.match(src, /!isOpsAdminPath\(url\.pathname\)/);
+  assert.match(src, /function mapSharedRootPath/);
+  // Shared root must include ops pages so mapPathCom does not prefix /en/
+  assert.match(src, /COM_SHARED_ROOT_PAGES = new Set\(\[[\s\S]*?\/admin\.html/);
+});
+
+test('admin login form action absoluto (base href do proxy não manda pra home)', async () => {
+  const fs = await import('node:fs');
+  const html = fs.readFileSync(new URL('../admin.html', import.meta.url), 'utf8');
+  assert.match(html, /id="admin-login-form"[^>]*action="\/admin\.html"/);
+  assert.doesNotMatch(html, /id="admin-login-form"[^>]*action="#"/);
+});
+
 test('proxy /stf-log encaminha IP/país/UA do visitante', async () => {
   const fs = await import('node:fs');
   const src = fs.readFileSync(new URL('./scf-com-proxy.js', import.meta.url), 'utf8');

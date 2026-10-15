@@ -84,13 +84,42 @@ function isStaticAsset(pathname) {
 const COM_SHARED_ROOT_PAGES = new Set([
   '/rastreio.html',
   '/google7b1cb2c1f70b0fda.html',
+  // Ops / Admin — never map to /en/… (there is no en/admin.html); 404 felt like “site broke”.
+  '/admin.html',
+  '/pedidos.html',
+  '/imprimir-etiqueta.html',
+  '/documentacao.html',
 ]);
+
+/** Extensionless or .html ops paths that must stay on root (no /it/admin.html geo bounce). */
+function isOpsAdminPath(pathname) {
+  const p = String(pathname || '').toLowerCase().replace(/\/+$/, '') || '/';
+  const file = p.replace(/^\//, '');
+  const withHtml = file.endsWith('.html') ? file : `${file}.html`;
+  return COM_SHARED_ROOT_PAGES.has('/' + withHtml) && (
+    withHtml === 'admin.html'
+    || withHtml === 'pedidos.html'
+    || withHtml === 'imprimir-etiqueta.html'
+    || withHtml === 'documentacao.html'
+  );
+}
+
+function mapSharedRootPath(pathname) {
+  const p = String(pathname || '');
+  if (COM_SHARED_ROOT_PAGES.has(p)) return p;
+  if (!p.includes('.') && !p.endsWith('/')) {
+    const asHtml = p + '.html';
+    if (COM_SHARED_ROOT_PAGES.has(asHtml)) return asHtml;
+  }
+  return null;
+}
 
 const INTL_LANGS = ['it', 'de', 'es', 'pl', 'sl', 'fr', 'nl', 'sv', 'no', 'fi'];
 
 function mapPathCom(pathname) {
   if (isStaticAsset(pathname)) return pathname;
-  if (COM_SHARED_ROOT_PAGES.has(pathname)) return pathname;
+  const shared = mapSharedRootPath(pathname);
+  if (shared) return shared;
   for (const lang of INTL_LANGS) {
     if (pathname === `/${lang}` || pathname === `/${lang}/`) return `/${lang}/index.html`;
     if (pathname.startsWith(`/${lang}/`)) return pathname;
@@ -182,11 +211,15 @@ function patchHtml(html, originPath, br) {
   html = html.replace(/<script[^>]+stf-com-host\.js[^>]*>\s*<\/script>\s*/gi, '');
   html = html.replace(/(href|src)=["']\.\.\/([^"']+)["']/gi, '$1="/$2"');
   html = fixNavLangHrefs(html, originPath);
-  const baseHref = br ? `${BR_ORIGIN}/` : comBaseHref(originPath);
-  if (!/<base\s/i.test(html)) {
-    html = html.replace(/<head([^>]*)>/i, `<head$1><base href="${baseHref}">`);
+  const ops = isOpsAdminPath(originPath);
+  // Ops/Admin: no <base href=/> — action="#" or relative posts would resolve to the storefront home.
+  if (!ops) {
+    const baseHref = br ? `${BR_ORIGIN}/` : comBaseHref(originPath);
+    if (!/<base\s/i.test(html)) {
+      html = html.replace(/<head([^>]*)>/i, `<head$1><base href="${baseHref}">`);
+    }
   }
-  if (!/stf-lang-nav\.js/i.test(html)) {
+  if (!ops && !/stf-lang-nav\.js/i.test(html)) {
     html = html.replace(/<head([^>]*)>/i, `<head$1><script src="/js/stf-lang-nav.js?v=7"></script>`);
   }
   return html;
@@ -379,7 +412,8 @@ export default {
     // First-hit locale: Polônia → /pl/, Alemanha → /de/, etc. (não aplica a bots)
     // Paid Ads clicks (gclid/gbraid/wbraid): never geo-bounce — Final URL must stick.
     // .com.br: never geo/cookie host-bounce to .com — intentional BR visits stay PT.
-    if (!isBot && !isPaidAdsClickSearch(url.search)) {
+    // Ops/Admin: never locale-bounce (/admin → /it/admin.html = 404 / “cai na loja”).
+    if (!isBot && !isPaidAdsClickSearch(url.search) && !isOpsAdminPath(url.pathname)) {
       const hadStfLang = url.searchParams.has('stf_lang');
       const force = String(url.searchParams.get('stf_lang') || '').toLowerCase();
       const forcedLang = ['pt', 'en', 'it', 'de', 'es', 'pl', 'sl', 'fr', 'nl', 'sv', 'no', 'fi'].includes(force) ? force : null;
