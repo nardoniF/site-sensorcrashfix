@@ -28,7 +28,9 @@
   }
 
   function supportEmail() {
-    return isIntlHost() ? 'support@sensorcrashfix.com' : 'contato@sensorcrashfix.com.br';
+    // .com → support@; .com.br / PT → contato@ (nunca TattooFix).
+    if (isIntlHost()) return 'support@sensorcrashfix.com';
+    return 'contato@sensorcrashfix.com.br';
   }
 
   /** Map current path to equivalent on the other host (for lang / market switches). */
