@@ -6658,6 +6658,31 @@ a.conta-forgot-link { display: inline-block; }
 }
 .admin-product-row h4 { margin: 0 0 10px; color: var(--primary); }
 .admin-product-row .form-grid { grid-template-columns: 1fr 1fr; }
+.admin-intl-markup-block {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 14px;
+  margin: 4px 0 10px;
+  padding: 12px 14px;
+  border: 1px solid rgba(46, 125, 50, 0.35);
+  background: rgba(46, 125, 50, 0.06);
+  border-radius: 6px;
+}
+.admin-intl-markup-heading {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #1b5e20;
+}
+.admin-intl-markup-field input {
+  font-weight: 700;
+  border-color: rgba(46, 125, 50, 0.45);
+}
+@media (max-width: 720px) {
+  .admin-intl-markup-block { grid-template-columns: 1fr; }
+}
 .admin-intl-price-ro input[readonly] {
   opacity: 0.9;
   background: rgba(255, 255, 255, 0.04);

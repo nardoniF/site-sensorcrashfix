@@ -5931,12 +5931,51 @@ ${worksheets}
     });
   }
 
+  /** Markup + FX prices — always for .com/INT rows; never for BR/agregados. Fail-safe: markup input still renders. */
+  function buildIntlMarkupFieldsHtml(p) {
+    const markup = p?.intlMarkupPercent != null ? p.intlMarkupPercent : DEFAULT_INTL_MARKUP_PERCENT;
+    let baseBrl;
+    try {
+      baseBrl = p?.intlBaseBrl != null ? p.intlBaseBrl : intlBaseFromInputs(p?.price, markup);
+    } catch (_) {
+      baseBrl = intlBaseFromInputs(p?.price, markup);
+    }
+    let fields = '';
+    try {
+      const currencies = collectIntlCurrencies().filter((c) => c.active !== false);
+      fields = currencies.map((cur) => {
+        const field = intlPriceFieldName(cur.code);
+        if (!field) return '';
+        const step = cur.decimals === 0 ? '1' : (cur.decimals === 1 ? '0.1' : '0.01');
+        const langs = (cur.langs || []).map((l) => String(l).toUpperCase()).join('/');
+        const val = p?.[field] != null ? p[field] : '';
+        return `<label class="admin-intl-price-ro">Preço ${escAttr(cur.code)}${langs ? ` (.com ${escAttr(langs)})` : ''}
+                <input type="number" data-field="${escAttr(field)}" data-intl-price="1" step="${step}" min="0" value="${val}" readonly tabindex="-1">
+                <small class="admin-intl-base-brl" data-intl-base-label>≈ ${formatAdminBrl(baseBrl)}</small>
+              </label>`;
+      }).filter(Boolean).join('\n          ');
+    } catch (_) {
+      fields = '';
+    }
+    return `<div class="admin-intl-markup-block full" data-intl-markup-block="1">
+            <p class="admin-intl-markup-heading"><i class="fas fa-percent" aria-hidden="true"></i> Preço &amp; markup internacional (.com)</p>
+            <label>Preço (R$)<input type="number" data-field="price" data-intl-brl="1" step="0.01" min="0" value="${p?.price ?? 0}"></label>
+            <label class="admin-intl-markup-field">Markup internacional (%)
+              <input type="number" data-field="intlMarkupPercent" data-intl-markup="1" step="0.1" min="0" value="${markup}">
+            </label>
+            <p class="admin-meta admin-field-hint full" data-intl-base-summary>Base internacional = R$ × (1 + markup) = <strong>${formatAdminBrl(baseBrl)}</strong> — depois convertida pela cotação. Moedas abaixo são calculadas (não editáveis).</p>
+          ${fields}
+          </div>`;
+  }
+
   function renderProductRow(p, i, opts) {
     const isAggregated = !!opts?.aggregated;
     const market = opts?.market || 'BR';
+    // .com tab OR INT-only product — markup always visible; BR/agregado never.
+    const showIntlMarkup = !isAggregated && (market === 'INT' || isIntlMarketProduct(p));
     const badge = isAggregated
       ? '<span class="admin-badge-aggregated">Agregado BR</span> '
-      : (market === 'INT'
+      : (showIntlMarkup
         ? '<span class="admin-badge-main">.com</span> '
         : '<span class="admin-badge-main">Brasil</span> ');
     const title = p.name ? `${badge}Produto ${i + 1}: ${escAttr(p.name)}` : `${badge}Produto ${i + 1}`;
@@ -6018,39 +6057,24 @@ ${worksheets}
           <label class="full">Álbum de fotos <small class="admin-field-hint">uma URL por linha — ordem do carrossel na loja</small>
             <textarea data-field="images" rows="5" placeholder="/images/lens-gallery/01-….jpg">${escTextarea((Array.isArray(p.images) ? p.images : []).join('\n'))}</textarea>
           </label>` : '';
+    // INT: preço+markup no topo (antes do muro de i18n). BR: só preço R$, sem markup.
+    const pricingFields = showIntlMarkup
+      ? buildIntlMarkupFieldsHtml(p)
+      : `<label>Preço (R$)<input type="number" data-field="price" step="0.01" min="0" value="${p.price ?? 0}"></label>`;
+    const rowMarket = showIntlMarkup ? 'INT' : market;
     return `
-      <div class="admin-product-row${isAggregated ? ' admin-product-row--aggregated' : ' admin-product-row--main'}" data-product-index="${i}" data-aggregated="${isAggregated ? '1' : '0'}" data-market="${escAttr(market)}">
+      <div class="admin-product-row${isAggregated ? ' admin-product-row--aggregated' : ' admin-product-row--main'}" data-product-index="${i}" data-aggregated="${isAggregated ? '1' : '0'}" data-market="${escAttr(rowMarket)}">
         <h4>${title}</h4>
         <div class="form-grid">
           <label class="full">Nome (PT / cadastro)<input type="text" data-field="name" value="${escAttr(p.name)}" required></label>
           <label class="full">Descrição (PT)<textarea data-field="description" rows="2">${escTextarea(p.description)}</textarea></label>
+          ${pricingFields}
           ${i18nFields}
           ${aggregatedFields}
-          <label>Preço (R$)<input type="number" data-field="price" step="0.01" min="0" value="${p.price ?? 0}" ${market === 'INT' && !isAggregated ? 'data-intl-brl="1"' : ''}></label>
-          ${market === 'INT' && !isAggregated ? (() => {
-            const markup = p.intlMarkupPercent != null ? p.intlMarkupPercent : DEFAULT_INTL_MARKUP_PERCENT;
-            const baseBrl = p.intlBaseBrl != null ? p.intlBaseBrl : intlBaseFromInputs(p.price, markup);
-            const currencies = collectIntlCurrencies().filter((c) => c.active !== false);
-            const fields = currencies.map((cur) => {
-              const field = intlPriceFieldName(cur.code);
-              const step = cur.decimals === 0 ? '1' : (cur.decimals === 1 ? '0.1' : '0.01');
-              const langs = (cur.langs || []).map((l) => String(l).toUpperCase()).join('/');
-              const val = p[field] != null ? p[field] : '';
-              return `<label class="admin-intl-price-ro">Preço ${escAttr(cur.code)}${langs ? ` (.com ${escAttr(langs)})` : ''}
-                <input type="number" data-field="${escAttr(field)}" data-intl-price="1" step="${step}" min="0" value="${val}" readonly tabindex="-1">
-                <small class="admin-intl-base-brl" data-intl-base-label>≈ ${formatAdminBrl(baseBrl)}</small>
-              </label>`;
-            }).join('\n          ');
-            return `<label>Markup internacional (%)
-              <input type="number" data-field="intlMarkupPercent" data-intl-markup="1" step="0.1" min="0" value="${markup}">
-            </label>
-            <p class="admin-meta admin-field-hint full" data-intl-base-summary>Base internacional = R$ × (1 + markup) = <strong>${formatAdminBrl(baseBrl)}</strong> — depois convertida pela cotação. Moedas abaixo são calculadas (não editáveis).</p>
-          ${fields}`;
-          })() : ''}
           <label>Estoque <small class="admin-field-hint">vazio = ilimitado · 0 = esgotado (some da loja)</small>
             <input type="number" data-field="stock" min="0" step="1" value="${p.stock != null ? p.stock : ''}" placeholder="ilimitado">
           </label>
-          <label>Slug (URL)<input type="text" data-field="slug" value="${p.slug || p.id || ''}" placeholder="${market === 'INT' ? 'optical-lens-intl' : 'kit-sensor-crashfix'}"></label>
+          <label>Slug (URL)<input type="text" data-field="slug" value="${p.slug || p.id || ''}" placeholder="${showIntlMarkup ? 'optical-lens-intl' : 'kit-sensor-crashfix'}"></label>
           <label class="full">URL da imagem principal<input type="text" data-field="image" value="${escAttr(p.image || '')}" placeholder="/images/lens-gallery/01-optical-correction-lens.jpg" spellcheck="false" autocomplete="off"></label>
           ${sensorField}
           <label>Peso (g)<input type="number" data-field="weightGrams" min="0.1" step="0.1" value="${p.weightGrams ?? 3}"></label>
@@ -6059,7 +6083,7 @@ ${worksheets}
             <label class="label-check"><input type="checkbox" data-field="requiresSmartwatch" ${p.requiresSmartwatch !== false ? 'checked' : ''}><span>Pede modelo do relógio</span></label>
           </div>
         </div>
-        <button type="button" class="btn-secondary btn-remove-product" data-index="${i}" data-aggregated="${isAggregated ? '1' : '0'}" data-market="${escAttr(market)}" style="margin-top:8px"><i class="fas fa-trash"></i> Remover</button>
+        <button type="button" class="btn-secondary btn-remove-product" data-index="${i}" data-aggregated="${isAggregated ? '1' : '0'}" data-market="${escAttr(rowMarket)}" style="margin-top:8px"><i class="fas fa-trash"></i> Remover</button>
       </div>`;
   }
 

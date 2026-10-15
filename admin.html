@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>Admin — Sensor Crash Fix</title>
-    <link rel="stylesheet" href="style.css?v=3.30-crash">
+    <link rel="stylesheet" href="style.css?v=3.31-crash-markup">
     <style>
       .clicks-device-badge{display:inline-block;padding:2px 7px;border-radius:999px;font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
       .clicks-device--mobile{background:rgba(76,175,80,.14);color:#81c784}
@@ -124,7 +124,7 @@
                         </nav>
                         <p id="admin-products-summary" class="admin-meta admin-products-summary"></p>
                         <div id="admin-products-br-main-panel" class="admin-product-subpanel" role="tabpanel">
-                            <p class="admin-meta">Produtos da loja <strong>.com.br</strong> (kit nacional).</p>
+                            <p class="admin-meta">Produtos da loja <strong>.com.br</strong> (kit nacional). Markup % internacional fica na aba <strong>.com</strong>.</p>
                             <div id="admin-products-br-main"></div>
                             <div class="admin-form-actions" style="margin-top:8px">
                                 <button type="button" id="btn-add-br-main-product" class="btn-secondary"><i class="fas fa-plus"></i> Adicionar produto BR</button>
@@ -138,7 +138,7 @@
                             </div>
                         </div>
                         <div id="admin-products-intl-main-panel" class="admin-product-subpanel" role="tabpanel" hidden>
-                            <p class="admin-meta">Catálogo do <strong>.com</strong> (gringa). Sem agregados. Título + fotos do álbum definem a loja internacional.</p>
+                            <p class="admin-meta">Catálogo do <strong>.com</strong> (gringa). Logo abaixo do nome: <strong>Preço (R$) + Markup internacional (%)</strong> (padrão 130%). Sem agregados.</p>
                             <div id="admin-products-intl-main"></div>
                             <div class="admin-form-actions" style="margin-top:8px">
                                 <button type="button" id="btn-add-intl-main-product" class="btn-secondary"><i class="fas fa-plus"></i> Adicionar produto .com</button>
@@ -1369,6 +1369,6 @@
     })();
     </script>
     <script type="module" src="js/sales-money.mjs?v=6"></script>
-    <script defer src="js/admin.js?v=233"></script>
+    <script defer src="js/admin.js?v=250-markup-visible"></script>
 </body>
 </html>
