@@ -6658,6 +6658,17 @@ a.conta-forgot-link { display: inline-block; }
 }
 .admin-product-row h4 { margin: 0 0 10px; color: var(--primary); }
 .admin-product-row .form-grid { grid-template-columns: 1fr 1fr; }
+.admin-intl-price-ro input[readonly] {
+  opacity: 0.9;
+  background: rgba(255, 255, 255, 0.04);
+  cursor: default;
+}
+.admin-intl-base-brl {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.78rem;
+  opacity: 0.75;
+}
 .admin-ship-methods-wrap,
 .admin-intl-zones-wrap {
     margin-top: 4px;

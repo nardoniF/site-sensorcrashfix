@@ -37,12 +37,13 @@ test('markup 130% (TattooFix) then FX: R$72.90 → base R$167.67 → ~USD 32.71'
   assert.equal(applyFxAmount(167.67, FX.SEK, 0), 314);
 });
 
-test('canonIntlMarkupPercent overwrites stale KV 78.5 with DEFAULT_CONFIG 130', () => {
+test('canonIntlMarkupPercent: KV/Admin markup wins; empty falls back to catalog 130', () => {
   assert.equal(
     canonIntlMarkupPercent({ intlMarkupPercent: 78.5 }, { intlMarkupPercent: 130 }),
-    130
+    78.5
   );
-  assert.equal(canonIntlMarkupPercent({ intlMarkupPercent: 78.5 }, null), 78.5);
+  assert.equal(canonIntlMarkupPercent({ intlMarkupPercent: 65 }, null), 65);
+  assert.equal(canonIntlMarkupPercent({}, { intlMarkupPercent: 130 }), 130);
   assert.equal(canonIntlMarkupPercent({}, null), 130);
   const { product } = applyMarkupFxToProduct(
     {
@@ -55,8 +56,8 @@ test('canonIntlMarkupPercent overwrites stale KV 78.5 with DEFAULT_CONFIG 130', 
     DEFAULT_INTL_CURRENCIES,
     FX
   );
-  assert.equal(product.intlMarkupPercent, 130);
-  assert.equal(product.priceUsd, 32.71);
+  assert.equal(product.intlMarkupPercent, 78.5);
+  assert.equal(product.intlBaseBrl, intlBaseBrl(72.9, 78.5));
 });
 
 test('applyMarkupFxToProduct writes all currency fields from one BRL base', () => {

@@ -216,26 +216,24 @@ window.STF_PRODUCT_MERGE = (function () {
     if (localProduct?.image) merged.image = localProduct.image;
     if (isEmptyValue(merged.deviceType) && localProduct?.deviceType) merged.deviceType = localProduct.deviceType;
     if (isEmptyValue(merged.watchKind) && localProduct?.watchKind) merged.watchKind = localProduct.watchKind;
-    // TattooFix: markup% do catálogo Git vence KV stale (ex.: 78.5 vs 130).
-    // Sem isso o checkout EN fica em ~$25 com a API errada mesmo com store-config.json em 130.
+    // Markup%: KV/Admin wins when set. Local catalog only fills empty products.
     const markets = Array.isArray(merged.markets)
       ? merged.markets.map((m) => String(m).toUpperCase())
       : [];
     const isIntlOnly = markets.includes('INT') && !markets.includes('BR');
+    const mergedMk = Number(merged.intlMarkupPercent);
     const localMk = Number(localProduct?.intlMarkupPercent);
-    if (isIntlOnly && Number.isFinite(localMk) && localMk >= 0) {
-      if (Number(merged.intlMarkupPercent) !== localMk) {
-        merged.intlMarkupPercent = localMk;
-        if (localProduct.intlBaseBrl != null && Number.isFinite(Number(localProduct.intlBaseBrl))) {
-          merged.intlBaseBrl = Number(localProduct.intlBaseBrl);
-        } else {
-          delete merged.intlBaseBrl;
-        }
-        // Drop stale foreign list prices so checkout recomputes R$ × markup → FX.
-        ['priceUsd', 'priceEur', 'priceGbp', 'pricePln', 'priceSek', 'priceNok'].forEach((f) => {
-          delete merged[f];
-        });
+    const kvHasMarkup = Number.isFinite(mergedMk) && mergedMk >= 0;
+    if (isIntlOnly && !kvHasMarkup && Number.isFinite(localMk) && localMk >= 0) {
+      merged.intlMarkupPercent = localMk;
+      if (localProduct.intlBaseBrl != null && Number.isFinite(Number(localProduct.intlBaseBrl))) {
+        merged.intlBaseBrl = Number(localProduct.intlBaseBrl);
+      } else {
+        delete merged.intlBaseBrl;
       }
+      ['priceUsd', 'priceEur', 'priceGbp', 'pricePln', 'priceSek', 'priceNok'].forEach((f) => {
+        delete merged[f];
+      });
     }
     return merged;
   }

@@ -2559,18 +2559,20 @@ function autoFxEnabled(config) {
 }
 
 /**
- * TattooFix canon: INT products in DEFAULT_CONFIG always use that markup% (130).
- * Stale KV values (e.g. 78.5) must be overwritten — missing-only seed left live at ~$25.
- * Returns { products, changed } where changed is count of markup fields corrected.
+ * Seed markup% only when missing/empty. Admin-saved values stick in KV.
+ * Default/canon 130 applies solely as fallback for empty products.
+ * Returns { products, changed } where changed is count of markup fields filled.
  */
 function seedCanonIntlMarkup(products, baseProducts) {
   const baseById = new Map((baseProducts || []).map((p) => [p?.id || p?.slug, p]));
   let changed = 0;
   const next = (products || []).map((p) => {
     if (!isIntlMarketProductRow(p)) return p;
+    if (p.intlMarkupPercent != null && Number.isFinite(Number(p.intlMarkupPercent)) && Number(p.intlMarkupPercent) >= 0) {
+      return p;
+    }
     const base = baseById.get(p.id) || baseById.get(p.slug);
     const mk = canonIntlMarkupPercent(p, base);
-    if (Number(p.intlMarkupPercent) === mk) return p;
     changed += 1;
     return { ...p, intlMarkupPercent: mk };
   });
@@ -2654,7 +2656,7 @@ async function intlForeignCharge(order, env, config, items, currency) {
   const cur = String(currency || 'USD').toUpperCase();
   const fx = await fetchFxRate(env, cur);
   const itemList = items || order.items || [];
-  // Prefer public ensure (canon markup×FX) so charges never use stale KV 78.5 list prices.
+  // Prefer public ensure (markup×FX; empty markup gets default 130) so list/charge stay aligned.
   let cfg = config;
   if (!cfg) {
     cfg = await getPublicConfig(env);
