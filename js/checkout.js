@@ -1265,14 +1265,13 @@ window.STF_MONEY = window.STF_MONEY || (function () {
     updateSidebarTitle();
     if (snap?.items?.length) {
       els.cartSidebar.innerHTML = snap.items.map((item) => {
-        const catalog = products.find((x) => x.id === item.productId || x.slug === item.productId);
-        const lineProduct = catalog || item;
+        const catalog = products.find((x) => x.id === item.productId || x.slug === item.productId) || item;
+        const lineProduct = catalog;
         const imgFull = resolveProductImage(item.image, lineProduct);
         const lineName = cartLineName(item);
         const thumb = item.aggregated
           ? renderZoomableThumb(imgFull, imgFull, lineName, imgFull, 'cart-line-img-btn')
           : `<img src="${escapeHtml(imgFull)}" alt="" class="cart-line-img" loading="lazy" onerror="this.onerror=null;this.src='/images/brand/sensorcrashfix.jpg'">`;
-        const catalog = products.find((x) => x.id === item.productId || x.slug === item.productId) || item;
         const qtyLabel = item.qty > 1
           ? `${item.qty} × ${formatCheckoutMoney(item.price, catalog)}`
           : formatCheckoutMoney(item.price, catalog);
