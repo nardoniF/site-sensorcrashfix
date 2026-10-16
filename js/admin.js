@@ -5253,6 +5253,12 @@ ${worksheets}
     }
 
     clicksLoading = true;
+    const refreshBtn = document.getElementById('btn-clicks-refresh');
+    const refreshBtnHtml = refreshBtn ? refreshBtn.innerHTML : '';
+    if (refreshBtn) {
+      refreshBtn.disabled = true;
+      refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Atualizando...';
+    }
     const openPaths = preserveOpen ? captureClicksTreeOpenPaths() : [];
     const panelVisible = isClicksPanelVisible();
     setClicksLoadStatus(
@@ -5303,6 +5309,10 @@ ${worksheets}
       if (noise) noise.innerHTML = '';
     } finally {
       clicksLoading = false;
+      if (refreshBtn) {
+        refreshBtn.disabled = false;
+        refreshBtn.innerHTML = refreshBtnHtml || '<i class="fas fa-sync-alt"></i> Atualizar';
+      }
     }
   }
 
