@@ -1,0 +1,44 @@
+---
+description: Integrity check obrigatório do pacote antes de qualquer deploy/upload
+alwaysApply: true
+---
+
+# Integridade do pacote antes de deploy / upload
+
+**Hard rule (obrigatória) para TODAS as implementações e deploys.**
+
+Antes de fazer upload, `wrangler deploy`, pin de `COMMIT` no proxy, publish em CDN/Pages, ou qualquer publicação do que o usuário pediu para mudar, o agente **MUST** auditar o **pacote inteiro** — não só o arquivo tocado.
+
+## O que verificar (checklist)
+
+1. **Diff vs pedido** — cada arquivo adicionado/alterado/removido no pacote de deploy corresponde ao que o usuário pediu?
+2. **Diff vs alvo atual** — comparar com o que **já existe** no destino (tip pinado, `x-stf-commit` live, branch/base, worker em produção).
+3. **Remoções** — algo que já existe no alvo está sendo apagado, omitido do pin, ou substituído por tip mais antigo/ incompleto?
+4. **Adições / mudanças estranhas** — há alteração não pedida, de outra marca (ex.: Tattoo Fix vs Crash Fix), de outro domínio, ou “de carona” sem relação com o request?
+
+## Decisão
+
+| Achado | Ação |
+|--------|------|
+| Remoção do que já existe no alvo **ou** mudança/adição **não pedida** / não relacionada | **DO NOT deploy / DO NOT upload**. Parar, reportar o inventário, e montar um pacote que contenha **somente** o pedido. |
+| Pacote = exatamente o pedido (ou subset necessário + pin que não regride o alvo) | Pode seguir com commit / push / deploy. |
+
+## Exemplos que bloqueiam deploy
+
+- Pinar `scf-com-proxy` `COMMIT` num SHA **atrás** do tip live (perde locales, SEO, `#produtos`, stubs de login, etc.).
+- Deploy que remove `account.html` / redirect de login, landings SEO, ou langs que o alvo já serve.
+- Incluir no mesmo upload refactors, renomes, ou páginas de outro produto sem pedido explícito.
+
+## Exemplos permitidos
+
+- Fix cirúrgico (ex.: redirect `account.html` → `minha-conta.html`) com pin mantido no tip live que já tem `minha-conta.html`.
+- Pacote só com os arquivos/chaves pedidos + bump de `?v=` / `COMMIT` **depois** de confirmar que o SHA pinado contém os assets necessários (`curl` / raw GitHub).
+
+## Evidência mínima antes do deploy
+
+- Lista curta: pedido | arquivos no pacote | o que o alvo tem hoje | o que mudaria.
+- Se houver risco de remoção: **stop** + relatório; não “assumir” e publicar.
+
+## English (same rule)
+
+Before any deploy/upload, audit the **entire package** against (1) the user request and (2) what already exists on the target. If anything existing would be **removed**, or anything **unrequested/unrelated** would be added/changed — **do not deploy**. Stop, report, and ship a package with **only** what was asked.
