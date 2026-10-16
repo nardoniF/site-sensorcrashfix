@@ -1845,11 +1845,43 @@ window.STF_MONEY = window.STF_MONEY || (function () {
     }
   }
 
+  /** País ISO default no checkout INT conforme idioma da página (ES→ES, …). Igual TattooFix. */
+  function applyLangDefaultCountrySelect() {
+    if (!isIntlCheckoutShell() || orderSidebarLocked || !els.paisCode) return;
+    if (els.paisCode.options.length < 2) return;
+    const def = defaultIntlCountry();
+    if (!def) return;
+    if (![...els.paisCode.options].some((o) => o.value === def)) return;
+    const cur = String(els.paisCode.value || '').trim();
+    if (!cur || cur === 'BR' || cur !== def) {
+      els.paisCode.value = def;
+      toggleAddressForm();
+    } else {
+      updatePhoneField();
+    }
+  }
+
   function defaultIntlCountry() {
-    return localeToCountry(checkoutLocale());
+    if (window.STF_PAGE_LANG?.defaultCountryForLang) {
+      return window.STF_PAGE_LANG.defaultCountryForLang();
+    }
+    const lang = (
+      window.STF_I18N?.getLang?.()
+      || document.documentElement.lang
+      || ''
+    ).toLowerCase().slice(0, 2);
+    const map = {
+      en: 'US', it: 'IT', de: 'DE', es: 'ES', pl: 'PL', sl: 'SI',
+      fr: 'FR', nl: 'NL', sv: 'SE', no: 'NO', fi: 'FI'
+    };
+    return map[lang] || null;
   }
 
   async function resolveDefaultIntlCountry() {
+    // País = idioma/site de entrada (IT→Itália, FR→França, SV→Suécia…).
+    // Geo IP só como fallback se o idioma não mapear.
+    const fromLang = defaultIntlCountry();
+    if (fromLang) return fromLang;
     const base = apiBase() || (window.CONFIG_BOOTSTRAP?.configApiUrl || '').replace(/\/$/, '');
     if (base) {
       try {
@@ -1861,15 +1893,18 @@ window.STF_MONEY = window.STF_MONEY || (function () {
         }
       } catch { /* geo indisponível */ }
     }
-    return defaultIntlCountry();
+    return 'US';
   }
 
   async function initializeLocalizedCheckout() {
+    // .com.br (shell BR): nunca sobrescrever Brasil com geo IP (igual intenção TattooFix).
+    if (!isIntlCheckoutShell() || orderSidebarLocked) return;
     const def = await resolveDefaultIntlCountry();
     if (!def || !els.paisCode) return;
     const has = [...els.paisCode.options].some((o) => o.value === def);
     if (!has) return;
-    if (!els.paisCode.value || els.paisCode.value === 'BR') {
+    // Alinha ao idioma da página no primeiro load (não deixa US grudado em FR/NL/…).
+    if (!els.paisCode.value || els.paisCode.value === 'BR' || els.paisCode.value !== def) {
       els.paisCode.value = def;
       toggleAddressForm();
     }
@@ -1909,6 +1944,7 @@ window.STF_MONEY = window.STF_MONEY || (function () {
     other.value = 'OTHER';
     other.textContent = L('country.other');
     els.paisCode.appendChild(other);
+    applyLangDefaultCountrySelect();
   }
 
   function populateSelects() {
