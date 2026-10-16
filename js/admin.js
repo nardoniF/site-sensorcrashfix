@@ -4171,9 +4171,8 @@ ${worksheets}
     const drop = new Set();
     groupClicksByLogicalVisit(clicks).forEach((evs) => {
       if (!isUniqueOrRepeatOnlySession(evs)) return;
-      // .com / exterior: SEO landings often have only a pageview (or one home
-      // repeat). Do NOT treat those real humans as bots — only BR bounce noise.
-      if (isIntlClickVisit(evs)) return;
+      // Same rule for .com and .com.br: unique/repeat-only (<2 distinct
+      // destinations) is noise — excluded from official stats for both hosts.
       evs.forEach((c) => drop.add(c));
     });
     return (clicks || []).filter((c) => !drop.has(c) && !isCrawlerClickRow(c));
@@ -4205,8 +4204,7 @@ ${worksheets}
     const sessions = [];
     groupClicksBySession(withoutTests).forEach((events, key) => {
       if (!isUniqueOrRepeatOnlySession(events)) return;
-      // Intl SEO bounces count as official traffic — keep them out of "únicos/bots".
-      if (isIntlClickVisit(events) && !events.some(isCrawlerClickRow)) return;
+      // Include .com and .com.br unique/repeat in the noise panel (same as official drop).
       const ordered = [...events].sort((a, b) => (Number(a.ts || a.client_ts) || 0) - (Number(b.ts || b.client_ts) || 0));
       const first = ordered[0] || {};
       const ts = Number(first.ts || first.client_ts || 0);

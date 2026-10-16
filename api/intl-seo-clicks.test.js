@@ -19,7 +19,10 @@ test('Admin: clickSiteHost reconhece todos os idiomas .com', () => {
   const src = fs.readFileSync(path.join(root, 'js/admin.js'), 'utf8');
   assert.match(src, /\^\(en\|it\|de\|es\|pl\|sl\|fr\|nl\|sv\|nb\|nn\|no\|fi\)/);
   assert.match(src, /function isIntlClickVisit/);
-  assert.match(src, /if \(isIntlClickVisit\(evs\)\) return;/);
+  // Official stats: same unique/repeat drop for .com and .com.br (no intl exemption).
+  assert.match(src, /function filterClicksExcludingUniqueOrRepeat/);
+  assert.doesNotMatch(src, /if \(isIntlClickVisit\(evs\)\) return;/);
+  assert.doesNotMatch(src, /if \(isIntlClickVisit\(events\) && !events\.some\(isCrawlerClickRow\)\) return;/);
 });
 
 test('Homes FR/NL/SV/NO/FI têm SEO completo + analytics/schema', () => {

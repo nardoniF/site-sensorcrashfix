@@ -1127,7 +1127,7 @@
                                 <span class="admin-fold-hint">gráficos</span>
                             </summary>
                             <div class="admin-fold-body">
-                                <p class="admin-meta">Site (compacto), mês, semana (1ª–5ª, média dos meses), dia da semana, dia do mês e hora. Mais recente em cima no mês. Fuso São Paulo. Estatística sempre exclui únicos/bots.</p>
+                                <p class="admin-meta">Site (compacto), mês, semana (1ª–5ª, média dos meses), dia da semana, dia do mês e hora. Mais recente em cima no mês. Fuso São Paulo. Estatística oficial exclui únicos/bots no <strong>.com</strong> e no <strong>.com.br</strong> (mesma regra).</p>
                                 <div class="vendas-when-filters">
                                     <label>Site
                                         <select id="clicks-when-site" aria-label="Filtrar site">
@@ -1154,7 +1154,7 @@
                                 <span class="admin-fold-hint">hora · estado · cidade</span>
                             </summary>
                             <div class="admin-fold-body">
-                                <p class="admin-meta">Não entra no número oficial. Para ver bots: <strong>hora</strong> (Brasília), ranking de <strong>estado</strong> e <strong>cidade</strong> (geo do IP), <strong>local no site</strong> e <strong>site</strong> (.com / .com.br). Única = 1 evento; repetida = 2+ no mesmo destino. Filtro Tipo separa únicas e repetidas.</p>
+                                <p class="admin-meta">Não entra no número oficial (.com e .com.br iguais). Para ver bots: <strong>hora</strong> (Brasília), ranking de <strong>estado</strong> e <strong>cidade</strong> (geo do IP), <strong>local no site</strong> e <strong>site</strong> (.com / .com.br). Única = 1 evento; repetida = 2+ no mesmo destino. Filtro Tipo separa únicas e repetidas.</p>
                                 <div class="vendas-when-filters">
                                     <label>Site
                                         <select id="clicks-noise-site" aria-label="Filtrar site dos únicos">
@@ -1369,6 +1369,6 @@
     })();
     </script>
     <script type="module" src="js/sales-money.mjs?v=6"></script>
-    <script defer src="js/admin.js?v=251-clicks-updating"></script>
+    <script defer src="js/admin.js?v=252-clicks-equal-com-br"></script>
 </body>
 </html>
