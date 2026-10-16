@@ -5188,6 +5188,25 @@ ${worksheets}
     return !!(panel && !panel.hidden);
   }
 
+  const CLICKS_REFRESH_BTN_HTML = '<i class="fas fa-sync-alt"></i> Atualizar';
+  const CLICKS_UPDATING_BTN_HTML = '<i class="fas fa-spinner fa-spin"></i> Atualizando...';
+  const CLICKS_BUSY_CONTROL_IDS = [
+    'btn-clicks-refresh',
+    'btn-clicks-export',
+    'btn-clicks-test',
+    'btn-clicks-clear-tests',
+    'btn-clicks-clear-all',
+    'clicks-search',
+    'clicks-filter-destino',
+    'clicks-filter-nav',
+    'clicks-filter-nav-only',
+    'clicks-when-site',
+    'clicks-when-metric',
+    'clicks-noise-site',
+    'clicks-noise-kind',
+    'clicks-noise-metric'
+  ];
+
   function setClicksLoadStatus(msg, type) {
     const el = document.getElementById('admin-status-cliques');
     if (!el) return;
@@ -5199,6 +5218,55 @@ ${worksheets}
     el.textContent = msg;
     el.className = 'admin-status form-status ' + (type || '');
     el.hidden = false;
+  }
+
+  function showClicksLoadingPlaceholders() {
+    const loading =
+      '<p class="admin-meta"><i class="fas fa-spinner fa-spin"></i> Atualizando…</p>';
+    const root = document.getElementById('clicks-tree-root');
+    const stats = document.getElementById('clicks-stats');
+    const charts = document.getElementById('clicks-when-charts');
+    const noise = document.getElementById('clicks-noise-charts');
+    if (root) root.innerHTML = loading;
+    if (stats) stats.innerHTML = loading;
+    if (charts) charts.innerHTML = loading;
+    if (noise) noise.innerHTML = loading;
+    const checkedEl = document.getElementById('clicks-checked-at');
+    if (checkedEl) checkedEl.hidden = true;
+  }
+
+  function syncClicksNavFilterDisabled() {
+    const destino = document.getElementById('clicks-filter-destino')?.value || '';
+    const navEl = document.getElementById('clicks-filter-nav');
+    if (!navEl) return;
+    navEl.disabled = !destino;
+    navEl.closest('label')?.classList.toggle('is-disabled', !destino);
+  }
+
+  /** Trava a aba Cliques até fetch + render do DOM terminarem. */
+  function setClicksPanelBusy(busy) {
+    const panel = document.getElementById('admin-tab-cliques');
+    if (panel) {
+      panel.classList.toggle('is-clicks-loading', !!busy);
+      panel.setAttribute('aria-busy', busy ? 'true' : 'false');
+    }
+    CLICKS_BUSY_CONTROL_IDS.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.disabled = !!busy;
+      if (id === 'btn-clicks-refresh') {
+        el.innerHTML = busy ? CLICKS_UPDATING_BTN_HTML : CLICKS_REFRESH_BTN_HTML;
+      }
+    });
+    if (!busy) syncClicksNavFilterDisabled();
+  }
+
+  function waitForClicksDomPaint() {
+    return new Promise((resolve) => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(resolve);
+      });
+    });
   }
 
   function renderClicksFromCache(openPaths) {
@@ -5245,28 +5313,18 @@ ${worksheets}
     const destino = document.getElementById('clicks-filter-destino')?.value || '';
     const navEl = document.getElementById('clicks-filter-nav');
     const withNav = !!navEl?.checked;
-    if (navEl) {
-      navEl.disabled = !destino;
-      navEl.closest('label')?.classList.toggle('is-disabled', !destino);
-    }
 
     clicksLoading = true;
-    const refreshBtn = document.getElementById('btn-clicks-refresh');
-    const refreshBtnHtml = refreshBtn ? refreshBtn.innerHTML : '';
-    if (refreshBtn) {
-      refreshBtn.disabled = true;
-      refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Atualizando...';
-    }
+    setClicksPanelBusy(true);
     const openPaths = preserveOpen ? captureClicksTreeOpenPaths() : [];
     const panelVisible = isClicksPanelVisible();
     setClicksLoadStatus(
       panelVisible
-        ? 'Carregando histórico de cliques…'
-        : 'Carregando cliques em segundo plano — você pode usar outras abas.'
+        ? 'Atualizando histórico de cliques…'
+        : 'Atualizando cliques em segundo plano — você pode usar outras abas.'
     );
-    if (panelVisible && !clicksCache.length) {
-      root.innerHTML = '<p class="admin-meta"><i class="fas fa-spinner fa-spin"></i> Carregando histórico…</p>';
-    }
+    // Sempre loading até fetch+render: evita cache vazio/stale “pronto” e depois pop-in.
+    if (panelVisible) showClicksLoadingPlaceholders();
 
     try {
       const params = new URLSearchParams({ limit: '4000' });
@@ -5294,23 +5352,25 @@ ${worksheets}
         const baseTxt = checkedEl.textContent || '';
         checkedEl.textContent = `${baseTxt} · navegação completa (${data.navSessions || 0} visita${(data.navSessions || 0) === 1 ? '' : 's'})`;
       }
+      // Só libera a UI depois do paint do tree/charts (gate real).
+      await waitForClicksDomPaint();
       setClicksLoadStatus('Cliques atualizados.', 'success');
       window.setTimeout(() => setClicksLoadStatus(''), 2500);
     } catch (err) {
       if (isClicksPanelVisible()) {
         root.innerHTML = `<p class="admin-status-bad">${escapeHtml(err.message)}</p>`;
+        const stats = document.getElementById('clicks-stats');
+        if (stats) stats.innerHTML = '';
       }
       setClicksLoadStatus(err.message || 'Erro ao carregar cliques.', 'error');
       const charts = document.getElementById('clicks-when-charts');
       if (charts) charts.innerHTML = '';
       const noise = document.getElementById('clicks-noise-charts');
       if (noise) noise.innerHTML = '';
+      await waitForClicksDomPaint();
     } finally {
       clicksLoading = false;
-      if (refreshBtn) {
-        refreshBtn.disabled = false;
-        refreshBtn.innerHTML = refreshBtnHtml || '<i class="fas fa-sync-alt"></i> Atualizar';
-      }
+      setClicksPanelBusy(false);
     }
   }
 
@@ -7901,10 +7961,12 @@ ${worksheets}
       try { localStorage.setItem('stf_admin_tab', id); } catch (e) { /* ignore */ }
       if (id === 'cliques') {
         syncClicksNavOnlyCheckbox();
-        if (clicksCache.length && clicksMetaCache) {
+        if (clicksLoading) {
+          setClicksLoadStatus('Atualizando cliques…');
+          showClicksLoadingPlaceholders();
+          setClicksPanelBusy(true);
+        } else if (clicksCache.length && clicksMetaCache) {
           reapplyClicksLocalFilters(captureClicksTreeOpenPaths());
-        } else if (clicksLoading) {
-          setClicksLoadStatus('Carregando cliques…');
         } else {
           showClicksEmptyState();
         }

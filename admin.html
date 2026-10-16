@@ -10,6 +10,11 @@
       .clicks-device-badge{display:inline-block;padding:2px 7px;border-radius:999px;font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
       .clicks-device--mobile{background:rgba(76,175,80,.14);color:#81c784}
       .clicks-device--desktop{background:rgba(144,202,249,.12);color:#90caf9}
+      #admin-tab-cliques.is-clicks-loading .admin-clicks-filters,
+      #admin-tab-cliques.is-clicks-loading .admin-fold,
+      #admin-tab-cliques.is-clicks-loading #clicks-stats,
+      #admin-tab-cliques.is-clicks-loading #clicks-tree-root{opacity:.55;pointer-events:none}
+      #admin-tab-cliques.is-clicks-loading #btn-clicks-refresh{opacity:1;pointer-events:none}
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -1369,6 +1374,6 @@
     })();
     </script>
     <script type="module" src="js/sales-money.mjs?v=6"></script>
-    <script defer src="js/admin.js?v=252-clicks-equal-com-br"></script>
+    <script defer src="js/admin.js?v=253-clicks-loading-gate"></script>
 </body>
 </html>
