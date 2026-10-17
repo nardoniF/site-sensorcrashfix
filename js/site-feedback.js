@@ -38,7 +38,7 @@
       sending: 'Sending…',
       close: 'Close',
       thanks: 'Thank you! Your feedback helps us improve the site.',
-      err: 'Could not send. Try again or email support@sensorcrashfix.com.',
+      err: 'Could not send. Try again or email contato@sensorcrashfix.com.br.',
       errShort: 'Please describe what you were looking for (at least 8 characters).'
     },
     it: {
@@ -56,7 +56,7 @@
       sending: 'Invio…',
       close: 'Chiudi',
       thanks: 'Grazie! Il tuo feedback ci aiuta a migliorare il sito.',
-      err: 'Invio non riuscito. Riprova o scrivi a support@sensorcrashfix.com.',
+      err: 'Invio non riuscito. Riprova o scrivi a contato@sensorcrashfix.com.br.',
       errShort: 'Descrivi cosa cercavi (almeno 8 caratteri).'
     },
     de: {
@@ -74,7 +74,7 @@
       sending: 'Wird gesendet…',
       close: 'Schließen',
       thanks: 'Danke! Ihr Feedback hilft uns, die Website zu verbessern.',
-      err: 'Senden fehlgeschlagen. Versuchen Sie es erneut oder schreiben Sie an support@sensorcrashfix.com.',
+      err: 'Senden fehlgeschlagen. Versuchen Sie es erneut oder schreiben Sie an contato@sensorcrashfix.com.br.',
       errShort: 'Beschreiben Sie, wonach Sie gesucht haben (mindestens 8 Zeichen).'
     },
     es: {
@@ -92,7 +92,7 @@
       sending: 'Enviando…',
       close: 'Cerrar',
       thanks: '¡Gracias! Tu comentario nos ayuda a mejorar el sitio.',
-      err: 'No se pudo enviar. Inténtalo de nuevo o escribe a support@sensorcrashfix.com.',
+      err: 'No se pudo enviar. Inténtalo de nuevo o escribe a contato@sensorcrashfix.com.br.',
       errShort: 'Describe qué buscabas (al menos 8 caracteres).'
     },
     pl: {
@@ -110,7 +110,7 @@
       sending: 'Wysyłanie…',
       close: 'Zamknij',
       thanks: 'Dziękujemy! Twoja opinia pomaga nam ulepszać stronę.',
-      err: 'Nie udało się wysłać. Spróbuj ponownie lub napisz na support@sensorcrashfix.com.',
+      err: 'Nie udało się wysłać. Spróbuj ponownie lub napisz na contato@sensorcrashfix.com.br.',
       errShort: 'Opisz, czego szukałeś (co najmniej 8 znaków).'
     },
     sl: {
@@ -128,8 +128,98 @@
       sending: 'Pošiljanje…',
       close: 'Zapri',
       thanks: 'Hvala! Vaše mnenje nam pomaga izboljšati stran.',
-      err: 'Pošiljanje ni uspelo. Poskusite znova ali pišite na support@sensorcrashfix.com.',
+      err: 'Pošiljanje ni uspelo. Poskusite znova ali pišite na contato@sensorcrashfix.com.br.',
       errShort: 'Opišite, kaj ste iskali (vsaj 8 znakov).'
+    },
+    fr: {
+      fab: 'Suggestions',
+      fabAria: 'Dites-nous ce qui manquait sur le site',
+      title: 'Aidez-nous à nous améliorer',
+      intro: 'Vous n’avez pas trouvé ce qu’il fallait ? Quelques mots suffisent — nous lisons chaque réponse.',
+      buscava: 'Que cherchiez-vous ?',
+      buscavaPh: 'Ex. : prix du kit, compatibilité Garmin, délai de livraison…',
+      sugestao: 'Ce qui manquait ou une suggestion (facultatif)',
+      sugestaoPh: 'Ex. : vidéo d’installation, comparatif de modèles, livraison internationale…',
+      email: 'Votre e-mail (facultatif)',
+      emailPh: 'Seulement si vous voulez une réponse',
+      send: 'Envoyer',
+      sending: 'Envoi…',
+      close: 'Fermer',
+      thanks: 'Merci ! Votre retour nous aide à améliorer le site.',
+      err: 'Envoi impossible. Réessayez ou écrivez à contato@sensorcrashfix.com.br.',
+      errShort: 'Décrivez ce que vous cherchiez (au moins 8 caractères).'
+    },
+    nl: {
+      fab: 'Suggesties',
+      fabAria: 'Vertel wat er op de site ontbrak',
+      title: 'Help ons verbeteren',
+      intro: 'Niet gevonden wat je zocht? Een paar woorden volstaan — we lezen elk antwoord.',
+      buscava: 'Waar was je naar op zoek?',
+      buscavaPh: 'Bijv. kitprijs, Garmin-compatibiliteit, levertijd…',
+      sugestao: 'Wat ontbrak of een suggestie (optioneel)',
+      sugestaoPh: 'Bijv. installatievideo, modelvergelijking, internationale verzending…',
+      email: 'Je e-mail (optioneel)',
+      emailPh: 'Alleen als je een antwoord wilt',
+      send: 'Versturen',
+      sending: 'Versturen…',
+      close: 'Sluiten',
+      thanks: 'Bedankt! Je feedback helpt ons de site te verbeteren.',
+      err: 'Versturen mislukt. Probeer opnieuw of mail contato@sensorcrashfix.com.br.',
+      errShort: 'Beschrijf wat je zocht (minstens 8 tekens).'
+    },
+    sv: {
+      fab: 'Förslag',
+      fabAria: 'Berätta vad som saknades på webbplatsen',
+      title: 'Hjälp oss att bli bättre',
+      intro: 'Hittade du inte det du behövde? Några ord räcker — vi läser varje svar.',
+      buscava: 'Vad sökte du efter?',
+      buscavaPh: 'T.ex. kitpris, Garmin-kompatibilitet, leveranstid…',
+      sugestao: 'Vad saknades eller ett förslag (valfritt)',
+      sugestaoPh: 'T.ex. installationsvideo, modelljämförelse, internationell frakt…',
+      email: 'Din e-post (valfritt)',
+      emailPh: 'Bara om du vill ha svar',
+      send: 'Skicka',
+      sending: 'Skickar…',
+      close: 'Stäng',
+      thanks: 'Tack! Din feedback hjälper oss att förbättra webbplatsen.',
+      err: 'Kunde inte skicka. Försök igen eller mejla contato@sensorcrashfix.com.br.',
+      errShort: 'Beskriv vad du sökte (minst 8 tecken).'
+    },
+    no: {
+      fab: 'Forslag',
+      fabAria: 'Fortell hva som manglet på nettstedet',
+      title: 'Hjelp oss å bli bedre',
+      intro: 'Fant du ikke det du trengte? Noen ord holder — vi leser hvert svar.',
+      buscava: 'Hva lette du etter?',
+      buscavaPh: 'F.eks. settpris, Garmin-kompatibilitet, leveringstid…',
+      sugestao: 'Hva manglet eller et forslag (valgfritt)',
+      sugestaoPh: 'F.eks. installasjonsvideo, modellsammenligning, internasjonal frakt…',
+      email: 'Din e-post (valgfritt)',
+      emailPh: 'Bare hvis du vil ha svar',
+      send: 'Send',
+      sending: 'Sender…',
+      close: 'Lukk',
+      thanks: 'Takk! Tilbakemeldingen din hjelper oss å forbedre nettstedet.',
+      err: 'Kunne ikke sende. Prøv igjen eller skriv til contato@sensorcrashfix.com.br.',
+      errShort: 'Beskriv hva du lette etter (minst 8 tegn).'
+    },
+    fi: {
+      fab: 'Ehdotukset',
+      fabAria: 'Kerro, mitä sivustolta puuttui',
+      title: 'Auta meitä parantamaan',
+      intro: 'Etkö löytänyt tarvitsemaasi? Muutama sana riittää — luemme jokaisen vastauksen.',
+      buscava: 'Mitä etsit?',
+      buscavaPh: 'Esim. paketin hinta, Garmin-yhteensopivuus, toimitusaika…',
+      sugestao: 'Mitä puuttui tai ehdotus (valinnainen)',
+      sugestaoPh: 'Esim. asennusvideo, mallivertailu, kansainvälinen toimitus…',
+      email: 'Sähköpostisi (valinnainen)',
+      emailPh: 'Vain jos haluat vastauksen',
+      send: 'Lähetä',
+      sending: 'Lähetetään…',
+      close: 'Sulje',
+      thanks: 'Kiitos! Palautteesi auttaa meitä parantamaan sivustoa.',
+      err: 'Lähetys epäonnistui. Yritä uudelleen tai kirjoita contato@sensorcrashfix.com.br.',
+      errShort: 'Kuvaile, mitä etsit (vähintään 8 merkkiä).'
     }
   };
 
@@ -141,6 +231,11 @@
     if (htmlLang.startsWith('es') || location.pathname.includes('/es/')) return 'es';
     if (htmlLang.startsWith('pl') || location.pathname.includes('/pl/')) return 'pl';
     if (htmlLang.startsWith('sl') || location.pathname.includes('/sl/')) return 'sl';
+    if (htmlLang.startsWith('fr') || location.pathname.includes('/fr/')) return 'fr';
+    if (htmlLang.startsWith('nl') || location.pathname.includes('/nl/')) return 'nl';
+    if (htmlLang.startsWith('sv') || location.pathname.includes('/sv/')) return 'sv';
+    if (htmlLang.startsWith('nb') || htmlLang.startsWith('nn') || htmlLang.startsWith('no') || location.pathname.includes('/no/')) return 'no';
+    if (htmlLang.startsWith('fi') || location.pathname.includes('/fi/')) return 'fi';
     if (
       htmlLang.startsWith('en') ||
       location.pathname.includes('/en/') ||

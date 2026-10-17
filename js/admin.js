@@ -4081,14 +4081,34 @@ ${worksheets}
     if (/sensorcrashfix\.com\.br/.test(host)) return 'com.br';
     if (/sensorcrashfix\.com(?!\.br)/.test(host)) return 'com';
     const idioma = String(c?.idioma || '').toLowerCase();
-    if (idioma.startsWith('en') || idioma.startsWith('it')) return 'com';
     if (idioma.startsWith('pt')) return 'com.br';
+    if (/^(en|it|de|es|pl|sl|fr|nl|sv|nb|nn|no|fi)/.test(idioma)) return 'com';
     const pagina = String(c?.pagina || '');
-    if (/\b(EN|IT)\b/.test(pagina)) return 'com';
+    if (/\b(EN|IT|DE|ES|PL|SL|FR|NL|SV|NO|FI)\b/.test(pagina)) return 'com';
     if (/\bBR\b/.test(pagina)) return 'com.br';
     const dest = String(c?.destino || '');
-    if (/_(en|it)(_|$)/.test(dest) || /_(en|it)$/.test(dest)) return 'com';
+    if (/_(en|it|de|es|pl|sl|fr|nl|sv|no|fi)(_|$)/.test(dest) || /_(en|it|de|es|pl|sl|fr|nl|sv|no|fi)$/.test(dest)) {
+      return 'com';
+    }
+    const pais = String(c?.pais || c?.pais_nome || '').trim();
+    if (pais && !/^(BR|BRASIL|BRAZIL)$/i.test(pais) && !/brasil|brazil/i.test(pais)) return 'com';
     return 'com.br';
+  }
+
+  /** True when visit geo/host is outside Brazil (.com SEO humans often bounce). */
+  function isIntlClickVisit(events) {
+    const list = Array.isArray(events) ? events : [events];
+    for (const c of list) {
+      if (!c) continue;
+      if (clickSiteHost(c) === 'com') return true;
+      const pais = String(c.pais || c.pais_nome || '').trim();
+      if (pais && !/^(BR|BRASIL|BRAZIL|XX|T1)$/i.test(pais) && !/brasil|brazil/i.test(pais)) {
+        return true;
+      }
+      const idioma = String(c.idioma || '').toLowerCase();
+      if (idioma && !idioma.startsWith('pt')) return true;
+    }
+    return false;
   }
 
   function clickSessionKey(c) {
@@ -4151,6 +4171,8 @@ ${worksheets}
     const drop = new Set();
     groupClicksByLogicalVisit(clicks).forEach((evs) => {
       if (!isUniqueOrRepeatOnlySession(evs)) return;
+      // Same rule for .com and .com.br: unique/repeat-only (<2 distinct
+      // destinations) is noise — excluded from official stats for both hosts.
       evs.forEach((c) => drop.add(c));
     });
     return (clicks || []).filter((c) => !drop.has(c) && !isCrawlerClickRow(c));
@@ -4182,6 +4204,7 @@ ${worksheets}
     const sessions = [];
     groupClicksBySession(withoutTests).forEach((events, key) => {
       if (!isUniqueOrRepeatOnlySession(events)) return;
+      // Include .com and .com.br unique/repeat in the noise panel (same as official drop).
       const ordered = [...events].sort((a, b) => (Number(a.ts || a.client_ts) || 0) - (Number(b.ts || b.client_ts) || 0));
       const first = ordered[0] || {};
       const ts = Number(first.ts || first.client_ts || 0);
@@ -5165,6 +5188,25 @@ ${worksheets}
     return !!(panel && !panel.hidden);
   }
 
+  const CLICKS_REFRESH_BTN_HTML = '<i class="fas fa-sync-alt"></i> Atualizar';
+  const CLICKS_UPDATING_BTN_HTML = '<i class="fas fa-spinner fa-spin"></i> Atualizando...';
+  const CLICKS_BUSY_CONTROL_IDS = [
+    'btn-clicks-refresh',
+    'btn-clicks-export',
+    'btn-clicks-test',
+    'btn-clicks-clear-tests',
+    'btn-clicks-clear-all',
+    'clicks-search',
+    'clicks-filter-destino',
+    'clicks-filter-nav',
+    'clicks-filter-nav-only',
+    'clicks-when-site',
+    'clicks-when-metric',
+    'clicks-noise-site',
+    'clicks-noise-kind',
+    'clicks-noise-metric'
+  ];
+
   function setClicksLoadStatus(msg, type) {
     const el = document.getElementById('admin-status-cliques');
     if (!el) return;
@@ -5176,6 +5218,55 @@ ${worksheets}
     el.textContent = msg;
     el.className = 'admin-status form-status ' + (type || '');
     el.hidden = false;
+  }
+
+  function showClicksLoadingPlaceholders() {
+    const loading =
+      '<p class="admin-meta"><i class="fas fa-spinner fa-spin"></i> Atualizando…</p>';
+    const root = document.getElementById('clicks-tree-root');
+    const stats = document.getElementById('clicks-stats');
+    const charts = document.getElementById('clicks-when-charts');
+    const noise = document.getElementById('clicks-noise-charts');
+    if (root) root.innerHTML = loading;
+    if (stats) stats.innerHTML = loading;
+    if (charts) charts.innerHTML = loading;
+    if (noise) noise.innerHTML = loading;
+    const checkedEl = document.getElementById('clicks-checked-at');
+    if (checkedEl) checkedEl.hidden = true;
+  }
+
+  function syncClicksNavFilterDisabled() {
+    const destino = document.getElementById('clicks-filter-destino')?.value || '';
+    const navEl = document.getElementById('clicks-filter-nav');
+    if (!navEl) return;
+    navEl.disabled = !destino;
+    navEl.closest('label')?.classList.toggle('is-disabled', !destino);
+  }
+
+  /** Trava a aba Cliques até fetch + render do DOM terminarem. */
+  function setClicksPanelBusy(busy) {
+    const panel = document.getElementById('admin-tab-cliques');
+    if (panel) {
+      panel.classList.toggle('is-clicks-loading', !!busy);
+      panel.setAttribute('aria-busy', busy ? 'true' : 'false');
+    }
+    CLICKS_BUSY_CONTROL_IDS.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.disabled = !!busy;
+      if (id === 'btn-clicks-refresh') {
+        el.innerHTML = busy ? CLICKS_UPDATING_BTN_HTML : CLICKS_REFRESH_BTN_HTML;
+      }
+    });
+    if (!busy) syncClicksNavFilterDisabled();
+  }
+
+  function waitForClicksDomPaint() {
+    return new Promise((resolve) => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(resolve);
+      });
+    });
   }
 
   function renderClicksFromCache(openPaths) {
@@ -5222,22 +5313,18 @@ ${worksheets}
     const destino = document.getElementById('clicks-filter-destino')?.value || '';
     const navEl = document.getElementById('clicks-filter-nav');
     const withNav = !!navEl?.checked;
-    if (navEl) {
-      navEl.disabled = !destino;
-      navEl.closest('label')?.classList.toggle('is-disabled', !destino);
-    }
 
     clicksLoading = true;
+    setClicksPanelBusy(true);
     const openPaths = preserveOpen ? captureClicksTreeOpenPaths() : [];
     const panelVisible = isClicksPanelVisible();
     setClicksLoadStatus(
       panelVisible
-        ? 'Carregando histórico de cliques…'
-        : 'Carregando cliques em segundo plano — você pode usar outras abas.'
+        ? 'Atualizando histórico de cliques…'
+        : 'Atualizando cliques em segundo plano — você pode usar outras abas.'
     );
-    if (panelVisible && !clicksCache.length) {
-      root.innerHTML = '<p class="admin-meta"><i class="fas fa-spinner fa-spin"></i> Carregando histórico…</p>';
-    }
+    // Sempre loading até fetch+render: evita cache vazio/stale “pronto” e depois pop-in.
+    if (panelVisible) showClicksLoadingPlaceholders();
 
     try {
       const params = new URLSearchParams({ limit: '4000' });
@@ -5265,19 +5352,25 @@ ${worksheets}
         const baseTxt = checkedEl.textContent || '';
         checkedEl.textContent = `${baseTxt} · navegação completa (${data.navSessions || 0} visita${(data.navSessions || 0) === 1 ? '' : 's'})`;
       }
+      // Só libera a UI depois do paint do tree/charts (gate real).
+      await waitForClicksDomPaint();
       setClicksLoadStatus('Cliques atualizados.', 'success');
       window.setTimeout(() => setClicksLoadStatus(''), 2500);
     } catch (err) {
       if (isClicksPanelVisible()) {
         root.innerHTML = `<p class="admin-status-bad">${escapeHtml(err.message)}</p>`;
+        const stats = document.getElementById('clicks-stats');
+        if (stats) stats.innerHTML = '';
       }
       setClicksLoadStatus(err.message || 'Erro ao carregar cliques.', 'error');
       const charts = document.getElementById('clicks-when-charts');
       if (charts) charts.innerHTML = '';
       const noise = document.getElementById('clicks-noise-charts');
       if (noise) noise.innerHTML = '';
+      await waitForClicksDomPaint();
     } finally {
       clicksLoading = false;
+      setClicksPanelBusy(false);
     }
   }
 
@@ -5782,12 +5875,175 @@ ${worksheets}
     return m.includes('INT') && !m.includes('BR');
   }
 
+  /** TattooFix scheme: R$ × (1 + markup%) → FX. Default 130% when empty. */
+  const DEFAULT_INTL_MARKUP_PERCENT = 130;
+
+  const DEFAULT_INTL_CURRENCIES = [
+    { code: 'USD', label: 'Dólar (USD)', langs: ['en'], countries: ['US', 'CA', 'AU', 'NZ', 'SG', 'HK'], decimals: 2, active: true },
+    { code: 'GBP', label: 'Libra (GBP)', langs: [], countries: ['GB'], decimals: 2, active: true },
+    { code: 'EUR', label: 'Euro (EUR)', langs: ['it', 'de', 'es', 'sl', 'fr', 'nl', 'fi'], countries: ['IT', 'DE', 'ES', 'SI', 'FR', 'NL', 'FI', 'AT', 'BE', 'PT', 'IE'], decimals: 2, active: true },
+    { code: 'PLN', label: 'Złoty (PLN)', langs: ['pl'], countries: ['PL'], decimals: 2, active: true },
+    { code: 'SEK', label: 'Coroa sueca (SEK)', langs: ['sv'], countries: ['SE'], decimals: 0, active: true },
+    { code: 'NOK', label: 'Coroa norueguesa (NOK)', langs: ['no'], countries: ['NO'], decimals: 0, active: true }
+  ];
+
+  let adminFxRatesCache = { rates: null, at: 0 };
+
+  async function loadAdminFxRates() {
+    if (adminFxRatesCache.rates && Date.now() - adminFxRatesCache.at < 300000) {
+      return adminFxRatesCache.rates;
+    }
+    const base = (window.CONFIG_BOOTSTRAP?.configApiUrl || currentConfig?.api?.baseUrl || '').replace(/\/$/, '');
+    if (!base) return {};
+    try {
+      const res = await fetch(`${base}/fx/rates?to=USD,EUR,GBP,PLN,SEK,NOK`, { cache: 'no-store' });
+      if (!res.ok) return adminFxRatesCache.rates || {};
+      const data = await res.json();
+      adminFxRatesCache = { rates: data.rates || {}, at: Date.now() };
+      return adminFxRatesCache.rates;
+    } catch {
+      return adminFxRatesCache.rates || {};
+    }
+  }
+
+  function intlBaseFromInputs(price, markup) {
+    const brl = Math.max(0, Number(price) || 0);
+    const m = Number(markup);
+    const pct = Number.isFinite(m) && m >= 0 ? m : DEFAULT_INTL_MARKUP_PERCENT;
+    return Math.round(brl * (1 + pct / 100) * 100) / 100;
+  }
+
+  function formatAdminBrl(n) {
+    return Number(n || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+
+  function applyFxAmountAdmin(amountBrl, rate, decimals) {
+    const amount = Math.max(0, Number(amountBrl) || 0) * Math.max(0, Number(rate) || 0);
+    const d = Number.isFinite(Number(decimals)) ? Math.max(0, Math.min(4, Math.floor(Number(decimals)))) : 2;
+    const factor = 10 ** d;
+    return Math.round(amount * factor) / factor;
+  }
+
+  function intlPriceFieldName(code) {
+    const c = String(code || '').toUpperCase();
+    if (!/^[A-Z]{3}$/.test(c)) return null;
+    return 'price' + c[0] + c.slice(1).toLowerCase();
+  }
+
+  function normalizeAdminIntlCurrency(row, fallback) {
+    const base = fallback && typeof fallback === 'object' ? fallback : {};
+    const code = String(row?.code || base.code || '').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 3);
+    if (code.length !== 3) return null;
+    const langs = String(row?.langsText != null ? row.langsText : (Array.isArray(row?.langs) ? row.langs.join(', ') : (base.langs || []).join(', ')))
+      .split(/[\s,;]+/).map((s) => s.toLowerCase().trim()).filter(Boolean);
+    const countries = String(row?.countriesText != null ? row.countriesText : (Array.isArray(row?.countries) ? row.countries.join(', ') : (base.countries || []).join(', ')))
+      .split(/[\s,;]+/).map((s) => s.toUpperCase().trim()).filter(Boolean);
+    const decimals = Number.isFinite(Number(row?.decimals != null ? row.decimals : base.decimals))
+      ? Math.max(0, Math.min(4, Math.floor(Number(row?.decimals != null ? row.decimals : base.decimals))))
+      : 2;
+    return {
+      code,
+      label: String(row?.label || base.label || code).trim() || code,
+      langs,
+      countries,
+      decimals,
+      active: row?.active != null ? row.active !== false : base.active !== false
+    };
+  }
+
+  function getAdminIntlCurrencies(config) {
+    const byCode = new Map(DEFAULT_INTL_CURRENCIES.map((c) => [c.code, { ...c, langs: c.langs.slice(), countries: c.countries.slice() }]));
+    (Array.isArray(config?.intlCurrencies) ? config.intlCurrencies : []).forEach((row) => {
+      const n = normalizeAdminIntlCurrency(row, byCode.get(String(row?.code || '').toUpperCase()) || { code: row?.code });
+      if (n) byCode.set(n.code, n);
+    });
+    return Array.from(byCode.values());
+  }
+
+  function collectIntlCurrencies() {
+    return getAdminIntlCurrencies(currentConfig);
+  }
+
+  function refreshIntlPriceRow(row, rates) {
+    if (!row || row.getAttribute('data-market') !== 'INT') return;
+    const priceEl = row.querySelector('[data-field="price"]');
+    const markupEl = row.querySelector('[data-field="intlMarkupPercent"]');
+    const brl = Number(priceEl?.value) || 0;
+    const markup = Number(markupEl?.value);
+    const pct = Number.isFinite(markup) && markup >= 0 ? markup : DEFAULT_INTL_MARKUP_PERCENT;
+    const base = intlBaseFromInputs(brl, pct);
+    const summary = row.querySelector('[data-intl-base-summary]');
+    if (summary) {
+      summary.innerHTML = `Base internacional = R$ × (1 + markup) = <strong>${formatAdminBrl(base)}</strong> — depois convertida pela cotação. Moedas abaixo são calculadas (não editáveis).`;
+    }
+    row.querySelectorAll('[data-intl-base-label]').forEach((el) => {
+      el.textContent = `≈ ${formatAdminBrl(base)}`;
+    });
+    const currencies = collectIntlCurrencies().filter((c) => c.active !== false);
+    currencies.forEach((cur) => {
+      const field = intlPriceFieldName(cur.code);
+      const input = field ? row.querySelector(`[data-field="${field}"]`) : null;
+      const rate = Number(rates?.[cur.code]);
+      if (input && rate > 0) input.value = String(applyFxAmountAdmin(base, rate, cur.decimals));
+    });
+  }
+
+  async function bindIntlMarkupRecalc(listEl) {
+    if (!listEl) return;
+    const rates = await loadAdminFxRates();
+    listEl.querySelectorAll('.admin-product-row[data-market="INT"]').forEach((row) => {
+      const onChange = () => refreshIntlPriceRow(row, rates);
+      row.querySelector('[data-field="price"]')?.addEventListener('input', onChange);
+      row.querySelector('[data-field="intlMarkupPercent"]')?.addEventListener('input', onChange);
+      refreshIntlPriceRow(row, rates);
+    });
+  }
+
+  /** Markup + FX prices — always for .com/INT rows; never for BR/agregados. Fail-safe: markup input still renders. */
+  function buildIntlMarkupFieldsHtml(p) {
+    const markup = p?.intlMarkupPercent != null ? p.intlMarkupPercent : DEFAULT_INTL_MARKUP_PERCENT;
+    let baseBrl;
+    try {
+      baseBrl = p?.intlBaseBrl != null ? p.intlBaseBrl : intlBaseFromInputs(p?.price, markup);
+    } catch (_) {
+      baseBrl = intlBaseFromInputs(p?.price, markup);
+    }
+    let fields = '';
+    try {
+      const currencies = collectIntlCurrencies().filter((c) => c.active !== false);
+      fields = currencies.map((cur) => {
+        const field = intlPriceFieldName(cur.code);
+        if (!field) return '';
+        const step = cur.decimals === 0 ? '1' : (cur.decimals === 1 ? '0.1' : '0.01');
+        const langs = (cur.langs || []).map((l) => String(l).toUpperCase()).join('/');
+        const val = p?.[field] != null ? p[field] : '';
+        return `<label class="admin-intl-price-ro">Preço ${escAttr(cur.code)}${langs ? ` (.com ${escAttr(langs)})` : ''}
+                <input type="number" data-field="${escAttr(field)}" data-intl-price="1" step="${step}" min="0" value="${val}" readonly tabindex="-1">
+                <small class="admin-intl-base-brl" data-intl-base-label>≈ ${formatAdminBrl(baseBrl)}</small>
+              </label>`;
+      }).filter(Boolean).join('\n          ');
+    } catch (_) {
+      fields = '';
+    }
+    return `<div class="admin-intl-markup-block full" data-intl-markup-block="1">
+            <p class="admin-intl-markup-heading"><i class="fas fa-percent" aria-hidden="true"></i> Preço &amp; markup internacional (.com)</p>
+            <label>Preço (R$)<input type="number" data-field="price" data-intl-brl="1" step="0.01" min="0" value="${p?.price ?? 0}"></label>
+            <label class="admin-intl-markup-field">Markup internacional (%)
+              <input type="number" data-field="intlMarkupPercent" data-intl-markup="1" step="0.1" min="0" value="${markup}">
+            </label>
+            <p class="admin-meta admin-field-hint full" data-intl-base-summary>Base internacional = R$ × (1 + markup) = <strong>${formatAdminBrl(baseBrl)}</strong> — depois convertida pela cotação. Moedas abaixo são calculadas (não editáveis).</p>
+          ${fields}
+          </div>`;
+  }
+
   function renderProductRow(p, i, opts) {
     const isAggregated = !!opts?.aggregated;
     const market = opts?.market || 'BR';
+    // .com tab OR INT-only product — markup always visible; BR/agregado never.
+    const showIntlMarkup = !isAggregated && (market === 'INT' || isIntlMarketProduct(p));
     const badge = isAggregated
       ? '<span class="admin-badge-aggregated">Agregado BR</span> '
-      : (market === 'INT'
+      : (showIntlMarkup
         ? '<span class="admin-badge-main">.com</span> '
         : '<span class="admin-badge-main">Brasil</span> ');
     const title = p.name ? `${badge}Produto ${i + 1}: ${escAttr(p.name)}` : `${badge}Produto ${i + 1}`;
@@ -5869,23 +6125,24 @@ ${worksheets}
           <label class="full">Álbum de fotos <small class="admin-field-hint">uma URL por linha — ordem do carrossel na loja</small>
             <textarea data-field="images" rows="5" placeholder="/images/lens-gallery/01-….jpg">${escTextarea((Array.isArray(p.images) ? p.images : []).join('\n'))}</textarea>
           </label>` : '';
+    // INT: preço+markup no topo (antes do muro de i18n). BR: só preço R$, sem markup.
+    const pricingFields = showIntlMarkup
+      ? buildIntlMarkupFieldsHtml(p)
+      : `<label>Preço (R$)<input type="number" data-field="price" step="0.01" min="0" value="${p.price ?? 0}"></label>`;
+    const rowMarket = showIntlMarkup ? 'INT' : market;
     return `
-      <div class="admin-product-row${isAggregated ? ' admin-product-row--aggregated' : ' admin-product-row--main'}" data-product-index="${i}" data-aggregated="${isAggregated ? '1' : '0'}" data-market="${escAttr(market)}">
+      <div class="admin-product-row${isAggregated ? ' admin-product-row--aggregated' : ' admin-product-row--main'}" data-product-index="${i}" data-aggregated="${isAggregated ? '1' : '0'}" data-market="${escAttr(rowMarket)}">
         <h4>${title}</h4>
         <div class="form-grid">
           <label class="full">Nome (PT / cadastro)<input type="text" data-field="name" value="${escAttr(p.name)}" required></label>
           <label class="full">Descrição (PT)<textarea data-field="description" rows="2">${escTextarea(p.description)}</textarea></label>
+          ${pricingFields}
           ${i18nFields}
           ${aggregatedFields}
-          <label>Preço (R$)<input type="number" data-field="price" step="0.01" min="0" value="${p.price ?? 0}"></label>
-          ${market === 'INT' && !isAggregated ? `
-          <label>Preço USD (.com EN)<input type="number" data-field="priceUsd" step="0.01" min="0" value="${p.priceUsd != null ? p.priceUsd : ''}" placeholder="ex.: 12.99"></label>
-          <label>Preço EUR (.com IT)<input type="number" data-field="priceEur" step="0.01" min="0" value="${p.priceEur != null ? p.priceEur : ''}" placeholder="ex.: 11.99"></label>
-          <p class="admin-meta admin-field-hint full">Referência em R$ acima. USD/EUR são exibidos no .com (cobrança em USD). Atualizados automaticamente todo dia; você pode ajustar manualmente.</p>` : ''}
           <label>Estoque <small class="admin-field-hint">vazio = ilimitado · 0 = esgotado (some da loja)</small>
             <input type="number" data-field="stock" min="0" step="1" value="${p.stock != null ? p.stock : ''}" placeholder="ilimitado">
           </label>
-          <label>Slug (URL)<input type="text" data-field="slug" value="${p.slug || p.id || ''}" placeholder="${market === 'INT' ? 'optical-lens-intl' : 'kit-sensor-crashfix'}"></label>
+          <label>Slug (URL)<input type="text" data-field="slug" value="${p.slug || p.id || ''}" placeholder="${showIntlMarkup ? 'optical-lens-intl' : 'kit-sensor-crashfix'}"></label>
           <label class="full">URL da imagem principal<input type="text" data-field="image" value="${escAttr(p.image || '')}" placeholder="/images/lens-gallery/01-optical-correction-lens.jpg" spellcheck="false" autocomplete="off"></label>
           ${sensorField}
           <label>Peso (g)<input type="number" data-field="weightGrams" min="0.1" step="0.1" value="${p.weightGrams ?? 3}"></label>
@@ -5894,7 +6151,7 @@ ${worksheets}
             <label class="label-check"><input type="checkbox" data-field="requiresSmartwatch" ${p.requiresSmartwatch !== false ? 'checked' : ''}><span>Pede modelo do relógio</span></label>
           </div>
         </div>
-        <button type="button" class="btn-secondary btn-remove-product" data-index="${i}" data-aggregated="${isAggregated ? '1' : '0'}" data-market="${escAttr(market)}" style="margin-top:8px"><i class="fas fa-trash"></i> Remover</button>
+        <button type="button" class="btn-secondary btn-remove-product" data-index="${i}" data-aggregated="${isAggregated ? '1' : '0'}" data-market="${escAttr(rowMarket)}" style="margin-top:8px"><i class="fas fa-trash"></i> Remover</button>
       </div>`;
   }
 
@@ -5950,6 +6207,7 @@ ${worksheets}
     renderProductList(brMain, 'admin-products-br-main', { market: 'BR', aggregated: false });
     renderProductList(brAgg, 'admin-products-br-aggregated', { market: 'BR', aggregated: true });
     renderProductList(intlMain, 'admin-products-intl-main', { market: 'INT', aggregated: false });
+    bindIntlMarkupRecalc(document.getElementById('admin-products-intl-main'));
   }
 
   function collectFromList(listEl, isAggregated, market) {
@@ -6008,13 +6266,31 @@ ${worksheets}
         if (descriptionPl) product.descriptionPl = descriptionPl; else delete product.descriptionPl;
         if (descriptionSl) product.descriptionSl = descriptionSl; else delete product.descriptionSl;
         if (market === 'INT') {
-          const usd = val('priceUsd');
-          const eur = val('priceEur');
-          if (usd) product.priceUsd = Number(usd); else delete product.priceUsd;
-          if (eur) product.priceEur = Number(eur); else delete product.priceEur;
+          const currencies = collectIntlCurrencies();
+          const knownFields = new Set(currencies.map((c) => intlPriceFieldName(c.code)).filter(Boolean));
+          ['priceUsd', 'priceEur', 'priceSek', 'priceNok', 'pricePln', 'priceGbp', ...knownFields].forEach((field) => {
+            if (!field) return;
+            delete product[field];
+          });
+          const markupRaw = val('intlMarkupPercent');
+          const markupNum = Number(markupRaw);
+          product.intlMarkupPercent = Number.isFinite(markupNum) && markupNum >= 0
+            ? markupNum
+            : DEFAULT_INTL_MARKUP_PERCENT;
+          product.intlBaseBrl = intlBaseFromInputs(product.price, product.intlMarkupPercent);
+          // Foreign list prices are server-calculated on save (markup → FX). Keep shown values if present.
+          row.querySelectorAll('[data-intl-price="1"]').forEach((input) => {
+            const field = input.getAttribute('data-field');
+            if (!field) return;
+            const raw = String(input.value || '').trim();
+            if (raw) product[field] = Number(raw);
+          });
         } else {
-          delete product.priceUsd;
-          delete product.priceEur;
+          ['priceUsd', 'priceEur', 'priceSek', 'priceNok', 'pricePln', 'priceGbp', 'intlMarkupPercent', 'intlBaseBrl'].forEach((field) => { delete product[field]; });
+          collectIntlCurrencies().forEach((c) => {
+            const field = intlPriceFieldName(c.code);
+            if (field) delete product[field];
+          });
         }
         const imagesEl = row.querySelector('[data-field="images"]');
         if (imagesEl) {
@@ -7685,10 +7961,12 @@ ${worksheets}
       try { localStorage.setItem('stf_admin_tab', id); } catch (e) { /* ignore */ }
       if (id === 'cliques') {
         syncClicksNavOnlyCheckbox();
-        if (clicksCache.length && clicksMetaCache) {
+        if (clicksLoading) {
+          setClicksLoadStatus('Atualizando cliques…');
+          showClicksLoadingPlaceholders();
+          setClicksPanelBusy(true);
+        } else if (clicksCache.length && clicksMetaCache) {
           reapplyClicksLocalFilters(captureClicksTreeOpenPaths());
-        } else if (clicksLoading) {
-          setClicksLoadStatus('Carregando cliques…');
         } else {
           showClicksEmptyState();
         }
@@ -7886,12 +8164,29 @@ ${worksheets}
     }
   }
 
+  function scrubLoginSecretsFromUrl() {
+    try {
+      const url = new URL(location.href);
+      if (!url.searchParams.has('username') && !url.searchParams.has('password')) return;
+      url.searchParams.delete('username');
+      url.searchParams.delete('password');
+      const next = url.pathname + (url.searchParams.toString() ? '?' + url.searchParams.toString() : '') + url.hash;
+      history.replaceState(null, '', next);
+    } catch (_) { /* ignore */ }
+  }
+
   els.loginForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
+    e.stopPropagation();
+    scrubLoginSecretsFromUrl();
     showStatus('Entrando...', '');
     try {
-      const fd = new FormData(els.loginForm);
-      await tryLogin(fd.get('username'), fd.get('password'));
+      const userInput = els.loginForm.querySelector('[name="username"]');
+      const passInput = els.loginForm.querySelector('[name="password"]');
+      // Prefer live .value — autofill can lag behind FormData in some browsers.
+      const username = (userInput?.value ?? new FormData(els.loginForm).get('username') ?? '').toString();
+      const password = (passInput?.value ?? new FormData(els.loginForm).get('password') ?? '').toString();
+      await tryLogin(username, password);
       showPanel();
       await initPanel();
       loadDocFrame(true);
@@ -7970,7 +8265,6 @@ ${worksheets}
   document.getElementById('btn-feedback-refresh')?.addEventListener('click', () => loadFeedback());
   document.getElementById('btn-feedback-clear')?.addEventListener('click', () => clearFeedback());
   document.getElementById('feedback-search')?.addEventListener('input', scheduleFeedbackReload);
-
   const EMAIL_TEST_LABELS = {
     generic: 'Simples',
     shop_order: 'Loja — novo pedido',
@@ -8156,8 +8450,7 @@ ${worksheets}
       descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
       descriptionIt: 'Progettata per i sensori ottici degli smartwatch su pelle danificado.',
       price: 62.9,
-      priceUsd: 12.99,
-      priceEur: 11.99,
+      intlMarkupPercent: DEFAULT_INTL_MARKUP_PERCENT,
       image: LENS_INTL_IMAGES[0],
       images: LENS_INTL_IMAGES.slice(),
       active: true,
@@ -8168,7 +8461,7 @@ ${worksheets}
     });
     renderProducts(all);
     showProductSubtab('intl-main');
-    showStatus('Produto .com adicionado. Preencha os campos e clique em Salvar.', 'success', 'save');
+    showStatus('Produto .com adicionado. Ajuste markup % e clique em Salvar.', 'success', 'save');
     const panel = document.getElementById('admin-products-intl-main');
     panel?.lastElementChild?.scrollIntoView?.({ block: 'nearest', behavior: 'smooth' });
   });
@@ -8177,6 +8470,7 @@ ${worksheets}
   document.getElementById('btn-mp-release-audit')?.addEventListener('click', () => runMpReleaseAudit());
 
   document.addEventListener('DOMContentLoaded', async () => {
+    scrubLoginSecretsFromUrl();
     await waitSalesMoney();
     const token = sessionStorage.getItem(SESSION_KEY);
     if (token && apiBase()) {

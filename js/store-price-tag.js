@@ -23,19 +23,11 @@ window.STF_STORE_PRICE = (function () {
 
   function pathLang() {
     if (window.STF_PAGE_LANG?.get) return window.STF_PAGE_LANG.get();
-    if (isIntlHost()) {
-      const path = location.pathname;
-      if (path.includes('/it/')) return 'it';
-      if (path.includes('/de/')) return 'de';
-      if (path.includes('/es/')) return 'es';
-      if (path.includes('/pl/')) return 'pl';
-      return 'en';
-    }
     const path = location.pathname;
-    if (path.includes('/it/')) return 'it';
-    if (path.includes('/de/')) return 'de';
-    if (path.includes('/es/')) return 'es';
-    if (path.includes('/pl/')) return 'pl';
+    for (const lang of ['it', 'de', 'es', 'pl', 'sl', 'fr', 'nl', 'sv', 'no', 'fi']) {
+      if (path.includes(`/${lang}/`)) return lang;
+    }
+    if (isIntlHost()) return 'en';
     if (path.includes('/en/')) return 'en';
     return 'pt';
   }
