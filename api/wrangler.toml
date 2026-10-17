@@ -53,7 +53,7 @@ crons = []
 # SHOPEE_PARTNER_ID    — Open Platform Live Partner ID (app SensorCrashFix Pedidos)
 # SHOPEE_PARTNER_KEY   — Live API Partner Key
 # SHOPEE_SHOP_ID       — opcional; após OAuth fica no KV
-# MP_WEBHOOK_URL       — opcional: https://SEU-WORKER.workers.dev/webhook/mercadopago
+# MP_WEBHOOK_URL       — https://api.sensorcrashfix.com.br/webhook/mercadopago (default no código se ausente)
 # ASAAS_API_KEY        — cartão de crédito (asaas.com)
 # ASAAS_WEBHOOK_TOKEN  — token do webhook Asaas (cartão)
 # PAYPAL_CLIENT_ID     — PayPal Developer → REST API (envio internacional)
