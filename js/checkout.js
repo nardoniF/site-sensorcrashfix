@@ -636,7 +636,7 @@ window.STF_MONEY = window.STF_MONEY || (function () {
 
   function generateOrderId() {
     const d = new Date(), p = (n) => String(n).padStart(2, '0');
-    return `STF-${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;
+    return `SCF-${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;
   }
 
   function maskCep(v) {

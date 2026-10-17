@@ -2844,7 +2844,7 @@ function generateOrderId() {
   const d = new Date();
   const p = (n) => String(n).padStart(2, '0');
   const suffix = crypto.randomUUID().replace(/-/g, '').slice(0, 10).toUpperCase();
-  return `STF-${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${suffix}`;
+  return `SCF-${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${suffix}`;
 }
 
 function orderTrackingCode(order) {
@@ -2965,7 +2965,7 @@ function generateStaticPixPayload(config, order) {
   const pix = resolvePixConfig(config.pix, DEFAULT_CONFIG.pix);
   const name = pixSanitize(pix.merchantName, 25);
   const city = pixSanitize(pix.merchantCity, 15);
-  const reference = String(order.orderId || 'STF').replace(/[^a-zA-Z0-9]/g, '').slice(0, 25);
+  const reference = String(order.orderId || 'SCF').replace(/[^a-zA-Z0-9]/g, '').slice(0, 25);
   const pixKey = normalizePixKey(pix.key, pix.keyType);
   const merchantAccount = pixTlv('00', 'br.gov.bcb.pix') + pixTlv('01', pixKey);
   let payload =
@@ -16420,7 +16420,7 @@ async function handleAdminCorreiosApi586Probe(request, env, origin) {
     }
   }
 
-  const orderId = String(new URL(request.url).searchParams.get('orderId') || 'STF-20260726-CF26D2B504').trim();
+  const orderId = String(new URL(request.url).searchParams.get('orderId') || 'SCF-20260726-CF26D2B504').trim();
   const order = await getOrder(env, orderId);
   const config = await getConfig(env);
   const createAttempts = [];
@@ -16485,7 +16485,7 @@ async function handleAdminCorreiosIntlProbe(request, env, origin) {
     return json({ error: 'Não autorizado.' }, 401, origin);
   }
   const url = new URL(request.url);
-  const orderId = String(url.searchParams.get('orderId') || 'STF-20260726-CF26D2B504').trim();
+  const orderId = String(url.searchParams.get('orderId') || 'SCF-20260726-CF26D2B504').trim();
   const order = await getOrder(env, orderId);
   if (!order) return json({ error: 'Pedido não encontrado.', orderId }, 404, origin);
 
@@ -17840,7 +17840,7 @@ async function handleTestEmail(request, env, origin) {
 }
 
 function buildTestOrder(config, to, overrides = {}) {
-  const orderId = 'STF-TESTE-' + Date.now();
+  const orderId = 'SCF-TESTE-' + Date.now();
   const price = Number(config.product?.price) || 62.9;
   const locale = String(overrides.checkoutLocale || 'pt').toLowerCase();
   const isIntl = isIntlCheckoutLocale(locale);
