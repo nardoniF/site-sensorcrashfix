@@ -3,7 +3,18 @@
   const LOG_QUEUE_KEY = 'stf_log_queue';
   const LOG_QUEUE_MAX = 40;
   const LOG_DEDUP_MS = 1200;
+  /** WhatsApp/mailto em WebView (NewsBytes etc.) geram rajada — dedupe mais longo. */
+  const LOG_DEDUP_CTA_MS = 45000;
   let ultimoCliqueLink = { href: '', ts: 0 };
+
+  function dedupeMsForClique(destino, href) {
+    const d = String(destino || '').toLowerCase();
+    const h = String(href || '').toLowerCase();
+    if (d === 'whatsapp' || d === 'contato' || /wa\.me|api\.whatsapp|whatsapp\.com|mailto:/i.test(h)) {
+      return LOG_DEDUP_CTA_MS;
+    }
+    return LOG_DEDUP_MS;
+  }
 
   const ANCORA_DESTINOS = {
     'onde-comprar': 'menu_comprar',
@@ -729,13 +740,15 @@
     if (!linkRastreavel(link)) return;
     const href = link.getAttribute('href');
     const abs = hrefAbsoluto(href);
+    const destino = classificarDestino(href, link);
     const now = Date.now();
-    if (ultimoCliqueLink.href === abs && now - ultimoCliqueLink.ts < LOG_DEDUP_MS) return;
+    const dedupeMs = dedupeMsForClique(destino, abs);
+    if (ultimoCliqueLink.href === abs && now - ultimoCliqueLink.ts < dedupeMs) return;
     ultimoCliqueLink = { href: abs, ts: now };
     const payload = payloadBase(link, {
       elemento: 'link',
       href: abs,
-      destino: classificarDestino(href, link),
+      destino,
       link,
       urgente: mesmaAbaSaiDaPagina(link, href)
     });

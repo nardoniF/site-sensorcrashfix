@@ -12945,7 +12945,17 @@ function mpErrorMessage(data, status) {
   return parts.filter(Boolean).join(' — ') || `HTTP ${status}`;
 }
 
-async function createMercadoPagoPixPayment(env, order, config) {
+/** Webhook MP — secret ou URL canônica do Worker Crash (Tattoo tem o secret; Crash precisava do default). */
+function mpWebhookUrl(env, request) {
+  const fromEnv = String(env.MP_WEBHOOK_URL || '').trim();
+  if (fromEnv) return fromEnv;
+  try {
+    if (request?.url) return new URL('/webhook/mercadopago', request.url).href;
+  } catch (_) { /* ignore */ }
+  return 'https://api.sensorcrashfix.com.br/webhook/mercadopago';
+}
+
+async function createMercadoPagoPixPayment(env, order, config, request) {
   const token = mercadoPagoToken(env);
   if (!token) return null;
 
@@ -12963,15 +12973,15 @@ async function createMercadoPagoPixPayment(env, order, config) {
     payer.identification = { type: 'CPF', number: cpf };
   }
 
-  const notificationUrl = (env.MP_WEBHOOK_URL || '').trim() || undefined;
+  const notificationUrl = mpWebhookUrl(env, request);
   const body = {
     transaction_amount: Number(order.total.toFixed(2)),
     description: `${config.product?.name || 'Kit Sensor Crash Fix'} — ${order.orderId}`.slice(0, 200),
     payment_method_id: 'pix',
     external_reference: order.orderId,
-    payer
+    payer,
+    notification_url: notificationUrl
   };
-  if (notificationUrl) body.notification_url = notificationUrl;
 
   const res = await fetch('https://api.mercadopago.com/v1/payments', {
     method: 'POST',
@@ -13013,7 +13023,7 @@ async function createMercadoPagoCheckoutPro(env, order, config, request) {
   const pendingParams = new URLSearchParams({
     mp: 'pending', orderId: order.orderId, accessToken: order.accessToken
   });
-  const notificationUrl = (env.MP_WEBHOOK_URL || '').trim() || undefined;
+  const notificationUrl = mpWebhookUrl(env, request);
 
   const body = {
     items: [{
@@ -13027,6 +13037,7 @@ async function createMercadoPagoCheckoutPro(env, order, config, request) {
       name: String(order.nome || 'Cliente').slice(0, 100)
     },
     external_reference: order.orderId,
+    notification_url: notificationUrl,
     back_urls: {
       success: `${base}/comprar.html?${successParams}`,
       failure: `${base}/loja.html`,
@@ -13038,7 +13049,6 @@ async function createMercadoPagoCheckoutPro(env, order, config, request) {
       excluded_payment_types: [{ id: 'ticket' }, { id: 'atm' }]
     }
   };
-  if (notificationUrl) body.notification_url = notificationUrl;
 
   const res = await fetch('https://api.mercadopago.com/checkout/preferences', {
     method: 'POST',
@@ -13071,7 +13081,7 @@ async function tryBrPaymentProvider(env, order, config, provider, billingType, r
   if (provider === 'mercadopago') {
     if (!hasMp) throw new Error('Mercado Pago não configurado no Worker.');
     if (billingType === 'CREDIT_CARD') return createMercadoPagoCheckoutPro(env, order, config, request);
-    return createMercadoPagoPixPayment(env, order, config);
+    return createMercadoPagoPixPayment(env, order, config, request);
   }
   if (!hasAsaas) throw new Error('Asaas não configurado no Worker.');
   return createAsaasPayment(env, order, config, billingType);
@@ -13101,8 +13111,8 @@ async function createBrCreditCardPayment(env, order, config, request) {
   return createBrPaymentWithFallback(env, order, config, 'CREDIT_CARD', getCardBrProvider, cardBrFallbackEnabled, request);
 }
 
-async function createBrPixPayment(env, order, config) {
-  return createBrPaymentWithFallback(env, order, config, 'PIX', getPixBrProvider, pixBrFallbackEnabled);
+async function createBrPixPayment(env, order, config, request) {
+  return createBrPaymentWithFallback(env, order, config, 'PIX', getPixBrProvider, pixBrFallbackEnabled, request);
 }
 
 function getEmails(config) {
@@ -14283,7 +14293,7 @@ async function handleCreateOrder(request, env, origin, ctx) {
       payment = await createMercadoPagoCheckoutPro(env, order, config, request);
     } else if (billingType === 'PIX') {
       if (hasMp || hasAsaas) {
-        payment = await createBrPixPayment(env, order, config);
+        payment = await createBrPixPayment(env, order, config, request);
       }
     } else if (billingType === 'CREDIT_CARD') {
       payment = await createBrCreditCardPayment(env, order, config, request);
@@ -15650,6 +15660,49 @@ async function handlePayPalWebhook(request, env, origin) {
   return json({ ok: true }, 200, origin);
 }
 
+/** Confirma pedido se o pagamento MP estiver approved (webhook ou poll do checkout). */
+async function confirmOrderFromMercadoPagoPayment(env, payment) {
+  if (!payment || payment.status !== 'approved' || !payment.external_reference) return false;
+  const order = await getOrder(env, payment.external_reference);
+  if (!order || order.status === 'paid') return !!order;
+  await handlePaymentConfirmed(env, order, {
+    id: payment.id,
+    provider: 'mercadopago',
+    billingType: payment.payment_method_id === 'pix' ? 'PIX' : 'CREDIT_CARD',
+    value: payment.transaction_amount
+  });
+  return true;
+}
+
+async function fetchMercadoPagoPayment(env, paymentId) {
+  const mpToken = mercadoPagoToken(env);
+  if (!mpToken || !paymentId) return null;
+  const res = await fetch(`https://api.mercadopago.com/v1/payments/${encodeURIComponent(paymentId)}`, {
+    headers: { Authorization: 'Bearer ' + mpToken, Accept: 'application/json' }
+  });
+  const payment = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    console.error('MP payment fetch:', res.status, payment);
+    return null;
+  }
+  return payment;
+}
+
+/**
+ * Poll do checkout só lê o KV — sem webhook o status nunca muda.
+ * Ao GET do pedido pendente, consulta o MP e confirma se já estiver approved.
+ */
+async function maybeSyncMercadoPagoPendingOrder(env, order) {
+  if (!order || order.status !== 'pending_payment') return order;
+  if (order.paymentProvider && order.paymentProvider !== 'mercadopago') return order;
+  const paymentId = order.mercadoPagoPaymentId || order.payment?.paymentId;
+  if (!paymentId) return order;
+  const payment = await fetchMercadoPagoPayment(env, paymentId);
+  if (!payment) return order;
+  await confirmOrderFromMercadoPagoPayment(env, payment);
+  return (await getOrder(env, order.orderId)) || order;
+}
+
 async function handleMercadoPagoWebhook(request, env, origin) {
   const mpToken = mercadoPagoToken(env);
   if (!mpToken) return json({ error: 'MP não configurado.' }, 500, origin);
@@ -15663,26 +15716,8 @@ async function handleMercadoPagoWebhook(request, env, origin) {
   }
   if (!paymentId) return json({ ok: true }, 200, origin);
 
-  const res = await fetch(`https://api.mercadopago.com/v1/payments/${encodeURIComponent(paymentId)}`, {
-    headers: { Authorization: 'Bearer ' + mpToken, Accept: 'application/json' }
-  });
-  const payment = await res.json().catch(() => ({}));
-  if (!res.ok) {
-    console.error('MP webhook:', res.status, payment);
-    return json({ ok: true }, 200, origin);
-  }
-
-  if (payment.status === 'approved' && payment.external_reference) {
-    const order = await getOrder(env, payment.external_reference);
-    if (order && order.status !== 'paid') {
-      await handlePaymentConfirmed(env, order, {
-        id: payment.id,
-        provider: 'mercadopago',
-        billingType: payment.payment_method_id === 'pix' ? 'PIX' : 'CREDIT_CARD',
-        value: payment.transaction_amount
-      });
-    }
-  }
+  const payment = await fetchMercadoPagoPayment(env, paymentId);
+  if (payment) await confirmOrderFromMercadoPagoPayment(env, payment);
   return json({ ok: true }, 200, origin);
 }
 
@@ -16917,6 +16952,31 @@ async function checkClickRate(env, ip) {
   return true;
 }
 
+/**
+ * WebView/apps (ex.: NewsBytes) costumam martelar WhatsApp/contato — 1 visitante,
+ * dezenas de eventos. Mantém o 1º–2º clique (interesse real) e descarta o burst.
+ */
+const CLICK_BURST_DESTINOS = new Set(['whatsapp', 'contato']);
+
+async function checkClickDestinoBurst(entry) {
+  const dest = String(entry?.destino || '').toLowerCase().slice(0, 48);
+  if (!CLICK_BURST_DESTINOS.has(dest)) return true;
+  const key = String(entry?.visitante_id || entry?.sessao_visita || entry?.ip || '')
+    .trim()
+    .slice(0, 64);
+  if (!key) return true;
+  const bucket = Math.floor(Date.now() / 120000); // janela ~2 min
+  const cache = caches.default;
+  const req = new Request(
+    `https://stf-click-burst/${encodeURIComponent(key)}/${encodeURIComponent(dest)}/${bucket}`
+  );
+  const hit = await cache.match(req);
+  const n = (hit ? parseInt(await hit.text(), 10) || 0 : 0) + 1;
+  if (n > 2) return false;
+  await cache.put(req, new Response(String(n), { headers: { 'Cache-Control': 'max-age=180' } }));
+  return true;
+}
+
 async function handleLogClick(request, env, origin, ctx) {
   const body = await request.json().catch(() => null);
   if (!body || typeof body !== 'object') {
@@ -16939,6 +16999,9 @@ async function handleLogClick(request, env, origin, ctx) {
   const entry = buildClickEntry(body, request);
   if (isCrawlerClick(entry, request)) {
     return json({ ok: true, dropped: true, reason: 'crawler' }, 202, origin);
+  }
+  if (!(await checkClickDestinoBurst(entry))) {
+    return json({ ok: true, dropped: true, reason: 'burst' }, 202, origin);
   }
 
   try {
@@ -16982,6 +17045,9 @@ async function handleLogClickPixel(request, env, origin, ctx) {
 
   const entry = buildClickEntry(params, request);
   if (isCrawlerClick(entry, request)) {
+    return pixelResponse(origin);
+  }
+  if (!(await checkClickDestinoBurst(entry))) {
     return pixelResponse(origin);
   }
 
@@ -17612,16 +17678,25 @@ async function handleGetOrder(request, env, origin, orderId) {
 
   if (await isValidSession(env, bearerToken(request))) {
     // Pré-postagem / PDF só em POST /orders/:id/shipping-label (botão Etiqueta), não ao abrir o pedido.
+    if (order.status === 'pending_payment') {
+      order = await maybeSyncMercadoPagoPendingOrder(env, order);
+    }
     return json(order, 200, origin);
   }
 
   const accessToken = new URL(request.url).searchParams.get('token') || '';
   if (accessToken && order.accessToken && accessToken === order.accessToken) {
+    if (order.status === 'pending_payment') {
+      order = await maybeSyncMercadoPagoPendingOrder(env, order);
+    }
     return json(publicOrderView(order, { includePayment: true }), 200, origin);
   }
 
   const customerId = await getCustomerUserId(env, bearerToken(request));
   if (customerId && order.userId === customerId) {
+    if (order.status === 'pending_payment') {
+      order = await maybeSyncMercadoPagoPendingOrder(env, order);
+    }
     return json(publicOrderView(order, { includePayment: order.status === 'pending_payment' }), 200, origin);
   }
 
