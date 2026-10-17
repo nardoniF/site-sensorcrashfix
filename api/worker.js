@@ -16917,6 +16917,31 @@ async function checkClickRate(env, ip) {
   return true;
 }
 
+/**
+ * WebView/apps (ex.: NewsBytes) costumam martelar WhatsApp/contato — 1 visitante,
+ * dezenas de eventos. Mantém o 1º–2º clique (interesse real) e descarta o burst.
+ */
+const CLICK_BURST_DESTINOS = new Set(['whatsapp', 'contato']);
+
+async function checkClickDestinoBurst(entry) {
+  const dest = String(entry?.destino || '').toLowerCase().slice(0, 48);
+  if (!CLICK_BURST_DESTINOS.has(dest)) return true;
+  const key = String(entry?.visitante_id || entry?.sessao_visita || entry?.ip || '')
+    .trim()
+    .slice(0, 64);
+  if (!key) return true;
+  const bucket = Math.floor(Date.now() / 120000); // janela ~2 min
+  const cache = caches.default;
+  const req = new Request(
+    `https://stf-click-burst/${encodeURIComponent(key)}/${encodeURIComponent(dest)}/${bucket}`
+  );
+  const hit = await cache.match(req);
+  const n = (hit ? parseInt(await hit.text(), 10) || 0 : 0) + 1;
+  if (n > 2) return false;
+  await cache.put(req, new Response(String(n), { headers: { 'Cache-Control': 'max-age=180' } }));
+  return true;
+}
+
 async function handleLogClick(request, env, origin, ctx) {
   const body = await request.json().catch(() => null);
   if (!body || typeof body !== 'object') {
@@ -16939,6 +16964,9 @@ async function handleLogClick(request, env, origin, ctx) {
   const entry = buildClickEntry(body, request);
   if (isCrawlerClick(entry, request)) {
     return json({ ok: true, dropped: true, reason: 'crawler' }, 202, origin);
+  }
+  if (!(await checkClickDestinoBurst(entry))) {
+    return json({ ok: true, dropped: true, reason: 'burst' }, 202, origin);
   }
 
   try {
@@ -16982,6 +17010,9 @@ async function handleLogClickPixel(request, env, origin, ctx) {
 
   const entry = buildClickEntry(params, request);
   if (isCrawlerClick(entry, request)) {
+    return pixelResponse(origin);
+  }
+  if (!(await checkClickDestinoBurst(entry))) {
     return pixelResponse(origin);
   }
 
