@@ -114,15 +114,19 @@ window.StoreConfig = (function () {
                   return apiCat || localCat;
                 })(),
                 homeFaq: (() => {
+                  // Prefer repo store-config FAQ (10 Crash items + l10n IDs). Admin KV often
+                  // still has stale extra EN-era FAQs that break DE/FR/… translations.
                   const apiList = apiConfig.homeFaq || [];
                   const localList = local.homeFaq || [];
-                  if (localList.length > apiList.length) return localList;
+                  const localActive = localList.filter((r) => r && r.active !== false);
+                  if (localActive.length) return localList;
                   return apiList.length ? apiList : localList;
                 })(),
                 homeReviews: (() => {
                   const apiList = apiConfig.homeReviews || [];
                   const localList = local.homeReviews || [];
-                  if (localList.length > apiList.length) return localList;
+                  const localActive = localList.filter((r) => r && r.active !== false);
+                  if (localActive.length) return localList;
                   return apiList.length ? apiList : localList;
                 })(),
                 payments: local.payments
