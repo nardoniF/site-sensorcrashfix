@@ -597,7 +597,8 @@ window.STF_MONEY = window.STF_MONEY || (function () {
     }
   }
 
-  /** Format an amount that is already in USD/EUR/SEK/NOK (do not convert from BRL). */
+  /** Never show R$ on intl .com charge totals — chargeCurrency drives USD/EUR/PLN/SEK/NOK. */
+  /** Format an amount that is already in USD/EUR/SEK/NOK/PLN (do not convert from BRL). */
   function formatChargeMoney(v, currency) {
     try {
       const cur = String(currency || displayCurrency || 'USD').toUpperCase();
@@ -619,7 +620,9 @@ window.STF_MONEY = window.STF_MONEY || (function () {
 
   function formatSnapshotMoney(amount, currency) {
     const cur = String(currency || '').toUpperCase();
-    if (cur === 'USD' || cur === 'EUR' || cur === 'SEK' || cur === 'NOK') return formatChargeMoney(amount, cur);
+    if (cur === 'USD' || cur === 'EUR' || cur === 'SEK' || cur === 'NOK' || cur === 'PLN') {
+      return formatChargeMoney(amount, cur);
+    }
     return formatCheckoutMoney(amount);
   }
 
@@ -1150,7 +1153,8 @@ window.STF_MONEY = window.STF_MONEY || (function () {
     const selfTest = !!(data.selfTestPix || data.selfTestPayPal || data.selfTestStripe || data.selfTestTester);
     const chargeCur = String(data.chargeCurrency || '').toUpperCase();
     const chargeAmt = data.chargeAmount != null ? Number(data.chargeAmount) : null;
-    const useForeignTotal = chargeAmt != null && (chargeCur === 'USD' || chargeCur === 'EUR')
+    const foreignCharge = ['USD', 'EUR', 'SEK', 'NOK', 'PLN'].includes(chargeCur);
+    const useForeignTotal = chargeAmt != null && foreignCharge
       && (selfTest || isIntlEmbeddedCheckout() || window.STF_MONEY?.isIntlHost?.());
     return {
       produto: data.produto || '',
@@ -3113,7 +3117,8 @@ window.STF_MONEY = window.STF_MONEY || (function () {
       const selfTest = !!(result.order?.selfTestPix || result.order?.selfTestPayPal || result.order?.selfTestStripe || result.order?.selfTestTester);
       const chargeCur = String(result.order?.chargeCurrency || '').toUpperCase();
       const chargeAmt = result.order?.chargeAmount != null ? Number(result.order.chargeAmount) : null;
-      const useForeignTotal = chargeAmt != null && (chargeCur === 'USD' || chargeCur === 'EUR')
+      const foreignCharge = ['USD', 'EUR', 'SEK', 'NOK', 'PLN'].includes(chargeCur);
+      const useForeignTotal = chargeAmt != null && foreignCharge
         && (selfTest || isIntlEmbeddedCheckout());
       const total = useForeignTotal
         ? (selfTest ? Math.max(0.01, chargeAmt) : chargeAmt)

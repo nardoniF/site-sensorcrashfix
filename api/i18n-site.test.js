@@ -140,6 +140,18 @@ test('checkout.js: locale FR/DE mapeia moeda (não força só IT→EUR)', () => 
   assert.doesNotMatch(src, /checkoutLocale\(\) === 'it' \? 'IT' : 'US'/);
 });
 
+test('worker.js: locales FR/NL + cobrança por registry (não só IT→EUR)', () => {
+  const src = fs.readFileSync(path.join(root, 'api/worker.js'), 'utf8');
+  assert.match(src, /l === 'fr'/);
+  assert.match(src, /l === 'nl'/);
+  assert.match(src, /currencyForLocaleFromRegistry/);
+  assert.match(src, /function intlChargeCurrencyForLocale\(locale, config\)/);
+  assert.doesNotMatch(
+    src,
+    /return String\(locale \|\| ''\)\.toLowerCase\(\) === 'it' \? 'EUR' : 'USD';/
+  );
+});
+
 test('forum-l10n.json cobre chaves principais em de/es/pl', () => {
   const data = JSON.parse(fs.readFileSync(path.join(root, 'data/forum-l10n.json'), 'utf8'));
   const required = ['title', 'loading', 'signIn', 'newTopic', 'post', 'reply'];
