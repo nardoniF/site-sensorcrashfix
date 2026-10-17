@@ -38,7 +38,13 @@ window.STF_PRODUCT_MERGE = (function () {
     'markets',
     'images',
     'priceUsd',
-    'priceEur'
+    'priceEur',
+    'priceGbp',
+    'pricePln',
+    'priceSek',
+    'priceNok',
+    'intlMarkupPercent',
+    'intlBaseBrl'
   ];
 
   const I18N_PRODUCT_FIELDS = [
@@ -210,6 +216,25 @@ window.STF_PRODUCT_MERGE = (function () {
     if (localProduct?.image) merged.image = localProduct.image;
     if (isEmptyValue(merged.deviceType) && localProduct?.deviceType) merged.deviceType = localProduct.deviceType;
     if (isEmptyValue(merged.watchKind) && localProduct?.watchKind) merged.watchKind = localProduct.watchKind;
+    // Markup%: KV/Admin wins when set. Local catalog only fills empty products.
+    const markets = Array.isArray(merged.markets)
+      ? merged.markets.map((m) => String(m).toUpperCase())
+      : [];
+    const isIntlOnly = markets.includes('INT') && !markets.includes('BR');
+    const mergedMk = Number(merged.intlMarkupPercent);
+    const localMk = Number(localProduct?.intlMarkupPercent);
+    const kvHasMarkup = Number.isFinite(mergedMk) && mergedMk >= 0;
+    if (isIntlOnly && !kvHasMarkup && Number.isFinite(localMk) && localMk >= 0) {
+      merged.intlMarkupPercent = localMk;
+      if (localProduct.intlBaseBrl != null && Number.isFinite(Number(localProduct.intlBaseBrl))) {
+        merged.intlBaseBrl = Number(localProduct.intlBaseBrl);
+      } else {
+        delete merged.intlBaseBrl;
+      }
+      ['priceUsd', 'priceEur', 'priceGbp', 'pricePln', 'priceSek', 'priceNok'].forEach((f) => {
+        delete merged[f];
+      });
+    }
     return merged;
   }
 

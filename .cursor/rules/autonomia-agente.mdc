@@ -24,6 +24,7 @@ Preferir **default seguro + nota no final** em vez de parar no meio.
 - Nunca `git push --force` em `main`/`master`.
 - Nunca amend de commit já pushado, salvo pedido explícito.
 - Deploy: só `sensorcrashfix-payments` (`api.sensorcrashfix.com.br`); site estático segue GitHub Pages após push.
+- **Antes de qualquer deploy/upload/pin:** hard rule de integridade do pacote — ver `.cursor/rules/package-integrity-before-deploy.mdc` e `AGENTS.md`.
 
 ## Fluxo típico ao terminar
 

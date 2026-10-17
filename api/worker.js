@@ -93,6 +93,18 @@ import {
   saleMoneyParts,
   storeOrderListedGross
 } from './sales-money.js';
+import {
+  DEFAULT_INTL_CURRENCIES,
+  DEFAULT_INTL_MARKUP_PERCENT,
+  normalizeIntlCurrencies,
+  activeIntlCurrencies,
+  applyMarkupFxToIntlProducts,
+  syncOpticalIntlBrlFromBrKit,
+  currencyForLocaleFromRegistry,
+  productListPriceFromRegistry,
+  normalizeMarkupPercent,
+  canonIntlMarkupPercent
+} from './intl-money.js';
 
 const ALLOWED_ORIGINS = [
   'https://sensorcrashfix.com.br',
@@ -105,7 +117,7 @@ const ALLOWED_ORIGINS = [
 ];
 const CONFIG_KEY = 'store-config';
 /** Pin igual ao cloudflare/scf-com-proxy.js — catálogo GitHub servido direto ao Worker (evita cache do proxy). */
-const SITE_CATALOG_COMMIT = '13be33ba0d61e7143358b98cb6bb259de262b658';
+const SITE_CATALOG_COMMIT = 'd29a1b1370f29ff86764004f28d806ef273d100d';
 const SITE_CATALOG_URLS = [
   'https://cdn.jsdelivr.net/gh/nardoniF/site-sensorcrashfix@' + SITE_CATALOG_COMMIT + '/data/store-config.json',
   'https://raw.githubusercontent.com/nardoniF/site-sensorcrashfix/' + SITE_CATALOG_COMMIT + '/data/store-config.json',
@@ -121,6 +133,8 @@ const CLICKS_TREE_MAX = 4000;
 /** Rolling window: 5 closed months + current (= 6 months). Oldest closed month drops when a new month starts. */
 const FEEDBACK_BLOB = 'feedback:blob';
 const FEEDBACK_MAX = 500;
+const CONTACT_BLOB = 'contact:blob';
+const CONTACT_MAX = 500;
 const CLICK_TTL_SEC = 120 * 86400;
 const CLICK_LOG_KEY_FALLBACK = 'stf_ck_7f3a9e2b1c';
 const LEGACY_API_BASE = 'https://sensorcrashfix-payments.sensorcrashfix.workers.dev';
@@ -195,7 +209,9 @@ const DEFAULT_CONFIG = {
       description: 'Lente de correção óptica para smartwatch em pele danificado.',
       descriptionEn: 'Designed for smartwatch optical sensors on cracked sensor.',
       descriptionIt: 'Progettata per i sensori ottici degli smartwatch su sensore incrinato.',
-      price: 62.9,
+      price: 72.9,
+      intlMarkupPercent: 130,
+      intlBaseBrl: 167.67,
       image: '/images/lens-gallery/01-optical-correction-lens.jpg',
       images: [
         '/images/lens-gallery/01-optical-correction-lens.jpg',
@@ -223,8 +239,8 @@ const DEFAULT_CONFIG = {
       descriptionEn: 'Designed for smartband optical sensors on cracked sensor.',
       descriptionIt: 'Progettata per i sensori ottici degli smartband su sensore incrinato.',
       price: 62.9,
-      priceUsd: 12.99,
-      priceEur: 11.99,
+      intlMarkupPercent: 130,
+      intlBaseBrl: 144.67,
       image: '/images/smartband/lens-en/01-embalagem.jpg',
       images: [
         '/images/smartband/lens-en/01-embalagem.jpg',
@@ -302,6 +318,9 @@ const DEFAULT_CONFIG = {
   internationalSurcharge: 0,
   /** Multiplies Correios intl quote. 1 = sem markup (valor real da cotação). */
   internationalShippingMultiplier: 1,
+  intlCurrencies: DEFAULT_INTL_CURRENCIES,
+  intlCurrenciesAutoFx: true,
+  intlCurrenciesAutoPpp: true,
   internationalProduct: {
     title: 'Envio internacional',
     hint: '',
@@ -1343,7 +1362,13 @@ function supplementAggregatedFromSite(kvProduct, siteProduct) {
     'markets',
     'images',
     'priceUsd',
-    'priceEur'
+    'priceEur',
+    'priceGbp',
+    'pricePln',
+    'priceSek',
+    'priceNok',
+    'intlMarkupPercent',
+    'intlBaseBrl'
   ];
   catalogFields.forEach((field) => {
     if (!isEmptyCatalogValue(merged[field])) return;
@@ -1469,7 +1494,8 @@ async function fetchSiteCatalog() {
 async function getPublicConfig(env) {
   const config = await getConfig(env);
   const site = await fetchSiteCatalog();
-  return mergeSiteCatalog(config, site);
+  const merged = mergeSiteCatalog(config, site);
+  return ensurePublicIntlListPrices(merged, env);
 }
 
 function normalizeApiBaseUrl(api) {
@@ -1570,6 +1596,17 @@ function withConfigDefaults(stored) {
     internationalShippingMultiplier: Number.isFinite(Number(stored.internationalShippingMultiplier))
       ? Math.max(1, Number(stored.internationalShippingMultiplier))
       : base.internationalShippingMultiplier,
+    intlCurrencies: normalizeIntlCurrencies(stored.intlCurrencies),
+    intlCurrenciesAutoFx: stored.intlCurrenciesAutoFx != null
+      ? stored.intlCurrenciesAutoFx !== false
+      : (stored.intlCurrenciesAutoPpp != null
+        ? stored.intlCurrenciesAutoPpp !== false
+        : base.intlCurrenciesAutoFx !== false),
+    intlCurrenciesAutoPpp: stored.intlCurrenciesAutoFx != null
+      ? stored.intlCurrenciesAutoFx !== false
+      : (stored.intlCurrenciesAutoPpp != null
+        ? stored.intlCurrenciesAutoPpp !== false
+        : base.intlCurrenciesAutoPpp !== false),
     internationalProduct: { ...base.internationalProduct, ...(stored.internationalProduct || {}) },
     payments: {
       ...base.payments,
@@ -2168,6 +2205,16 @@ function publicProductFields(p, config) {
   if (Array.isArray(p.images) && p.images.length) row.images = p.images;
   if (p.priceUsd != null) row.priceUsd = Number(p.priceUsd);
   if (p.priceEur != null) row.priceEur = Number(p.priceEur);
+  if (p.priceGbp != null) row.priceGbp = Number(p.priceGbp);
+  if (p.pricePln != null) row.pricePln = Number(p.pricePln);
+  if (p.priceSek != null) row.priceSek = Number(p.priceSek);
+  if (p.priceNok != null) row.priceNok = Number(p.priceNok);
+  if (p.intlMarkupPercent != null && Number.isFinite(Number(p.intlMarkupPercent))) {
+    row.intlMarkupPercent = Number(p.intlMarkupPercent);
+  }
+  if (p.intlBaseBrl != null && Number.isFinite(Number(p.intlBaseBrl))) {
+    row.intlBaseBrl = Number(p.intlBaseBrl);
+  }
   const stock = productStockQty(p);
   row.inStock = productInStock(p, 1);
   if (stock != null) row.stock = stock;
@@ -2201,6 +2248,9 @@ function publicConfigView(config, env) {
     internationalCountries: publicIntlCountriesList(config.internationalShipping || {}),
     internationalSurcharge: getIntlSurcharge(config),
     internationalShippingMultiplier: getIntlShippingMultiplier(config),
+    intlCurrencies: activeIntlCurrencies(config),
+    intlCurrenciesAutoFx: config.intlCurrenciesAutoFx !== false && config.intlCurrenciesAutoPpp !== false,
+    intlCurrenciesAutoPpp: config.intlCurrenciesAutoFx !== false && config.intlCurrenciesAutoPpp !== false,
     internationalProduct: config.internationalProduct || DEFAULT_CONFIG.internationalProduct,
     payments: {
       intlEmbedded: true,
@@ -2279,7 +2329,10 @@ function isComSiteRequest(request) {
 
 function isIntlCheckoutLocale(locale) {
   const l = String(locale || '').toLowerCase();
-  return l === 'en' || l === 'it' || l === 'de' || l === 'es' || l === 'pl' || l === 'sl';
+  // Keep in sync with PATH_LANGS / INTL_PATH_LANGS on the storefront (js/stf-*.js).
+  // Missing fr/nl/sv/no/fi made Stripe/PayPal fail or charge the wrong currency (TattooFix).
+  return l === 'en' || l === 'it' || l === 'de' || l === 'es' || l === 'pl' || l === 'sl'
+    || l === 'fr' || l === 'nl' || l === 'sv' || l === 'no' || l === 'fi';
 }
 
 function orderCheckoutLangPath(order) {
@@ -2289,6 +2342,11 @@ function orderCheckoutLangPath(order) {
   if (l === 'es') return '/es';
   if (l === 'pl') return '/pl';
   if (l === 'sl') return '/sl';
+  if (l === 'fr') return '/fr';
+  if (l === 'nl') return '/nl';
+  if (l === 'sv') return '/sv';
+  if (l === 'no') return '/no';
+  if (l === 'fi') return '/fi';
   return '';
 }
 
@@ -2479,39 +2537,152 @@ function isIntlMarketProductRow(p) {
   return m.includes('INT') && !m.includes('BR');
 }
 
-async function syncIntlProductPricesFromFx(env) {
-  const config = await getConfig(env);
-  const products = config.products || [];
-  if (!products.length) return { updated: 0 };
-  const fxUsd = await fetchFxRate(env, 'USD');
-  const fxEur = await fetchFxRate(env, 'EUR');
-  let updated = 0;
-  products.forEach((p) => {
-    if (!isIntlMarketProductRow(p)) return;
-    const brl = Number(p.price) || 0;
-    if (!brl) return;
-    const usd = Math.round(brl * fxUsd.rate * 100) / 100;
-    const eur = Math.round(brl * fxEur.rate * 100) / 100;
-    if (p.priceUsd !== usd || p.priceEur !== eur) {
-      p.priceUsd = usd;
-      p.priceEur = eur;
-      updated += 1;
+function productIntlListPrice(product, currency, config) {
+  const fromRegistry = productListPriceFromRegistry(
+    product,
+    currency,
+    config?.intlCurrencies || DEFAULT_INTL_CURRENCIES
+  );
+  if (fromRegistry != null) return fromRegistry;
+  const cur = String(currency || 'USD').toUpperCase();
+  if (cur === 'EUR') return productIntlEur(product);
+  return productIntlUsd(product);
+}
+
+async function fetchFxRatesMap(env, currencyCodes) {
+  const codes = [...new Set((currencyCodes || []).map((c) => String(c || '').toUpperCase()).filter((c) => c && c !== 'BRL'))];
+  const out = {};
+  await Promise.all(codes.map(async (code) => {
+    try {
+      const row = await fetchFxRate(env, code);
+      if (row?.rate > 0) out[code] = Number(row.rate);
+    } catch { /* skip missing */ }
+  }));
+  return out;
+}
+
+function autoFxEnabled(config) {
+  if (config?.intlCurrenciesAutoFx === false) return false;
+  if (config?.intlCurrenciesAutoPpp === false) return false;
+  return true;
+}
+
+/**
+ * Seed markup% only when missing/empty. Admin-saved values stick in KV.
+ * Default/canon 130 applies solely as fallback for empty products.
+ * Returns { products, changed } where changed is count of markup fields filled.
+ */
+function seedCanonIntlMarkup(products, baseProducts) {
+  const baseById = new Map((baseProducts || []).map((p) => [p?.id || p?.slug, p]));
+  let changed = 0;
+  const next = (products || []).map((p) => {
+    if (!isIntlMarketProductRow(p)) return p;
+    if (p.intlMarkupPercent != null && Number.isFinite(Number(p.intlMarkupPercent)) && Number(p.intlMarkupPercent) >= 0) {
+      return p;
     }
+    const base = baseById.get(p.id) || baseById.get(p.slug);
+    const mk = canonIntlMarkupPercent(p, base);
+    changed += 1;
+    return { ...p, intlMarkupPercent: mk };
   });
-  if (updated) await saveConfig(env, { ...config, products });
-  return { updated, usdRate: fxUsd.rate, eurRate: fxEur.rate };
+  return { products: next, changed };
+}
+
+/** @deprecated alias — prefer seedCanonIntlMarkup */
+function seedMissingIntlMarkup(products, baseProducts) {
+  return seedCanonIntlMarkup(products, baseProducts).products;
+}
+
+/** Recompute INT foreign list prices: (R$ × markup%) × FX — identical to TattooFix. */
+async function syncIntlProductPricesFromMarkupFx(env, { force = false } = {}) {
+  const config = await getConfig(env);
+  if (!force && !autoFxEnabled(config)) return { updated: 0, skipped: true };
+  const currencies = normalizeIntlCurrencies(config.intlCurrencies);
+  const { products: seeded, changed: markupChanged } = seedCanonIntlMarkup(
+    config.products || [],
+    DEFAULT_CONFIG.products
+  );
+  const synced = syncOpticalIntlBrlFromBrKit(seeded);
+  const fxRates = await fetchFxRatesMap(env, currencies.map((c) => c.code));
+  const { products, updated } = applyMarkupFxToIntlProducts(synced.products, currencies, fxRates);
+  const changed = updated || synced.synced || markupChanged;
+  if (changed) {
+    await saveConfig(env, {
+      ...config,
+      products,
+      intlCurrencies: currencies,
+      intlCurrenciesAutoFx: true,
+      intlCurrenciesAutoPpp: true
+    });
+  }
+  return {
+    updated: updated + (synced.synced ? 1 : 0) + markupChanged,
+    currencies: currencies.map((c) => c.code),
+    fxRates,
+    markupChanged
+  };
+}
+
+async function syncIntlProductPricesFromFx(env) {
+  return syncIntlProductPricesFromMarkupFx(env);
+}
+
+/**
+ * Apply markup×FX for public config. When KV still has stale markup (≠ DEFAULT_CONFIG),
+ * persist corrected products so Stripe/PayPal charges match the list price.
+ */
+async function ensurePublicIntlListPrices(config, env) {
+  if (!autoFxEnabled(config)) return config;
+  const currencies = normalizeIntlCurrencies(config.intlCurrencies);
+  const { products: seeded, changed: markupChanged } = seedCanonIntlMarkup(
+    config.products || [],
+    DEFAULT_CONFIG.products
+  );
+  const synced = syncOpticalIntlBrlFromBrKit(seeded);
+  const fxRates = await fetchFxRatesMap(env, currencies.map((c) => c.code));
+  const { products, updated } = applyMarkupFxToIntlProducts(synced.products, currencies, fxRates);
+  const out = {
+    ...config,
+    products,
+    intlCurrencies: currencies,
+    intlCurrenciesAutoFx: true,
+    intlCurrenciesAutoPpp: true
+  };
+  // Write-through only when canon markup was forced (not on every FX tick).
+  if (markupChanged > 0 && env?.STORE_KV) {
+    try {
+      await saveConfig(env, out);
+    } catch (err) {
+      console.warn('ensurePublicIntlListPrices: KV persist failed', err?.message || err);
+    }
+  } else if (updated && !markupChanged) {
+    /* FX-only drift stays in-memory until cron syncIntlProductPricesFromFx */
+  }
+  return out;
 }
 
 async function intlForeignCharge(order, env, config, items, currency) {
   const cur = String(currency || 'USD').toUpperCase();
   const fx = await fetchFxRate(env, cur);
   const itemList = items || order.items || [];
-  const products = getActiveProducts(config || await getConfig(env));
+  // Prefer public ensure (markup×FX; empty markup gets default 130) so list/charge stay aligned.
+  let cfg = config;
+  if (!cfg) {
+    cfg = await getPublicConfig(env);
+  } else if (autoFxEnabled(cfg)) {
+    const { products: seeded } = seedCanonIntlMarkup(cfg.products || [], DEFAULT_CONFIG.products);
+    const synced = syncOpticalIntlBrlFromBrKit(seeded);
+    const currencies = normalizeIntlCurrencies(cfg.intlCurrencies);
+    const fxRates = await fetchFxRatesMap(env, currencies.map((c) => c.code));
+    const { products } = applyMarkupFxToIntlProducts(synced.products, currencies, fxRates);
+    cfg = { ...cfg, products, intlCurrencies: currencies };
+  }
+  const products = getActiveProducts(cfg);
   let productForeign = 0;
   let allConfigured = itemList.length > 0;
   for (const item of itemList) {
     const p = products.find((x) => x.id === item.productId || x.slug === item.productId);
-    const price = p ? (cur === 'EUR' ? productIntlEur(p) : productIntlUsd(p)) : null;
+    const price = p ? productIntlListPrice(p, cur, config) : null;
     if (price == null) { allConfigured = false; break; }
     productForeign += price * (Number(item.qty) || 1);
   }
@@ -2544,8 +2715,15 @@ async function intlUsdCharge(order, env, config, items) {
   return intlForeignCharge(order, env, config, items, 'USD');
 }
 
-function intlChargeCurrencyForLocale(locale) {
-  return String(locale || '').toLowerCase() === 'it' ? 'EUR' : 'USD';
+function intlChargeCurrencyForLocale(locale, config) {
+  const fromRegistry = currencyForLocaleFromRegistry(locale, config?.intlCurrencies || DEFAULT_INTL_CURRENCIES);
+  if (fromRegistry && fromRegistry !== 'BRL') return fromRegistry;
+  const l = String(locale || '').toLowerCase();
+  if (l === 'sv') return 'SEK';
+  if (l === 'no') return 'NOK';
+  if (l === 'it' || l === 'de' || l === 'es' || l === 'pl' || l === 'sl'
+    || l === 'fr' || l === 'nl' || l === 'fi') return 'EUR';
+  return 'USD';
 }
 
 function selfTestUsdAmountForOrder(order, billingType) {
@@ -2555,22 +2733,28 @@ function selfTestUsdAmountForOrder(order, billingType) {
   return SELF_TEST_USD_AMOUNT;
 }
 
-/** Brazil test → R$ 0.01. Abroad PayPal → US$ 0.01. Abroad Stripe → US$ 0.10. */
-function applySelfTestChargeCurrency(order, { intlUsd, billingType }) {
+function selfTestAmountForCurrency(cur, billingType, order) {
+  const stripe = billingType === 'STRIPE' || order?.selfTestStripe || order?.paymentProvider === 'stripe';
+  const c = String(cur || '').toUpperCase();
+  if (c === 'EUR') return stripe ? SELF_TEST_STRIPE_EUR_AMOUNT : SELF_TEST_EUR_AMOUNT;
+  if (c === 'SEK') return stripe ? SELF_TEST_STRIPE_SEK_AMOUNT : SELF_TEST_SEK_AMOUNT;
+  if (c === 'NOK') return stripe ? SELF_TEST_STRIPE_NOK_AMOUNT : SELF_TEST_NOK_AMOUNT;
+  if (c === 'PLN') return stripe ? SELF_TEST_STRIPE_PLN_AMOUNT : SELF_TEST_PLN_AMOUNT;
+  return selfTestUsdAmountForOrder(order, billingType);
+}
+
+/** Brazil test → R$ 0.01. Abroad → symbolic amount in locale charge currency. */
+function applySelfTestChargeCurrency(order, { intlUsd, billingType, config }) {
   if (!isSelfTestOrder(order)) return;
   if (intlUsd) {
-    const cur = intlChargeCurrencyForLocale(order.checkoutLocale);
-    const amount = cur === 'EUR'
-      ? ((billingType === 'STRIPE' || order?.selfTestStripe || order?.paymentProvider === 'stripe')
-        ? SELF_TEST_STRIPE_EUR_AMOUNT
-        : SELF_TEST_EUR_AMOUNT)
-      : selfTestUsdAmountForOrder(order, billingType);
+    const cur = intlChargeCurrencyForLocale(order.checkoutLocale, config);
+    const amount = selfTestAmountForCurrency(cur, billingType, order);
     order.chargeCurrency = cur;
     order.chargeAmount = amount;
     order.displayCurrency = cur;
     return;
   }
-  if (order.chargeCurrency === 'USD' || order.chargeCurrency === 'EUR') {
+  if (['USD', 'EUR', 'SEK', 'NOK', 'PLN'].includes(String(order.chargeCurrency || '').toUpperCase())) {
     delete order.chargeCurrency;
     delete order.chargeAmount;
     delete order.chargeFxRate;
@@ -2621,18 +2805,30 @@ function resolveRequestOrigin(request) {
 }
 
 function clientIp(request) {
-  return request.headers.get('CF-Connecting-IP') ||
+  // Prefer proxy-forwarded visitor IP from /stf-log (X-STF-Client-IP).
+  return request.headers.get('X-STF-Client-IP') ||
+    request.headers.get('CF-Connecting-IP') ||
     (request.headers.get('X-Forwarded-For') || '').split(',')[0].trim() ||
     'unknown';
 }
 
 function extractClickGeo(request) {
   const cf = request.cf || {};
-  const pais = String(cf.country || request.headers.get('CF-IPCountry') || '').trim().toUpperCase().slice(0, 12);
-  const regionCode = String(cf.regionCode || '').trim().slice(0, 12);
+  // /stf-log proxy forwards real visitor geo; request.cf alone is the edge colo.
+  const pais = String(
+    request.headers.get('X-STF-Client-Country')
+    || cf.country
+    || request.headers.get('CF-IPCountry')
+    || ''
+  ).trim().toUpperCase().slice(0, 12);
+  const regionCode = String(
+    request.headers.get('X-STF-Client-Region') || cf.regionCode || ''
+  ).trim().slice(0, 12);
   const regionName = String(cf.region || '').trim().slice(0, 48);
   const estado = (regionCode || regionName).slice(0, 48);
-  const cidade = String(cf.city || '').trim().slice(0, 48);
+  const cidade = String(
+    request.headers.get('X-STF-Client-City') || cf.city || ''
+  ).trim().slice(0, 48);
   let paisNome = '';
   if (pais) {
     try {
@@ -2648,7 +2844,7 @@ function generateOrderId() {
   const d = new Date();
   const p = (n) => String(n).padStart(2, '0');
   const suffix = crypto.randomUUID().replace(/-/g, '').slice(0, 10).toUpperCase();
-  return `STF-${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${suffix}`;
+  return `SCF-${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${suffix}`;
 }
 
 function orderTrackingCode(order) {
@@ -2769,7 +2965,7 @@ function generateStaticPixPayload(config, order) {
   const pix = resolvePixConfig(config.pix, DEFAULT_CONFIG.pix);
   const name = pixSanitize(pix.merchantName, 25);
   const city = pixSanitize(pix.merchantCity, 15);
-  const reference = String(order.orderId || 'STF').replace(/[^a-zA-Z0-9]/g, '').slice(0, 25);
+  const reference = String(order.orderId || 'SCF').replace(/[^a-zA-Z0-9]/g, '').slice(0, 25);
   const pixKey = normalizePixKey(pix.key, pix.keyType);
   const merchantAccount = pixTlv('00', 'br.gov.bcb.pix') + pixTlv('01', pixKey);
   let payload =
@@ -3463,7 +3659,7 @@ function buildPendingConsultativeEmail(order, config, env, {
   includePixCode = false
 } = {}) {
   const copy = pendingRecoveryCopy(order, config, env, { paymentKind });
-  const total = (order.chargeCurrency === 'USD' || order.chargeCurrency === 'EUR') && order.chargeAmount != null
+  const total = isIntlChargeCurrency(order.chargeCurrency) && order.chargeAmount != null
     ? formatOrderCharge(order)
     : formatBRL(order.total);
   const copyPaste = order.pixCopyPaste || '';
@@ -6891,14 +7087,48 @@ async function saveConfig(env, config) {
   return toSave;
 }
 
+function adminSessionCacheReq(token) {
+  return new Request('https://stf-internal/adminSession/' + encodeURIComponent(token));
+}
+
+async function putAdminSessionCache(token) {
+  try {
+    await caches.default.put(
+      adminSessionCacheReq(token),
+      new Response('1', {
+        headers: {
+          'Content-Type': 'text/plain',
+          'Cache-Control': 'max-age=86400'
+        }
+      })
+    );
+    return true;
+  } catch (err) {
+    console.error('admin session cache put:', err?.message || err);
+    return false;
+  }
+}
+
 async function createSession(env) {
   const token = crypto.randomUUID();
-  await kvPut(env, 'session:' + token, '1', { expirationTtl: 86400 });
-  return token;
+  const ok = await kvPutSafe(env, 'session:' + token, '1', { expirationTtl: 86400 });
+  if (ok) return token;
+  // Free-tier KV write quota exhausted: keep admin login alive via Cache API (same as customer).
+  if (await putAdminSessionCache(token)) return token;
+  const err = new Error('LOGIN_STORAGE_UNAVAILABLE');
+  err.code = 'LOGIN_STORAGE_UNAVAILABLE';
+  throw err;
 }
 
 async function isValidSession(env, token) {
-  return !!(token && await env.STORE_KV.get('session:' + token));
+  if (!token) return false;
+  if (await env.STORE_KV.get('session:' + token)) return true;
+  try {
+    const hit = await caches.default.match(adminSessionCacheReq(token));
+    return !!(hit && (await hit.text()));
+  } catch {
+    return false;
+  }
 }
 
 async function getOrder(env, orderId) {
@@ -7696,14 +7926,21 @@ const SELF_TEST_PIX_AMOUNT = 0.01;
 const SELF_TEST_BRL_AMOUNT = 0.01;
 /** Symbolic USD charge for international PayPal test orders. */
 const SELF_TEST_USD_AMOUNT = 0.01;
-/** Symbolic EUR charge for Italian PayPal test orders. */
+/** Symbolic EUR charge for eurozone PayPal test orders. */
 const SELF_TEST_EUR_AMOUNT = 0.01;
+/** Symbolic SEK/NOK/PLN charges for locale test orders. */
+const SELF_TEST_SEK_AMOUNT = 1;
+const SELF_TEST_NOK_AMOUNT = 1;
+const SELF_TEST_PLN_AMOUNT = 0.50;
 /**
  * Stripe BR accounts reject USD that converts below R$ 0.50.
  * US$ 0.01 ≈ R$ 0.05 — use US$ 0.10 for Stripe self-test.
  */
 const SELF_TEST_STRIPE_USD_AMOUNT = 0.10;
 const SELF_TEST_STRIPE_EUR_AMOUNT = 0.10;
+const SELF_TEST_STRIPE_SEK_AMOUNT = 10;
+const SELF_TEST_STRIPE_NOK_AMOUNT = 10;
+const SELF_TEST_STRIPE_PLN_AMOUNT = 2;
 
 function normalizeAddrPart(value) {
   return String(value || '')
@@ -12753,9 +12990,15 @@ function buildIntegrationRows(env, config, checks) {
   rows.push({
     id: 'formsubmit',
     label: 'FormSubmit',
-    description: 'Fallback de e-mail se Resend falhar',
-    status: formsubmitEmail ? 'ok' : 'off',
-    detail: formsubmitEmail ? formsubmitEmail : 'E-mail de destino não configurado'
+    description: 'Fallback de e-mail se Resend falhar (contato do site usa /contact + Resend)',
+    status: !formsubmitEmail
+      ? 'off'
+      : (resend.configured && resend.authOk ? 'ok' : 'warn'),
+    detail: !formsubmitEmail
+      ? 'E-mail de destino não configurado'
+      : (resend.configured && resend.authOk
+        ? `${formsubmitEmail} · opcional (fallback se Resend falhar)`
+        : `${formsubmitEmail} · fallback ativo — Resend não conectado`)
   });
 
   if (!zapi.configured) {
@@ -12809,17 +13052,27 @@ async function createPayPalCheckout(env, order, config, request, opts) {
   const options = opts || {};
   const accessToken = await getPayPalAccessToken(env);
   const checkoutLocale = String(order.checkoutLocale || 'pt').toLowerCase();
-  const useForeign = isComSiteRequest(request) && isIntlCheckoutLocale(checkoutLocale);
-  const foreignCur = intlChargeCurrencyForLocale(checkoutLocale);
+  // Abroad even when locale list lagged (TattooFix: missing fr/nl/… charged BRL).
+  const abroad = orderLooksInternationalDestination(order)
+    || (() => {
+      const code = String(order.paisCode || '').trim().toUpperCase();
+      return !!(code && code !== 'BR' && code !== 'OTHER' && code !== 'XX' && code !== 'T1');
+    })();
+  const useForeign = abroad || (isComSiteRequest(request) && isIntlCheckoutLocale(checkoutLocale));
+  const foreignCur = (() => {
+    const existing = String(order.chargeCurrency || '').trim().toUpperCase();
+    if (existing && existing !== 'BRL') return existing;
+    const byCountry = currencyForCountryCode(order.paisCode);
+    if (byCountry && byCountry !== 'BRL') return byCountry;
+    return intlChargeCurrencyForLocale(checkoutLocale, config);
+  })();
   let currencyCode = 'BRL';
   let amountValue = Number(order.total).toFixed(2);
   let locale = 'pt-BR';
   if (useForeign) {
     if (isSelfTestOrder(order)) {
       currencyCode = foreignCur;
-      const testAmt = foreignCur === 'EUR'
-        ? SELF_TEST_EUR_AMOUNT
-        : SELF_TEST_USD_AMOUNT;
+      const testAmt = selfTestAmountForCurrency(foreignCur, 'PAYPAL', order);
       amountValue = testAmt.toFixed(2);
       locale = checkoutLocale === 'it' ? 'it-IT' : 'en-US';
       order.chargeCurrency = foreignCur;
@@ -12837,7 +13090,7 @@ async function createPayPalCheckout(env, order, config, request, opts) {
     }
   } else if (isSelfTestOrder(order)) {
     amountValue = SELF_TEST_BRL_AMOUNT.toFixed(2);
-    applySelfTestChargeCurrency(order, { intlUsd: false });
+    applySelfTestChargeCurrency(order, { intlUsd: false, config });
   }
   if (!(Number(amountValue) > 0)) {
     throw new Error('PayPal amount must be greater than zero.');
@@ -12945,7 +13198,17 @@ function mpErrorMessage(data, status) {
   return parts.filter(Boolean).join(' — ') || `HTTP ${status}`;
 }
 
-async function createMercadoPagoPixPayment(env, order, config) {
+/** Webhook MP — secret ou URL canônica do Worker Crash (Tattoo tem o secret; Crash precisava do default). */
+function mpWebhookUrl(env, request) {
+  const fromEnv = String(env.MP_WEBHOOK_URL || '').trim();
+  if (fromEnv) return fromEnv;
+  try {
+    if (request?.url) return new URL('/webhook/mercadopago', request.url).href;
+  } catch (_) { /* ignore */ }
+  return 'https://api.sensorcrashfix.com.br/webhook/mercadopago';
+}
+
+async function createMercadoPagoPixPayment(env, order, config, request) {
   const token = mercadoPagoToken(env);
   if (!token) return null;
 
@@ -12963,15 +13226,15 @@ async function createMercadoPagoPixPayment(env, order, config) {
     payer.identification = { type: 'CPF', number: cpf };
   }
 
-  const notificationUrl = (env.MP_WEBHOOK_URL || '').trim() || undefined;
+  const notificationUrl = mpWebhookUrl(env, request);
   const body = {
     transaction_amount: Number(order.total.toFixed(2)),
     description: `${config.product?.name || 'Kit Sensor Crash Fix'} — ${order.orderId}`.slice(0, 200),
     payment_method_id: 'pix',
     external_reference: order.orderId,
-    payer
+    payer,
+    notification_url: notificationUrl
   };
-  if (notificationUrl) body.notification_url = notificationUrl;
 
   const res = await fetch('https://api.mercadopago.com/v1/payments', {
     method: 'POST',
@@ -13013,7 +13276,7 @@ async function createMercadoPagoCheckoutPro(env, order, config, request) {
   const pendingParams = new URLSearchParams({
     mp: 'pending', orderId: order.orderId, accessToken: order.accessToken
   });
-  const notificationUrl = (env.MP_WEBHOOK_URL || '').trim() || undefined;
+  const notificationUrl = mpWebhookUrl(env, request);
 
   const body = {
     items: [{
@@ -13027,6 +13290,7 @@ async function createMercadoPagoCheckoutPro(env, order, config, request) {
       name: String(order.nome || 'Cliente').slice(0, 100)
     },
     external_reference: order.orderId,
+    notification_url: notificationUrl,
     back_urls: {
       success: `${base}/comprar.html?${successParams}`,
       failure: `${base}/loja.html`,
@@ -13038,7 +13302,6 @@ async function createMercadoPagoCheckoutPro(env, order, config, request) {
       excluded_payment_types: [{ id: 'ticket' }, { id: 'atm' }]
     }
   };
-  if (notificationUrl) body.notification_url = notificationUrl;
 
   const res = await fetch('https://api.mercadopago.com/checkout/preferences', {
     method: 'POST',
@@ -13071,7 +13334,7 @@ async function tryBrPaymentProvider(env, order, config, provider, billingType, r
   if (provider === 'mercadopago') {
     if (!hasMp) throw new Error('Mercado Pago não configurado no Worker.');
     if (billingType === 'CREDIT_CARD') return createMercadoPagoCheckoutPro(env, order, config, request);
-    return createMercadoPagoPixPayment(env, order, config);
+    return createMercadoPagoPixPayment(env, order, config, request);
   }
   if (!hasAsaas) throw new Error('Asaas não configurado no Worker.');
   return createAsaasPayment(env, order, config, billingType);
@@ -13101,8 +13364,8 @@ async function createBrCreditCardPayment(env, order, config, request) {
   return createBrPaymentWithFallback(env, order, config, 'CREDIT_CARD', getCardBrProvider, cardBrFallbackEnabled, request);
 }
 
-async function createBrPixPayment(env, order, config) {
-  return createBrPaymentWithFallback(env, order, config, 'PIX', getPixBrProvider, pixBrFallbackEnabled);
+async function createBrPixPayment(env, order, config, request) {
+  return createBrPaymentWithFallback(env, order, config, 'PIX', getPixBrProvider, pixBrFallbackEnabled, request);
 }
 
 function getEmails(config) {
@@ -14241,7 +14504,7 @@ async function handleCreateOrder(request, env, origin, ctx) {
 
   if (intlEmbeddedCheckout && (billingType === 'PAYPAL' || billingType === 'STRIPE')) {
     try {
-      const foreignCur = intlChargeCurrencyForLocale(checkoutLocale);
+      const foreignCur = intlChargeCurrencyForLocale(checkoutLocale, config);
       const charge = await intlForeignCharge(order, env, config, items, foreignCur);
       order.chargeCurrency = foreignCur;
       order.chargeAmount = charge.amount;
@@ -14267,9 +14530,9 @@ async function handleCreateOrder(request, env, origin, ctx) {
   // BR → R$ 0.01 · Abroad PayPal → US$ 0.01 · Abroad Stripe → US$ 0.10
   const intlSelfTestUsd = !!(isSelfTestOrder(order) && intlEmbeddedCheckout
     && (billingType === 'PAYPAL' || billingType === 'STRIPE'));
-  applySelfTestChargeCurrency(order, { intlUsd: intlSelfTestUsd, billingType });
+  applySelfTestChargeCurrency(order, { intlUsd: intlSelfTestUsd, billingType, config });
   if (intlSelfTestUsd) {
-    console.log('Intl self-test USD charge:', order.orderId, order.chargeAmount, billingType);
+    console.log('Intl self-test charge:', order.orderId, order.chargeAmount, order.chargeCurrency, billingType);
   }
 
   let payment = null;
@@ -14283,7 +14546,7 @@ async function handleCreateOrder(request, env, origin, ctx) {
       payment = await createMercadoPagoCheckoutPro(env, order, config, request);
     } else if (billingType === 'PIX') {
       if (hasMp || hasAsaas) {
-        payment = await createBrPixPayment(env, order, config);
+        payment = await createBrPixPayment(env, order, config, request);
       }
     } else if (billingType === 'CREDIT_CARD') {
       payment = await createBrCreditCardPayment(env, order, config, request);
@@ -15360,21 +15623,23 @@ async function handlePayPalCreate(request, env, origin, orderId) {
   }
 }
 
+function isIntlChargeCurrency(code) {
+  return ['USD', 'EUR', 'SEK', 'NOK', 'PLN'].includes(String(code || '').toUpperCase());
+}
+
 function stripeOrderCharge(order, request, env) {
   let amountCents;
   let currency = 'brl';
   let amountForeign = null;
   const chargeCur = String(order.chargeCurrency || '').toUpperCase();
-  const intlCharge = chargeCur === 'USD' || chargeCur === 'EUR'
+  const intlCharge = isIntlChargeCurrency(chargeCur)
     || (isComSiteRequest(request) && !chargeCur);
-  if (intlCharge && (chargeCur === 'USD' || chargeCur === 'EUR' || isComSiteRequest(request))) {
-    const resolvedCur = chargeCur === 'EUR' ? 'EUR' : 'USD';
+  if (intlCharge && (isIntlChargeCurrency(chargeCur) || isComSiteRequest(request))) {
+    const resolvedCur = isIntlChargeCurrency(chargeCur) ? chargeCur : 'USD';
     currency = resolvedCur.toLowerCase();
     let amt = Number(order.chargeAmount);
     if (isSelfTestOrder(order)) {
-      amt = order.selfTestStripe || order.paymentProvider === 'stripe'
-        ? (resolvedCur === 'EUR' ? SELF_TEST_STRIPE_EUR_AMOUNT : SELF_TEST_STRIPE_USD_AMOUNT)
-        : (resolvedCur === 'EUR' ? SELF_TEST_EUR_AMOUNT : SELF_TEST_USD_AMOUNT);
+      amt = selfTestAmountForCurrency(resolvedCur, 'STRIPE', order);
       order.chargeCurrency = resolvedCur;
       order.chargeAmount = amt;
       if (order.paymentProvider === 'stripe') order.selfTestStripe = true;
@@ -15383,7 +15648,7 @@ function stripeOrderCharge(order, request, env) {
       return null;
     }
     const minCents = isSelfTestOrder(order)
-      ? Math.round((resolvedCur === 'EUR' ? SELF_TEST_STRIPE_EUR_AMOUNT : SELF_TEST_STRIPE_USD_AMOUNT) * 100)
+      ? Math.round(selfTestAmountForCurrency(resolvedCur, 'STRIPE', order) * 100)
       : 50;
     amountCents = Math.max(minCents, Math.round(amt * 100));
     amountForeign = amt;
@@ -15397,11 +15662,11 @@ function stripeOrderCharge(order, request, env) {
 
 async function ensureStripeIntlCharge(order, request, env) {
   const chargeCur = String(order.chargeCurrency || '').toUpperCase();
-  if (!(chargeCur === 'USD' || chargeCur === 'EUR' || isComSiteRequest(request))) return;
+  if (!(isIntlChargeCurrency(chargeCur) || isComSiteRequest(request))) return;
   let amt = Number(order.chargeAmount);
   if (Number.isFinite(amt) && amt > 0) return;
   const config = await getConfig(env);
-  const foreignCur = intlChargeCurrencyForLocale(order.checkoutLocale);
+  const foreignCur = intlChargeCurrencyForLocale(order.checkoutLocale, config);
   const charge = await intlForeignCharge(order, env, config, order.items, foreignCur);
   order.chargeCurrency = foreignCur;
   order.chargeAmount = charge.amount;
@@ -15650,6 +15915,49 @@ async function handlePayPalWebhook(request, env, origin) {
   return json({ ok: true }, 200, origin);
 }
 
+/** Confirma pedido se o pagamento MP estiver approved (webhook ou poll do checkout). */
+async function confirmOrderFromMercadoPagoPayment(env, payment) {
+  if (!payment || payment.status !== 'approved' || !payment.external_reference) return false;
+  const order = await getOrder(env, payment.external_reference);
+  if (!order || order.status === 'paid') return !!order;
+  await handlePaymentConfirmed(env, order, {
+    id: payment.id,
+    provider: 'mercadopago',
+    billingType: payment.payment_method_id === 'pix' ? 'PIX' : 'CREDIT_CARD',
+    value: payment.transaction_amount
+  });
+  return true;
+}
+
+async function fetchMercadoPagoPayment(env, paymentId) {
+  const mpToken = mercadoPagoToken(env);
+  if (!mpToken || !paymentId) return null;
+  const res = await fetch(`https://api.mercadopago.com/v1/payments/${encodeURIComponent(paymentId)}`, {
+    headers: { Authorization: 'Bearer ' + mpToken, Accept: 'application/json' }
+  });
+  const payment = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    console.error('MP payment fetch:', res.status, payment);
+    return null;
+  }
+  return payment;
+}
+
+/**
+ * Poll do checkout só lê o KV — sem webhook o status nunca muda.
+ * Ao GET do pedido pendente, consulta o MP e confirma se já estiver approved.
+ */
+async function maybeSyncMercadoPagoPendingOrder(env, order) {
+  if (!order || order.status !== 'pending_payment') return order;
+  if (order.paymentProvider && order.paymentProvider !== 'mercadopago') return order;
+  const paymentId = order.mercadoPagoPaymentId || order.payment?.paymentId;
+  if (!paymentId) return order;
+  const payment = await fetchMercadoPagoPayment(env, paymentId);
+  if (!payment) return order;
+  await confirmOrderFromMercadoPagoPayment(env, payment);
+  return (await getOrder(env, order.orderId)) || order;
+}
+
 async function handleMercadoPagoWebhook(request, env, origin) {
   const mpToken = mercadoPagoToken(env);
   if (!mpToken) return json({ error: 'MP não configurado.' }, 500, origin);
@@ -15663,48 +15971,40 @@ async function handleMercadoPagoWebhook(request, env, origin) {
   }
   if (!paymentId) return json({ ok: true }, 200, origin);
 
-  const res = await fetch(`https://api.mercadopago.com/v1/payments/${encodeURIComponent(paymentId)}`, {
-    headers: { Authorization: 'Bearer ' + mpToken, Accept: 'application/json' }
-  });
-  const payment = await res.json().catch(() => ({}));
-  if (!res.ok) {
-    console.error('MP webhook:', res.status, payment);
-    return json({ ok: true }, 200, origin);
-  }
-
-  if (payment.status === 'approved' && payment.external_reference) {
-    const order = await getOrder(env, payment.external_reference);
-    if (order && order.status !== 'paid') {
-      await handlePaymentConfirmed(env, order, {
-        id: payment.id,
-        provider: 'mercadopago',
-        billingType: payment.payment_method_id === 'pix' ? 'PIX' : 'CREDIT_CARD',
-        value: payment.transaction_amount
-      });
-    }
-  }
+  const payment = await fetchMercadoPagoPayment(env, paymentId);
+  if (payment) await confirmOrderFromMercadoPagoPayment(env, payment);
   return json({ ok: true }, 200, origin);
 }
 
 async function handleLogin(request, env, origin) {
   if (!env.ADMIN_PASSWORD) return json({ error: 'ADMIN_PASSWORD não configurado.' }, 500, origin);
 
-  const ip = clientIp(request);
-  const lock = await getLoginLock(env, ip, 'admin');
-  if (lock?.lockedUntil && Date.now() < lock.lockedUntil) {
-    return loginLockedResponse(lock, origin);
-  }
+  try {
+    const ip = clientIp(request);
+    const lock = await getLoginLock(env, ip, 'admin');
+    if (lock?.lockedUntil && Date.now() < lock.lockedUntil) {
+      return loginLockedResponse(lock, origin);
+    }
 
-  const body = await request.json();
-  const username = String(body.username || '').trim();
-  const password = String(body.password || '');
-  if (username !== (env.ADMIN_USERNAME || 'admin') || password !== env.ADMIN_PASSWORD) {
-    await recordLoginFailure(env, ip, 'admin');
-    return json({ error: 'Usuário ou senha incorretos.' }, 401, origin);
-  }
+    const body = await request.json().catch(() => ({}));
+    const username = String(body.username || '').trim();
+    const password = String(body.password || '');
+    if (username !== (env.ADMIN_USERNAME || 'admin') || password !== env.ADMIN_PASSWORD) {
+      await recordLoginFailure(env, ip, 'admin');
+      return json({ error: 'Usuário ou senha incorretos.' }, 401, origin);
+    }
 
-  await clearLoginFailures(env, ip, 'admin');
-  return json({ token: await createSession(env), username: env.ADMIN_USERNAME || 'admin' }, 200, origin);
+    await clearLoginFailures(env, ip, 'admin');
+    return json({ token: await createSession(env), username: env.ADMIN_USERNAME || 'admin' }, 200, origin);
+  } catch (err) {
+    console.error('admin login:', err?.message || err);
+    if (err?.code === 'LOGIN_STORAGE_UNAVAILABLE' || isKvQuotaError(err)) {
+      return json({
+        error: 'Login temporariamente indisponível (limite diário do servidor). Tente após 21h (horário de Brasília).'
+      }, 503, origin);
+    }
+    return json({ error: 'Não foi possível entrar agora. Tente de novo em instantes.' }, 500, origin);
+  }
 }
 
 async function handleSession(request, env, origin) {
@@ -16155,7 +16455,7 @@ async function handleAdminCorreiosApi586Probe(request, env, origin) {
     }
   }
 
-  const orderId = String(new URL(request.url).searchParams.get('orderId') || 'STF-20260726-CF26D2B504').trim();
+  const orderId = String(new URL(request.url).searchParams.get('orderId') || 'SCF-20260726-CF26D2B504').trim();
   const order = await getOrder(env, orderId);
   const config = await getConfig(env);
   const createAttempts = [];
@@ -16220,7 +16520,7 @@ async function handleAdminCorreiosIntlProbe(request, env, origin) {
     return json({ error: 'Não autorizado.' }, 401, origin);
   }
   const url = new URL(request.url);
-  const orderId = String(url.searchParams.get('orderId') || 'STF-20260726-CF26D2B504').trim();
+  const orderId = String(url.searchParams.get('orderId') || 'SCF-20260726-CF26D2B504').trim();
   const order = await getOrder(env, orderId);
   if (!order) return json({ error: 'Pedido não encontrado.', orderId }, 404, origin);
 
@@ -16768,7 +17068,7 @@ function clickField(data, key, maxLen, fallback) {
 }
 
 function inferDispositivoFromRequest(request) {
-  const ua = request.headers.get('User-Agent') || '';
+  const ua = request.headers.get('X-STF-Client-UA') || request.headers.get('User-Agent') || '';
   if (!ua) return '';
   const mobile = /Mobile|Android|iPhone|iPad/i.test(ua);
   let browser = 'outro';
@@ -16789,11 +17089,24 @@ function inferDispositivoFromUserAgent(uaRaw) {
 function buildClickEntry(data, request) {
   const ip = clientIp(request);
   const geo = extractClickGeo(request);
-  const userAgent = (request.headers.get('User-Agent') || '').slice(0, 200);
+  const userAgent = (
+    request.headers.get('X-STF-Client-UA')
+    || request.headers.get('User-Agent')
+    || ''
+  ).slice(0, 200);
   const dispositivoClient = clickField(data, 'dispositivo', 80);
   const dispositivo = (dispositivoClient && dispositivoClient !== '—')
     ? dispositivoClient
     : inferDispositivoFromRequest(request);
+  const idiomaRaw = clickField(data, 'idioma', 24);
+  const siteHostRaw = clickField(data, 'site_host', 16);
+  // Infer .com vs .com.br when client omitted site_host (older analytics).
+  let siteHost = siteHostRaw;
+  if (!siteHost) {
+    const lang = idiomaRaw.toLowerCase();
+    if (lang.startsWith('pt')) siteHost = 'com.br';
+    else if (lang) siteHost = 'com';
+  }
   return {
     tipo: clickField(data, 'tipo', 24, 'clique'),
     destino: clickField(data, 'destino', 48),
@@ -16805,8 +17118,8 @@ function buildClickEntry(data, request) {
     href: clickField(data, 'href', 500),
     pagina: clickField(data, 'pagina', 200),
     titulo_pagina: clickField(data, 'titulo_pagina', 120),
-    idioma: clickField(data, 'idioma', 24),
-    site_host: clickField(data, 'site_host', 16),
+    idioma: idiomaRaw,
+    site_host: siteHost,
     referrer: clickField(data, 'referrer', 200),
     dispositivo,
     user_agent: userAgent,
@@ -17309,6 +17622,198 @@ async function handleAdminClearFeedback(request, env, origin) {
   return json({ ok: true, removed }, 200, origin);
 }
 
+async function getContactList(env) {
+  try {
+    const raw = await env.STORE_KV.get(CONTACT_BLOB);
+    if (!raw) return [];
+    const list = JSON.parse(raw);
+    return Array.isArray(list) ? list : [];
+  } catch {
+    return [];
+  }
+}
+
+async function saveContactList(env, list) {
+  await kvPut(env, CONTACT_BLOB, JSON.stringify(list));
+}
+
+async function appendContact(env, entry) {
+  const row = { id: crypto.randomUUID(), ts: Date.now(), ...entry };
+  let list = await getContactList(env);
+  list.unshift(row);
+  if (list.length > CONTACT_MAX) list.length = CONTACT_MAX;
+  await saveContactList(env, list);
+  return row;
+}
+
+/** Atualiza meta de notificação (Resend/FormSubmit) numa mensagem já gravada. */
+async function patchContactNotify(env, id, notifyMeta) {
+  if (!id || !notifyMeta) return;
+  const list = await getContactList(env);
+  const idx = list.findIndex((row) => row && row.id === id);
+  if (idx < 0) return;
+  list[idx] = { ...list[idx], ...notifyMeta };
+  await saveContactList(env, list);
+}
+
+async function checkContactRate(env, ip) {
+  if (!ip || ip === 'unknown') return true;
+  const hour = Math.floor(Date.now() / 3600000);
+  const cache = caches.default;
+  const req = new Request(`https://stf-contact-rate/${encodeURIComponent(ip)}/${hour}`);
+  const hit = await cache.match(req);
+  const n = (hit ? parseInt(await hit.text(), 10) || 0 : 0) + 1;
+  if (n > 12) return false;
+  await cache.put(req, new Response(String(n), { headers: { 'Cache-Control': 'max-age=7200' } }));
+  return true;
+}
+
+function looksLikeEmail(value) {
+  const s = String(value || '').trim();
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s) && s.length <= 120;
+}
+
+/** Destinos de aviso do formulário de contato (KV é a fonte durável).
+ * Público + notify: sempre contato@sensorcrashfix.com.br (nunca TattooFix).
+ * Com Null MX, o aviso Resend só chega após Email Routing no .com.br. */
+function contactNotifyRecipients(config) {
+  const recipients = new Set(['contato@sensorcrashfix.com.br']);
+  const primary = String(config?.formsubmit?.email || '').trim().toLowerCase();
+  if (
+    primary &&
+    primary !== 'contato@sensorcrashfix.com.br' &&
+    /@sensorcrashfix\.(com\.br|com)$/i.test(primary) &&
+    !/@sensortattoofix\./i.test(primary)
+  ) {
+    recipients.add(primary);
+  }
+  return [...recipients];
+}
+
+async function handleContact(request, env, origin, ctx) {
+  if (!isAllowedSiteRequest(request)) {
+    return json({ error: 'Origem não permitida.' }, 403, origin);
+  }
+  const body = await request.json().catch(() => null);
+  if (!body || typeof body !== 'object') {
+    return json({ error: 'Payload inválido.' }, 400, origin);
+  }
+
+  // Honeypot (bots preenchendo "company")
+  if (String(body.company || body.website || '').trim()) {
+    return json({ ok: true }, 202, origin);
+  }
+
+  const name = feedbackField(body, 'name', 120);
+  const email = feedbackField(body, 'email', 120).toLowerCase();
+  const message = feedbackField(body, 'message', 4000);
+  const subject = feedbackField(body, 'subject', 160) || 'Contato — Sensor Crash Fix';
+
+  if (name.length < 2) {
+    return json({ error: 'Informe seu nome.' }, 400, origin);
+  }
+  if (!looksLikeEmail(email)) {
+    return json({ error: 'E-mail inválido.' }, 400, origin);
+  }
+  if (message.length < 8) {
+    return json({ error: 'Escreva uma mensagem (mín. 8 caracteres).' }, 400, origin);
+  }
+
+  const ip = clientIp(request);
+  if (!(await checkContactRate(env, ip))) {
+    return json({ error: 'Muitas mensagens em pouco tempo. Tente mais tarde.' }, 429, origin);
+  }
+
+  const paisCf = (request.headers.get('CF-IPCountry') || '').trim();
+  const entry = {
+    name,
+    email,
+    message,
+    subject,
+    pagina: feedbackField(body, 'pagina', 200),
+    idioma: feedbackField(body, 'idioma', 24),
+    referrer: feedbackField(body, 'referrer', 200),
+    pais: paisCf,
+    ip: ip !== 'unknown' ? ip : '',
+    notified: false,
+    notifyError: ''
+  };
+
+  let row;
+  try {
+    row = await appendContact(env, entry);
+  } catch (err) {
+    console.error('contact save:', err.message);
+    return json({ error: 'Falha ao gravar.' }, 503, origin);
+  }
+
+  const config = await getConfig(env);
+  const when = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
+  const fields = {
+    Nome: name,
+    Email: email,
+    Mensagem: message,
+    Página: entry.pagina || '—',
+    Idioma: entry.idioma || '—',
+    País: entry.pais || '—',
+    Quando: when
+  };
+
+  // Await notify (não fire-and-forget): sem waitUntil o Worker podia morrer antes do Resend.
+  // notifyEmail = Resend + fallback FormSubmit. TO contato@ → Email Routing → Gmail.
+  const recipients = contactNotifyRecipients(config);
+  const notifyWork = (async () => {
+    const results = [];
+    for (const to of recipients) {
+      try {
+        const result = await notifyEmail(env, config, to, subject, fields, email);
+        results.push({
+          to,
+          ok: !!result?.ok,
+          provider: result?.provider || null,
+          error: result?.ok
+            ? null
+            : (result?.error || result?.resend?.error || result?.formsubmit?.error || 'falha')
+        });
+      } catch (err) {
+        results.push({ to, ok: false, provider: null, error: err.message || 'erro' });
+      }
+    }
+    const notified = results.some((r) => r.ok);
+    const firstErr = results.find((r) => !r.ok)?.error || '';
+    const providers = results.filter((r) => r.ok).map((r) => r.provider).filter(Boolean);
+    await patchContactNotify(env, row.id, {
+      notified,
+      notifyError: notified ? '' : String(firstErr || 'notify falhou').slice(0, 240),
+      notifyProvider: providers[0] || '',
+      notifiedAt: Date.now(),
+      notifyResults: results.slice(0, 6)
+    });
+    if (!notified) {
+      console.error('contact notify failed:', JSON.stringify(results));
+    }
+    return { notified, results };
+  })();
+
+  if (ctx && typeof ctx.waitUntil === 'function') {
+    ctx.waitUntil(notifyWork);
+  }
+
+  let notified = false;
+  let notifyError = '';
+  try {
+    const outcome = await notifyWork;
+    notified = !!outcome.notified;
+    notifyError = notified ? '' : (outcome.results?.find((r) => !r.ok)?.error || 'notify falhou');
+  } catch (err) {
+    notifyError = err.message || 'notify falhou';
+    console.error('contact notify:', notifyError);
+  }
+
+  // ok:true = gravado (KV backup). notified diz se o e-mail saiu (Gmail via Routing).
+  return json({ ok: true, saved: true, notified, notifyError: notified ? undefined : notifyError }, 202, origin);
+}
+
 async function handleTestEmail(request, env, origin) {
   if (!(await isValidSession(env, bearerToken(request)))) {
     return json({ error: 'Não autorizado.' }, 401, origin);
@@ -17370,7 +17875,7 @@ async function handleTestEmail(request, env, origin) {
 }
 
 function buildTestOrder(config, to, overrides = {}) {
-  const orderId = 'STF-TESTE-' + Date.now();
+  const orderId = 'SCF-TESTE-' + Date.now();
   const price = Number(config.product?.price) || 62.9;
   const locale = String(overrides.checkoutLocale || 'pt').toLowerCase();
   const isIntl = isIntlCheckoutLocale(locale);
@@ -17612,16 +18117,25 @@ async function handleGetOrder(request, env, origin, orderId) {
 
   if (await isValidSession(env, bearerToken(request))) {
     // Pré-postagem / PDF só em POST /orders/:id/shipping-label (botão Etiqueta), não ao abrir o pedido.
+    if (order.status === 'pending_payment') {
+      order = await maybeSyncMercadoPagoPendingOrder(env, order);
+    }
     return json(order, 200, origin);
   }
 
   const accessToken = new URL(request.url).searchParams.get('token') || '';
   if (accessToken && order.accessToken && accessToken === order.accessToken) {
+    if (order.status === 'pending_payment') {
+      order = await maybeSyncMercadoPagoPendingOrder(env, order);
+    }
     return json(publicOrderView(order, { includePayment: true }), 200, origin);
   }
 
   const customerId = await getCustomerUserId(env, bearerToken(request));
   if (customerId && order.userId === customerId) {
+    if (order.status === 'pending_payment') {
+      order = await maybeSyncMercadoPagoPendingOrder(env, order);
+    }
     return json(publicOrderView(order, { includePayment: order.status === 'pending_payment' }), 200, origin);
   }
 
@@ -17692,8 +18206,28 @@ async function handlePutConfig(request, env, origin, ctx) {
       : (current.homeFaq || []),
     homeReviews: body.homeReviews != null
       ? mergePreservedI18n(Array.isArray(body.homeReviews) ? body.homeReviews : current.homeReviews || [], current.homeReviews || [])
-      : (current.homeReviews || [])
+      : (current.homeReviews || []),
+    intlCurrencies: body.intlCurrencies != null
+      ? normalizeIntlCurrencies(body.intlCurrencies)
+      : normalizeIntlCurrencies(current.intlCurrencies),
+    intlCurrenciesAutoFx: body.intlCurrenciesAutoFx != null
+      ? body.intlCurrenciesAutoFx !== false
+      : (body.intlCurrenciesAutoPpp != null
+        ? body.intlCurrenciesAutoPpp !== false
+        : autoFxEnabled(current)),
+    intlCurrenciesAutoPpp: body.intlCurrenciesAutoFx != null
+      ? body.intlCurrenciesAutoFx !== false
+      : (body.intlCurrenciesAutoPpp != null
+        ? body.intlCurrenciesAutoPpp !== false
+        : autoFxEnabled(current))
   };
+  if (autoFxEnabled(merged)) {
+    const seeded = seedMissingIntlMarkup(merged.products || [], DEFAULT_CONFIG.products);
+    const synced = syncOpticalIntlBrlFromBrKit(seeded);
+    const fxRates = await fetchFxRatesMap(env, (merged.intlCurrencies || []).map((c) => c.code));
+    const applied = applyMarkupFxToIntlProducts(synced.products, merged.intlCurrencies, fxRates);
+    merged.products = applied.products;
+  }
   if (merged.products?.[0]) {
     merged.product = {
       name: merged.products[0].name,
@@ -17717,6 +18251,61 @@ async function handlePutConfig(request, env, origin, ctx) {
   if (ctx && typeof ctx.waitUntil === 'function') ctx.waitUntil(runI18n);
   else await runI18n;
   return json(saved, 200, origin);
+}
+
+async function handleAdminApplyIntlMarkupFx(request, env, origin) {
+  if (!(await isValidSession(env, bearerToken(request)))) {
+    return json({ error: 'Não autorizado.' }, 401, origin);
+  }
+  let body = {};
+  try {
+    body = await request.json();
+  } catch {
+    body = {};
+  }
+  const current = await getConfig(env);
+  const currencies = body.intlCurrencies != null
+    ? normalizeIntlCurrencies(body.intlCurrencies)
+    : normalizeIntlCurrencies(current.intlCurrencies);
+  const auto = body.intlCurrenciesAutoFx != null
+    ? body.intlCurrenciesAutoFx !== false
+    : (body.intlCurrenciesAutoPpp != null
+      ? body.intlCurrenciesAutoPpp !== false
+      : autoFxEnabled(current));
+  const { products: seeded, changed: markupChanged } = seedCanonIntlMarkup(
+    current.products || [],
+    DEFAULT_CONFIG.products
+  );
+  const synced = syncOpticalIntlBrlFromBrKit(seeded);
+  const fxRates = await fetchFxRatesMap(env, currencies.map((c) => c.code));
+  const { products, updated } = applyMarkupFxToIntlProducts(synced.products, currencies, fxRates);
+  const saved = await saveConfig(env, {
+    ...current,
+    products,
+    intlCurrencies: currencies,
+    intlCurrenciesAutoFx: auto,
+    intlCurrenciesAutoPpp: auto
+  });
+  return json({
+    ok: true,
+    updated: updated + (synced.synced ? 1 : 0) + markupChanged,
+    markupChanged,
+    syncedOpticalBrl: synced.synced,
+    fxRates,
+    currencies: currencies.map((c) => ({ code: c.code, decimals: c.decimals })),
+    products: (saved.products || []).filter(isIntlMarketProductRow).map((p) => ({
+      id: p.id,
+      price: p.price,
+      intlMarkupPercent: p.intlMarkupPercent,
+      intlBaseBrl: p.intlBaseBrl,
+      priceUsd: p.priceUsd,
+      priceEur: p.priceEur,
+      priceSek: p.priceSek,
+      priceNok: p.priceNok,
+      pricePln: p.pricePln,
+      priceGbp: p.priceGbp
+    }))
+  }, 200, origin);
 }
 
 async function handleAdminHomeI18nRefresh(request, env, origin, ctx) {
@@ -18730,6 +19319,12 @@ export default {
         return handleAddressSuggest(request, env, origin);
       }
       if (path === '/admin/config' && request.method === 'GET') return handleAdminGetConfig(request, env, origin);
+      if (path === '/admin/apply-intl-markup-fx' && request.method === 'POST') {
+        return handleAdminApplyIntlMarkupFx(request, env, origin);
+      }
+      if (path === '/admin/apply-intl-ppp' && request.method === 'POST') {
+        return handleAdminApplyIntlMarkupFx(request, env, origin);
+      }
       if (path === '/admin/home-i18n/refresh' && request.method === 'POST') {
         return handleAdminHomeI18nRefresh(request, env, origin, ctx);
       }
@@ -18908,6 +19503,9 @@ export default {
       }
       if (path === '/admin/feedback' && request.method === 'DELETE') {
         return handleAdminClearFeedback(request, env, origin);
+      }
+      if (path === '/contact' && request.method === 'POST') {
+        return handleContact(request, env, origin, ctx);
       }
       if (path === '/fx/rate' && request.method === 'GET') {
         return handleFxRate(request, env, origin);
