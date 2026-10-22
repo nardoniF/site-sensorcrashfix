@@ -2905,46 +2905,64 @@ a.stf-tiktok-card:hover {
 .checkout-notice i { color: var(--primary); margin-top: 2px; }
 .checkout-notice a { color: #7ecbf0; text-decoration: underline; text-underline-offset: 2px; }
 
-/* EN / international trust — single horizontal line beside hero badge (not a top bar) */
+/* EN / international trust — badge + one compact line (checkout · shipping · email) */
 .hero-trust-row {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px 14px;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    gap: 5px;
     margin: 0;
     max-width: 100%;
     min-width: 0;
 }
 .hero-trust-row .badge {
     margin: 0;
-    flex: 0 1 auto;
+    flex: 0 0 auto;
     max-width: 100%;
-    white-space: normal;
+    white-space: nowrap;
     text-align: center;
-    line-height: 1.25;
+    line-height: 1.2;
+    font-size: 0.72rem;
+    padding: 5px 10px;
 }
 .site-trust-inline-main {
     display: inline-flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
-    justify-content: center;
-    gap: 6px 10px;
+    justify-content: flex-start;
+    gap: 3px 5px;
     margin: 0;
-    font-size: 0.88rem;
+    font-size: clamp(0.58rem, 0.92vw, 0.7rem);
     font-weight: 600;
-    line-height: 1.2;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
     color: #d8e4ef;
     max-width: 100%;
     min-width: 0;
+    white-space: nowrap;
 }
 .site-trust-inline-main .site-trust-bar-item {
     white-space: nowrap;
-    flex: 0 1 auto;
+    flex: 0 0 auto;
+    gap: 3px;
+}
+.site-trust-inline-main .site-trust-bar-item i {
+    font-size: 0.8em;
+}
+.site-trust-inline-main .site-trust-bar-sep {
+    flex: 0 0 auto;
+    font-size: 0.85em;
 }
 .site-trust-inline-main .site-trust-bar-contact {
-    white-space: normal;
-    overflow-wrap: anywhere;
-    word-break: break-word;
+    white-space: nowrap;
+    overflow: visible;
+    overflow-wrap: normal;
+    word-break: normal;
+}
+.site-trust-inline-main .site-trust-bar-contact a {
+    font-size: inherit;
+    font-weight: 600;
 }
 /* Keep Discover / Where to Buy in the first viewport with the trust row */
 .hero-text:has(.hero-trust-row) {
@@ -3044,20 +3062,28 @@ a.stf-tiktok-card:hover {
         justify-content: center;
         flex-direction: column;
         align-items: center;
-        gap: 6px;
+        gap: 4px;
         margin-bottom: 2px;
         width: 100%;
     }
+    .hero-trust-row .badge {
+        font-size: 0.68rem;
+        padding: 4px 9px;
+    }
     .site-trust-inline-main {
         justify-content: center;
-        font-size: 0.72rem;
-        gap: 4px 8px;
-        width: 100%;
+        font-size: clamp(0.52rem, 2.7vw, 0.62rem);
+        gap: 2px 4px;
+        width: auto;
         max-width: 100%;
+        flex-wrap: nowrap;
     }
-    /* Long email was the main width bomber on phones */
+    /* Ícones somem no estreito — libera ~40px pra caber e-mail + textos longos (NL/DE) */
+    .site-trust-inline-main .site-trust-bar-item i {
+        display: none;
+    }
     .site-trust-inline-main .site-trust-bar-contact a {
-        font-size: 0.7rem;
+        font-size: inherit;
     }
     .hero-text:has(.hero-trust-row) > h1 {
         margin: 10px 0 10px;

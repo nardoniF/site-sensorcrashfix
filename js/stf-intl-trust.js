@@ -1,5 +1,5 @@
 /**
- * Trust line for international storefront (.com and /en/ /it/).
+ * Trust line for international storefront (.com and /en/ /it/ /de/ …).
  * One horizontal line beside the hero "3N20 Technology • Patented" badge —
  * never a top bar (that pushed Discover / Where to Buy off the first screen).
  */
@@ -7,16 +7,39 @@
   function isIntlPage() {
     if (window.STF_SITE?.isIntlHost?.()) return true;
     if (/\.sensorcrashfix\.com$/i.test(location.hostname)) return true;
-    return /\/(en|it)(\/|$)/i.test(location.pathname);
+    return /\/(en|it|de|es|pl|sl|fr|nl|sv|no|fi)(\/|$)/i.test(location.pathname);
   }
   if (!isIntlPage()) return;
 
+  function pageLang() {
+    if (window.STF_PAGE_LANG?.get) return window.STF_PAGE_LANG.get();
+    const path = location.pathname || '';
+    const m = path.match(/\/(en|it|de|es|pl|sl|fr|nl|sv|no|fi)(\/|$)/i);
+    if (m) return m[1].toLowerCase();
+    const htmlLang = (document.documentElement.lang || '').slice(0, 2).toLowerCase();
+    if (['en', 'it', 'de', 'es', 'pl', 'sl', 'fr', 'nl', 'sv', 'no', 'fi'].includes(htmlLang)) {
+      return htmlLang;
+    }
+    return 'en';
+  }
+
+  /* Textos curtos de propósito — precisam caber numa linha com o e-mail em todos os idiomas. */
+  const COPY = {
+    en: { secure: 'Secure checkout', shipping: 'Tracked shipping', label: 'Secure checkout and tracked shipping' },
+    it: { secure: 'Checkout sicuro', shipping: 'Spedizione tracciata', label: 'Checkout sicuro e spedizione tracciata' },
+    de: { secure: 'Sicherer Checkout', shipping: 'Mit Tracking', label: 'Sicherer Checkout und Sendungsverfolgung' },
+    es: { secure: 'Pago seguro', shipping: 'Envío rastreable', label: 'Pago seguro y envío con seguimiento' },
+    fr: { secure: 'Paiement sécurisé', shipping: 'Livraison suivie', label: 'Paiement sécurisé et livraison suivie' },
+    pl: { secure: 'Bezpieczna płatność', shipping: 'Śledzona wysyłka', label: 'Bezpieczna płatność i śledzona wysyłka' },
+    sl: { secure: 'Varno plačilo', shipping: 'Sledena pošiljka', label: 'Varno plačilo in sledena pošiljka' },
+    nl: { secure: 'Veilige checkout', shipping: 'Traceerbaar', label: 'Veilige checkout en traceerbare verzending' },
+    sv: { secure: 'Säker checkout', shipping: 'Spårbar frakt', label: 'Säker checkout och spårbar frakt' },
+    no: { secure: 'Sikker checkout', shipping: 'Sporbar frakt', label: 'Sikker checkout og sporbar frakt' },
+    fi: { secure: 'Turvallinen kassa', shipping: 'Seurattava toimitus', label: 'Turvallinen kassa ja seurattava toimitus' }
+  };
+
   const EMAIL = window.STF_SITE?.supportEmail?.() || 'support@sensorcrashfix.com';
-  const isIt = /\/it(\/|$)/i.test(location.pathname)
-    || (document.documentElement.lang || '').toLowerCase().startsWith('it');
-  const copy = isIt
-    ? { secure: 'Checkout sicuro', shipping: 'Spedizione tracciata', label: 'Checkout sicuro e spedizione tracciata' }
-    : { secure: 'Secure checkout', shipping: 'Tracked shipping', label: 'Secure checkout and tracked shipping' };
+  const copy = COPY[pageLang()] || COPY.en;
 
   function injectTrustLine() {
     if (document.querySelector('.site-trust-inline, .site-trust-bar')) return;
