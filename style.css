@@ -7503,3 +7503,10 @@ h3.about-story-heading + .about-body:has(+ .about-patents) {
     display: none !important;
 }
 
+
+/* SEO base sections */
+.section-lead { max-width: 42rem; margin: 0 auto 1.5rem; opacity: 0.9; }
+.apply-steps { max-width: 40rem; margin: 0 auto 1rem; padding-left: 1.25rem; line-height: 1.6; }
+.apply-steps li { margin-bottom: 0.65rem; }
+.compat-brands { max-width: 40rem; margin: 0 auto 1rem; padding-left: 1.25rem; line-height: 1.55; }
+.compat-brands li { margin-bottom: 0.45rem; }
