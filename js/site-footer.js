@@ -5,8 +5,11 @@ window.STF_FOOTER = (function () {
     company: '3N20 Soluções Tecnológicas',
     cnpj: '29.321.223/0001-32',
     patentNational: 'BR 20 2026 010875 3',
-    patentInternational: 'PCT BR 2026 050304',
-    city: 'São Paulo, SP'
+    patentInternational: 'PCT/BR2026/050304',
+    city: 'São Paulo, SP',
+    /** Preenchido quando houver URL/texto oficiais (Prompt 2 SEO). */
+    returnPolicyUrl: '',
+    returnPolicyLabelPending: true
   };
 
   const SOCIAL = [
@@ -23,9 +26,12 @@ window.STF_FOOTER = (function () {
       community: 'Comunidade',
       feedback: 'O que faltou no site?',
       commissioner: 'Seja comissionado',
-      patentLinePrefix: 'Patente Nacional',
-      patentLineJoin: 'Internacional',
-      rights: 'Todos os direitos reservados.'
+      patentLinePrefix: 'Pedido nacional INPI',
+      patentLineJoin: 'Pedido internacional PCT',
+      rights: 'Todos os direitos reservados.',
+      trustContact: 'contato@sensorcrashfix.com.br',
+      trustReturnPending: 'Política de troca e devolução: pendente (em breve)',
+      trustShipping: 'Prazos: Mini Envios (Brasil) · Entrega própria (SP) · Exporta Fácil (exterior)'
     },
     en: {
       socialTitle: 'Follow our official channels',
@@ -33,9 +39,12 @@ window.STF_FOOTER = (function () {
       community: 'Community',
       feedback: 'What was missing?',
       commissioner: 'Become an affiliate',
-      patentLinePrefix: 'National Patent',
-      patentLineJoin: 'International',
-      rights: 'All rights reserved.'
+      patentLinePrefix: 'National filing INPI',
+      patentLineJoin: 'International PCT application',
+      rights: 'All rights reserved.',
+      trustContact: 'contato@sensorcrashfix.com.br',
+      trustReturnPending: 'Returns policy: pending (coming soon)',
+      trustShipping: 'Shipping: Brazil Mini Envios · São Paulo local · Exporta Fácil abroad'
     },
     it: {
       socialTitle: 'Segui i nostri canali ufficiali',
@@ -142,16 +151,33 @@ window.STF_FOOTER = (function () {
     const s = t(lang);
     if (isIntlHost()) {
       const intl = {
-        de: `Patentierte Technologie · ${INFO.patentInternational}`,
-        es: `Tecnología patentada · ${INFO.patentInternational}`,
-        pl: `Opatentowana technologia · ${INFO.patentInternational}`,
-        sl: `Patentirana tehnologija · ${INFO.patentInternational}`,
-        it: `Tecnologia brevettata · ${INFO.patentInternational}`,
-        en: `Patented technology · ${INFO.patentInternational}`
+        de: `Internationale PCT-Anmeldung (Nr. ${INFO.patentInternational})`,
+        es: `Solicitud internacional PCT (n.º ${INFO.patentInternational})`,
+        pl: `Zgłoszenie międzynarodowe PCT (nr ${INFO.patentInternational})`,
+        sl: `Mednarodna prijava PCT (št. ${INFO.patentInternational})`,
+        it: `Domanda internazionale PCT (n. ${INFO.patentInternational})`,
+        en: `International PCT application (no. ${INFO.patentInternational})`
       };
       return intl[lang] || intl.en;
     }
-    return `${s.patentLinePrefix} ${INFO.patentNational} / ${s.patentLineJoin} ${INFO.patentInternational}`;
+    return `${s.patentLinePrefix} ${INFO.patentNational} · ${s.patentLineJoin} (nº ${INFO.patentInternational})`;
+  }
+
+  function trustLines(lang) {
+    const s = t(lang);
+    const contact = s.trustContact || 'contato@sensorcrashfix.com.br';
+    const shipping = s.trustShipping || '';
+    let returns = '';
+    if (INFO.returnPolicyUrl) {
+      returns = `<a href="${INFO.returnPolicyUrl}">${s.trustReturn || 'Política de troca e devolução'}</a>`;
+    } else if (INFO.returnPolicyLabelPending) {
+      returns = s.trustReturnPending || 'Política de troca e devolução: pendente';
+    }
+    return `
+        <p class="footer-legal-meta"><a href="mailto:${contact}">${contact}</a></p>
+        ${returns ? `<p class="footer-legal-meta footer-legal-meta--muted">${returns}</p>` : ''}
+        ${shipping ? `<p class="footer-legal-meta footer-legal-meta--muted">${shipping}</p>` : ''}
+    `;
   }
 
   function legalBlock(lang) {
@@ -163,6 +189,7 @@ window.STF_FOOTER = (function () {
         <p class="footer-legal-brand">${INFO.brandTitle}</p>
         <p class="footer-legal-meta">3N20</p>
         <p class="footer-legal-meta footer-legal-meta--muted">${patentLine(lang)}</p>
+        ${trustLines(lang)}
         <p class="footer-legal-copy">&copy; ${year} ${INFO.brandPlain}. ${s.rights}</p>
       </div>
     `;
@@ -172,6 +199,7 @@ window.STF_FOOTER = (function () {
         <p class="footer-legal-brand">${INFO.brandTitle}</p>
         <p class="footer-legal-meta">${INFO.company} · CNPJ ${INFO.cnpj}</p>
         <p class="footer-legal-meta footer-legal-meta--muted">${patentLine(lang)}</p>
+        ${trustLines(lang)}
         <p class="footer-legal-copy">&copy; ${year} ${INFO.brandPlain} · ${INFO.company}. ${s.rights}</p>
       </div>
     `;

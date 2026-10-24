@@ -65,6 +65,8 @@
   function renderFaq(items, lang) {
     const root = document.getElementById('home-faq-root');
     if (!root) return;
+    // FAQ já no HTML (SEO / crawlers sem JS) — não sobrescrever.
+    if (root.getAttribute('data-faq-static') === '1' && root.querySelector('.faq-item')) return;
     const rows = (items || [])
       .filter((r) => r && r.active !== false)
       .slice()
