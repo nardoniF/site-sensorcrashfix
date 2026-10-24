@@ -17210,7 +17210,8 @@ async function handleLogClick(request, env, origin, ctx) {
   }
 
   const eventId = String(body.client_event_id || '').trim().slice(0, 64);
-  if (eventId && await isDuplicateClickEvent(eventId)) {
+  // Claim before D1 write so beacon/fetch/queue races with the same id cannot double-insert.
+  if (eventId && !(await claimClickEvent(eventId))) {
     return json({ ok: true, deduped: true }, 202, origin);
   }
 
@@ -17232,12 +17233,6 @@ async function handleLogClick(request, env, origin, ctx) {
     }, 503, origin);
   }
 
-  // Mark after successful write — marking before put caused silent log loss on KV errors.
-  if (eventId) {
-    if (ctx && typeof ctx.waitUntil === 'function') ctx.waitUntil(markClickEventSeen(eventId));
-    else await markClickEventSeen(eventId);
-  }
-
   return json({ ok: true }, 202, origin);
 }
 
@@ -17254,7 +17249,7 @@ async function handleLogClickPixel(request, env, origin, ctx) {
   }
 
   const eventId = String(params.client_event_id || '').trim().slice(0, 64);
-  if (eventId && await isDuplicateClickEvent(eventId)) {
+  if (eventId && !(await claimClickEvent(eventId))) {
     return pixelResponse(origin);
   }
 
@@ -17267,11 +17262,6 @@ async function handleLogClickPixel(request, env, origin, ctx) {
     await persistClickLog(env, entry);
   } catch (err) {
     console.error('click pixel:', err.message);
-  }
-
-  if (eventId) {
-    if (ctx && typeof ctx.waitUntil === 'function') ctx.waitUntil(markClickEventSeen(eventId));
-    else await markClickEventSeen(eventId);
   }
 
   return pixelResponse(origin);
