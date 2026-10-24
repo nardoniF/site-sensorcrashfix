@@ -206,7 +206,7 @@ window.STF_I18N = (function () {
       'conta.formAptNumber': 'Apto / número',
       'conta.formStateIntl': 'Estado / província',
       'ondeComprar.pageTitle': 'Onde Comprar | Sensor Crash Fix',
-      'ondeComprar.pageTitleEn': 'Where to Buy | Sensor Crash Fix — Passcode & Heart Rate Problems',
+      'ondeComprar.pageTitleEn': 'Where to Buy | Sensor CrashFix — Cracked Smartwatch Sensor',
       'ondeComprar.metaDesc': 'Sensor do smartwatch trincado ou rachado? Compre o kit Sensor CrashFix na loja oficial — PIX, cartão e envio rastreado.',
       'ondeComprar.metaDescEn': 'Cracked or broken smartwatch sensor? Buy the Sensor CrashFix optical lens on our official store — PayPal, cards and tracked shipping.',
       'ondeComprar.badge': 'Kit Sensor Crash Fix',
