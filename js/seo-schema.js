@@ -25,20 +25,6 @@
     : (pathLang === 'pt' ? SITE + '/' : SITE + langPrefix);
   const inLanguage = isIt ? 'it' : isDe ? 'de' : isEs ? 'es' : isPl ? 'pl' : isSl ? 'sl' : isEn ? 'en' : 'pt-BR';
 
-  /** Fallback if DOM/config still empty when Googlebot runs (real customer quotes). */
-  const FALLBACK_REVIEWS = {
-    pt: [
-      { author: 'Caroline Moreira', body: 'Produto excelente! Qualidade impecável, fácil aplicação e resultado surpreendente.', rating: 5 },
-      { author: 'MANOEL Ricardo', body: 'Produto top, resolveu meu problema!', rating: 5 },
-      { author: 'Cliente', body: 'Achei no TikTok, comprei, e está funcionando perfeitamente. Muito obrigado!', rating: 5 }
-    ],
-    en: [
-      { author: 'Caroline Moreira', body: 'Excellent product! Impeccable quality, easy to apply and amazing results.', rating: 5 },
-      { author: 'MANOEL Ricardo', body: 'Top product, it solved my problem!', rating: 5 },
-      { author: 'Customer', body: "I found you on TikTok, bought it, and it's working perfectly. Thank you!", rating: 5 }
-    ]
-  };
-
   function pickReviewField(row, field) {
     if (!row) return '';
     const fromI18n = row.i18n?.[pathLang]?.[field];
@@ -97,6 +83,7 @@
     return { reviews, ratingValue, reviewCount: reviews.length };
   }
 
+  /** Só reviews reais (DOM ou homeReviews). Sem fallback inventado / AggregateRating falso. */
   function resolveReviews(cfg) {
     const fromDom = reviewsFromDom();
     if (fromDom.reviews.length) {
@@ -122,18 +109,7 @@
         }
       };
     }
-    const fallback = (isIntlCopy ? FALLBACK_REVIEWS.en : FALLBACK_REVIEWS.pt)
-      .map((r) => toSchemaReview(r.author, r.body, r.rating))
-      .filter(Boolean);
-    return {
-      reviews: fallback,
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: '5',
-        reviewCount: String(fallback.length),
-        bestRating: '5'
-      }
-    };
+    return { reviews: [], aggregateRating: null };
   }
 
   function faqFromDom() {
@@ -259,10 +235,10 @@
     let productImage = SITE + '/images/brand/sensorcrashfix.jpg';
     let productId = isIntlCopy ? 'optical-lens-intl' : 'kit-sensor-crashfix';
     let productDescription = isIt
-      ? 'Kit con lente ottica per smartwatch che chiede codice, non misura il battito o interrompe l\'allenamento — spesso per tatuaggio al polso. Ripristina rilevamento al polso, frequenza cardiaca e allenamenti.'
+      ? 'Lente ottica adesiva Sensor CrashFix: copre e protegge il sensore incrinato o rotto dello smartwatch, senza sostituire il modulo.'
       : isIntlCopy
-        ? 'Optical lens kit for smartwatch passcode loops, heart rate failures and paused workouts — often caused by wrist cracked glass. Restores wrist detection, heart rate and training.'
-        : 'Kit com lente ótica para smartwatch que pede senha, não mede batimentos ou pausa treino — muitas vezes por rachadura no pulso. Restaura pulso, batimentos e treinos.';
+        ? 'Sensor CrashFix adhesive optical lens: covers and protects a cracked or broken smartwatch sensor without replacing the module.'
+        : 'Lente óptica adesiva Sensor CrashFix: cobre e protege o sensor trincado ou rachado do smartwatch, sem trocar o módulo.';
 
     let cfg = null;
     if (window.CHECKOUT_CONFIG) cfg = window.CHECKOUT_CONFIG;
@@ -298,10 +274,10 @@
       sku: productId,
       brand: { '@type': 'Brand', name: 'Sensor Crash Fix' },
       image: productImage,
-      offers: buildOffer(productPrice, productId),
-      aggregateRating,
-      review: reviews
+      offers: buildOffer(productPrice, productId)
     };
+    if (aggregateRating) productNode.aggregateRating = aggregateRating;
+    if (reviews.length) productNode.review = reviews;
 
     const graph = [
       {
