@@ -3758,6 +3758,37 @@ ${worksheets}
     return CLICK_DESTINO_LABELS[destino] || fallback || destino || '—';
   }
 
+  /** WhatsApp intent: raw events vs unique visitors / logical sessions (does not label bots). */
+  function summarizeWhatsappIntent(clicks) {
+    const list = Array.isArray(clicks) ? clicks : [];
+    const wa = list.filter((c) => String(c?.destino || '').toLowerCase() === 'whatsapp');
+    const vids = new Set();
+    wa.forEach((c) => {
+      const k = visitorKey(c);
+      if (k) vids.add(k);
+    });
+    const byVisitor = new Map();
+    list.forEach((c) => {
+      const k = visitorKey(c);
+      if (!k) return;
+      if (!byVisitor.has(k)) byVisitor.set(k, []);
+      byVisitor.get(k).push(c);
+    });
+    let sessionsWithWa = 0;
+    byVisitor.forEach((events) => {
+      buildLogicalVisits(events, LOGICAL_VISIT_GAP_MS).forEach((visit) => {
+        if (visit.some((e) => String(e?.destino || '').toLowerCase() === 'whatsapp')) {
+          sessionsWithWa += 1;
+        }
+      });
+    });
+    return {
+      waEvents: wa.length,
+      waVisitors: vids.size,
+      waSessions: sessionsWithWa
+    };
+  }
+
   function renderClicksStats(data) {
     const el = document.getElementById('clicks-stats');
     if (!el) return;
@@ -3766,6 +3797,13 @@ ${worksheets}
       .slice(0, 6);
     const ultimo = data?.lastClickAt ? formatClickDate(data.lastClickAt) : '—';
     const maisAntigo = data?.oldestClickAt ? formatClickDate(data.oldestClickAt) : '—';
+    const waIntent = summarizeWhatsappIntent(
+      (data?.whenClicks?.length ? data.whenClicks : null)
+        || (clicksWhenCache?.length ? clicksWhenCache : null)
+        || data?.clicks
+        || clicksCache
+        || []
+    );
     const topList = topEntries.length
       ? `<ul class="clicks-stats-top">${topEntries.map(([k, n]) =>
         `<li><span>${escapeHtml(clickDestinoLabel(k))}</span><strong>${n}</strong></li>`
@@ -3846,6 +3884,9 @@ ${worksheets}
       <summary class="clicks-stats-summary"><i class="fas fa-chevron-right clicks-stats-chevron" aria-hidden="true"></i> Resumo</summary>
       <dl class="clicks-stats-dl">
         <div class="clicks-stats-row"><dt>Hoje (eventos clique)</dt><dd>${data?.todayCount ?? 0}</dd></div>
+        <div class="clicks-stats-row"><dt>WhatsApp (eventos brutos)</dt><dd>${waIntent.waEvents}</dd></div>
+        <div class="clicks-stats-row"><dt>WhatsApp (visitantes com ≥1)</dt><dd>${waIntent.waVisitors}</dd></div>
+        <div class="clicks-stats-row"><dt>WhatsApp (sessões lógicas com ≥1)</dt><dd>${waIntent.waSessions}</dd></div>
         <div class="clicks-stats-row"><dt>D1 rows escritas (UTC)</dt><dd>${wUsed.toLocaleString('pt-BR')} / ${wMax.toLocaleString('pt-BR')} (${wPct}%)</dd></div>
         ${readsRow}
         <div class="clicks-stats-row"><dt>Fonte da cota</dt><dd>D1 Analytics</dd></div>

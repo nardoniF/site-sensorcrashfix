@@ -3,6 +3,8 @@
   const LOG_QUEUE_KEY = 'stf_log_queue';
   const LOG_QUEUE_MAX = 40;
   const LOG_DEDUP_MS = 1200;
+  /** WhatsApp: longer window — Ads/retry taps inflate intent if counted per event. */
+  const LOG_DEDUP_WHATSAPP_MS = 8000;
   let ultimoCliqueLink = { href: '', ts: 0 };
 
   const ANCORA_DESTINOS = {
@@ -633,9 +635,9 @@
     if (!q.length) return;
     salvarFilaLog([]);
     q.forEach((body) => {
-      enviarLogPayload(Object.assign({}, body, {
-        client_event_id: 'q_' + (crypto.randomUUID?.() || String(Date.now() + '_' + Math.random().toString(36).slice(2, 8)))
-      }), true);
+      // Reuse original client_event_id so server Cache dedupe + D1 PK collapse retries.
+      const keepId = String(body?.client_event_id || '').trim();
+      enviarLogPayload(Object.assign({}, body, keepId ? { client_event_id: keepId } : {}), true);
     });
   }
 
@@ -729,13 +731,15 @@
     if (!linkRastreavel(link)) return;
     const href = link.getAttribute('href');
     const abs = hrefAbsoluto(href);
+    const destino = classificarDestino(href, link);
     const now = Date.now();
-    if (ultimoCliqueLink.href === abs && now - ultimoCliqueLink.ts < LOG_DEDUP_MS) return;
+    const dedupMs = destino === 'whatsapp' ? LOG_DEDUP_WHATSAPP_MS : LOG_DEDUP_MS;
+    if (ultimoCliqueLink.href === abs && now - ultimoCliqueLink.ts < dedupMs) return;
     ultimoCliqueLink = { href: abs, ts: now };
     const payload = payloadBase(link, {
       elemento: 'link',
       href: abs,
-      destino: classificarDestino(href, link),
+      destino,
       link,
       urgente: mesmaAbaSaiDaPagina(link, href)
     });
