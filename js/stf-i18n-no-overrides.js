@@ -1,5 +1,6 @@
 /** Norsk overrides — merged onto STRINGS.en in stf-i18n.js */
 window.STF_I18N_NO = {
+  'store.waterDisclaimer': "Dekker og beskytter det sprukne området. Garanterer ikke vanntetthet; ikke senk under vann.",
   'brand.tagline': 'Optisk skjerming. Gjenoppretting og beskyttelse.',
   'nav.cart': 'Handlekurv',
   'nav.back': 'Tilbake',
@@ -247,7 +248,7 @@ window.STF_I18N_NO = {
   'store.priceSuffix': 'Kort og PayPal',
   'store.intlSuffix': 'PayPal og kort · sporing av forsendelse',
   'store.title': 'Offisiell butikk',
-  'store.metaDescNo': 'Kjøp Sensor Crash Fix-settet — optisk linse når klokken ber om koden hvert 10. sekund, ikke leser puls, kobler fra eller avbryter trening (ofte på grunn av sprukket sensorglass). Internasjonale kort og verdensomspennende frakt.',
+  'store.metaDescNo': "Kjøp Sensor CrashFix optiske linse — selvklebende deksel for sprukket eller ødelagt smartklokke-sensor uten å bytte modul. PayPal, kort og sporbar frakt.",
   'store.loading': 'Laster produkter…',
   'store.empty': 'Ingen produkter tilgjengelig for øyeblikket.',
   'store.added': 'Lagt til i handlekurven!',
@@ -372,7 +373,7 @@ window.STF_I18N_NO = {
   'page.checkoutTitleEn': 'Checkout | Sensor Crash Fix — Official Store',
   'page.checkoutDescEn': 'Offisiell Sensor Crash Fix-utsjekk — PayPal, kort, sporing av forsendelse.',
   'ondeComprar.pageTitleNo': 'Hvor å kjøpe | Sensor Crash Fix',
-  'ondeComprar.metaDescNo': 'Klokken ber om kode, leser ikke puls eller avbryter trening? Kjøp Sensor Crash Fix-linsen i vår offisielle butikk.',
+  'ondeComprar.metaDescNo': "Kjøp Sensor CrashFix-linsen for en sprukket eller ødelagt smartklokke-sensor — offisiell butikk, PayPal, kort og sporbar frakt.",
   'ondeComprar.introEn': '<strong>5-stjerners vurderinger</strong> fra verifiserte kjøpere.',
   'ondeComprar.navAboutEn': 'Om produktet',
   'ondeComprar.payCardEn': 'Kort',

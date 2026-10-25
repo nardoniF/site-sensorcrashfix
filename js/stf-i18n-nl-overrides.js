@@ -1,5 +1,6 @@
 /** Nederlands overrides — merged onto STRINGS.en in stf-i18n.js */
 window.STF_I18N_NL = {
+  'store.waterDisclaimer': "Bedekt en beschermt het gebarsten gebied. Garandeert geen waterbestendigheid; niet onderdompelen.",
   'brand.tagline': 'Optische afscherming. Herstel en bescherming.',
   'nav.cart': 'Winkelwagen',
   'nav.back': 'Terug',
@@ -247,7 +248,7 @@ window.STF_I18N_NL = {
   'store.priceSuffix': 'Kaart en PayPal',
   'store.intlSuffix': 'PayPal en kaarten · verzendtracking',
   'store.title': 'Officiële winkel',
-  'store.metaDescNl': 'Koop de Sensor Crash Fix-kit — optische lens wanneer het horloge elke 10 seconden om de code vraagt, geen pols meet, verbinding verbreekt of trainingen stopt (vaak door gebarsten sensorglas). Internationale kaarten en wereldwijde verzending.',
+  'store.metaDescNl': "Koop de Sensor CrashFix optische lens — kleefafdekking voor een gebarsten of kapotte smartwatch-sensor zonder de module te vervangen. PayPal, kaarten en verzending met tracking.",
   'store.loading': 'Producten worden geladen…',
   'store.empty': 'Momenteel geen producten beschikbaar.',
   'store.added': 'Toegevoegd aan winkelwagen!',
@@ -372,7 +373,7 @@ window.STF_I18N_NL = {
   'page.checkoutTitleEn': 'Checkout | Sensor Crash Fix — Official Store',
   'page.checkoutDescEn': 'Officiële Sensor Crash Fix-checkout — PayPal, kaarten, verzendtracking.',
   'ondeComprar.pageTitleNl': 'Waar te koop | Sensor Crash Fix',
-  'ondeComprar.metaDescNl': 'Horloge vraagt om code, leest geen pols of onderbreekt training? Koop de Sensor Crash Fix-lens in onze officiële winkel.',
+  'ondeComprar.metaDescNl': "Koop de Sensor CrashFix-lens voor een gebarsten of kapotte smartwatch-sensor — officiële winkel, PayPal, kaarten en verzending met tracking.",
   'ondeComprar.introEn': '<strong>5-sterrenbeoordelingen</strong> van geverifieerde koper.',
   'ondeComprar.navAboutEn': 'Over het product',
   'ondeComprar.payCardEn': 'Kaart',

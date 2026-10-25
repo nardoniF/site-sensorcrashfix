@@ -1,5 +1,6 @@
 /** Svenska overrides — merged onto STRINGS.en in stf-i18n.js */
 window.STF_I18N_SV = {
+  'store.waterDisclaimer': "Täcker och skyddar det spruckna området. Garanterar inte vattentålighet; sänk inte ner.",
   'brand.tagline': 'Optiskt skydd. Återställning och skydd.',
   'nav.cart': 'Varukorg',
   'nav.back': 'Tillbaka',
@@ -247,7 +248,7 @@ window.STF_I18N_SV = {
   'store.priceSuffix': 'Kort och PayPal',
   'store.intlSuffix': 'PayPal och kort · fraktspårning',
   'store.title': 'Officiell butik',
-  'store.metaDescSv': 'Köp Sensor Crash Fix-kitet — optisk lins när klockan ber om koden var 10:e sekund, inte läser puls, kopplar från eller avbryter träning (ofta på grund av sprucket sensorgas). Internationella kort och världsomspännande frakt.',
+  'store.metaDescSv': "Köp Sensor CrashFix optiska lins — självhäftande skydd för sprucken eller trasig smartwatch-sensor utan att byta modul. PayPal, kort och spårbar frakt.",
   'store.loading': 'Laddar produkter…',
   'store.empty': 'Inga produkter tillgängliga för tillfället.',
   'store.added': 'Tillagd i varukorgen!',
@@ -372,7 +373,7 @@ window.STF_I18N_SV = {
   'page.checkoutTitleEn': 'Checkout | Sensor Crash Fix — Official Store',
   'page.checkoutDescEn': 'Officiell Sensor Crash Fix-kassa — PayPal, kort, fraktspårning.',
   'ondeComprar.pageTitleSv': 'Var man köper | Sensor Crash Fix',
-  'ondeComprar.metaDescSv': 'Klockan ber om kod, läser ingen puls eller avbryter träning? Köp Sensor Crash Fix-linsen i vår officiella butik.',
+  'ondeComprar.metaDescSv': "Köp Sensor CrashFix-linsen för en sprucken eller trasig smartwatch-sensor — officiell butik, PayPal, kort och spårbar frakt.",
   'ondeComprar.introEn': '<strong>5-stjärniga recensioner</strong> från verifierade köpare.',
   'ondeComprar.navAboutEn': 'Om produkten',
   'ondeComprar.payCardEn': 'Kort',

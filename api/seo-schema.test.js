@@ -13,11 +13,14 @@ test('seo-schema: Offer tem validFrom e returnShippingFeesAmount', () => {
   assert.match(src, /priceValidUntil/);
 });
 
-test('seo-schema: Product sempre recebe review + aggregateRating', () => {
+test('seo-schema: sem AggregateRating inventado; só reviews reais', () => {
   assert.match(src, /function resolveReviews/);
-  assert.match(src, /FALLBACK_REVIEWS/);
-  assert.match(src, /aggregateRating,/);
-  assert.match(src, /review: reviews/);
+  assert.doesNotMatch(src, /FALLBACK_REVIEWS/);
+  assert.match(src, /aggregateRating: null/);
+  assert.match(src, /if \(aggregateRating\) productNode\.aggregateRating/);
+  assert.match(src, /if \(reviews\.length\) productNode\.review/);
+  assert.match(src, /cracked or broken smartwatch sensor/);
+  assert.doesNotMatch(src, /tattooed skin|tatuaggio al polso|passcode loops/);
 });
 
 test('seo-schema: detecta /sl/ e não trata .com como EN cedo demais', () => {

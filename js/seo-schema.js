@@ -43,20 +43,6 @@
   };
   const inLanguage = IN_LANG[pathLang] || 'pt-BR';
 
-  /** Fallback if DOM/config still empty when Googlebot runs (real customer quotes). */
-  const FALLBACK_REVIEWS = {
-    pt: [
-      { author: 'Caroline Moreira', body: 'Produto excelente! Qualidade impecável, fácil aplicação e resultado surpreendente.', rating: 5 },
-      { author: 'MANOEL Ricardo', body: 'Produto top, resolveu meu problema!', rating: 5 },
-      { author: 'Cliente', body: 'Achei no TikTok, comprei, e está funcionando perfeitamente. Muito obrigado!', rating: 5 }
-    ],
-    en: [
-      { author: 'Caroline Moreira', body: 'Excellent product! Impeccable quality, easy to apply and amazing results.', rating: 5 },
-      { author: 'MANOEL Ricardo', body: 'Top product, it solved my problem!', rating: 5 },
-      { author: 'Customer', body: "I found you on TikTok, bought it, and it's working perfectly. Thank you!", rating: 5 }
-    ]
-  };
-
   function pickReviewField(row, field) {
     if (!row) return '';
     const fromI18n = row.i18n?.[pathLang]?.[field];
@@ -118,6 +104,7 @@
     return { reviews, ratingValue, reviewCount: reviews.length };
   }
 
+  /** Só reviews reais (DOM ou homeReviews). Sem fallback inventado / AggregateRating falso. */
   function resolveReviews(cfg) {
     const fromDom = reviewsFromDom();
     if (fromDom.reviews.length) {
@@ -143,18 +130,7 @@
         }
       };
     }
-    const fallback = (isIntlCopy ? FALLBACK_REVIEWS.en : FALLBACK_REVIEWS.pt)
-      .map((r) => toSchemaReview(r.author, r.body, r.rating))
-      .filter(Boolean);
-    return {
-      reviews: fallback,
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: '5',
-        reviewCount: String(fallback.length),
-        bestRating: '5'
-      }
-    };
+    return { reviews: [], aggregateRating: null };
   }
 
   function faqFromDom() {
@@ -280,10 +256,10 @@
     let productImage = SITE + '/images/brand/sensorcrashfix.jpg';
     let productId = isIntlCopy ? 'optical-lens-intl' : 'kit-sensor-crashfix';
     let productDescription = isIt
-      ? 'Kit di riparazione ottica Sensor Crash Fix per sensore smartwatch incrinato, scheggiato o rotto. Ripristina tenuta, lettura biometrica, battito e allenamenti senza sostituire il modulo — Apple Watch Ultra, Galaxy Watch, Garmin.'
+      ? 'Lente ottica adesiva Sensor CrashFix: copre e protegge il sensore incrinato, scheggiato o rotto dello smartwatch, senza sostituire il modulo.'
       : isIntlCopy
-        ? 'Sensor Crash Fix optical repair kit for a cracked, chipped or broken smartwatch sensor. Restores sealing, biometric reading, heart rate and workouts without replacing the module — Apple Watch Ultra, Galaxy Watch, Garmin.'
-        : 'Kit de reparo óptico Sensor Crash Fix para sensor smartwatch trincado, rachado ou quebrado. Restaura vedação, leitura biométrica, batimentos e treinos sem trocar o módulo — Apple Watch Ultra, Galaxy Watch, Garmin.';
+        ? 'Sensor CrashFix adhesive optical lens: covers and protects a cracked or broken smartwatch sensor (cracked, chipped or broken smartwatch sensor) without replacing the module.'
+        : 'Lente óptica adesiva Sensor CrashFix: cobre e protege o sensor smartwatch trincado ou rachado, sem trocar o módulo.';
 
     let cfg = null;
     if (window.CHECKOUT_CONFIG) cfg = window.CHECKOUT_CONFIG;
@@ -319,10 +295,10 @@
       sku: productId,
       brand: { '@type': 'Brand', name: 'Sensor Crash Fix' },
       image: productImage,
-      offers: buildOffer(productPrice, productId),
-      aggregateRating,
-      review: reviews
+      offers: buildOffer(productPrice, productId)
     };
+    if (aggregateRating) productNode.aggregateRating = aggregateRating;
+    if (reviews.length) productNode.review = reviews;
 
     const graph = [
       {
