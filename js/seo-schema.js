@@ -210,7 +210,9 @@
         value: isIntlHost ? '8.00' : '15.00',
         currency: isIntlHost ? 'USD' : 'BRL'
       },
-      returnPolicyUrl: pageUrl.replace(/\/$/, '/') + '#faq'
+      returnPolicyUrl: isIntlHost
+        ? (SITE + (pathLang === 'it' ? '/it' : '') + '/politica-troca-devolucao.html')
+        : (SITE + '/politica-troca-devolucao.html')
     };
   }
 

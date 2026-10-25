@@ -7,9 +7,8 @@ window.STF_FOOTER = (function () {
     patentNational: 'BR 20 2026 010875 3',
     patentInternational: 'PCT/BR2026/050304',
     city: 'São Paulo, SP',
-    /** Preenchido quando houver URL/texto oficiais (Prompt 2 SEO). */
-    returnPolicyUrl: '',
-    returnPolicyLabelPending: true
+    returnPolicyUrl: 'politica-troca-devolucao.html',
+    returnPolicyLabelPending: false
   };
 
   const SOCIAL = [
@@ -30,8 +29,8 @@ window.STF_FOOTER = (function () {
       patentLineJoin: 'Pedido internacional PCT',
       rights: 'Todos os direitos reservados.',
       trustContact: 'contato@sensorcrashfix.com.br',
-      trustReturnPending: 'Política de troca e devolução: pendente (em breve)',
-      trustShipping: 'Prazos: Mini Envios (Brasil) · Entrega própria (SP) · Exporta Fácil (exterior)'
+      trustReturn: 'Política de troca e devolução',
+      trustReturnPending: 'Política de troca e devolução'
     },
     en: {
       socialTitle: 'Follow our official channels',
@@ -43,8 +42,8 @@ window.STF_FOOTER = (function () {
       patentLineJoin: 'International PCT application',
       rights: 'All rights reserved.',
       trustContact: 'contato@sensorcrashfix.com.br',
-      trustReturnPending: 'Returns policy: pending (coming soon)',
-      trustShipping: 'Shipping: Brazil Mini Envios · São Paulo local · Exporta Fácil abroad'
+      trustReturn: 'Returns and exchange policy',
+      trustReturnPending: 'Returns and exchange policy'
     },
     it: {
       socialTitle: 'Segui i nostri canali ufficiali',
@@ -205,24 +204,21 @@ window.STF_FOOTER = (function () {
     return `${s.patentLinePrefix} ${INFO.patentNational} · ${s.patentLineJoin} (nº ${INFO.patentInternational})`;
   }
 
-  function trustLines(lang) {
+  function trustLines(lang, prefix) {
     const s = t(lang);
     const contact = s.trustContact || 'contato@sensorcrashfix.com.br';
-    const shipping = s.trustShipping || '';
     let returns = '';
     if (INFO.returnPolicyUrl) {
-      returns = `<a href="${INFO.returnPolicyUrl}">${s.trustReturn || 'Política de troca e devolução'}</a>`;
-    } else if (INFO.returnPolicyLabelPending) {
-      returns = s.trustReturnPending || 'Política de troca e devolução: pendente';
+      const href = `${prefix || ''}${INFO.returnPolicyUrl}`;
+      returns = `<a href="${href}">${s.trustReturn || 'Política de troca e devolução'}</a>`;
     }
     return `
         <p class="footer-legal-meta"><a href="mailto:${contact}">${contact}</a></p>
         ${returns ? `<p class="footer-legal-meta footer-legal-meta--muted">${returns}</p>` : ''}
-        ${shipping ? `<p class="footer-legal-meta footer-legal-meta--muted">${shipping}</p>` : ''}
     `;
   }
 
-  function legalBlock(lang) {
+  function legalBlock(lang, prefix) {
     const s = t(lang);
     const year = new Date().getFullYear();
     if (isIntlHost()) {
@@ -231,7 +227,7 @@ window.STF_FOOTER = (function () {
         <p class="footer-legal-brand">${INFO.brandTitle}</p>
         <p class="footer-legal-meta">3N20</p>
         <p class="footer-legal-meta footer-legal-meta--muted">${patentLine(lang)}</p>
-        ${trustLines(lang)}
+        ${trustLines(lang, prefix)}
         <p class="footer-legal-copy">&copy; ${year} ${INFO.brandPlain}. ${s.rights}</p>
       </div>
     `;
@@ -241,7 +237,7 @@ window.STF_FOOTER = (function () {
         <p class="footer-legal-brand">${INFO.brandTitle}</p>
         <p class="footer-legal-meta">${INFO.company} · CNPJ ${INFO.cnpj}</p>
         <p class="footer-legal-meta footer-legal-meta--muted">${patentLine(lang)}</p>
-        ${trustLines(lang)}
+        ${trustLines(lang, prefix)}
         <p class="footer-legal-copy">&copy; ${year} ${INFO.brandPlain} · ${INFO.company}. ${s.rights}</p>
       </div>
     `;
@@ -297,7 +293,7 @@ window.STF_FOOTER = (function () {
     const lang = detectLang();
     const prefix = prefixFrom(el);
     const social = mode === 'full' ? socialBlock(lang, prefix) : '';
-    el.innerHTML = social + legalBlock(lang);
+    el.innerHTML = social + legalBlock(lang, prefix);
   }
 
   function refreshAll() {

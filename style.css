@@ -436,29 +436,37 @@ html[lang="it"] .nav-actions { gap: 6px; }
   display: block;
   margin: 0 auto 15px;
 }
-/* FROZEN #produtos — NÃO ALTERAR layout (pedido dono 2026-10-01).
-   Molde TattooFix: quadro min(100%,380px) + aspect-ratio 1/1 + CTA inline-block.
+/* FROZEN #produtos — molde TattooFix (pedido dono 2026-10-01).
+   2026-10-25: enquadrar composição no centro (pedido explícito #produtos).
+   Molde: quadro min(100%,380px) + aspect-ratio 1/1 + CTA inline-block.
    Ver .cursor/rules/produtos-layout-freeze.mdc */
 
 #produtos .product-solution-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
-    align-items: start;
+    align-items: center;
+    width: 100%;
+    max-width: 1040px;
+    margin-left: auto;
+    margin-right: auto;
+    justify-items: center;
 }
 #produtos .product-benefits-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     min-width: 0;
+    width: 100%;
 }
 #produtos .product-solution-media {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     gap: 0;
     min-width: 0;
+    width: 100%;
 }
 #produtos .product-image-wrap {
     display: flex;
@@ -7558,4 +7566,99 @@ h3.about-story-heading + .about-body:has(+ .about-patents) {
   border-left: 3px solid var(--primary, #5EC8D8);
   background: rgba(94, 200, 216, 0.08);
   color: var(--text, #1a1a1a);
+}
+
+
+/* SEO article — recuperação da vedação */
+.seo-article-page .seo-article { padding-top: 2rem; padding-bottom: 3rem; }
+.seo-article-wrap { max-width: 46rem; }
+.seo-breadcrumb { font-size: 0.9rem; margin-bottom: 1.25rem; opacity: 0.85; }
+.seo-breadcrumb a { text-decoration: underline; }
+.seo-article h1 { font-size: clamp(1.75rem, 4vw, 2.35rem); font-weight: 900; line-height: 1.2; margin: 0 0 1rem; }
+.seo-lead { font-size: 1.1rem; line-height: 1.55; margin-bottom: 2rem; color: var(--gray, #555); }
+.seo-block { margin: 2.25rem 0; }
+.seo-block h2 { font-size: 1.35rem; font-weight: 800; margin: 0 0 0.75rem; }
+.seo-block p { line-height: 1.55; margin: 0 0 1rem; color: var(--gray, #444); }
+.seo-figure { margin: 1.25rem 0 0; }
+.seo-figure img { width: 100%; height: auto; border-radius: 8px; display: block; background: #111; }
+.seo-figure figcaption { font-size: 0.85rem; margin-top: 0.5rem; opacity: 0.75; }
+.seo-cta-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; align-items: center; }
+@media (max-width: 640px) {
+  .seo-cta-row { flex-direction: column; align-items: stretch; }
+  .seo-cta-row .btn-primary, .seo-cta-row .btn-outline { text-align: center; }
+}
+
+/* Home SEO panels — aligned framed blocks */
+.home-panel {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 1.75rem 1.85rem 1.85rem;
+  border: 1px solid #2c2c2c;
+  border-radius: 16px;
+  background: #121212;
+  text-align: left;
+  box-sizing: border-box;
+}
+.home-panel .section-title {
+  text-align: left;
+  font-size: clamp(1.45rem, 3.2vw, 1.9rem);
+  line-height: 1.2;
+  margin: 0 0 0.75rem;
+  letter-spacing: -0.01em;
+}
+.home-panel .section-lead {
+  max-width: none;
+  margin: 0 0 1.15rem;
+  text-align: left;
+  opacity: 0.9;
+  font-size: 1.02rem;
+  line-height: 1.5;
+}
+.home-panel .apply-steps,
+.home-panel .compat-brands {
+  max-width: none;
+  margin: 0 0 1.15rem;
+  padding-left: 1.2rem;
+  line-height: 1.55;
+}
+.home-panel .apply-steps li,
+.home-panel .compat-brands li {
+  margin-bottom: 0.55rem;
+}
+.home-panel .fail-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.home-panel .fail-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  margin: 0 0 0.9rem;
+  line-height: 1.45;
+}
+.home-panel .fail-list li:last-child { margin-bottom: 0; }
+.home-panel .fail-list i {
+  color: #e85a5a;
+  font-size: 1.25rem;
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+}
+.home-panel-foot {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  opacity: 0.88;
+}
+.home-panel-foot a { color: var(--primary, #5EC8D8); }
+.home-panel--warning {
+  border-color: rgba(232, 90, 90, 0.4);
+  background: linear-gradient(180deg, #161010 0%, #121212 40%);
+}
+#produtos .product-benefits-grid .benefit-card h3 {
+  min-height: 2.6em;
+  line-height: 1.3;
+}
+@media (max-width: 640px) {
+  .home-panel { padding: 1.35rem 1.15rem 1.4rem; border-radius: 14px; }
 }

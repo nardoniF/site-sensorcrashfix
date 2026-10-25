@@ -397,8 +397,8 @@ test('sitemap.xml: só PT no .com.br; sitemap-com.xml intl no .com', () => {
   const comXml = fs.readFileSync(path.join(root, 'sitemap-com.xml'), 'utf8');
   const brLocs = [...brXml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
   const comLocs = [...comXml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-  assert.equal(brLocs.length, 4);
-  assert.equal(comLocs.length, 44);
+  assert.equal(brLocs.length, 5);
+  assert.equal(comLocs.length, 55);
   for (const loc of brLocs) {
     assert.match(loc, /^https:\/\/www\.sensorcrashfix\.com\.br\//, `loc .com.br: ${loc}`);
     assert.doesNotMatch(loc, /\/(de|es|pl|sl|it)\//, `PT sitemap sem intl: ${loc}`);
