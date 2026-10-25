@@ -13,12 +13,13 @@ Referência canônica: CSS do Sensor TattooFix adaptado ao Crash (acento cyan, f
 
 | Peça | Valor obrigatório |
 |------|-------------------|
-| Grid solução | `#produtos .product-solution-grid` → `1fr 1fr`, `gap: 40px` |
+| Grid solução | `#produtos .product-solution-grid` → `1fr 1fr`, `gap: 40px`, composição centrada (`max-width` + `margin: auto`, `align-items: center`) |
 | Benefícios | 6 cards em **3×2** (`.product-benefits-grid`) |
 | Quadro galeria | `width: min(100%, 380px)`, `aspect-ratio: 1 / 1`, `padding: 8px` |
 | Imagem | `object-fit: contain` (não `cover`) |
 | CTA | `.btn-product-cta` → `display: inline-block`, `padding: 12px 28px`, **não** `width: 100%` |
 | JS | `syncProductAlbumToBenefits` **só limpa** estilos inline — **proibido** setar `width`/`height` na galeria/CTA |
+| Ícones dos cards | Só ícones FA **free** (ex.: `fa-bullseye`, não `fa-watch`) |
 
 Arquivos: `style.css` (bloco `#produtos .product-*`), `js/stf-product-gallery.js`, HTML `#produtos` em `index.html` + locales (`en/`, `it/`, `de/`, `es/`, `pl/`, `sl/`).
 

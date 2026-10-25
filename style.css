@@ -436,29 +436,37 @@ html[lang="it"] .nav-actions { gap: 6px; }
   display: block;
   margin: 0 auto 15px;
 }
-/* FROZEN #produtos — NÃO ALTERAR layout (pedido dono 2026-10-01).
-   Molde TattooFix: quadro min(100%,380px) + aspect-ratio 1/1 + CTA inline-block.
+/* FROZEN #produtos — molde TattooFix (pedido dono 2026-10-01).
+   2026-10-25: enquadrar composição no centro (pedido explícito #produtos).
+   Molde: quadro min(100%,380px) + aspect-ratio 1/1 + CTA inline-block.
    Ver .cursor/rules/produtos-layout-freeze.mdc */
 
 #produtos .product-solution-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
-    align-items: start;
+    align-items: center;
+    width: 100%;
+    max-width: 1040px;
+    margin-left: auto;
+    margin-right: auto;
+    justify-items: center;
 }
 #produtos .product-benefits-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     min-width: 0;
+    width: 100%;
 }
 #produtos .product-solution-media {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     gap: 0;
     min-width: 0;
+    width: 100%;
 }
 #produtos .product-image-wrap {
     display: flex;
