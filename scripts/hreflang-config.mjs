@@ -9,7 +9,7 @@ export const COM = 'https://www.sensorcrashfix.com';
 export const HREFLANG_ORDER = ['pt-BR', 'en', 'it', 'de', 'es', 'pl', 'sl', 'fr', 'nl', 'sv', 'no', 'fi', 'x-default'];
 
 /** Páginas indexáveis (SEO). */
-export const PUBLIC_PAGES = ['index', 'loja.html', 'onde-comprar.html', 'comunidade.html'];
+export const PUBLIC_PAGES = ['index', 'loja.html', 'onde-comprar.html', 'comunidade.html', 'recuperacao-vedacao-smartwatch.html'];
 
 /** Páginas noindex — hreflang para consistência, sem sitemap. */
 export const NOINDEX_PAGES = ['comprar.html', 'minha-conta.html'];
