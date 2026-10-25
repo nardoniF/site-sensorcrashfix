@@ -15,10 +15,10 @@ import {
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PAGE = 'recuperacao-vedacao-smartwatch.html';
 const STYLE = 'style.css?v=3.32-crash';
-const IMG = 'images/home/relogio_home_lens.jpg?v=crash3';
+const IMG = 'images/home/recuperacao-vedacao-aplicacao.jpg?v=1';
 const IMG_ALT_BASE = {
-  pt: 'Lente translúcida Sensor CrashFix sobre sensor de smartwatch trincado — rachaduras visíveis sob a película',
-  en: 'Translucent Sensor CrashFix lens over a cracked smartwatch sensor — cracks visible under the film',
+  pt: 'Aplicação da lente Sensor CrashFix sobre sensor de smartwatch trincado — rachaduras visíveis sob a película',
+  en: 'Applying the Sensor CrashFix lens over a cracked smartwatch sensor — cracks visible under the film',
 };
 
 const COPY = {
@@ -156,7 +156,7 @@ const COPY = {
     navSobre: 'Sul prodotto',
     navLoja: 'Negozio',
     navInicio: 'Home',
-    imgAlt: 'Lente traslucida Sensor CrashFix su sensore smartwatch incrinato — crepe visibili sotto la pellicola',
+    imgAlt: 'Applicazione della lente Sensor CrashFix su sensore smartwatch incrinato — crepe visibili sotto la pellicola',
     breadcrumbHome: 'Home',
     breadcrumbHere: 'Recupero della tenuta',
   },
@@ -192,7 +192,7 @@ const COPY = {
     navSobre: 'Zum Produkt',
     navLoja: 'Shop',
     navInicio: 'Start',
-    imgAlt: 'Transluzente Sensor CrashFix-Linse auf gerissenem Smartwatch-Sensor — Risse unter der Folie sichtbar',
+    imgAlt: 'Aufbringen der Sensor CrashFix-Linse auf gerissenem Smartwatch-Sensor — Risse unter der Folie sichtbar',
     breadcrumbHome: 'Start',
     breadcrumbHere: 'Abdichtung wiederherstellen',
   },
@@ -228,7 +228,7 @@ const COPY = {
     navSobre: 'Sobre el producto',
     navLoja: 'Tienda',
     navInicio: 'Inicio',
-    imgAlt: 'Lente translúcida Sensor CrashFix sobre sensor de smartwatch agrietado — grietas visibles bajo la película',
+    imgAlt: 'Aplicación de la lente Sensor CrashFix sobre sensor de smartwatch agrietado — grietas visibles bajo la película',
     breadcrumbHome: 'Inicio',
     breadcrumbHere: 'Recuperación del sellado',
   },
@@ -264,7 +264,7 @@ const COPY = {
     navSobre: 'O produkcie',
     navLoja: 'Sklep',
     navInicio: 'Start',
-    imgAlt: 'Przezroczysta soczewka Sensor CrashFix na pękniętym czujniku smartwatcha — pęknięcia widoczne pod folią',
+    imgAlt: 'Aplikacja soczewki Sensor CrashFix na pękniętym czujniku smartwatcha — pęknięcia widoczne pod folią',
     breadcrumbHome: 'Start',
     breadcrumbHere: 'Odzyskanie uszczelnienia',
   },
@@ -300,7 +300,7 @@ const COPY = {
     navSobre: 'O izdelku',
     navLoja: 'Trgovina',
     navInicio: 'Domov',
-    imgAlt: 'Prosojna leča Sensor CrashFix na počenem tipalu pametne ure — razpoke vidne pod folijo',
+    imgAlt: 'Nanášanje leče Sensor CrashFix na počeno tipalo pametne ure — razpoke vidne pod folijo',
     breadcrumbHome: 'Domov',
     breadcrumbHere: 'Obnova tesnjenja',
   },
@@ -336,7 +336,7 @@ const COPY = {
     navSobre: 'À propos du produit',
     navLoja: 'Boutique',
     navInicio: 'Accueil',
-    imgAlt: 'Lentille translucide Sensor CrashFix sur capteur de smartwatch fissuré — fissures visibles sous le film',
+    imgAlt: 'Application de la lentille Sensor CrashFix sur capteur de smartwatch fissuré — fissures visibles sous le film',
     breadcrumbHome: 'Accueil',
     breadcrumbHere: 'Récupération de l’étanchéité',
   },
@@ -372,7 +372,7 @@ const COPY = {
     navSobre: 'Over het product',
     navLoja: 'Winkel',
     navInicio: 'Home',
-    imgAlt: 'Doorschijnende Sensor CrashFix-lens op gebarsten smartwatch-sensor — scheuren zichtbaar onder de film',
+    imgAlt: 'Aanbrengen van de Sensor CrashFix-lens op gebarsten smartwatch-sensor — scheuren zichtbaar onder de film',
     breadcrumbHome: 'Home',
     breadcrumbHere: 'Afdichting herstellen',
   },
@@ -408,7 +408,7 @@ const COPY = {
     navSobre: 'Om produkten',
     navLoja: 'Butik',
     navInicio: 'Start',
-    imgAlt: 'Genomskinlig Sensor CrashFix-lins på sprucken smartwatch-sensor — sprickor synliga under filmen',
+    imgAlt: 'Applicering av Sensor CrashFix-linsen på sprucken smartwatch-sensor — sprickor synliga under filmen',
     breadcrumbHome: 'Start',
     breadcrumbHere: 'Återställ tätningen',
   },
@@ -444,7 +444,7 @@ const COPY = {
     navSobre: 'Om produktet',
     navLoja: 'Butikk',
     navInicio: 'Start',
-    imgAlt: 'Gjennomsiktig Sensor CrashFix-linse på sprukket smartklokke-sensor — sprekker synlige under filmen',
+    imgAlt: 'Påføring av Sensor CrashFix-linsen på sprukket smartklokke-sensor — sprekker synlige under filmen',
     breadcrumbHome: 'Start',
     breadcrumbHere: 'Gjenopprett tetningen',
   },
@@ -480,7 +480,7 @@ const COPY = {
     navSobre: 'Tuotteesta',
     navLoja: 'Kauppa',
     navInicio: 'Etusivu',
-    imgAlt: 'Läpikuultava Sensor CrashFix -linssi haljenneella älykellon sensorilla — halkeamat näkyvät kalvon alla',
+    imgAlt: 'Sensor CrashFix -linssin asennus haljenneelle älykellon sensorille — halkeamat näkyvät kalvon alla',
     breadcrumbHome: 'Etusivu',
     breadcrumbHere: 'Tiivistyksen palautus',
   },
