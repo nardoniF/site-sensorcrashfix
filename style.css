@@ -7534,3 +7534,28 @@ h3.about-story-heading + .about-body:has(+ .about-patents) {
 .apply-steps li { margin-bottom: 0.65rem; }
 .compat-brands { max-width: 40rem; margin: 0 auto 1rem; padding-left: 1.25rem; line-height: 1.55; }
 .compat-brands li { margin-bottom: 0.45rem; }
+
+
+/* Recuperação da vedação — bloco canônico */
+#vedacao .vedacao-lead {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 1.25rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text, #1a1a1a);
+}
+#vedacao .vedacao-body {
+  max-width: 720px;
+  margin: 0 auto;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--gray, #555);
+}
+#vedacao .vedacao-body p { margin: 0 0 1rem; }
+#vedacao .vedacao-note {
+  padding: 0.85rem 1rem;
+  border-left: 3px solid var(--primary, #5EC8D8);
+  background: rgba(94, 200, 216, 0.08);
+  color: var(--text, #1a1a1a);
+}

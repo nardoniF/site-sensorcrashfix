@@ -40,3 +40,18 @@
 - Garantia de que **todos** os modelos recuperam o **mesmo** rating de fábrica  
 - Mergulho técnico ou uso profissional submerso  
 - Qualquer número de metros/bar não presente no repo
+
+## Texto canônico aprovado (PT)
+
+> ### Sensor CrashFix — Recuperação da vedação
+>
+> **Uma fissura no sensor não precisa significar o fim da proteção do seu smartwatch.**
+>
+> A Sensor CrashFix foi desenvolvida para cobrir a região danificada e recuperar a vedação no ponto reparado, ajudando a proteger o relógio contra a entrada de água.
+>
+> Após a aplicação, respeite o tempo de cura de 72 horas antes de expor o relógio à água.
+>
+> **Importante:** o resultado depende das condições do reparo e do estado do relógio. A aplicação não constitui uma nova certificação IPX ou ATM nem garante uma profundidade específica de uso.
+
+Aplicado em seção `#vedacao`, hero, benefício tint e FAQ nos 12 idiomas (marca no site: **CrashFix**).
+
