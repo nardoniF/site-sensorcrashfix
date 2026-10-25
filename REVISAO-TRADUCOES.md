@@ -54,3 +54,8 @@ Texto-fonte PT: *«Cobre e protege a região trincada. Não garante resistência
 - Linha de trust «5.0 · verified buyers» em onde-comprar.
 - Claims de restauração de «étanchéité / waterdichte / vanntett» como garantia do kit.
 - «100% compatibel» enganoso (NL).
+
+## Atualização posicionamento água (branch cursor/agua-vedacao-posicionamento-69c0)
+
+O disclaimer anterior («Não garante resistência à água; não submergir») foi **recalibrado**: o benefício comercial de **recuperar vedação / resistência à água na região reparada** voltou ao hero, benefícios e FAQ, com limites (cura 72 h; sem reemitir IPX/ATM de fábrica; sem profundidade inventada). Ver `docs/interno/POSICIONAMENTO-RESISTENCIA-AGUA.md`.
+
