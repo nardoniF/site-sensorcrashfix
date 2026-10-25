@@ -256,10 +256,10 @@
     let productImage = SITE + '/images/brand/sensorcrashfix.jpg';
     let productId = isIntlCopy ? 'optical-lens-intl' : 'kit-sensor-crashfix';
     let productDescription = isIt
-      ? 'Lente ottica adesiva Sensor CrashFix: copre e protegge il sensore incrinato o rotto dello smartwatch, senza sostituire il modulo.'
+      ? 'Lente ottica adesiva Sensor CrashFix: copre e protegge il sensore incrinato, scheggiato o rotto dello smartwatch, senza sostituire il modulo.'
       : isIntlCopy
-        ? 'Sensor CrashFix adhesive optical lens: covers and protects a cracked or broken smartwatch sensor without replacing the module.'
-        : 'Lente óptica adesiva Sensor CrashFix: cobre e protege o sensor trincado ou rachado do smartwatch, sem trocar o módulo.';
+        ? 'Sensor CrashFix adhesive optical lens: covers and protects a cracked or broken smartwatch sensor (cracked, chipped or broken smartwatch sensor) without replacing the module.'
+        : 'Lente óptica adesiva Sensor CrashFix: cobre e protege o sensor smartwatch trincado ou rachado, sem trocar o módulo.';
 
     let cfg = null;
     if (window.CHECKOUT_CONFIG) cfg = window.CHECKOUT_CONFIG;

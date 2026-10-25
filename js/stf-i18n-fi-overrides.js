@@ -1,5 +1,6 @@
 /** Suomi overrides — merged onto STRINGS.en in stf-i18n.js */
 window.STF_I18N_FI = {
+  'store.waterDisclaimer': "Peittää ja suojaa haljennutta aluetta. Ei takaa vedenkestävyyttä; älä upota.",
   'brand.tagline': 'Optinen suojaus. Palautus ja suojaus.',
   'nav.cart': 'Ostoskori',
   'nav.back': 'Takaisin',
@@ -247,7 +248,7 @@ window.STF_I18N_FI = {
   'store.priceSuffix': 'Kortti ja PayPal',
   'store.intlSuffix': 'PayPal ja kortit · lähetyksen seuranta',
   'store.title': 'Virallinen kauppa',
-  'store.metaDescFi': 'Osta Sensor Crash Fix -pakkaus — optinen linssi, kun kello kysyy koodia 10 sekunnin välein, ei lue sykettä, katkaisee yhteyden tai keskeyttää treenin (usein haljenneen sensorilasin vuoksi). Kansainväliset kortit ja maailmanlaajuinen toimitus.',
+  'store.metaDescFi': "Osta Sensor CrashFix -optinen linssi — tarrapeite haljenneelle tai rikkinäiselle älykellon sensorille ilman moduulin vaihtoa. PayPal, kortit ja seurattava toimitus.",
   'store.loading': 'Ladataan tuotteita…',
   'store.empty': 'Tuotteita ei ole tällä hetkellä saatavilla.',
   'store.added': 'Lisätty ostoskoriin!',
@@ -372,7 +373,7 @@ window.STF_I18N_FI = {
   'page.checkoutTitleEn': 'Checkout | Sensor Crash Fix — Official Store',
   'page.checkoutDescEn': 'Virallinen Sensor Crash Fix -kassa — PayPal, kortit, lähetyksen seuranta.',
   'ondeComprar.pageTitleFi': 'Mistä ostaa | Sensor Crash Fix',
-  'ondeComprar.metaDescFi': 'Kello kysyy koodia, ei lue sykettä tai keskeyttää treenin? Osta Sensor Crash Fix -linssi virallisesta kaupastamme.',
+  'ondeComprar.metaDescFi': "Osta Sensor CrashFix -linssi haljenneelle tai rikkinäiselle älykellon sensorille — virallinen kauppa, PayPal, kortit ja seurattava toimitus.",
   'ondeComprar.introEn': '<strong>5 tähden arviot</strong> vahvistetuilta ostajilta.',
   'ondeComprar.navAboutEn': 'Tietoa tuotteesta',
   'ondeComprar.payCardEn': 'Kortti',

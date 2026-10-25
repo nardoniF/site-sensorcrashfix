@@ -1,5 +1,6 @@
 /** Français overrides — merged onto STRINGS.en in stf-i18n.js */
 window.STF_I18N_FR = {
+  'store.waterDisclaimer': "Couvre et protège la zone fissurée. Ne garantit pas la résistance à l'eau ; ne pas immerger.",
   'brand.tagline': 'Blindage optique. Restauration et protection.',
   'nav.cart': 'Panier',
   'nav.back': 'Retour',
@@ -247,7 +248,7 @@ window.STF_I18N_FR = {
   'store.priceSuffix': 'Carte et PayPal',
   'store.intlSuffix': 'PayPal et cartes · suivi de livraison',
   'store.title': 'Boutique officielle',
-  'store.metaDescFr': 'Achetez le kit Sensor Crash Fix — lentille optique lorsque la montre demande le code toutes les 10 secondes, ne détecte pas le pouls, se déconnecte ou interrompt l’entraînement (souvent à cause d’un verre de capteur fissuré). Cartes internationales et livraison mondiale.',
+  'store.metaDescFr': "Achetez la lentille optique Sensor CrashFix — couverture adhésive pour capteur de smartwatch fissuré ou cassé, sans remplacer le module. PayPal, cartes et livraison suivie.",
   'store.loading': 'Chargement des produits…',
   'store.empty': 'Aucun produit disponible pour le moment.',
   'store.added': 'Ajouté au panier !',
@@ -372,7 +373,7 @@ window.STF_I18N_FR = {
   'page.checkoutTitleEn': 'Checkout | Sensor Crash Fix — Official Store',
   'page.checkoutDescEn': 'Paiement officiel Sensor Crash Fix — PayPal, cartes, suivi de livraison.',
   'ondeComprar.pageTitleFr': 'Où acheter | Sensor Crash Fix',
-  'ondeComprar.metaDescFr': 'La montre demande un code, ne lit pas le pouls ou interrompt l’entraînement ? Achetez la lentille Sensor Crash Fix dans notre boutique officielle.',
+  'ondeComprar.metaDescFr': "Achetez la lentille Sensor CrashFix pour un capteur de smartwatch fissuré ou cassé — boutique officielle, PayPal, cartes et livraison suivie.",
   'ondeComprar.introEn': '<strong>Avis 5 étoiles</strong> d\u2019acheteurs vérifiés.',
   'ondeComprar.navAboutEn': 'À propos du produit',
   'ondeComprar.payCardEn': 'Carte',
