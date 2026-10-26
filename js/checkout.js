@@ -613,6 +613,8 @@ window.STF_MONEY = window.STF_MONEY || (function () {
     if (c === 'EUR') return `€ ${Number(v || 0).toFixed(2)}`;
     if (c === 'SEK') return `${Math.round(Number(v) || 0)} kr`;
     if (c === 'NOK') return `${Math.round(Number(v) || 0)} kr`;
+    if (c === 'PLN') return `${Number(v || 0).toFixed(2)} zł`;
+    if (c === 'GBP') return `£ ${Number(v || 0).toFixed(2)}`;
     return `US$ ${Number(v || 0).toFixed(2)}`;
   }
 
@@ -622,7 +624,7 @@ window.STF_MONEY = window.STF_MONEY || (function () {
 
   function formatSnapshotMoney(amount, currency) {
     const cur = String(currency || '').toUpperCase();
-    if (cur === 'USD' || cur === 'EUR' || cur === 'SEK' || cur === 'NOK' || cur === 'PLN') {
+    if (cur === 'USD' || cur === 'EUR' || cur === 'SEK' || cur === 'NOK' || cur === 'PLN' || cur === 'GBP') {
       return formatChargeMoney(amount, cur);
     }
     return formatCheckoutMoney(amount);
@@ -1155,7 +1157,7 @@ window.STF_MONEY = window.STF_MONEY || (function () {
     const selfTest = !!(data.selfTestPix || data.selfTestPayPal || data.selfTestStripe || data.selfTestTester);
     const chargeCur = String(data.chargeCurrency || '').toUpperCase();
     const chargeAmt = data.chargeAmount != null ? Number(data.chargeAmount) : null;
-    const foreignCharge = ['USD', 'EUR', 'SEK', 'NOK', 'PLN'].includes(chargeCur);
+    const foreignCharge = ['USD', 'EUR', 'SEK', 'NOK', 'PLN', 'GBP'].includes(chargeCur);
     const useForeignTotal = chargeAmt != null && foreignCharge
       && (selfTest || isIntlEmbeddedCheckout() || window.STF_MONEY?.isIntlHost?.());
     return {
@@ -1315,7 +1317,7 @@ window.STF_MONEY = window.STF_MONEY || (function () {
       els.summaryShipping.textContent = formatCheckoutMoney(snap.frete ?? 0);
       const totalEl = els.summaryTotal;
       const snapCur = String(snap.totalCurrency || '').toUpperCase();
-      const foreignSnapCur = ['USD', 'EUR', 'SEK', 'NOK', 'PLN'].includes(snapCur);
+      const foreignSnapCur = ['USD', 'EUR', 'SEK', 'NOK', 'PLN', 'GBP'].includes(snapCur);
       // Intl display (NOK/SEK/…): sum with markup×FX like the lines — never FX-raw BRL
       // (that showed Totalt 321 kr while Delsum 622 + Frakt 51).
       const onIntlDisplay = !!(isInternational || isIntlCheckoutShell() || window.STF_MONEY?.isIntlHost?.());
@@ -3136,7 +3138,7 @@ window.STF_MONEY = window.STF_MONEY || (function () {
       const selfTest = !!(result.order?.selfTestPix || result.order?.selfTestPayPal || result.order?.selfTestStripe || result.order?.selfTestTester);
       const chargeCur = String(result.order?.chargeCurrency || '').toUpperCase();
       const chargeAmt = result.order?.chargeAmount != null ? Number(result.order.chargeAmount) : null;
-      const foreignCharge = ['USD', 'EUR', 'SEK', 'NOK', 'PLN'].includes(chargeCur);
+      const foreignCharge = ['USD', 'EUR', 'SEK', 'NOK', 'PLN', 'GBP'].includes(chargeCur);
       const useForeignTotal = chargeAmt != null && foreignCharge
         && (selfTest || isIntlEmbeddedCheckout() || window.STF_MONEY?.isIntlHost?.());
       const total = useForeignTotal
