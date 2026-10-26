@@ -13,7 +13,7 @@ Referência canônica: CSS do Sensor TattooFix adaptado ao Crash (acento cyan, f
 
 | Peça | Valor obrigatório |
 |------|-------------------|
-| Grid solução | `#produtos .product-solution-grid` → `1fr 1fr`, `gap: 40px`, composição centrada (`max-width` + `margin: auto`, `align-items: center`) |
+| Grid solução | `#produtos .product-solution-grid` → `1fr 1fr`, `gap: 40px`, largura do container (mesma margem do kit), `align-items: center` |
 | Benefícios | 6 cards em **3×2** (`.product-benefits-grid`) |
 | Quadro galeria | `width: min(100%, 380px)`, `aspect-ratio: 1 / 1`, `padding: 8px` |
 | Imagem | `object-fit: contain` (não `cover`) |

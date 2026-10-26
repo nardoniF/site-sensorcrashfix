@@ -438,6 +438,7 @@ html[lang="it"] .nav-actions { gap: 6px; }
 }
 /* FROZEN #produtos — molde TattooFix (pedido dono 2026-10-01).
    2026-10-25: enquadrar composição no centro (pedido explícito #produtos).
+   2026-10-26: cards na largura do container (mesma margem do kit abaixo); título −1pt.
    Molde: quadro min(100%,380px) + aspect-ratio 1/1 + CTA inline-block.
    Ver .cursor/rules/produtos-layout-freeze.mdc */
 
@@ -447,7 +448,7 @@ html[lang="it"] .nav-actions { gap: 6px; }
     gap: 40px;
     align-items: center;
     width: 100%;
-    max-width: 1040px;
+    max-width: 100%;
     margin-left: auto;
     margin-right: auto;
     justify-items: center;
@@ -455,7 +456,7 @@ html[lang="it"] .nav-actions { gap: 6px; }
 #produtos .product-benefits-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 16px;
     min-width: 0;
     width: 100%;
 }
@@ -540,7 +541,7 @@ html[lang="it"] .nav-actions { gap: 6px; }
     display: block;
 }
 #produtos .product-benefits-grid .benefit-card h3 {
-    font-size: 1rem;
+    font-size: calc(1rem - 1pt);
     margin-bottom: 8px;
     color: var(--primary);
 }

@@ -51,7 +51,7 @@
 >
 > Após a aplicação, respeite o tempo de cura de 72 horas antes de expor o relógio à água.
 >
-> **Importante:** o resultado depende das condições do reparo e do estado do relógio. A aplicação não constitui uma nova certificação IPX ou ATM nem garante uma profundidade específica de uso.
+> **Importante:** a aplicação não constitui uma nova certificação IPX ou ATM.
 
 Aplicado em seção `#vedacao`, hero, benefício tint e FAQ nos 12 idiomas (marca no site: **CrashFix**).
 
