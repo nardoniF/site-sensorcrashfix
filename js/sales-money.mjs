@@ -305,6 +305,51 @@ export function storeOrderListedGross(order) {
   return inferCustomerPaidTotal(order);
 }
 
+/** Admin pedidos — entrou / frete / líquido (intl via charge÷fx; self-test sem fx infere pelo livro BRL). */
+export function storeOrderMoneyBreakdown(order) {
+  const freteBrl = roundMoney(Math.max(0, Number(order?.frete) || 0));
+  const feesBrl = roundMoney(Math.max(0, orderPaypalFee(order)));
+  const cur = String(order?.chargeCurrency || '').toUpperCase();
+  const amt = order?.chargeAmount != null ? Number(order.chargeAmount) : NaN;
+  let rate = order?.chargeFxRate != null ? Number(order.chargeFxRate) : NaN;
+  const total = roundMoney(order?.total || 0);
+  const paid = order?.totalPaid != null ? roundMoney(order.totalPaid) : 0;
+  const bookBrl = paid > 0 ? paid : total;
+  if (!(rate > 0) && cur && cur !== 'BRL' && amt > 0 && bookBrl > 0) {
+    rate = amt / bookBrl;
+  }
+  if (cur && cur !== 'BRL' && amt > 0 && rate > 0) {
+    const enteredBrl = roundMoney(amt / rate);
+    let freteF = roundMoney(freteBrl * rate);
+    if (freteF > amt) freteF = amt;
+    const feeF = roundMoney(feesBrl * rate);
+    return {
+      fromCharge: true,
+      currency: cur,
+      fxRate: rate,
+      entered: { foreign: roundMoney(amt), brl: enteredBrl },
+      frete: { foreign: freteF, brl: freteBrl },
+      fees: { foreign: feeF, brl: feesBrl },
+      liquido: {
+        foreign: roundMoney(Math.max(0, amt - freteF - feeF)),
+        brl: roundMoney(Math.max(0, enteredBrl - freteBrl - feesBrl))
+      }
+    };
+  }
+  return {
+    fromCharge: false,
+    currency: 'BRL',
+    fxRate: null,
+    entered: { foreign: null, brl: bookBrl },
+    frete: { foreign: null, brl: freteBrl },
+    fees: { foreign: null, brl: feesBrl },
+    liquido: {
+      foreign: null,
+      brl: roundMoney(Math.max(0, bookBrl - freteBrl - feesBrl))
+    }
+  };
+}
+
 export function aggregateFlexOwedByMonth(sales, config = null) {
   const map = new Map();
   (sales || []).forEach((s) => {
@@ -366,6 +411,7 @@ const exportsForBrowser = {
   orderNeedsFreteProductRepair,
   applyOrderFreteAccounting,
   storeOrderListedGross,
+  storeOrderMoneyBreakdown,
   MONTH_LABELS,
   DEFAULT_KIT_COST_COMPONENTS,
   DEFAULT_KIT_COST_INTL_COMPONENTS
