@@ -2328,7 +2328,9 @@ function isComSiteRequest(request) {
 }
 
 function isIntlCheckoutLocale(locale) {
-  const l = String(locale || '').toLowerCase();
+  let l = String(locale || '').toLowerCase();
+  // <html lang="nb"> / Bokmål → storefront "no"
+  if (l === 'nb' || l === 'nn') l = 'no';
   // Keep in sync with PATH_LANGS / INTL_PATH_LANGS on the storefront (js/stf-*.js).
   // Missing fr/nl/sv/no/fi made Stripe/PayPal fail or charge the wrong currency (TattooFix).
   return l === 'en' || l === 'it' || l === 'de' || l === 'es' || l === 'pl' || l === 'sl'
@@ -13150,6 +13152,8 @@ async function createPayPalCheckout(env, order, config, request, opts) {
     paymentId: data.id,
     paypalOrderId: data.id,
     approveUrl,
+    currency: currencyCode,
+    amount: Number(amountValue),
     autoConfirm: true,
     embedded: !!options.embedded
   };
@@ -14218,7 +14222,8 @@ async function handleCreateOrder(request, env, origin, ctx) {
     couponCommissionPercent = comm.percent;
     couponCommissionAmount = comm.amount;
   }
-  const checkoutLocale = String(body.checkoutLocale || 'pt').toLowerCase();
+  let checkoutLocale = String(body.checkoutLocale || 'pt').toLowerCase();
+  if (checkoutLocale === 'nb' || checkoutLocale === 'nn') checkoutLocale = 'no';
   const intlEmbeddedCheckout = (isComSiteRequest(request) || body.intlEmbedded === true)
     && isIntlCheckoutLocale(checkoutLocale);
 
@@ -14377,23 +14382,28 @@ async function handleCreateOrder(request, env, origin, ctx) {
       }
       billingType = 'PAYPAL';
       pagamentoLabel = 'PayPal';
-    } else if (body.pagamento === 'PAYPAL') {
-      if (!isInternationalPayPalAvailable(config)) {
-        return json({ error: 'PayPal temporariamente indisponível. Use PIX ou tente novamente em breve.' }, 400, origin);
+    } else if (body.pagamento === 'PAYPAL' || body.pagamento === 'STRIPE') {
+      // STRIPE without embedded shell: fall back to PayPal (never suggest PIX abroad).
+      if (body.pagamento === 'STRIPE' && stripeLiveReady(env) && (isComSiteRequest(request) || body.intlEmbedded === true)) {
+        billingType = 'STRIPE';
+        pagamentoLabel = 'Card / Apple Pay / Google Pay';
+      } else {
+        if (!isInternationalPayPalAvailable(config)) {
+          return json({ error: 'PayPal temporarily unavailable. Try card or try again shortly.', errorKey: 'alert.paypalUnavailable' }, 400, origin);
+        }
+        billingType = 'PAYPAL';
+        pagamentoLabel = 'PayPal';
       }
-      billingType = 'PAYPAL';
-      pagamentoLabel = 'PayPal';
     } else if (body.pagamento === 'PIX') {
-      billingType = 'PIX';
-      pagamentoLabel = 'PIX';
+      return json({ error: 'PIX is not available for international checkout. Choose card or PayPal.', errorKey: 'alert.intlNoPix' }, 400, origin);
     } else if (body.pagamento === 'CARTAO') {
       if (!mercadoPagoToken(env)) {
-        return json({ error: 'Cartão internacional indisponível. Use PIX ou PayPal.' }, 400, origin);
+        return json({ error: 'International card unavailable. Try PayPal.', errorKey: 'alert.intlCardUnavailable' }, 400, origin);
       }
       billingType = 'MP_CHECKOUT';
       pagamentoLabel = 'Cartão internacional';
     } else {
-      return json({ error: 'Escolha cartão, PayPal ou PIX para envio internacional.' }, 400, origin);
+      return json({ error: 'Choose card or PayPal for international shipping.', errorKey: 'alert.intlPaymentPick' }, 400, origin);
     }
   } else {
     if (body.pagamento === 'PAYPAL') {
@@ -15604,9 +15614,13 @@ async function handlePayPalCreate(request, env, origin, orderId) {
     order.paypalOrderId = payment.paypalOrderId;
     if (payment.approveUrl) order.paypalApproveUrl = payment.approveUrl;
     await saveOrder(env, order);
+    const currency = String(order.chargeCurrency || payment.currency || 'USD').toUpperCase();
     return json({
       paypalOrderId: payment.paypalOrderId,
-      approveUrl: payment.approveUrl || null
+      approveUrl: payment.approveUrl || null,
+      currency,
+      chargeCurrency: currency,
+      chargeAmount: order.chargeAmount != null ? Number(order.chargeAmount) : null
     }, 200, origin);
   } catch (err) {
     return json({ error: err.message }, 400, origin);

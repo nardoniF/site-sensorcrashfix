@@ -294,6 +294,8 @@ window.STF_I18N_NO = {
   'alert.paypalConfirmError': 'Feil ved bekreftelse av PayPal-betalingen.',
   'alert.cardBrUnavailable': 'Kortbetaling ikke tilgjengelig. Prøv PayPal eller igjen senere.',
   'alert.paymentPick': 'Velg kort eller PayPal for å fortsette.',
+  'alert.intlPaymentPick': 'Velg kort eller PayPal for internasjonal frakt.',
+  'alert.intlNoPix': 'PIX er ikke tilgjengelig i internasjonal utsjekk. Velg kort eller PayPal.',
   'status.redirectMp': 'Videresender til kortbetaling…',
   'status.confirmMp': 'Bekrefter kortbetaling…',
   'status.pendingMp': 'Betaling under kontroll — denne siden oppdateres automatisk.',

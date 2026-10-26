@@ -1,5 +1,6 @@
 /**
  * International checkout (.com) — Stripe Payment Element + PayPal embedded.
+ * Charge currency MUST match locale registry (USD/EUR/PLN/SEK/NOK) — same as Worker.
  */
 window.STF_INTL_PAY = (function () {
   let cfg = null;
@@ -11,6 +12,50 @@ window.STF_INTL_PAY = (function () {
   let paypalMountKey = '';
   let mountInFlight = null;
 
+  /** Keep in sync with api/intl-money.js DEFAULT_INTL_CURRENCIES langs. */
+  const LANG_CHARGE_CURRENCY = {
+    en: 'USD',
+    it: 'EUR',
+    de: 'EUR',
+    es: 'EUR',
+    sl: 'EUR',
+    fr: 'EUR',
+    nl: 'EUR',
+    fi: 'EUR',
+    pl: 'PLN',
+    sv: 'SEK',
+    no: 'NOK'
+  };
+
+  const LANG_PAYPAL_LOCALE = {
+    en: 'en_US',
+    it: 'it_IT',
+    de: 'de_DE',
+    es: 'es_ES',
+    pl: 'pl_PL',
+    sl: 'en_US',
+    fr: 'fr_FR',
+    nl: 'nl_NL',
+    sv: 'sv_SE',
+    no: 'no_NO',
+    fi: 'fi_FI'
+  };
+
+  const LANG_STRIPE_LOCALE = {
+    en: 'en',
+    it: 'it',
+    de: 'de',
+    es: 'es',
+    pl: 'pl',
+    sl: 'en',
+    fr: 'fr',
+    nl: 'nl',
+    sv: 'sv',
+    no: 'nb',
+    fi: 'fi',
+    pt: 'pt-BR'
+  };
+
   function apiBase() {
     return String(window.CONFIG_BOOTSTRAP?.configApiUrl || cfg?.api?.baseUrl || '')
       .replace(/\/$/, '');
@@ -18,6 +63,29 @@ window.STF_INTL_PAY = (function () {
 
   function isActive() {
     return !!(window.STF_SITE?.isIntlHost?.() || /\.sensorcrashfix\.com$/i.test(location.hostname));
+  }
+
+  function checkoutLang() {
+    let lang = '';
+    try {
+      lang = String(window.STF_I18N?.getLang?.() || window.STF_PAGE_LANG?.get?.() || '').toLowerCase();
+    } catch (_) { /* ignore */ }
+    if (lang === 'nb' || lang === 'nn') lang = 'no';
+    if (LANG_CHARGE_CURRENCY[lang]) return lang;
+    const path = String(location.pathname || '');
+    for (const code of Object.keys(LANG_CHARGE_CURRENCY)) {
+      if (path.includes(`/${code}/`) || path === `/${code}`) return code;
+    }
+    const htmlLang = String(document.documentElement.lang || '').slice(0, 2).toLowerCase();
+    if (htmlLang === 'nb' || htmlLang === 'nn') return 'no';
+    if (LANG_CHARGE_CURRENCY[htmlLang]) return htmlLang;
+    return 'en';
+  }
+
+  /** Same mapping as Worker intlChargeCurrencyForLocale / currencyForLocaleFromRegistry. */
+  function chargeCurrencyForLang(lang) {
+    const l = String(lang || checkoutLang()).toLowerCase();
+    return LANG_CHARGE_CURRENCY[l] || 'USD';
   }
 
   async function loadConfig() {
@@ -53,15 +121,7 @@ window.STF_INTL_PAY = (function () {
   }
 
   function paypalCurrency() {
-    try {
-      const lang = window.STF_I18N?.getLang?.();
-      if (lang === 'it') return 'EUR';
-    } catch (_) { /* ignore */ }
-    const path = String(location.pathname || '');
-    if (path.includes('/it/')) return 'EUR';
-    const htmlLang = String(document.documentElement.lang || '').toLowerCase();
-    if (htmlLang.startsWith('it')) return 'EUR';
-    return 'USD';
+    return chargeCurrencyForLang(checkoutLang());
   }
 
   function payNoticeHtml(key) {
@@ -71,7 +131,13 @@ window.STF_INTL_PAY = (function () {
     } catch (_) { /* ignore */ }
     const cur = paypalCurrency();
     if (cur === 'EUR') {
-      return '<i class="fas fa-info-circle"></i> Addebito in EUR · spedizione tracciata.';
+      return '<i class="fas fa-info-circle"></i> Charged in EUR · tracked shipping.';
+    }
+    if (cur === 'SEK' || cur === 'NOK') {
+      return `<i class="fas fa-info-circle"></i> Charged in ${cur} · tracked shipping.`;
+    }
+    if (cur === 'PLN') {
+      return '<i class="fas fa-info-circle"></i> Charged in PLN · tracked shipping.';
     }
     return '<i class="fas fa-info-circle"></i> Charged in USD · tracked shipping.';
   }
@@ -130,22 +196,12 @@ window.STF_INTL_PAY = (function () {
   }
 
   function paypalSdkLocale() {
-    try {
-      const lang = window.STF_I18N?.getLang?.();
-      if (lang === 'it') return 'it_IT';
-      if (lang === 'en') return 'en_US';
-    } catch (_) { /* ignore */ }
-    const path = String(location.pathname || '');
-    if (path.includes('/it/')) return 'it_IT';
-    const htmlLang = String(document.documentElement.lang || '').toLowerCase();
-    if (htmlLang.startsWith('it')) return 'it_IT';
-    if (htmlLang.startsWith('en') || /\.sensorcrashfix\.com$/i.test(location.hostname)) return 'en_US';
-    return 'pt_BR';
+    return LANG_PAYPAL_LOCALE[checkoutLang()] || 'en_US';
   }
 
-  async function loadPayPalJs(clientId) {
+  async function loadPayPalJs(clientId, currencyOverride) {
     const locale = paypalSdkLocale();
-    const currency = paypalCurrency();
+    const currency = String(currencyOverride || paypalCurrency()).toUpperCase();
     const sdkKey = locale + ':' + currency;
     const existing = document.querySelector('script[data-stf-paypal-sdk]');
     if (existing && existing.getAttribute('data-stf-paypal-key') === sdkKey && window.paypal?.Buttons) {
@@ -169,6 +225,7 @@ window.STF_INTL_PAY = (function () {
       s.setAttribute('data-stf-paypal-sdk', '1');
       s.setAttribute('data-stf-paypal-key', sdkKey);
       s.setAttribute('data-stf-paypal-locale', locale);
+      s.setAttribute('data-stf-paypal-currency', currency);
       s.onload = resolve;
       s.onerror = reject;
       document.head.appendChild(s);
@@ -177,20 +234,7 @@ window.STF_INTL_PAY = (function () {
   }
 
   function stripeLocale() {
-    try {
-      const lang = window.STF_I18N?.getLang?.();
-      if (lang === 'it') return 'it';
-      if (lang === 'en') return 'en';
-      if (lang === 'pt') return 'pt-BR';
-    } catch (_) { /* ignore */ }
-    const path = String(location.pathname || '');
-    if (path.includes('/it/')) return 'it';
-    if (path.includes('/en/') || /\.sensorcrashfix\.com$/i.test(location.hostname)) return 'en';
-    const htmlLang = String(document.documentElement.lang || '').toLowerCase();
-    if (htmlLang.startsWith('it')) return 'it';
-    if (htmlLang.startsWith('en')) return 'en';
-    if (htmlLang.startsWith('pt')) return 'pt-BR';
-    return 'en';
+    return LANG_STRIPE_LOCALE[checkoutLang()] || 'en';
   }
 
   async function mountStripeRedirectLink(orderId, accessToken) {
@@ -248,14 +292,11 @@ window.STF_INTL_PAY = (function () {
     paymentElement.mount('#stripe-payment-element');
     const confirmBtn = document.getElementById('btn-stripe-confirm');
     if (confirmBtn) confirmBtn.hidden = false;
-    // Hosted Checkout fallback — same idea as “Continue on PayPal.com”
     mountStripeRedirectLink(orderId, accessToken);
   }
 
   async function confirmStripe() {
     if (!stripe || !stripeElements || !stripeClientSecret) throw new Error('Stripe not ready.');
-    // Stripe requires elements.submit() before confirmPayment; tolerate the
-    // clientSecret-flow variant where submit() is unnecessary.
     if (typeof stripeElements.submit === 'function') {
       const submitResult = await stripeElements.submit();
       if (submitResult?.error && !/client secret/i.test(submitResult.error.message || '')) {
@@ -273,10 +314,8 @@ window.STF_INTL_PAY = (function () {
   }
 
   function payErrorStrings() {
-    let lang = 'en';
-    try { lang = window.STF_I18N?.getLang?.() || 'en'; } catch (_) { /* ignore */ }
-    const path = String(location.pathname || '');
-    if (lang === 'it' || path.includes('/it/')) {
+    const lang = checkoutLang();
+    if (lang === 'it') {
       return {
         generic: 'Non è stato possibile completare il pagamento. Riprova o usa un altro metodo.',
         card: 'La carta è stata rifiutata. Controlla i dati o prova un\'altra carta.',
@@ -284,7 +323,23 @@ window.STF_INTL_PAY = (function () {
         retry: 'Riprova'
       };
     }
-    if (lang === 'pt' || (!path.includes('/en/') && !path.includes('/it/') && !/\.sensorcrashfix\.com$/i.test(location.hostname))) {
+    if (lang === 'sv') {
+      return {
+        generic: 'Betalningen kunde inte slutföras. Försök igen eller använd en annan metod.',
+        card: 'Kortet nekades. Kontrollera uppgifterna eller prova ett annat kort.',
+        network: 'Anslutningsproblem. Kontrollera nätverket och försök igen.',
+        retry: 'Försök igen'
+      };
+    }
+    if (lang === 'no') {
+      return {
+        generic: 'Betalingen kunne ikke fullføres. Prøv igjen eller bruk en annen metode.',
+        card: 'Kortet ble avvist. Sjekk opplysningene eller prøv et annet kort.',
+        network: 'Tilkoblingsproblem. Sjekk nettverket og prøv igjen.',
+        retry: 'Prøv igjen'
+      };
+    }
+    if (lang === 'pt') {
       return {
         generic: 'Não foi possível concluir o pagamento. Tente novamente ou use outro método.',
         card: 'Cartão recusado. Confira os dados ou tente outro cartão.',
@@ -305,7 +360,9 @@ window.STF_INTL_PAY = (function () {
     const s = payErrorStrings();
     if (/declin|card|cvc|expir|insuffic|incorrect/.test(raw)) return s.card;
     if (/network|connection|fetch|timeout|failed to/.test(raw)) return s.network;
-    // elements.submit / integration errors → generic, never show Stripe internals.
+    if (/currency|CURRENCIES|mismatch/i.test(raw)) {
+      return s.generic + ' (currency)';
+    }
     return s.generic;
   }
 
@@ -321,6 +378,25 @@ window.STF_INTL_PAY = (function () {
   function clearStripeError() {
     const box = document.getElementById('stripe-pay-error');
     if (box) { box.hidden = true; box.textContent = ''; }
+  }
+
+  function showPayPalMountError(err) {
+    const msg = friendlyPayMessage(err) || String(err?.message || err || 'PayPal failed');
+    const wrap = document.getElementById('intl-paypal-wrap');
+    let box = document.getElementById('paypal-pay-error');
+    if (!box && wrap) {
+      box = document.createElement('div');
+      box.id = 'paypal-pay-error';
+      box.className = 'checkout-pay-error';
+      box.setAttribute('role', 'alert');
+      wrap.prepend(box);
+    }
+    if (box) {
+      box.textContent = msg;
+      box.hidden = false;
+    } else {
+      alert(msg);
+    }
   }
 
   async function mountPayPal(orderId, accessToken, onDone) {
@@ -344,13 +420,17 @@ window.STF_INTL_PAY = (function () {
       if (!createRes.ok) throw new Error(createData.error || 'Could not start PayPal.');
       const paypalOrderId = createData.paypalOrderId;
       const approveUrl = createData.approveUrl;
+      // SDK currency MUST match the PayPal order currency (SEK/NOK/EUR/PLN/USD).
+      const orderCurrency = String(
+        createData.currency || createData.chargeCurrency || paypalCurrency()
+      ).toUpperCase();
       const linkEl = document.getElementById('paypal-redirect-link');
       if (linkEl && approveUrl) {
         linkEl.href = approveUrl;
         linkEl.hidden = false;
       }
 
-      const paypal = await loadPayPalJs(clientId);
+      const paypal = await loadPayPalJs(clientId, orderCurrency);
       if (!paypal?.Buttons) throw new Error('PayPal SDK failed to load.');
 
       clearPayPalDom();
@@ -372,19 +452,19 @@ window.STF_INTL_PAY = (function () {
         },
         onError: function (err) {
           console.error('PayPal:', err);
+          showPayPalMountError(err);
         }
       });
 
       if (typeof buttons.isEligible === 'function' && !buttons.isEligible()) {
-        // Fall back to redirect link only
         if (linkEl && approveUrl) linkEl.hidden = false;
-        return { redirectOnly: true, approveUrl };
+        return { redirectOnly: true, approveUrl, currency: orderCurrency };
       }
 
       await buttons.render('#paypal-button-container');
       paypalButtons = buttons;
       paypalMountKey = key;
-      return { mounted: true, approveUrl };
+      return { mounted: true, approveUrl, currency: orderCurrency };
     })();
 
     try {
@@ -424,8 +504,14 @@ window.STF_INTL_PAY = (function () {
       }
       return { provider: 'stripe', mounted: true };
     }
-    const paypalResult = await mountPayPal(orderId, accessToken, callbacks?.onSuccess);
-    return { provider: 'paypal', pending: true, ...paypalResult };
+    try {
+      const paypalResult = await mountPayPal(orderId, accessToken, callbacks?.onSuccess);
+      return { provider: 'paypal', pending: true, ...paypalResult };
+    } catch (err) {
+      console.error('PayPal mount:', err);
+      showPayPalMountError(err);
+      throw err;
+    }
   }
 
   return {
@@ -434,6 +520,9 @@ window.STF_INTL_PAY = (function () {
     payAfterOrder,
     confirmStripe,
     selectedMethod,
-    clearPayPalDom
+    clearPayPalDom,
+    /** @internal audit / tests */
+    _chargeCurrencyForLang: chargeCurrencyForLang,
+    _checkoutLang: checkoutLang
   };
 })();
