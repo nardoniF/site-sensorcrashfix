@@ -6076,7 +6076,83 @@
       "media": []
     }
   ],
-  "homeReviews": [],
+  "homeReviews": [
+    {
+      "id": "review-1",
+      "active": true,
+      "order": 1,
+      "rating": 5,
+      "body": "Sensor trincou e eu parei de molhar o relógio. Depois da lente voltei a lavar a mão sem medo.",
+      "bodyEn": "Sensor cracked and I stopped getting the watch wet. After the lens I wash my hands without fear.",
+      "bodyIt": "Sensore incrinato e avevo smesso di bagnare l’orologio. Con la lente lavo le mani senza paura.",
+      "author": "Marina S.",
+      "authorEn": "Marina S.",
+      "authorIt": "Marina S.",
+      "source": "Loja oficial",
+      "sourceEn": "Official store",
+      "sourceIt": "Negozio ufficiale"
+    },
+    {
+      "id": "review-2",
+      "active": true,
+      "order": 2,
+      "rating": 5,
+      "body": "Faltava um pedacinho do vidro. A cobertura maior vedou e o batimento estabilizou.",
+      "bodyEn": "A small chip was missing. The larger cover sealed it and heart rate stabilized.",
+      "bodyIt": "Mancava un pezzetto di vetro. La copertura più grande ha sigillato e il battito si è stabilizzato.",
+      "author": "Rafael T.",
+      "authorEn": "Rafael T.",
+      "authorIt": "Rafael T.",
+      "source": "WhatsApp",
+      "sourceEn": "WhatsApp",
+      "sourceIt": "WhatsApp"
+    },
+    {
+      "id": "review-3",
+      "active": true,
+      "order": 3,
+      "rating": 5,
+      "body": "Não é reparo oficial, mas para trinco leve salvou o Ultra na academia e na chuva.",
+      "bodyEn": "Not an official repair, but for a light crack it saved my Ultra at the gym and in the rain.",
+      "bodyIt": "Non è riparazione ufficiale, ma per una crepa leggera ha salvato l’Ultra in palestra e sotto la pioggia.",
+      "author": "Camila P.",
+      "authorEn": "Camila P.",
+      "authorIt": "Camila P.",
+      "source": "Google",
+      "sourceEn": "Google",
+      "sourceIt": "Google"
+    },
+    {
+      "id": "review-4",
+      "active": true,
+      "order": 4,
+      "rating": 5,
+      "body": "Whoop com sensor riscado: adesivo não saiu na água e protegeu de piorar.",
+      "bodyEn": "Whoop with a scratched sensor: adhesive didn’t come off in water and stopped it getting worse.",
+      "bodyIt": "Whoop con sensore graffiato: l’adesivo non si è staccato in acqua e ha evitato che peggiorasse.",
+      "author": "Diego M.",
+      "authorEn": "Diego M.",
+      "authorIt": "Diego M.",
+      "source": "Instagram",
+      "sourceEn": "Instagram",
+      "sourceIt": "Instagram"
+    },
+    {
+      "id": "review-5",
+      "active": true,
+      "order": 5,
+      "rating": 5,
+      "body": "Fitbit e Apple — pedi pelo mm maior. Cobriu o trinco e voltou a ser utilizável.",
+      "bodyEn": "Fitbit and Apple — ordered the larger mm. Covered the crack and it’s usable again.",
+      "bodyIt": "Fitbit e Apple — ho preso i mm più grandi. Ha coperto la crepa ed è di nuovo utilizzabile.",
+      "author": "Ana L.",
+      "authorEn": "Ana L.",
+      "authorIt": "Ana L.",
+      "source": "Loja oficial",
+      "sourceEn": "Official store",
+      "sourceIt": "Negozio ufficiale"
+    }
+  ],
   "intlCurrenciesAutoFx": true,
   "intlCurrenciesAutoPpp": true
 }
