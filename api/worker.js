@@ -13152,6 +13152,8 @@ async function createPayPalCheckout(env, order, config, request, opts) {
     paymentId: data.id,
     paypalOrderId: data.id,
     approveUrl,
+    currency: currencyCode,
+    amount: Number(amountValue),
     autoConfirm: true,
     embedded: !!options.embedded
   };
@@ -15612,9 +15614,13 @@ async function handlePayPalCreate(request, env, origin, orderId) {
     order.paypalOrderId = payment.paypalOrderId;
     if (payment.approveUrl) order.paypalApproveUrl = payment.approveUrl;
     await saveOrder(env, order);
+    const currency = String(order.chargeCurrency || payment.currency || 'USD').toUpperCase();
     return json({
       paypalOrderId: payment.paypalOrderId,
-      approveUrl: payment.approveUrl || null
+      approveUrl: payment.approveUrl || null,
+      currency,
+      chargeCurrency: currency,
+      chargeAmount: order.chargeAmount != null ? Number(order.chargeAmount) : null
     }, 200, origin);
   } catch (err) {
     return json({ error: err.message }, 400, origin);

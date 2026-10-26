@@ -2943,7 +2943,12 @@ window.STF_MONEY = window.STF_MONEY || (function () {
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
         const keyed = err.errorKey && typeof L === 'function' ? L(err.errorKey) : '';
-        throw new Error((keyed && keyed !== err.errorKey ? keyed : null) || err.error || L('alert.orderError'));
+        const legacyPt = String(err.error || '');
+        // Old Worker still returned PT + PIX for intl — map until deploy lands.
+        const mapped = /PIX para envio internacional|PayPal ou PIX|Use PIX/i.test(legacyPt)
+          ? L('alert.intlPaymentPick')
+          : '';
+        throw new Error((keyed && keyed !== err.errorKey ? keyed : null) || mapped || err.error || L('alert.orderError'));
       }
       return res.json();
     }
