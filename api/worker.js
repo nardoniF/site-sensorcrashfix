@@ -2723,7 +2723,8 @@ function intlChargeCurrencyForLocale(locale, config) {
   const l = String(locale || '').toLowerCase();
   if (l === 'sv') return 'SEK';
   if (l === 'no') return 'NOK';
-  if (l === 'it' || l === 'de' || l === 'es' || l === 'pl' || l === 'sl'
+  if (l === 'pl') return 'PLN';
+  if (l === 'it' || l === 'de' || l === 'es' || l === 'sl'
     || l === 'fr' || l === 'nl' || l === 'fi') return 'EUR';
   return 'USD';
 }
@@ -2756,7 +2757,7 @@ function applySelfTestChargeCurrency(order, { intlUsd, billingType, config }) {
     order.displayCurrency = cur;
     return;
   }
-  if (['USD', 'EUR', 'SEK', 'NOK', 'PLN'].includes(String(order.chargeCurrency || '').toUpperCase())) {
+  if (['USD', 'EUR', 'SEK', 'NOK', 'PLN', 'GBP'].includes(String(order.chargeCurrency || '').toUpperCase())) {
     delete order.chargeCurrency;
     delete order.chargeAmount;
     delete order.chargeFxRate;
@@ -14607,18 +14608,20 @@ async function handleCreateOrder(request, env, origin, ctx) {
         'Total original': formatBRL(order.totalOriginal || 0)
       } : {}),
       ...(order.selfTestPayPal ? {
-        'Teste PayPal produção': order.chargeCurrency === 'USD'
-          ? `US$ ${SELF_TEST_USD_AMOUNT.toFixed(2)} — pedido internacional`
+        'Teste PayPal produção': isIntlChargeCurrency(order.chargeCurrency)
+          ? `${order.chargeCurrency} ${Number(order.chargeAmount || 0)} — pedido internacional`
           : `R$ ${SELF_TEST_BRL_AMOUNT.toFixed(2)} — pedido Brasil`,
         'Total original': formatBRL(order.totalOriginal || 0)
       } : {}),
       ...(order.selfTestStripe ? {
-        'Teste Stripe produção': `US$ ${SELF_TEST_STRIPE_USD_AMOUNT.toFixed(2)} — mínimo Stripe conta BR`,
+        'Teste Stripe produção': isIntlChargeCurrency(order.chargeCurrency)
+          ? `${order.chargeCurrency} ${Number(order.chargeAmount || 0)} — self-test Stripe`
+          : `US$ ${SELF_TEST_STRIPE_USD_AMOUNT.toFixed(2)} — mínimo Stripe`,
         'Total original': formatBRL(order.totalOriginal || 0)
       } : {}),
       ...(order.selfTestTester && !order.selfTestPayPal && !order.selfTestStripe && !order.selfTestPix ? {
-        'Teste conta testadora': order.chargeCurrency === 'USD'
-          ? `US$ ${Number(order.chargeAmount || SELF_TEST_USD_AMOUNT).toFixed(2)} — pedido internacional`
+        'Teste conta testadora': isIntlChargeCurrency(order.chargeCurrency)
+          ? `${order.chargeCurrency} ${Number(order.chargeAmount || 0)} — pedido internacional`
           : `R$ ${SELF_TEST_BRL_AMOUNT.toFixed(2)} — pedido Brasil`,
         'Total original': formatBRL(order.totalOriginal || 0)
       } : {}),
@@ -15628,7 +15631,7 @@ async function handlePayPalCreate(request, env, origin, orderId) {
 }
 
 function isIntlChargeCurrency(code) {
-  return ['USD', 'EUR', 'SEK', 'NOK', 'PLN'].includes(String(code || '').toUpperCase());
+  return ['USD', 'EUR', 'SEK', 'NOK', 'PLN', 'GBP'].includes(String(code || '').toUpperCase());
 }
 
 function stripeOrderCharge(order, request, env) {
@@ -15759,9 +15762,13 @@ async function handleStripeCheckoutSession(request, env, origin, orderId) {
   ).toString().slice(0, 120);
   const localeRaw = String(body.locale || order.checkoutLocale || 'en').trim().toLowerCase();
   // .com never uses pt-BR for Stripe UI/receipts — account default is Brazilian.
-  const stripeLocale = localeRaw.startsWith('it')
-    ? 'it'
-    : (localeRaw.startsWith('pt') && !isComSiteRequest(request) ? 'pt-BR' : 'en');
+  const STRIPE_LOCALE_BY_LANG = {
+    en: 'en', it: 'it', de: 'de', es: 'es', pl: 'pl', sl: 'en',
+    fr: 'fr', nl: 'nl', sv: 'sv', no: 'nb', fi: 'fi', pt: 'pt-BR'
+  };
+  const lang2 = localeRaw.slice(0, 2);
+  let stripeLocale = STRIPE_LOCALE_BY_LANG[lang2] || 'en';
+  if (lang2 === 'pt' && isComSiteRequest(request)) stripeLocale = 'en';
   try {
     const customerId = await ensureStripeCustomer(env, order, request);
     const session = await stripeApi(env, 'checkout/sessions', {

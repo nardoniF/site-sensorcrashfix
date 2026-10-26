@@ -326,6 +326,7 @@ window.STF_INTL_PAY = (function () {
     if (lang === 'sv') {
       return {
         generic: 'Betalningen kunde inte slutföras. Försök igen eller använd en annan metod.',
+        currency: 'Betalningsvalutan matchar inte. Uppdatera sidan och försök igen, eller använd en annan metod.',
         card: 'Kortet nekades. Kontrollera uppgifterna eller prova ett annat kort.',
         network: 'Anslutningsproblem. Kontrollera nätverket och försök igen.',
         retry: 'Försök igen'
@@ -334,6 +335,7 @@ window.STF_INTL_PAY = (function () {
     if (lang === 'no') {
       return {
         generic: 'Betalingen kunne ikke fullføres. Prøv igjen eller bruk en annen metode.',
+        currency: 'Betalingsvalutaen stemmer ikke. Oppdater siden og prøv igjen, eller bruk en annen metode.',
         card: 'Kortet ble avvist. Sjekk opplysningene eller prøv et annet kort.',
         network: 'Tilkoblingsproblem. Sjekk nettverket og prøv igjen.',
         retry: 'Prøv igjen'
@@ -342,6 +344,7 @@ window.STF_INTL_PAY = (function () {
     if (lang === 'pt') {
       return {
         generic: 'Não foi possível concluir o pagamento. Tente novamente ou use outro método.',
+        currency: 'Moeda do pagamento incompatível. Atualize a página e tente de novo, ou use outro método.',
         card: 'Cartão recusado. Confira os dados ou tente outro cartão.',
         network: 'Falha de conexão. Verifique a internet e tente de novo.',
         retry: 'Tentar novamente'
@@ -349,6 +352,7 @@ window.STF_INTL_PAY = (function () {
     }
     return {
       generic: 'We couldn\'t complete your payment. Please try again or use another method.',
+        currency: 'Payment currency mismatch. Refresh the page and try again, or use another method.',
       card: 'Your card was declined. Check the details or try another card.',
       network: 'Connection problem. Check your internet and try again.',
       retry: 'Try again'
@@ -361,7 +365,7 @@ window.STF_INTL_PAY = (function () {
     if (/declin|card|cvc|expir|insuffic|incorrect/.test(raw)) return s.card;
     if (/network|connection|fetch|timeout|failed to/.test(raw)) return s.network;
     if (/currency|CURRENCIES|mismatch/i.test(raw)) {
-      return s.generic + ' (currency)';
+      return s.currency || s.generic;
     }
     return s.generic;
   }
