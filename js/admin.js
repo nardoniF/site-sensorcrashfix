@@ -3326,7 +3326,7 @@ ${worksheets}
     const when = clicksMetaCache?.checkedAt
       ? formatFeedbackDate(clicksMetaCache.checkedAt)
       : '—';
-    checkedEl.textContent = `Última atualização: ${when} · cache local (buscando API…)`;
+    checkedEl.textContent = `Última atualização: ${when} · cache local`;
     checkedEl.hidden = false;
   }
 
