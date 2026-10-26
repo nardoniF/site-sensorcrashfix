@@ -361,12 +361,12 @@
         ? [
             { name: 'Clean the sensor', text: 'Use the kit wipe to clean the cracked or broken sensor glass.' },
             { name: 'Align the lens', text: 'Peel the adhesive backing and center the Crash Fix lens on the sensor.' },
-            { name: 'Press and seal', text: 'Press for about 30 seconds to reseal the area and restore protection and reading.' }
+            { name: 'Press and seal', text: 'Press firmly (without further damaging the sensor) for about 30 seconds with the applicator, without edge bubbles, to reseal the area and restore protection and reading.' }
           ]
         : [
             { name: 'Limpe o sensor', text: 'Use o lenço do kit para limpar o vidro do sensor trincado ou quebrado.' },
             { name: 'Alinhe a lente', text: 'Retire a película do adesivo e centralize a lente Crash Fix sobre o sensor.' },
-            { name: 'Pressione e vede', text: 'Pressione cerca de 30 segundos para lacrar a área e restaurar proteção e leitura.' }
+            { name: 'Pressione e vede', text: 'Pressione (firmemente, mas sem danificar mais o sensor) cerca de 30 segundos com o aplicador, sem bolhas na borda, para lacrar a área e restaurar proteção e leitura.' }
           ];
     graph.push({
       '@type': 'HowTo',
