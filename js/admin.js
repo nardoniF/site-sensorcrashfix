@@ -3326,8 +3326,49 @@ ${worksheets}
     const when = clicksMetaCache?.checkedAt
       ? formatFeedbackDate(clicksMetaCache.checkedAt)
       : '—';
-    checkedEl.textContent = `Última atualização: ${when} · cache local (clique Atualizar para buscar na API)`;
+    checkedEl.textContent = `Última atualização: ${when} · cache local (buscando API…)`;
     checkedEl.hidden = false;
+  }
+
+  /** YYYY-MM-DD em Brasília a partir de ISO/ms — para achar cache velho. */
+  function clicksDayKeyFromTs(isoOrTs) {
+    if (isoOrTs == null || isoOrTs === '') return '';
+    const t = typeof isoOrTs === 'number' ? isoOrTs : Date.parse(isoOrTs);
+    if (!Number.isFinite(t)) return '';
+    return brDateParts(t).dateKey;
+  }
+
+  /**
+   * Cache local sem auto-refresh deixava o Admin preso no último dia baixado
+   * (ex.: 12) enquanto a D1 já tinha o dia 26. Stale = sem dados, último clique
+   * em dia anterior, ou checkedAt com mais de 10 min.
+   */
+  function isClicksSnapshotStale() {
+    if (!clicksCache.length || !clicksMetaCache) return true;
+    const today = brDateParts(Date.now()).dateKey;
+    const lastDay = clicksDayKeyFromTs(clicksMetaCache.lastClickAt);
+    if (!lastDay || lastDay < today) return true;
+    const checked = Date.parse(clicksMetaCache.checkedAt || '');
+    if (!Number.isFinite(checked)) return true;
+    return (Date.now() - checked) > 10 * 60 * 1000;
+  }
+
+  /** Precisa abrir o dia mais recente (não restaurar paths do dia 12). */
+  function clicksStaleNeedsOpenLatest() {
+    if (!clicksMetaCache?.lastClickAt) return true;
+    const today = brDateParts(Date.now()).dateKey;
+    const lastDay = clicksDayKeyFromTs(clicksMetaCache.lastClickAt);
+    return !lastDay || lastDay < today;
+  }
+
+  function latestClicksTreeDayPath(root) {
+    const day = root?.querySelector('details.clicks-tree-day');
+    return day?.getAttribute('data-tree-path') || '';
+  }
+
+  function openPathsCoverLatestDay(openPaths, latestPath) {
+    if (!latestPath || !openPaths?.length) return false;
+    return openPaths.some((p) => p === latestPath || p.startsWith(`${latestPath}|`));
   }
 
   function showClicksEmptyState() {
@@ -5038,8 +5079,13 @@ ${worksheets}
 
       html += '</div>';
       root.innerHTML = html;
-      if (openPaths?.length) restoreClicksTreeOpenPaths(openPaths);
-      else openLatestClicksTreeDay(root);
+      const latestPath = latestClicksTreeDayPath(root);
+      // Se o path salvo é de um dia antigo (ex.: 12), abre o dia mais recente.
+      if (openPaths?.length && openPathsCoverLatestDay(openPaths, latestPath)) {
+        restoreClicksTreeOpenPaths(openPaths);
+      } else {
+        openLatestClicksTreeDay(root);
+      }
     }
 
     if (checkedEl) {
@@ -8011,6 +8057,11 @@ ${worksheets}
         } else {
           showClicksEmptyState();
         }
+        // Cache local sem refresh deixava o log parado no dia 12 por dias.
+        if (!clicksLoading && isClicksSnapshotStale()) {
+          const openLatest = clicksStaleNeedsOpenLatest();
+          startClicksBackgroundLoad({ preserveOpen: !openLatest, force: true });
+        }
       } else if (id === 'saldos') {
         restoreMpAuditSnapshot();
         renderMpAuditFromSnapshot();
@@ -8285,7 +8336,11 @@ ${worksheets}
 
   document.getElementById('btn-clicks-test')?.addEventListener('click', () => testClickLog());
   document.getElementById('btn-clicks-refresh')?.addEventListener('click', () => {
-    startClicksBackgroundLoad({ preserveOpen: true, force: true });
+    // Atualizar sempre abre o dia mais recente se o cache estava em dia velho.
+    startClicksBackgroundLoad({
+      preserveOpen: !clicksStaleNeedsOpenLatest(),
+      force: true
+    });
   });
   document.getElementById('btn-clicks-export')?.addEventListener('click', () => exportClicksExcel());
   document.getElementById('btn-clicks-clear-tests')?.addEventListener('click', () => clearClicksLog('tests'));
