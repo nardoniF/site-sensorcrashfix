@@ -131,10 +131,12 @@ window.STF_MONEY = window.STF_MONEY || (function () {
 
   function checkoutLocale() {
     if (!isIntlCheckoutShell()) return 'pt';
-    const lang = window.STF_I18N?.getLang?.()
+    let lang = window.STF_I18N?.getLang?.()
       || window.STF_PAGE_LANG?.get?.()
       || (document.documentElement.lang || '').slice(0, 2).toLowerCase()
       || 'en';
+    // <html lang="nb"> (Bokmål) must map to storefront locale "no".
+    if (lang === 'nb' || lang === 'nn') lang = 'no';
     if (['en', 'it', 'de', 'es', 'pl', 'sl', 'fr', 'nl', 'sv', 'no', 'fi'].includes(lang)) return lang;
     return 'en';
   }
@@ -1312,11 +1314,23 @@ window.STF_MONEY = window.STF_MONEY || (function () {
       }
       els.summaryShipping.textContent = formatCheckoutMoney(snap.frete ?? 0);
       const totalEl = els.summaryTotal;
-      const totalCurrency = (snap.totalCurrency === 'USD' || snap.totalCurrency === 'EUR')
-        ? snap.totalCurrency
-        : 'BRL';
+      const snapCur = String(snap.totalCurrency || '').toUpperCase();
+      const foreignSnapCur = ['USD', 'EUR', 'SEK', 'NOK', 'PLN'].includes(snapCur);
+      // Intl display (NOK/SEK/…): sum with markup×FX like the lines — never FX-raw BRL
+      // (that showed Totalt 321 kr while Delsum 622 + Frakt 51).
+      const onIntlDisplay = !!(isInternational || isIntlCheckoutShell() || window.STF_MONEY?.isIntlHost?.());
       if (totalEl) {
-        totalEl.textContent = formatSnapshotMoney(snap.total ?? 0, totalCurrency);
+        if (snap.selfTest && foreignSnapCur) {
+          totalEl.textContent = formatChargeMoney(snap.total ?? 0.01, snapCur);
+        } else if (onIntlDisplay) {
+          const productPart = Math.max(0, Number(snap.subtotal || 0) - Number(snap.desconto || 0));
+          const shipPart = Number(snap.frete ?? 0) || 0;
+          totalEl.textContent = formatCheckoutMoney(productPart + shipPart, null, 'cart-total');
+        } else if (foreignSnapCur) {
+          totalEl.textContent = formatChargeMoney(snap.total ?? 0, snapCur);
+        } else {
+          totalEl.textContent = formatCheckoutMoney(snap.total ?? 0);
+        }
         totalEl.closest('.summary-row')?.classList.toggle('is-self-test', !!snap.selfTest);
       }
       let selfTestNote = els.checkoutSidebar?.querySelector('.checkout-self-test-note');
@@ -1326,10 +1340,9 @@ window.STF_MONEY = window.STF_MONEY || (function () {
           selfTestNote.className = 'checkout-self-test-note';
           totalEl?.closest('.checkout-summary')?.appendChild(selfTestNote);
         }
-        const payLabel = formatSnapshotMoney(
-          (snap.totalCurrency === 'USD' || snap.totalCurrency === 'EUR') ? (snap.total ?? 0.01) : (snap.total ?? 0),
-          totalCurrency
-        );
+        const payLabel = foreignSnapCur
+          ? formatChargeMoney(snap.total ?? 0.01, snapCur)
+          : formatCheckoutMoney(snap.total ?? 0);
         const ref = snap.totalOriginal != null
           ? (isInternational || window.STF_MONEY?.isIntlHost?.()
             ? formatCheckoutMoney(snap.totalOriginal)
@@ -2929,7 +2942,8 @@ window.STF_MONEY = window.STF_MONEY || (function () {
       });
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        throw new Error(err.error || L('alert.orderError'));
+        const keyed = err.errorKey && typeof L === 'function' ? L(err.errorKey) : '';
+        throw new Error((keyed && keyed !== err.errorKey ? keyed : null) || err.error || L('alert.orderError'));
       }
       return res.json();
     }
@@ -3119,7 +3133,7 @@ window.STF_MONEY = window.STF_MONEY || (function () {
       const chargeAmt = result.order?.chargeAmount != null ? Number(result.order.chargeAmount) : null;
       const foreignCharge = ['USD', 'EUR', 'SEK', 'NOK', 'PLN'].includes(chargeCur);
       const useForeignTotal = chargeAmt != null && foreignCharge
-        && (selfTest || isIntlEmbeddedCheckout());
+        && (selfTest || isIntlEmbeddedCheckout() || window.STF_MONEY?.isIntlHost?.());
       const total = useForeignTotal
         ? (selfTest ? Math.max(0.01, chargeAmt) : chargeAmt)
         : (result.order?.total || (cartSubtotal() + orderData.frete));
