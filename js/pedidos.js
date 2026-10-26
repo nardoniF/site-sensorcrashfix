@@ -386,17 +386,25 @@
     const hasPaid = Number.isFinite(paid) && paid >= 0;
     const est = Number(o.correiosFreteEstimado);
     const hasEst = isCorreiosBrOrder(o) && Number.isFinite(est) && est > 0;
+    const b = moneyBreakdown(o);
+    const brk = freteMarkupBreakdown(o);
 
     let html = '';
     if (hasEst) {
       html += `<strong class="pedidos-frete-correios">${formatBRL(est)}</strong>`;
       if (hasPaid) html += `<br><small class="pedidos-frete-paid">Cliente: ${formatBRL(paid)}</small>`;
+    } else if (b.fromCharge && b.frete.foreign != null) {
+      html += `<strong>${escHtml(formatMoney(b.frete.foreign, b.currency))}</strong>`;
+      html += `<br><small class="pedidos-frete-paid">${formatBRL(b.frete.brl)}</small>`;
     } else if (hasPaid) {
       html += `<strong>${formatBRL(paid)}</strong>`;
     } else {
       html += '<small class="pedidos-track-muted">—</small>';
     }
     html += `<br><small class="pedidos-frete-kind">${kind}</small>`;
+    if (brk && brk.markup > 0.009) {
+      html += `<br><small class="pedidos-frete-markup" title="Cotação ${formatBRL(brk.base)} + markup ${formatBRL(brk.markup)}">+ markup ${formatBRL(brk.markup)}</small>`;
+    }
     const prazo = shippingDaysLabel(o);
     if (prazo) html += `<br><small class="pedidos-frete-prazo">${escHtml(prazo)}</small>`;
     return html;
@@ -597,6 +605,7 @@
     if (o.status !== 'paid') return '';
     const freteVal = formatFreteInput(o.frete);
     const productVal = formatFreteInput(o.valorProduto);
+    const b = moneyBreakdown(o);
     const help = 'Checkout: valor que o cliente pagou. Se baixar o frete, a diferença vai para o produto. Se baixar o produto (taxa PayPal, etc.), o total que entrou vira produto + frete.';
     const origNote = o.freteOriginal != null && Number(o.freteOriginal) !== Number(o.frete)
       ? `<p class="pedidos-detail-muted">Frete cobrado no checkout: ${formatBRL(o.freteOriginal)}</p>`
@@ -604,6 +613,9 @@
     const checkoutProduct = o.valorProdutoAtCheckout != null
       ? `<p class="pedidos-detail-muted">Produto no checkout: ${formatBRL(o.valorProdutoAtCheckout)}</p>`
       : '';
+    const entrouTxt = b.fromCharge
+      ? `${escHtml(formatMoney(b.entered.foreign, b.currency))} · ${formatBRL(b.entered.brl)}`
+      : formatBRL(b.entered.brl);
     return `
       <div class="pedidos-acerto-block">
         <h4 class="pedidos-subheading">Frete e acerto do pedido ${infoTip(help)}</h4>
@@ -618,8 +630,7 @@
             <span class="pedidos-shipping-label">Produto / acerto (R$)</span>
             <input type="text" class="pedidos-order-produto" value="${escHtml(productVal)}" placeholder="Ex.: 472,00" inputmode="decimal" />
           </label>
-          <p class="pedidos-detail-muted">Checkout (cliente): <strong>${formatBRL(o.totalPaid != null ? o.totalPaid : o.total)}</strong>${o.paypalFee ? ` · Taxa PayPal: ${formatBRL(o.paypalFee)}` : ''}</p>
-          <p class="pedidos-detail-muted">Entrou na conta: <strong class="pedidos-order-total">${formatBRL(o.total != null ? o.total : (Number(o.valorProduto || 0) + Number(o.frete || 0)))}</strong></p>
+          <p class="pedidos-detail-muted">Entrou: <strong class="pedidos-order-total">${entrouTxt}</strong>${b.fees.brl > 0.009 ? ` · Taxa: ${formatBRL(b.fees.brl)}` : ''}</p>
           <button type="button" class="btn-save-order-frete">Salvar acerto</button>
           <p class="pedidos-frete-feedback" hidden></p>
         </div>
@@ -705,6 +716,81 @@
     } catch {
       return `${cur} ${n.toFixed(2)}`;
     }
+  }
+
+  /** Entrou / Frete / Líquido — mesma fórmula do Tattoo (charge÷fx no intl). */
+  function moneyBreakdown(o) {
+    const fn = window.STFSalesMoney?.storeOrderMoneyBreakdown;
+    if (typeof fn === 'function') return fn(o);
+    const freteBrl = Math.round(Math.max(0, Number(o?.frete) || 0) * 100) / 100;
+    const feesBrl = Math.round(Math.max(0, Number(o?.paypalFee) || 0) * 100) / 100;
+    const cur = String(o?.chargeCurrency || '').toUpperCase();
+    const amt = o?.chargeAmount != null ? Number(o.chargeAmount) : NaN;
+    let rate = o?.chargeFxRate != null ? Number(o.chargeFxRate) : NaN;
+    const total = Math.round(Number(o?.total || 0) * 100) / 100;
+    const paid = o?.totalPaid != null ? Math.round(Number(o.totalPaid) * 100) / 100 : 0;
+    const bookBrl = paid > 0 ? paid : total;
+    // Self-test intl grava chargeAmount sem chargeFxRate — inferir pelo livro BRL.
+    if (!(rate > 0) && cur && cur !== 'BRL' && amt > 0 && bookBrl > 0) {
+      rate = amt / bookBrl;
+    }
+    if (cur && cur !== 'BRL' && amt > 0 && rate > 0) {
+      const enteredBrl = Math.round((amt / rate) * 100) / 100;
+      let freteF = Math.round(freteBrl * rate * 100) / 100;
+      if (freteF > amt) freteF = amt;
+      const feeF = Math.round(feesBrl * rate * 100) / 100;
+      return {
+        fromCharge: true,
+        currency: cur,
+        fxRate: rate,
+        entered: { foreign: Math.round(amt * 100) / 100, brl: enteredBrl },
+        frete: { foreign: freteF, brl: freteBrl },
+        fees: { foreign: feeF, brl: feesBrl },
+        liquido: {
+          foreign: Math.round(Math.max(0, amt - freteF - feeF) * 100) / 100,
+          brl: Math.round(Math.max(0, enteredBrl - freteBrl - feesBrl) * 100) / 100
+        }
+      };
+    }
+    const enteredBrl = bookBrl;
+    return {
+      fromCharge: false,
+      currency: 'BRL',
+      fxRate: null,
+      entered: { foreign: null, brl: enteredBrl },
+      frete: { foreign: null, brl: freteBrl },
+      fees: { foreign: null, brl: feesBrl },
+      liquido: {
+        foreign: null,
+        brl: Math.round(Math.max(0, enteredBrl - freteBrl - feesBrl) * 100) / 100
+      }
+    };
+  }
+
+  function formatForeignAndBrl(foreign, currency, brl) {
+    if (foreign != null && currency && currency !== 'BRL') {
+      return `<strong>${escHtml(formatMoney(foreign, currency))}</strong><br><small>${formatBRL(brl)}</small>`;
+    }
+    return `<strong>${formatBRL(brl)}</strong>`;
+  }
+
+  function totalLiquidoCell(o) {
+    const b = moneyBreakdown(o);
+    const tip = b.fromCharge
+      ? `Entrou ${formatMoney(b.entered.foreign, b.currency)} (${formatBRL(b.entered.brl)}) − frete ${formatBRL(b.frete.brl)}${b.fees.brl > 0.009 ? ` − taxa ${formatBRL(b.fees.brl)}` : ''} = líquido`
+      : `Entrou ${formatBRL(b.entered.brl)} − frete ${formatBRL(b.frete.brl)}${b.fees.brl > 0.009 ? ` − taxa ${formatBRL(b.fees.brl)}` : ''} = líquido`;
+    let html = `<strong class="pedidos-liquido" title="${escAttr(tip)}">${formatBRL(b.liquido.brl)}</strong>`;
+    if (b.fromCharge) {
+      html += `<br><small class="pedidos-liquido-fx" title="${escAttr(tip)}">${escHtml(formatMoney(b.liquido.foreign, b.currency))}</small>`;
+    }
+    html += `<br><small class="pedidos-entrou-hint">entrou ${b.fromCharge ? escHtml(formatMoney(b.entered.foreign, b.currency)) : formatBRL(b.entered.brl)}</small>`;
+    return html;
+  }
+
+  function confirmPayLabel(o) {
+    const p = String(o.pagamento || o.paymentProvider || '');
+    if (/paypal|stripe|card|apple|google/i.test(p)) return 'Marcar pago';
+    return 'Confirmar PIX';
   }
 
   function checkoutLocaleLabel(locale) {
@@ -809,38 +895,24 @@
   }
 
   function chargeBreakdownRows(o) {
-    const cur = String(o.chargeCurrency || '').toUpperCase();
-    const totalF = o.chargeAmount != null ? Number(o.chargeAmount) : null;
-    const fx = o.chargeFxRate != null ? Number(o.chargeFxRate) : null;
-    const freteBrl = Number(o.frete);
-    const totalBrl = Number(o.total);
+    const b = moneyBreakdown(o);
     const kind = escHtml(shippingKindLabel(o));
     const prazo = shippingDaysLabel(o);
     const rows = [];
 
-    if (cur && cur !== 'BRL' && Number.isFinite(totalF)) {
-      const freteF = Number.isFinite(fx) && fx > 0 && Number.isFinite(freteBrl)
-        ? Math.round(freteBrl * fx * 100) / 100
-        : null;
-      const prodF = freteF != null ? Math.round((totalF - freteF) * 100) / 100 : null;
-      if (prodF != null) rows.push(detailRow('Produto', escHtml(formatMoney(prodF, cur))));
-      if (freteF != null) rows.push(detailRow('Frete', escHtml(formatMoney(freteF, cur))));
-      const totalTxt = Number.isFinite(totalBrl)
-        ? `<strong>${escHtml(formatMoney(totalF, cur))}</strong> — ${formatBRL(totalBrl)}`
-        : `<strong>${escHtml(formatMoney(totalF, cur))}</strong>`;
-      rows.push(detailRow('Total', totalTxt));
-      rows.push(detailRow('Tipo envio', kind));
-      if (prazo) rows.push(detailRow('Prazo entrega', prazo));
-      return rows.join('');
+    rows.push(detailRow('Entrou', formatForeignAndBrl(b.entered.foreign, b.currency, b.entered.brl)));
+    rows.push(detailRow('Frete', formatForeignAndBrl(b.frete.foreign, b.currency, b.frete.brl)));
+    if (b.fees.brl > 0.009) {
+      rows.push(detailRow('Taxa gateway', formatForeignAndBrl(b.fees.foreign, b.currency, b.fees.brl)));
     }
+    rows.push(detailRow('Líquido', formatForeignAndBrl(b.liquido.foreign, b.currency, b.liquido.brl)));
 
-    const paid = Number(o.frete);
-    const hasPaid = Number.isFinite(paid) && paid >= 0;
-    const est = Number(o.correiosFreteEstimado);
-    const hasEst = isCorreiosBrOrder(o) && Number.isFinite(est) && est > 0;
-    if (hasEst) rows.push(detailRow('Correios (est.)', `<strong>${formatBRL(est)}</strong>`));
-    rows.push(detailRow('Total', `<strong>${formatBRL(o.total)}</strong>`));
-    if (hasPaid) rows.push(detailRow('Frete', formatBRL(paid)));
+    if (!b.fromCharge) {
+      const est = Number(o.correiosFreteEstimado);
+      if (isCorreiosBrOrder(o) && Number.isFinite(est) && est > 0) {
+        rows.push(detailRow('Correios (est.)', `<strong>${formatBRL(est)}</strong>`));
+      }
+    }
     rows.push(detailRow('Tipo envio', kind));
     if (prazo) rows.push(detailRow('Prazo entrega', prazo));
     return rows.join('');
@@ -959,30 +1031,36 @@
 
   function orderAuditRows(o) {
     const rows = [];
+    const b = moneyBreakdown(o);
+
+    rows.push(detailRow(
+      'Entrou (moeda cobrada)',
+      formatForeignAndBrl(b.entered.foreign, b.currency, b.entered.brl)
+      + (b.fromCharge && b.fxRate
+        ? `<br><small>câmbio BRL→${escHtml(b.currency)}: ${escHtml(String(b.fxRate))}</small>`
+        : '')
+    ));
+    {
+      const brk = freteMarkupBreakdown(o);
+      rows.push(detailRow(
+        'Destinado ao frete',
+        formatForeignAndBrl(b.frete.foreign, b.currency, b.frete.brl) + formatFreteMarkupNote(brk)
+      ));
+    }
+    if (b.fees.brl > 0.009) {
+      rows.push(detailRow(
+        'Taxa gateway',
+        `− ${formatForeignAndBrl(b.fees.foreign, b.currency, b.fees.brl)}`
+      ));
+    }
+    rows.push(detailRow(
+      'Líquido na mão',
+      formatForeignAndBrl(b.liquido.foreign, b.currency, b.liquido.brl)
+      + ' <small>(entrou − frete − taxa; antes do custo do kit)</small>'
+    ));
+
     rows.push(detailRow('Idioma do site', escHtml(checkoutLocaleLabel(o.checkoutLocale))));
     rows.push(detailRow('País / código', `${escHtml(o.pais || '—')}${o.paisCode ? ` · <code>${escHtml(o.paisCode)}</code>` : ''}`));
-
-    const chargeCur = String(o.chargeCurrency || o.displayCurrency || '').toUpperCase();
-    const chargeAmt = o.chargeAmount != null ? Number(o.chargeAmount) : null;
-    const fx = o.chargeFxRate != null ? Number(o.chargeFxRate) : null;
-    if (chargeCur && chargeCur !== 'BRL' && Number.isFinite(chargeAmt)) {
-      const freteBrl = Number(o.frete);
-      const fxOk = Number.isFinite(fx) && fx > 0 && Number.isFinite(freteBrl);
-      const freteF = fxOk ? Math.round(freteBrl * fx * 100) / 100 : null;
-      const prodF = freteF != null ? Math.round((chargeAmt - freteF) * 100) / 100 : null;
-      if (prodF != null) rows.push(detailRow('Produto', escHtml(formatMoney(prodF, chargeCur))));
-      if (freteF != null) rows.push(detailRow('Frete', escHtml(formatMoney(freteF, chargeCur))));
-      rows.push(detailRow(
-        'Cobrado do cliente',
-        `<strong>${escHtml(formatMoney(chargeAmt, chargeCur))}</strong>${Number.isFinite(Number(o.total)) ? ` — ${formatBRL(Number(o.total))}` : ''}`
-      ));
-      if (Number.isFinite(fx) && fx > 0) {
-        rows.push(detailRow('Câmbio (BRL→moeda)', String(fx)));
-      }
-    } else {
-      rows.push(detailRow('Moeda de cobrança', escHtml(chargeCur || 'BRL')));
-    }
-
     rows.push(detailRow('Meio de pagamento', `${escHtml(paymentProviderLabel(o))}${o.pagamento ? ` · ${escHtml(o.pagamento)}` : ''}`));
     if (o.stripePaymentIntentId) {
       rows.push(detailRow('Stripe PI', `<code>${escHtml(o.stripePaymentIntentId)}</code>`));
@@ -1000,8 +1078,6 @@
 
     const bruto = Number(o.valorProdutoAtCheckout ?? o.valorProdutoOriginal ?? o.valorProduto);
     const pago = Number(o.valorProduto);
-    const frete = Number(o.frete);
-    const total = Number(o.total);
     const catalog = catalogProductBrl(o);
 
     if (Number.isFinite(bruto) && bruto > 0) {
@@ -1022,24 +1098,17 @@
     if (o.productAdjust != null && Number(o.productAdjust) !== 0) {
       rows.push(detailRow('Acerto extra', formatBRL(o.productAdjust)));
     }
-    if (Number.isFinite(frete) && frete >= 0) {
-      const brk = freteMarkupBreakdown(o);
-      rows.push(detailRow(
-        'Frete (BRL)',
-        `<strong>${formatBRL(frete)}</strong>${formatFreteMarkupNote(brk)}`
-      ));
-    }
     const sfLabel = superfreteServiceLabel(o.superfreteService);
     const escolhido = sfLabel || shippingKindLabel(o);
     rows.push(detailRow('Frete escolhido', escHtml(escolhido)));
-    if (o.paypalFee != null && Number(o.paypalFee) > 0) {
-      rows.push(detailRow('Taxa PayPal', `− ${formatBRL(o.paypalFee)}`));
-    }
-    if (o.totalPaid != null && Number.isFinite(Number(o.totalPaid))) {
+    if (o.totalPaid != null && Number.isFinite(Number(o.totalPaid)) && !b.fromCharge) {
       rows.push(detailRow('Checkout (cliente, BRL)', formatBRL(o.totalPaid)));
     }
-    if (Number.isFinite(total) && total >= 0) {
-      rows.push(detailRow('Entrou na conta (BRL)', `<strong>${formatBRL(total)}</strong>`));
+    if (Number.isFinite(Number(o.total)) && Math.abs(Number(o.total) - b.entered.brl) > 0.05) {
+      rows.push(detailRow(
+        'Total livro (referência)',
+        `${formatBRL(o.total)} <small>— não usar como “entrou” quando há cobrança intl</small>`
+      ));
     }
     if (o.paidAt) rows.push(detailRow('Pago em', formatDate(o.paidAt)));
     if (o.createdAt) rows.push(detailRow('Criado em', formatDate(o.createdAt)));
@@ -1180,10 +1249,6 @@
           : o.couponDiscount ? ` — desc. −${formatBRL(o.couponDiscount)}` : '')
       : '—';
 
-    const chargeCur = String(o.chargeCurrency || '').toUpperCase();
-    const chargeAmt = o.chargeAmount != null ? Number(o.chargeAmount) : null;
-    const hasForeignCharge = chargeCur && chargeCur !== 'BRL' && Number.isFinite(chargeAmt);
-
     body.innerHTML = `
       <div class="pedidos-detail-grid">
         ${detailRow('Data', formatDateCell(o.createdAt))}
@@ -1196,7 +1261,7 @@
         ${detailRow('Idioma do site', escHtml(checkoutLocaleLabel(o.checkoutLocale)))}
         ${detailRow('Pagamento', escHtml(paymentProviderLabel(o)))}
         ${detailRow('Comissionado', commissioner)}
-        ${hasForeignCharge ? chargeBreakdownRows(o) : freteDetailRows(o)}
+        ${chargeBreakdownRows(o)}
       </div>
       ${foldSection(
         'Entrega e rastreio',
@@ -1843,7 +1908,7 @@
         <td>${escHtml(o.pais || '—')}</td>
         <td class="pedidos-pay">${paymentCellHtml(o)}</td>
         <td>${commissionerCell(o)}</td>
-        <td>${formatBRL(o.total)}</td>
+        <td class="pedidos-total">${totalLiquidoCell(o)}</td>
         <td class="pedidos-frete">${freteCell(o)}</td>
         <td class="pedidos-entrega">${entregaCell(o)}</td>
         <td class="pedidos-actions">
@@ -1855,7 +1920,7 @@
             const label = n > 1 ? `Cartas (${n})` : 'Carta';
             return `<button type="button" class="btn-print-letter" title="Cartas thank-you internacionais — ${n} folha(s)"><i class="fas fa-envelope-open-text"></i> ${label}</button>`;
           })() : ''}
-          ${o.status !== 'paid' ? `<button type="button" class="btn-confirm-pay" data-order-id="${o.orderId}">Confirmar PIX</button>` : ''}
+          ${o.status !== 'paid' ? `<button type="button" class="btn-confirm-pay" data-order-id="${o.orderId}">${confirmPayLabel(o)}</button>` : ''}
           </div>
         </td>
       `;

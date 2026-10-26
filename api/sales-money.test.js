@@ -12,7 +12,8 @@ import {
   applyOrderFreteAccounting,
   inferCustomerPaidTotal,
   orderNeedsFreteProductRepair,
-  storeOrderListedGross
+  storeOrderListedGross,
+  storeOrderMoneyBreakdown
 } from './sales-money.js';
 
 const config = { mlFlexShippingCost: 11.9 };
@@ -117,4 +118,38 @@ test('manual product acerto stores productAdjust and net total after PayPal fee'
   assert.equal(order.totalPaid, 489.62);
   assert.equal(order.paypalFee, 49.86);
   assert.equal(storeOrderListedGross(order), 439.76);
+});
+
+test('storeOrderMoneyBreakdown shows foreign charge with fx rate', () => {
+  const b = storeOrderMoneyBreakdown({
+    frete: 27.55,
+    total: 100.45,
+    chargeCurrency: 'EUR',
+    chargeAmount: 18.5,
+    chargeFxRate: 0.184
+  });
+  assert.equal(b.fromCharge, true);
+  assert.equal(b.currency, 'EUR');
+  assert.equal(b.entered.foreign, 18.5);
+  assert.ok(b.liquido.brl > 70);
+  assert.ok(b.frete.foreign > 0);
+});
+
+test('storeOrderMoneyBreakdown infers fx for self-test without chargeFxRate', () => {
+  const b = storeOrderMoneyBreakdown({
+    frete: 27.55,
+    total: 100.45,
+    chargeCurrency: 'EUR',
+    chargeAmount: 0.01
+  });
+  assert.equal(b.fromCharge, true);
+  assert.equal(b.entered.foreign, 0.01);
+  assert.equal(b.entered.brl, 100.45);
+});
+
+test('storeOrderMoneyBreakdown BRL orders stay in reais', () => {
+  const b = storeOrderMoneyBreakdown({ frete: 20, total: 89.9 });
+  assert.equal(b.fromCharge, false);
+  assert.equal(b.currency, 'BRL');
+  assert.equal(b.liquido.brl, 69.9);
 });
