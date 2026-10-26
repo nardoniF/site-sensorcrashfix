@@ -2816,7 +2816,9 @@ window.STF_MONEY = window.STF_MONEY || (function () {
       internationalProductNote: isInternational ? buildIntlProductNote(
         (isLensOnlyIntlCheckout() ? 'documento' : shippingInfo?.shipmentType)
       ) : '',
-      pagamento: f.querySelector('[name=pagamento]:checked').value,
+      pagamento: (f.querySelector('#payment-options-intl [name=pagamento]:checked')
+        || f.querySelector('#payment-options-br [name=pagamento]:checked')
+        || f.querySelector('[name=pagamento]:checked'))?.value || '',
       checkoutLocale: checkoutLocale(),
       intlEmbedded: isIntlEmbeddedCheckout(),
       items: window.STF_CART.load().map((i) => ({ productId: i.productId, qty: i.qty }))
@@ -3109,9 +3111,19 @@ window.STF_MONEY = window.STF_MONEY || (function () {
   }
 
   async function processPayment() {
-    const pagamento = els.form.querySelector('[name=pagamento]:checked')?.value;
+    let pagamento = (
+      els.form.querySelector('#payment-options-intl [name=pagamento]:checked')
+      || els.form.querySelector('#payment-options-br [name=pagamento]:checked')
+      || els.form.querySelector('[name=pagamento]:checked')
+    )?.value;
+    if (!pagamento && isInternational) {
+      const stripe = els.paymentOptionsIntl?.querySelector('input[value="STRIPE"]:not(:disabled)');
+      const paypal = els.paymentOptionsIntl?.querySelector('input[value="PAYPAL"]:not(:disabled)');
+      if (stripe) { stripe.checked = true; pagamento = 'STRIPE'; }
+      else if (paypal) { paypal.checked = true; pagamento = 'PAYPAL'; }
+    }
     if (!pagamento) {
-      alert(L('alert.paymentPick'));
+      alert(L(isInternational ? 'alert.intlPaymentPick' : 'alert.paymentPick'));
       return;
     }
     if (isInternational && pagamento === 'PIX') {
