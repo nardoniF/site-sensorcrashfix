@@ -15,9 +15,9 @@ import {
   isPaidAdsClickSearch
 } from './geo-lang.js';
 
-// Keep pin on tip that serves minha-conta + intl homes (incl. FR/NL/SV/NO/FI).
+// Keep pin on tip that serves Quem Somos história (TattooFix → CrashFix) em todos os idiomas.
 // Do not pin behind production (package-integrity-before-deploy).
-const COMMIT = 'ba8ed17417363d3924acee5b867d6eff9d6b18cf';
+const COMMIT = '9315048a34cf01b1adebfb9bcbcda6bb981b0daf';
 const ORIGINS = [
   'https://cdn.jsdelivr.net/gh/nardoniF/site-sensorcrashfix@' + COMMIT,
   'https://raw.githubusercontent.com/nardoniF/site-sensorcrashfix/' + COMMIT,
