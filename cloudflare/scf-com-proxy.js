@@ -17,7 +17,7 @@ import {
 
 // Keep pin on tip that serves Quem Somos história (TattooFix → CrashFix) em todos os idiomas.
 // Do not pin behind production (package-integrity-before-deploy).
-const COMMIT = '9315048a34cf01b1adebfb9bcbcda6bb981b0daf';
+const COMMIT = 'a9fc7e86f78b56c44decf63aa320c8d7828e3f94';
 const ORIGINS = [
   'https://cdn.jsdelivr.net/gh/nardoniF/site-sensorcrashfix@' + COMMIT,
   'https://raw.githubusercontent.com/nardoniF/site-sensorcrashfix/' + COMMIT,
